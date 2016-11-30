@@ -1,0 +1,16 @@
+{
+  "name": "ecomm",
+  "version": "1.0.0",
+  "author": "ncedu",
+  "license": "Apache 2.0",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-sourcemaps": "^1.9.1",
+    "gulp-uglify": "^2.0.0"
+  },
+  "devDependencies": {
+    "bower": "^1.8.0",
+    "eslint": "^3.11.1"
+  }
+}
