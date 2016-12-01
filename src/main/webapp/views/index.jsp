@@ -13,8 +13,7 @@
     <c:import url="fragments/topPanel.jsp"/>
 
     <c:import url="components/etalon.jsp">
-        <c:param name="initialValue" value="${requestScope.initialValue}"/>
-        <c:param name="message" value="${requestScope.message}"/>
+        <c:param name="showCheckbox" value="true"/>
     </c:import>
 
 </body>

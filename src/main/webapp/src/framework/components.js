@@ -7,16 +7,17 @@
 
 
 
-    frm.components.componentsMap = frm.components.componentsMap || {};
+    var registry = {};
 
-    frm.components.registerComponent = function (name, controller) {
-        frm.components.componentsMap[name] = controller;
+    frm.components.register = function (name, controller) {
+        registry[name] = controller;
     };
 
-    frm.components.initComponent = function (name, selector, params) {
-        var component = new frm.components.componentsMap[name]();
+    frm.components.init = function (name, selector, params) {
+        var component = new registry[name]();
         component._init(selector, params);
-        $(document).ready(component.init.bind(component));
+        component.init();
+        $(document).ready(component.onDocumentReady.bind(component));
     };
 
 
@@ -31,6 +32,10 @@
         },
 
         init: function () {
+
+        },
+
+        onDocumentReady: function () {
 
         }
 

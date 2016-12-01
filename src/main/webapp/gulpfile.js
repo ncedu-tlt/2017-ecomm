@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
+var autoprefixer = require('gulp-autoprefixer');
 
 gulp.task('js-libs', function () {
     var files = [
@@ -58,6 +59,7 @@ gulp.task('css', function () {
     return gulp.src(files)
         .pipe(sourcemaps.init())
         .pipe(concat('app.css'))
+        .pipe(autoprefixer())
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('./dist/css'));
 });
