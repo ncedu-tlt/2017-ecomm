@@ -30,7 +30,7 @@ public class HomeServlet extends HttpServlet {
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute(INITIAL_VALUE_KEY, "Initial value");
         request.setAttribute(ROLES_KEY, getRoles());
-        request.getRequestDispatcher("/views/index.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/pages/index.jsp").forward(request, response);
     }
 
     private List<Role> getRoles() {
