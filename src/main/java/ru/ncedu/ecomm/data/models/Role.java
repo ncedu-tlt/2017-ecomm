@@ -1,4 +1,4 @@
-package ru.ncedu.ecomm.models;
+package ru.ncedu.ecomm.data.models;
 
 public class Role {
 

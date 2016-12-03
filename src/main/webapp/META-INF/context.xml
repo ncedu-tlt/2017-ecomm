@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context>
+    <Resource name="jdbc/ecommDS"
+              auth="Container"
+              type="javax.sql.DataSource"
+              factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+              driverClassName="org.postgresql.Driver"
+              url="jdbc:postgresql://ecommercedev1.c91smqgawbej.eu-central-1.rds.amazonaws.com:8080/ecommerceDev1"
+              username="ecommerceDev1"
+              password="***PUT-PASSWORD***"
+              maxActive="8"
+              maxIdle="8"
+              initialSize="1"
+              maxWait="50000"/>
+</Context>

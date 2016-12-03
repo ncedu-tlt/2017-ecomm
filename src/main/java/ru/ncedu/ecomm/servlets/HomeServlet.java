@@ -1,6 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
-import ru.ncedu.ecomm.models.Role;
+import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
+import ru.ncedu.ecomm.data.models.Role;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "HomeServlet", urlPatterns = {"/home"})
@@ -34,11 +34,6 @@ public class HomeServlet extends HttpServlet {
     }
 
     private List<Role> getRoles() {
-        List<Role> roles = new ArrayList<>();
-        roles.add(new Role(1, "User"));
-        roles.add(new Role(2, "Manager"));
-        roles.add(new Role(3, "Administrator"));
-
-        return roles;
+        return getDAOFactory().getRoleDAO().getRoles();
     }
 }
