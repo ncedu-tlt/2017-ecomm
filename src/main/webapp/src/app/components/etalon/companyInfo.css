@@ -1,0 +1,9 @@
+.text-border-righ{
+    border:1px solid black;
+    padding:0px 3px 0px 3px;
+}
+
+.company-info-block{
+    position:absolute;
+    bottom:5px;
+}
