@@ -17,14 +17,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Shop</title>
+    <title>Users</title>
     <c:import url="../fragments/head.jsp"/>
 </head>
 <body>
-
 <c:import url="../fragments/topPanel.jsp"/>
 
-<c:import url="../components/companyInfo.jsp"/>
+<c:import url="../components/userList.jsp"/>
 
+<c:import url="../components/companyInfo.jsp"/>
 </body>
 </html>
