@@ -1,4 +1,4 @@
-<div class="ui center aligned container company-info-block">
+<div class="ui center aligned container">
     <p>
         <a href="#" class="text-border-right">Facebook</a>
         <a href="#" class="text-border-right">Twitter</a>
