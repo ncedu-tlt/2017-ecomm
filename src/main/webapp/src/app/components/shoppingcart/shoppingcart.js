@@ -2,7 +2,7 @@
 
     var frm = window.frm;
 
-    var CategoryComponent = frm.inheritance.inherits(frm.components.Component, {
+    var ShoppingCardComponent = frm.inheritance.inherits(frm.components.Component, {
 
         /**
          * Executed on component initialization
@@ -13,6 +13,6 @@
 
     });
 
-    frm.components.register('ShoppingCard', CategoryComponent);
+    frm.components.register('ShoppingCardComponent', ShoppingCardComponent);
 
 })(jQuery, window);

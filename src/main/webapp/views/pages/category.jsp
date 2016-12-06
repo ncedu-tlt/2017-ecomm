@@ -26,6 +26,8 @@
     <c:import url="../fragments/topPanel.jsp"/>
     <c:import url="../components/breadcrumbs.jsp"/>
 
+    <c:import url="../components/productList.jsp"/>
+
     <c:import url="../components/companyInfo.jsp"/>
 
 </body>
