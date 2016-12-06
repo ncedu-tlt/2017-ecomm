@@ -4,11 +4,11 @@
 
     <div class="ui vertically divided grid">
         <div class="two column row">
-            <div class="column">
+            <div class="column userListTitle">
                 <h3>Catalog</h3>
             </div>
-            <div class="column">
-                <h3 class="underlineTitle">Users</h3>
+            <div class="column userListTitle">
+                <h3 class="activePage">Users</h3>
             </div>
         </div>
     </div>

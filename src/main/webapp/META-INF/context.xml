@@ -7,7 +7,7 @@
               driverClassName="org.postgresql.Driver"
               url="jdbc:postgresql://ecommercedev1.c91smqgawbej.eu-central-1.rds.amazonaws.com:8080/ecommerceDev1"
               username="ecommerceDev1"
-              password="FRjjGdNPqe7V2KM6"
+              password="**password**"
               maxActive="8"
               maxIdle="8"
               initialSize="1"
