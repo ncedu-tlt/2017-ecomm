@@ -8,15 +8,11 @@
          * Executed on component initialization
          */
         init: function () {
-            this.content.find('.categories').popup({
-                    popup: '.popup',
-                    inline: true,
-                    hoverable: true
-                });
+            this.content.find('.dropdown').dropdown();
         }
 
     });
 
-    frm.components.register('CategoryComponent', CategoryComponent);
+    frm.components.register('ShoppingCard', CategoryComponent);
 
 })(jQuery, window);

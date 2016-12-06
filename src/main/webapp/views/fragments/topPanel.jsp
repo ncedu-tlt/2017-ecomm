@@ -20,7 +20,6 @@
             .popup({
                 popup: '.popup',
                 inline: true,
-                position: 'bottom left',
                 hoverable: true
             });
 </script>
