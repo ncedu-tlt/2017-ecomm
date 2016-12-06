@@ -41,7 +41,15 @@ gulp.task('js', function () {
         .pipe(gulp.dest('./dist/js'))
 });
 
-gulp.task('css-libs', function () {
+gulp.task('copy-themes', function () {
+    var files = [
+        './bower_components/semantic/dist/themes/default/**/*'
+    ];
+    return gulp.src(files)
+        .pipe(gulp.dest('./dist/css/themes/default'));
+});
+
+gulp.task('css-libs', ['copy-themes'], function () {
     var files = [
         './bower_components/semantic/dist/semantic.css'
     ];
