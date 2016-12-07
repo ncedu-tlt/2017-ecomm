@@ -1,6 +1,20 @@
 --
 -- PostgreSQL database dump
 --
+Drop TABLE IF EXISTS categories CASCADE;
+Drop TABLE IF EXISTS characteristic_groups CASCADE;
+Drop TABLE IF EXISTS characteristic_values CASCADE;
+Drop TABLE IF EXISTS characteristics CASCADE;
+Drop TABLE IF EXISTS discount CASCADE;
+Drop TABLE IF EXISTS order_items CASCADE;
+Drop TABLE IF EXISTS order_statuses CASCADE;
+Drop TABLE IF EXISTS products CASCADE;
+Drop TABLE IF EXISTS properties CASCADE;
+Drop TABLE IF EXISTS recommended_products CASCADE;
+Drop TABLE IF EXISTS reviews CASCADE;
+Drop TABLE IF EXISTS roles CASCADE;
+Drop TABLE IF EXISTS sales_orders CASCADE;
+Drop TABLE IF EXISTS users CASCADE;
 
 --
 -- Name: categories; Type: TABLE; Schema: public
@@ -8,7 +22,7 @@
 
 CREATE TABLE categories (
     category_id bigint NOT NULL PRIMARY KEY,
-    parent_id bigint,
+    parent_id bigint NULL,
     name character varying(100) NOT NULL,
     description character varying(1000)
 );
@@ -27,7 +41,7 @@ CREATE SEQUENCE categories_category_id_seq
 --
 -- Name: categories_category_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
-
+ALTER TABLE public.categories ALTER COLUMN category_id SET DEFAULT nextval('public.categories_category_id_seq');
 ALTER SEQUENCE categories_category_id_seq OWNED BY categories.category_id;
 
 --
@@ -54,7 +68,7 @@ CREATE SEQUENCE characteristic_groups_characteristic_group_id_seq
 --
 -- Name: characteristic_groups_characteristic_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
-
+ALTER TABLE characteristic_groups ALTER COLUMN characteristic_group_id SET DEFAULT nextval('characteristic_groups_characteristic_group_id_seq');
 ALTER SEQUENCE characteristic_groups_characteristic_group_id_seq OWNED BY characteristic_groups.characteristic_group_id;
 
 --
@@ -93,7 +107,7 @@ CREATE SEQUENCE characteristics_characteristic_id_seq
 --
 -- Name: characteristics_characteristic_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
-
+ALTER TABLE characteristics ALTER COLUMN characteristic_id SET DEFAULT nextval('characteristics_characteristic_id_seq');
 ALTER SEQUENCE characteristics_characteristic_id_seq OWNED BY characteristics.characteristic_id;
 
 
@@ -121,7 +135,7 @@ CREATE SEQUENCE discount_discount_id_seq
 --
 -- Name: discount_discount_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
-
+ALTER TABLE discount ALTER COLUMN discount_id SET DEFAULT nextval('discount_discount_id_seq');
 ALTER SEQUENCE discount_discount_id_seq OWNED BY discount.discount_id;
 
 
@@ -161,6 +175,7 @@ CREATE SEQUENCE order_statuses_order_status_id_seq
 -- Name: order_statuses_order_status_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
 
+ALTER TABLE order_statuses ALTER COLUMN order_status_id SET DEFAULT nextval('order_statuses_order_status_id_seq');
 ALTER SEQUENCE order_statuses_order_status_id_seq OWNED BY order_statuses.order_status_id;
 
 --
@@ -190,7 +205,7 @@ CREATE SEQUENCE products_product_id_seq
 --
 -- Name: products_product_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
-
+ALTER TABLE products ALTER COLUMN product_id SET DEFAULT nextval('products_product_id_seq');
 ALTER SEQUENCE products_product_id_seq OWNED BY products.product_id;
 
 --
@@ -251,7 +266,7 @@ CREATE SEQUENCE roles_role_id_seq
 --
 -- Name: roles_role_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
-
+ALTER TABLE roles ALTER COLUMN role_id SET DEFAULT nextval('roles_role_id_seq');
 ALTER SEQUENCE roles_role_id_seq OWNED BY roles.role_id;
 
 --
@@ -280,7 +295,7 @@ CREATE SEQUENCE sales_orders_sales_order_id_seq
 --
 -- Name: sales_orders_sales_order_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
-
+ALTER TABLE sales_orders ALTER COLUMN sales_order_id SET DEFAULT nextval('sales_orders_sales_order_id_seq');
 ALTER SEQUENCE sales_orders_sales_order_id_seq OWNED BY sales_orders.sales_order_id;
 
 --
@@ -295,7 +310,7 @@ CREATE TABLE users (
     last_name character varying(100) NOT NULL,
     password character varying(1000) NOT NULL,
     phone character varying(100) NOT NULL,
-    emale character varying(100) NOT NULL,
+    email character varying(100) NOT NULL,
     registration_date date NOT NULL
 );
 
@@ -313,6 +328,7 @@ CREATE SEQUENCE users_user_id_seq
 --
 -- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
+ALTER TABLE users ALTER COLUMN user_id SET DEFAULT nextval('users_user_id_seq');
 
 ALTER SEQUENCE users_user_id_seq OWNED BY users.user_id;
 

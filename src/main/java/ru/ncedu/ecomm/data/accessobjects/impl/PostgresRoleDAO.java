@@ -2,12 +2,14 @@ package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import ru.ncedu.ecomm.data.accessobjects.RoleDAO;
 import ru.ncedu.ecomm.data.models.Role;
-import static ru.ncedu.ecomm.utils.DBUtils.*;
+import ru.ncedu.ecomm.utils.DBUtils;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static ru.ncedu.ecomm.utils.DBUtils.closeConnection;
+import static ru.ncedu.ecomm.utils.DBUtils.closeStatement;
 
 public class PostgresRoleDAO implements RoleDAO {
 
@@ -18,13 +20,7 @@ public class PostgresRoleDAO implements RoleDAO {
         Statement stmt = null;
         Connection connection = null;
         try {
-            DataSource ds = getDataSource();
-
-            if ( ds == null ) {
-                throw new RuntimeException("Data source not found!");
-            }
-
-            connection = ds.getConnection();
+            connection = DBUtils.getConnection();
 
             stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("select role_id, name from roles");
@@ -53,13 +49,7 @@ public class PostgresRoleDAO implements RoleDAO {
         PreparedStatement stmt = null;
         Connection connection = null;
         try {
-            DataSource ds = getDataSource();
-
-            if ( ds == null ) {
-                throw new RuntimeException("Data source not found!");
-            }
-
-            connection = ds.getConnection();
+            connection = DBUtils.getConnection();
 
             stmt = connection.prepareStatement("select role_id, name from roles where role_id = ?");
             stmt.setLong(1, id);
