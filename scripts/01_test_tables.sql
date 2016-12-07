@@ -1,6 +1,30 @@
 --
 -- PostgreSQL database dump
 --
+Drop TABLE IF EXISTS categories CASCADE;
+Drop TABLE IF EXISTS characteristic_groups CASCADE;
+Drop TABLE IF EXISTS characteristic_values CASCADE;
+Drop TABLE IF EXISTS characteristics CASCADE;
+Drop TABLE IF EXISTS discount CASCADE;
+Drop TABLE IF EXISTS order_items CASCADE;
+Drop TABLE IF EXISTS order_statuses CASCADE;
+Drop TABLE IF EXISTS products CASCADE;
+Drop TABLE IF EXISTS properties CASCADE;
+Drop TABLE IF EXISTS recommended_products CASCADE;
+Drop TABLE IF EXISTS reviews CASCADE;
+Drop TABLE IF EXISTS roles CASCADE;
+Drop TABLE IF EXISTS sales_orders CASCADE;
+Drop TABLE IF EXISTS users CASCADE;
+
+DROP SEQUENCE IF EXISTS categories_category_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS characteristic_groups_characteristic_group_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS characteristics_characteristic_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS discount_discount_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS order_statuses_order_status_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS products_product_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS roles_role_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS sales_orders_sales_order_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS users_user_id_seq CASCADE;
 
 --
 -- Name: categories; Type: TABLE; Schema: public
@@ -8,7 +32,7 @@
 
 CREATE TABLE categories (
     category_id bigint NOT NULL PRIMARY KEY,
-    parent_id bigint,
+    parent_id bigint NULL,
     name character varying(100) NOT NULL,
     description character varying(1000)
 );
