@@ -16,7 +16,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Shop</title>
+    <title>Shop - Orders History</title>
     <c:import url="../fragments/head.jsp"/>
 </head>
 <body>
