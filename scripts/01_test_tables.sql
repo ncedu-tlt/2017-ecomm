@@ -41,7 +41,7 @@ CREATE SEQUENCE categories_category_id_seq
 --
 -- Name: categories_category_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
-
+ALTER TABLE public.categories ALTER COLUMN category_id SET DEFAULT nextval('public.categories_category_id_seq');
 ALTER SEQUENCE categories_category_id_seq OWNED BY categories.category_id;
 
 --
@@ -68,7 +68,7 @@ CREATE SEQUENCE characteristic_groups_characteristic_group_id_seq
 --
 -- Name: characteristic_groups_characteristic_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
-
+ALTER TABLE characteristic_groups ALTER COLUMN characteristic_group_id SET DEFAULT nextval('characteristic_groups_characteristic_group_id_seq');
 ALTER SEQUENCE characteristic_groups_characteristic_group_id_seq OWNED BY characteristic_groups.characteristic_group_id;
 
 --
@@ -107,7 +107,7 @@ CREATE SEQUENCE characteristics_characteristic_id_seq
 --
 -- Name: characteristics_characteristic_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
-
+ALTER TABLE characteristics ALTER COLUMN characteristic_id SET DEFAULT nextval('characteristics_characteristic_id_seq');
 ALTER SEQUENCE characteristics_characteristic_id_seq OWNED BY characteristics.characteristic_id;
 
 
@@ -135,7 +135,7 @@ CREATE SEQUENCE discount_discount_id_seq
 --
 -- Name: discount_discount_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
-
+ALTER TABLE discount ALTER COLUMN discount_id SET DEFAULT nextval('discount_discount_id_seq');
 ALTER SEQUENCE discount_discount_id_seq OWNED BY discount.discount_id;
 
 
@@ -175,6 +175,7 @@ CREATE SEQUENCE order_statuses_order_status_id_seq
 -- Name: order_statuses_order_status_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
 
+ALTER TABLE order_statuses ALTER COLUMN order_status_id SET DEFAULT nextval('order_statuses_order_status_id_seq');
 ALTER SEQUENCE order_statuses_order_status_id_seq OWNED BY order_statuses.order_status_id;
 
 --
@@ -204,7 +205,7 @@ CREATE SEQUENCE products_product_id_seq
 --
 -- Name: products_product_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
-
+ALTER TABLE products ALTER COLUMN product_id SET DEFAULT nextval('products_product_id_seq');
 ALTER SEQUENCE products_product_id_seq OWNED BY products.product_id;
 
 --
@@ -265,7 +266,7 @@ CREATE SEQUENCE roles_role_id_seq
 --
 -- Name: roles_role_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
-
+ALTER TABLE roles ALTER COLUMN role_id SET DEFAULT nextval('roles_role_id_seq');
 ALTER SEQUENCE roles_role_id_seq OWNED BY roles.role_id;
 
 --
@@ -294,7 +295,7 @@ CREATE SEQUENCE sales_orders_sales_order_id_seq
 --
 -- Name: sales_orders_sales_order_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
-
+ALTER TABLE sales_orders ALTER COLUMN sales_order_id SET DEFAULT nextval('sales_orders_sales_order_id_seq');
 ALTER SEQUENCE sales_orders_sales_order_id_seq OWNED BY sales_orders.sales_order_id;
 
 --
@@ -327,6 +328,7 @@ CREATE SEQUENCE users_user_id_seq
 --
 -- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
+ALTER TABLE users ALTER COLUMN user_id SET DEFAULT nextval('users_user_id_seq');
 
 ALTER SEQUENCE users_user_id_seq OWNED BY users.user_id;
 
