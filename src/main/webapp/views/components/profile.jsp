@@ -1,5 +1,4 @@
-
-
+<div class="ui center aligned text container">
     <form class="ui form">
         <div class="field">
             <input type="text" name="firstName" placeholder="First Name">
