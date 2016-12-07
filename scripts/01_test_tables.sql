@@ -16,16 +16,6 @@ Drop TABLE IF EXISTS roles CASCADE;
 Drop TABLE IF EXISTS sales_orders CASCADE;
 Drop TABLE IF EXISTS users CASCADE;
 
-DROP SEQUENCE IF EXISTS categories_category_id_seq CASCADE;
-DROP SEQUENCE IF EXISTS characteristic_groups_characteristic_group_id_seq CASCADE;
-DROP SEQUENCE IF EXISTS characteristics_characteristic_id_seq CASCADE;
-DROP SEQUENCE IF EXISTS discount_discount_id_seq CASCADE;
-DROP SEQUENCE IF EXISTS order_statuses_order_status_id_seq CASCADE;
-DROP SEQUENCE IF EXISTS products_product_id_seq CASCADE;
-DROP SEQUENCE IF EXISTS roles_role_id_seq CASCADE;
-DROP SEQUENCE IF EXISTS sales_orders_sales_order_id_seq CASCADE;
-DROP SEQUENCE IF EXISTS users_user_id_seq CASCADE;
-
 --
 -- Name: categories; Type: TABLE; Schema: public
 --
@@ -319,7 +309,7 @@ CREATE TABLE users (
     last_name character varying(100) NOT NULL,
     password character varying(1000) NOT NULL,
     phone character varying(100) NOT NULL,
-    emale character varying(100) NOT NULL,
+    email character varying(100) NOT NULL,
     registration_date date NOT NULL
 );
 
