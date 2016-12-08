@@ -11,15 +11,10 @@
     <div class="ui container">
         <a href="#" class="header item">Shop</a>
         <c:import url="../components/categories.jsp"/>
-        <c:import url="../components/search.jsp"/>
+        <div class="ui item right">
+            <c:import url="../components/search.jsp"/>
+            <c:import url="../components/profileIcon.jsp"/>
+            <c:import url="../components/shoppingCartIcon.jsp"/>
+        </div>
     </div>
 </div>
-<script>
-    /* TODO: remove later and init component from source js */
-    $('.categories  ')
-            .popup({
-                popup: '.popup',
-                inline: true,
-                hoverable: true
-            });
-</script>
