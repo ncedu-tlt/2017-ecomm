@@ -64,6 +64,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
             ResultSet resultSet = statement.executeQuery("SELECT category_id, parent_id, name, description" +
                     " FROM public.categories" +
                     " WHERE category_id =" +
+                    // TODO: Use RETURNING: https://www.postgresql.org/docs/9.6/static/sql-insert.html
                     " (SELECT MAX(category_id) from public.categories)");
 
             newCategory = new Category(resultSet.getLong("category_id"), resultSet.getLong("parent_id"),
