@@ -16,4 +16,8 @@ public interface CategoryDAO {
     Category updateCategory(Category category);
 
     void deleteCategory(Category category);
+
+    Category getCategoryById(long id);
+
+    List getCategoriesByParentId(long parentId);
 }
