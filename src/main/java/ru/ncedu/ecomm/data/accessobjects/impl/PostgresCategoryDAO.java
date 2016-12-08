@@ -28,7 +28,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select category_id, parent_id, name, description" +
-                    "from public.categories");
+                    " from public.categories");
             while (resultSet.next()) {
                 Category category = new Category(resultSet.getLong("category_id"), resultSet.getLong("parent_id"),
                                                 resultSet.getString("name"), resultSet.getString("description"));
@@ -55,20 +55,42 @@ public class PostgresCategoryDAO implements CategoryDAO {
             connection = DBUtils.getConnection();
 
             statement = connection.prepareStatement("INSERT INTO public.categories (parent_id, name, description)" +
-                                                    " VALUES (?, ?, ?)");
+                                                    " VALUES (?, ?, ?) " +
+                                                    " RETURNING category_id");
             statement.setLong(1, category.getParentId());
             statement.setString(2, category.getName());
             statement.setString(3, category.getDescription());
             statement.execute();
 
-            ResultSet resultSet = statement.executeQuery("SELECT category_id, parent_id, name, description" +
-                    " FROM public.categories" +
-                    " WHERE category_id =" +
-                    // TODO: Use RETURNING: https://www.postgresql.org/docs/9.6/static/sql-insert.html
-                    " (SELECT MAX(category_id) from public.categories)");
+            int lastAddedCategoryId = 0;
+            ResultSet lastAddedCategory = statement.getResultSet();
+            if(lastAddedCategory.next()) {
+                lastAddedCategoryId = lastAddedCategory.getInt(1);
+            }
 
-            newCategory = new Category(resultSet.getLong("category_id"), resultSet.getLong("parent_id"),
-                                        resultSet.getString("name"), resultSet.getString("description"));
+            String sql = "SELECT category_id, parent_id, name, description" +
+                    " FROM public.categories" +
+                    " WHERE category_id = ?";
+            statement = connection.prepareStatement(sql);
+            statement.setLong(1, lastAddedCategoryId);
+
+            ResultSet resultSet = statement.executeQuery();
+                    // TODO: Use RETURNING: https://www.postgresql.org/docs/9.6/static/sql-insert.html
+                    // принято, прочитано
+
+            Long catId = null;
+            Long parId = null;
+            String name = null;
+            String description = null;
+
+            while (resultSet.next()) {
+                catId = resultSet.getLong("category_id");
+                parId = resultSet.getLong("parent_id");
+                name = resultSet.getString("name");
+                description = resultSet.getString("description");
+            }
+
+            newCategory = new Category(catId, parId, name, description);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
