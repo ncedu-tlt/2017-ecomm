@@ -78,7 +78,7 @@ public class RestService {
     @GET
     @Path("/properties/{propertyId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Property getProperties(@PathParam("propertyId") long propertyId) {
+    public Property getProperties(@PathParam("propertyId") String propertyId) {
         return getDAOFactory().getPropertyDAO().getPropertyById(propertyId);
     }
 }

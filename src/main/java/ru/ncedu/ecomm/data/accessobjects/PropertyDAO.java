@@ -7,7 +7,7 @@ public interface PropertyDAO {
 
     List<Property> getProperties();
 
-    Property getPropertyById(long id);
+    Property getPropertyById(String id);
 
     Property addProperty(Property property);
 
