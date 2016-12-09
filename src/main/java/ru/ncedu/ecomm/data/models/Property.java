@@ -2,23 +2,23 @@ package ru.ncedu.ecomm.data.models;
 
 public class Property {
 
-    private long id;
+    private long property_id;
     private String value;
 
     public Property() {
     }
 
     public Property(long id, String value) {
-        this.id = id;
+        this.property_id = id;
         this.value = value;
     }
 
     public long getId() {
-        return id;
+        return property_id;
     }
 
     public void setId(long id) {
-        this.id = id;
+        this.property_id = id;
     }
 
     public String getValue() {

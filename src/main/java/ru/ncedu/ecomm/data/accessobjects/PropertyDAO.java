@@ -5,15 +5,13 @@ import java.util.List;
 
 public interface PropertyDAO {
 
-    List<Property> getProperty();
+    List<Property> getProperties();
 
     Property getPropertyById(long id);
 
     Property addProperty(Property property);
 
     void deleteProperty(Property property);
-
-    //void deleteProperty(long id);
 
     Property updateProperty(Property property);
 
