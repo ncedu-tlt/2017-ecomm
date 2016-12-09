@@ -6,6 +6,7 @@ import ru.ncedu.ecomm.data.models.Role;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
@@ -47,8 +48,9 @@ public class RestService {
     @DELETE
     @Path("/categories/{categoryId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public void deleteCategory(@PathParam("categoryId") long categoryId) {
+    public Response deleteCategory(@PathParam("categoryId") long categoryId) {
         getDAOFactory().getCategoryDAO().deleteCategory(getDAOFactory().getCategoryDAO().getCategoryById(categoryId));
+        return Response.ok().build();
     }
 
     @POST
