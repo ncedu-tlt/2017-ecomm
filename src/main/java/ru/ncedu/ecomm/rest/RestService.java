@@ -41,9 +41,30 @@ public class RestService {
     }
 
     @GET
+    @Path("/categories/{categotyId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Category getCategory(@PathParam("categotyId") long categotyId) {
+        return getDAOFactory().getCategoryDAO().getCategoryById(categotyId);
+    }
+
+    @GET
+    @Path("/categories/parent/{parentCategotyId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Category> getCategoryByParent(@PathParam("parentCategotyId") long parentCategotyId) {
+        return getDAOFactory().getCategoryDAO().getCategoriesByParentId(parentCategotyId);
+    }
+
+    @GET
     @Path("/properties")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Property> getProperties() {
         return getDAOFactory().getPropertyDAO().getProperties();
+    }
+
+    @GET
+    @Path("/properties/{propertyId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Property getProperties(@PathParam("propertyId") long propertyId) {
+        return getDAOFactory().getPropertyDAO().getPropertyById(propertyId);
     }
 }

@@ -181,7 +181,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
     }
 
     @Override
-    public List getCategoriesByParentId(long parentId) {
+    public List<Category> getCategoriesByParentId(long parentId) {
         List<Category> categories = new ArrayList<>();
         PreparedStatement statement = null;
         Connection connection = null;
