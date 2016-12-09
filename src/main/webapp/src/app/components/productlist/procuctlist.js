@@ -8,7 +8,7 @@
          * Executed on component initialization
          */
         init: function () {
-            this.content.find();
+            this.content.find('.rating').rating({initialRating: 2, maxRating: 5});
         }
 
     });

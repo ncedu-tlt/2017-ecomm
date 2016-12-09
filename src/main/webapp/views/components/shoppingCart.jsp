@@ -90,7 +90,5 @@
     </div>
 </div>
 <script>
-    /* TODO: remove later and init component from source js */
-    $('.dropdown').dropdown()
     window.frm.components.init('ShoppingCardComponent', '.jsShoppingCardComponent');
 </script>

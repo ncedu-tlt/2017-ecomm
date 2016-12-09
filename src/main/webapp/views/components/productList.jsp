@@ -83,11 +83,5 @@
     </div>
 </div>
 <script>
-    /* TODO: remove later and init component from source js */
-    $('.rating')
-            .rating({
-                initialRating: 2,
-                maxRating: 5
-            });
     window.frm.components.init('ProductListComponent', '.jsProductListComponent');
 </script>

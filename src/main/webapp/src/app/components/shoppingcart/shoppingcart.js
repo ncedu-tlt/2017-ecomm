@@ -8,7 +8,7 @@
          * Executed on component initialization
          */
         init: function () {
-            this.content.find('.dropdown').dropdown();
+            this.content.find('.jsComponentDropdown').dropdown();
         }
 
     });
