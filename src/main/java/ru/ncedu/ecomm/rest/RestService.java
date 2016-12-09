@@ -4,10 +4,7 @@ import ru.ncedu.ecomm.data.models.Category;
 import ru.ncedu.ecomm.data.models.Property;
 import ru.ncedu.ecomm.data.models.Role;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -41,17 +38,32 @@ public class RestService {
     }
 
     @GET
-    @Path("/categories/{categotyId}")
+    @Path("/categories/{categoryId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Category getCategory(@PathParam("categotyId") long categotyId) {
-        return getDAOFactory().getCategoryDAO().getCategoryById(categotyId);
+    public Category getCategory(@PathParam("categoryId") long categoryId) {
+        return getDAOFactory().getCategoryDAO().getCategoryById(categoryId);
+    }
+
+    @DELETE
+    @Path("/categories/{categoryId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void deleteCategory(@PathParam("categoryId") long categoryId) {
+        getDAOFactory().getCategoryDAO().deleteCategory(getDAOFactory().getCategoryDAO().getCategoryById(categoryId));
+    }
+
+    @POST
+    @Path("/categories")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Category addCategory(Category category) {
+        return getDAOFactory().getCategoryDAO().addCategory(category);
     }
 
     @GET
-    @Path("/categories/parent/{parentCategotyId}")
+    @Path("/categories/parent/{parentCategoryId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Category> getCategoryByParent(@PathParam("parentCategotyId") long parentCategotyId) {
-        return getDAOFactory().getCategoryDAO().getCategoriesByParentId(parentCategotyId);
+    public List<Category> getCategoryByParent(@PathParam("parentCategoryId") long parentCategoryId) {
+        return getDAOFactory().getCategoryDAO().getCategoriesByParentId(parentCategoryId);
     }
 
     @GET
