@@ -44,6 +44,6 @@ public class RestService {
     @Path("/properties")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Property> getProperties() {
-        return getDAOFactory().getPropertyDAO().getProperty();
+        return getDAOFactory().getPropertyDAO().getProperties();
     }
 }
