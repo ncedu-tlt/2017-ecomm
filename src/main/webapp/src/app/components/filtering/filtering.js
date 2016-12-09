@@ -8,10 +8,11 @@
          * Executed on component initialization
          */
         init: function () {
-            this.content.find('.filter.sidebar').first()
-                .sidebar('attach events', '.filtering.button');
-            this.content.find('.ui.accordion')
+            this.content.find('.accordion')
                 .accordion();
+            this.content.find('.filter.sidebar').first()
+                .sidebar('setting', 'dimPage', false)
+                .sidebar('attach events', '.jsShowFiltering');
         }
     });
 

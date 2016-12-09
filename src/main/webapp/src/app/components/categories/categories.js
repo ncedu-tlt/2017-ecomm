@@ -9,10 +9,8 @@
          */
         init: function () {
             this.content.find('.categories').popup({
-                    popup: '.popup',
-                    inline: true,
-                    hoverable: true
-                });
+                popup: '.popup', inline: true, hoverable: true
+            });
         }
 
     });

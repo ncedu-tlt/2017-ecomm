@@ -65,8 +65,11 @@
                 <div class="ui right pointing label big">
                     Limit:
                 </div>
-                <div class="ui input">
-                    <input type="text">
+                <div class="ui left labeled button" tabindex="0">
+                    <input type="text" class="ui basic right pointing label">
+
+                    </input>
+                    <button class="ui  button">APPLY</button>
                 </div>
             </div>
         </div>
@@ -89,5 +92,5 @@
 <script>
     /* TODO: remove later and init component from source js */
     $('.dropdown').dropdown()
-        window.frm.components.init('ShoppingCardComponent', '.jsShoppingCardComponent');
+    window.frm.components.init('ShoppingCardComponent', '.jsShoppingCardComponent');
 </script>

@@ -22,22 +22,22 @@
 
     <c:import url="../fragments/topPanel.jsp"/>
 
-    <h1>Pages:</h1>
-    <a href="<c:url value="/cart"/>">cart</a><br>
-    <a href="<c:url value="/category"/>">category</a><br>
-    <a href="<c:url value="/login"/>">login</a><br>
-    <a href="<c:url value="/orders"/>">ordersHistory</a><br>
-    <a href="<c:url value="/recovery"/>">passwordRecovery</a><br>
-    <a href="<c:url value="/product"/>">product</a><br>
-    <a href="<c:url value="/profile"/>">profile</a><br>
-    <a href="<c:url value="/registration"/>">registration</a><br>
-    <a href="<c:url value="/users"/>">users</a><br>
-
-    <c:import url="../components/etalon.jsp">
-        <c:param name="showCheckbox" value="true"/>
-    </c:import>
+    <c:import url="../components/productList.jsp"/>
 
     <c:import url="../components/companyInfo.jsp"/>
-
+    <div class="ui container">
+        <h1 class="ui header">Pages:</h1>
+        <div class="ui vertical pointing menu">
+            <a class="item" href="<c:url value="/cart"/>">cart</a>
+            <a class="item" href="<c:url value="/category"/>">category</a>
+            <a class="item" href="<c:url value="/login"/>">login</a>
+            <a class="item" href="<c:url value="/orders"/>">ordersHistory</a>
+            <a class="item" href="<c:url value="/recovery"/>">passwordRecovery</a>
+            <a class="item" href="<c:url value="/product"/>">product</a>
+            <a class="item" href="<c:url value="/profile"/>">profile</a>
+            <a class="item" href="<c:url value="/registration"/>">registration</a>
+            <a class="item" href="<c:url value="/users"/>">users</a>
+        </div>
+    </div>
 </body>
 </html>

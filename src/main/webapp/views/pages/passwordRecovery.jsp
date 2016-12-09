@@ -22,6 +22,7 @@
 
 <c:import url="../fragments/topPanel.jsp"/>
 
+<c:import url="../components/passwordRecovery.jsp"/>
 <c:import url="../components/companyInfo.jsp"/>
 
 </body>
