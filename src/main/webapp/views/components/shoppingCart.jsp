@@ -16,9 +16,9 @@
                         Quantity:
                         <i class="dropdown icon"></i>
                         <div class="menu">
-                            <div class="item">Choice 1</div>
-                            <div class="item">Choice 2</div>
-                            <div class="item">Choice 3</div>
+                            <div class="item" data-value="1">Choice 1</div>
+                            <div class="item" data-value="2">Choice 2</div>
+                            <div class="item" data-value="3">Choice 3</div>
                         </div>
                     </div>
                 </div>
@@ -43,9 +43,9 @@
                         Quantity:
                         <i class="dropdown icon"></i>
                         <div class="menu">
-                            <div class="item">Choice 1</div>
-                            <div class="item">Choice 2</div>
-                            <div class="item">Choice 3</div>
+                            <div class="item" data-value="1">Choice 1</div>
+                            <div class="item"  data-value="2">Choice 2</div>
+                            <div class="item" data-value="3">Choice 3</div>
                         </div>
                     </div>
                 </div>
