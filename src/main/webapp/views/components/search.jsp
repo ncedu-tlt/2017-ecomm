@@ -1,6 +1,6 @@
 <div class="ui item">
-    <div class="ui transparent small left icon input ">
+    <div class="ui icon input">
         <input type="text" placeholder="Search...">
-        <i class="search icon"></i>
+        <i class="inverted circular search link icon"></i>
     </div>
 </div>

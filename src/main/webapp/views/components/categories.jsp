@@ -1,5 +1,5 @@
 <div class="jsCategoryComponent item">
-    <a class="item categories">
+    <a class="ui floating labeled icon dropdown button categories">
         Categories
         <i class="dropdown icon"></i>
     </a>
