@@ -12,7 +12,10 @@
                 <h3 class="ui center aligned grey header">
                     Out of Stock
                 </h3>
-                <button class="ui fluid secondary basic button">Add to card</button>
+                <button class="ui labeled icon  fluid blue button">
+                    <i class="add to car icon"></i>
+                    Add to card
+                </button>
             </div>
             <div class="column">
                 <img class="ui fluid image" src="http://semantic-ui.com/images/wireframe/image.png">
@@ -29,7 +32,10 @@
                         $819.00
                     </div>
                 </h3>
-                <button class="ui fluid secondary basic button">Add to card</button>
+                <button class="ui labeled icon  fluid blue button">
+                    <i class="add to car icon"></i>
+                    Add to card
+                </button>
             </div>
             <div class="column">
                 <img class="ui fluid image" src="http://semantic-ui.com/images/wireframe/image.png">
@@ -43,7 +49,10 @@
                 <h3 class="ui center aligned grey header">
                     $890.00
                 </h3>
-                <button class="ui fluid secondary basic button">Add to card</button>
+                <button class="ui labeled icon  fluid blue button">
+                    <i class="add to car icon"></i>
+                    Add to card
+                </button>
             </div>
         </div>
     </div>
@@ -62,7 +71,10 @@
                 <h3 class="ui center aligned grey header">
                     $999.00
                 </h3>
-                <button class="ui fluid secondary basic button">Add to card</button>
+                <button class="ui labeled icon  fluid blue button">
+                    <i class="add to car icon"></i>
+                    Add to card
+                </button>
             </div>
             <div class="column">
                 <img class="ui fluid image" src="http://semantic-ui.com/images/wireframe/image.png">
@@ -79,7 +91,10 @@
                         $819.00
                     </div>
                 </h3>
-                <button class="ui fluid secondary basic button">Add to card</button>
+                <button class="ui labeled icon  fluid blue button">
+                    <i class="add to car icon"></i>
+                    Add to card
+                </button>
             </div>
             <div class="column">
                 <img class="ui fluid image" src="http://semantic-ui.com/images/wireframe/image.png">
@@ -92,7 +107,10 @@
                 <h3 class="ui center aligned grey header">
                     $1099.00
                 </h3>
-                <button class="ui fluid secondary basic button">Add to card</button>
+                <button class="ui labeled icon  fluid blue button">
+                    <i class="add to car icon"></i>
+                    Add to card
+                </button>
             </div>
         </div>
     </div>
