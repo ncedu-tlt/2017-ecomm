@@ -6,10 +6,10 @@
     <div class="ui flowing basic admission popup" style="width: 500px;">
         <div class="ui two column relaxed divided grid">
             <div class="column">
-                <a href="#">
-                    <h4 class="ui header">Electronicss</h4>
-                </a><
                 <div class="ui link list">
+                    <div class="ui horizontal divider ">
+                        <a href="#"> <b>Electronicss</b> </a>
+                    </div>
                     <a class="item">Fashion</a>
                     <a class="item">Home & Garden</a>
                     <a class="item">Food</a>
@@ -17,19 +17,20 @@
                 </div>
             </div>
             <div class="column">
-                <a href="#">
-                <h4 class="ui header">Computers & Tablets</h4>
-                </a>
                 <div class="ui link list">
+                    <div class="ui horizontal divider ">
+                        <a href="#" class="small header"><b>Computers & Tablets</b></a>
+                    </div>
                     <a class="item">- Desktops</a>
                     <a class="item">- Laptopss</a>
                     <a class="item">- Nettops</a>
                     <a class="item">- Mini PCs</a>
                 </div>
-                <a href="#">
-                <h4 class="ui header">TV, Video & Audio</h4>
-                </a>
+
                 <div class="ui link list">
+                    <div class="ui horizontal divider">
+                        <a href="#"> <b>TV, Video & Audio</b> </a>
+                    </div>
                     <a class="item">- TVs</a>
                     <a class="item">- Home Audio</a>
                     <a class="item">- Headphones</a>
