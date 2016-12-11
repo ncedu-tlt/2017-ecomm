@@ -8,7 +8,6 @@
          * Executed on component initialization
          */
         init: function () {
-            this.content.find('.menu.dashboardMenu .item').tab();
         }
     });
 
