@@ -66,10 +66,10 @@
                         </div>
                     </div>
                 </div>
-                <h4 class="ui horizontal divider header">
+                <h2 class="ui horizontal divider blue header">
                     <i class="bar chart icon"></i>
                     Total: $1188.00
-                </h4>
+                </h2>
             </div>
         </div>
         <div class="item order">
@@ -138,10 +138,10 @@
                         </div>
                     </div>
                 </div>
-                <h4 class="ui horizontal divider header">
+                <h2 class="ui horizontal divider blue header">
                     <i class="bar chart icon"></i>
                     Total: $1188.00
-                </h4>
+                </h2>
             </div>
         </div>
     </div>
