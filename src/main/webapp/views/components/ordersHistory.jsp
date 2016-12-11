@@ -5,7 +5,7 @@
                 <div class="ui horizontal divider">
                     Order #1076
                 </div>
-                <h3 class="ui right floated header">
+                <h3 class="ui teal tag label right floated header">
                     15.10.2016
                 </h3>
                 <div class="ui divided items">
@@ -77,7 +77,7 @@
                 <div class="ui horizontal divider">
                     Order #1076
                 </div>
-                <h3 class="ui right floated header">
+                <h3 class="ui teal tag label right floated header">
                     15.10.2016
                 </h3>
                 <div class="ui divided items">
