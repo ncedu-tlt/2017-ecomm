@@ -1,8 +1,6 @@
 package ru.ncedu.ecomm.data.models;
 
 import java.sql.Date;
-import java.sql.ResultSetMetaData;
-import java.sql.Timestamp;
 
 public class User {
     long id;
