@@ -2,7 +2,7 @@
     <h3 class="ui center aligned header">
         Your Cart
     </h3>
-    <div class="ui items">
+    <div class="ui divided items">
         <div class="item">
             <div class="ui small image">
                 <img src="http://semantic-ui.com/images/wireframe/image.png">
@@ -12,7 +12,7 @@
                     Dell XPS 13
                 </div>
                 <div class="description">
-                    <div class="ui dropdown">
+                    <div class="ui dropdown jsComponentDropdown">
                         Quantity:
                         <i class="dropdown icon"></i>
                         <div class="menu">
@@ -21,14 +21,18 @@
                             <div class="item" data-value="3">Choice 3</div>
                         </div>
                     </div>
-                    <h2 class="ui header right floated center">
+                    <button class="circular right floated red ui icon button middle aligned ">
+                        <i class="icon remove"></i>
+                    </button>
+                    <h2 class="ui header right floated center middle aligned">
                         $720.00
-                        <i class="remove icon"></i>
                     </h2>
                 </div>
             </div>
+            <div class="ui divider"></div>
         </div>
         <div class="item">
+            <div class="ui divider"></div>
             <div class="ui small image">
                 <img src="http://semantic-ui.com/images/wireframe/image.png">
             </div>
@@ -37,7 +41,7 @@
                     iPad Mini 2
                 </div>
                 <div class="description">
-                    <div class="ui dropdown">
+                    <div class="ui dropdown jsComponentDropdown">
                         Quantity:
                         <i class="dropdown icon"></i>
                         <div class="menu">
@@ -46,9 +50,11 @@
                             <div class="item" data-value="3">Choice 3</div>
                         </div>
                     </div>
-                    <h2 class="ui header right floated bottom">
+                    <button class="circular right floated ui icon button red middle aligned">
+                        <i class="icon remove"></i>
+                    </button>
+                    <h2 class="ui header right floated bottom middle aligned">
                         $438.00
-                        <i class="remove icon"></i>
                     </h2>
                 </div>
             </div>
@@ -63,8 +69,6 @@
                 </div>
                 <div class="ui left labeled button" tabindex="0">
                     <input type="text" class="ui basic right pointing label">
-
-                    </input>
                     <button class="ui  button">APPLY</button>
                 </div>
             </div>
