@@ -1,5 +1,6 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
+import javafx.util.converter.DateStringConverter;
 import ru.ncedu.ecomm.data.accessobjects.UserDAO;
 import ru.ncedu.ecomm.data.models.User;
 import ru.ncedu.ecomm.utils.DBUtils;
@@ -31,7 +32,7 @@ public class PostgresUserDAO implements UserDAO {
                 user.setPassword(resultSet.getString("password"));
                 user.setPhone(resultSet.getString("phone"));
                 user.setEmail(resultSet.getString("email"));
-                user.setRegistrationDate("registration_date");
+                user.setRegistrationDate(resultSet.getDate("registration_date"));
 
                 users.add(user);
             }
@@ -64,7 +65,7 @@ public class PostgresUserDAO implements UserDAO {
                     user.setPassword(resultSet.getString("password"));
                     user.setPhone(resultSet.getString("phone"));
                     user.setEmail(resultSet.getString("email"));
-                    user.setRegistrationDate("registration_date");
+                    user.setRegistrationDate(resultSet.getDate("registration_date"));
                     return user;
                 }
          } catch (SQLException e) {
@@ -90,7 +91,7 @@ public class PostgresUserDAO implements UserDAO {
             while (resultSet.next()){
                 User user = new User(resultSet.getLong("user_id"), resultSet.getLong("role_id"), resultSet.getString("login"), resultSet.getString("first_name"),
                         resultSet.getString("last_name"), resultSet.getString("password"), resultSet.getString("phone"), resultSet.getString("email"),
-                        resultSet.getString("registration_date"));
+                        resultSet.getDate("registration_date"));
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -109,7 +110,7 @@ public class PostgresUserDAO implements UserDAO {
         Connection connection = null;
         try {
             connection = DBUtils.getConnection();
-            statement = connection.prepareStatement("INSERT INTO public.users (role_id, login, first_name, last_name, password, phone, email)" +
+            statement = connection.prepareStatement("INSERT INTO users (role_id, login, first_name, last_name, password, phone, email)" +
                     "VALUES (?, ?, ?, ?, ?, ?, ?)" +
                     "RETURNING user_id");
             statement.setLong(1, user.getRoleId());
@@ -133,7 +134,7 @@ public class PostgresUserDAO implements UserDAO {
             if (resultSet.next()) {
                 User newUser = new User(resultSet.getLong("user_id"), resultSet.getLong("role_id"), resultSet.getString("login"), resultSet.getString("first_name"),
                         resultSet.getString("last_name"), resultSet.getString("password"), resultSet.getString("phone"), resultSet.getString("email"),
-                        resultSet.getString("registration_date"));
+                        resultSet.getDate("registration_date"));
                 return newUser;
             }
 
@@ -170,7 +171,7 @@ public class PostgresUserDAO implements UserDAO {
             if (resultSet.next()) {
                 User updateUser = new User(resultSet.getLong("user_id"), resultSet.getLong("role_id"), resultSet.getString("login"), resultSet.getString("first_name"),
                         resultSet.getString("last_name"), resultSet.getString("password"), resultSet.getString("phone"), resultSet.getString("email"),
-                        resultSet.getString("registration_date"));
+                        resultSet.getDate("registration_date"));
                 return updateUser;
             }
 

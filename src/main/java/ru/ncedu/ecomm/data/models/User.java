@@ -1,5 +1,9 @@
 package ru.ncedu.ecomm.data.models;
 
+import java.sql.Date;
+import java.sql.ResultSetMetaData;
+import java.sql.Timestamp;
+
 public class User {
     long id;
     long roleId;
@@ -9,12 +13,12 @@ public class User {
     String password;
     String phone;
     String email;
-    String registrationDate;
+    Date registrationDate;
 
     public User() {
     }
 
-    public User(long id, long roleId, String login, String firstName, String lastName, String password, String phone, String email, String registrationDate) {
+    public User(long id, long roleId, String login, String firstName, String lastName, String password, String phone, String email, Date registrationDate) {
         this.id = id;
         this.roleId = roleId;
         this.login = login;
@@ -90,11 +94,13 @@ public class User {
         this.email = email;
     }
 
-    public String getRegistrationDate() {
+    public Date getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(String registrationDate) {
+    public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
     }
+
+
 }
