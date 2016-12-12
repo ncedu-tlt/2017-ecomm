@@ -3,6 +3,7 @@ package ru.ncedu.ecomm.rest;
 import ru.ncedu.ecomm.data.models.Category;
 import ru.ncedu.ecomm.data.models.Property;
 import ru.ncedu.ecomm.data.models.Role;
+import ru.ncedu.ecomm.data.models.User;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -80,5 +81,51 @@ public class RestService {
     @Produces(MediaType.APPLICATION_JSON)
     public Property getProperties(@PathParam("propertyId") String propertyId) {
         return getDAOFactory().getPropertyDAO().getPropertyById(propertyId);
+    }
+
+    @GET
+    @Path("/users")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<User> getUsers(){
+        return getDAOFactory().getUserDAO().getUser();
+    }
+
+    @GET
+    @Path("/users/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public User getUser(@PathParam("userId") long userId){
+        return getDAOFactory().getUserDAO().getUserById(userId);
+    }
+
+    @GET
+    @Path("/users/role/{roleId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<User> getUserByRole(@PathParam("roleId") long roleId){
+        return getDAOFactory().getUserDAO().getUserByRoleId(roleId);
+    }
+
+    @POST
+    @Path("/users")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public User addUser(User user){
+        return getDAOFactory().getUserDAO().addUser(user);
+    }
+
+    @POST
+    @Path("/users/update/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateUser(@PathParam("userId") long userId){
+        getDAOFactory().getUserDAO().updateUser(getDAOFactory().getUserDAO().getUserById(userId));
+        return Response.ok().build();
+    }
+
+    @DELETE
+    @Path("/users/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteUser(@PathParam("userId") long userId){
+        getDAOFactory().getUserDAO().deleteUser(getDAOFactory().getUserDAO().getUserById(userId));
+        return Response.ok().build();
     }
 }
