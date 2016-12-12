@@ -21,8 +21,6 @@
                             <div class="item" data-value="3">Choice 3</div>
                         </div>
                     </div>
-                </div>
-                <div class="extra">
                     <h2 class="ui header right floated center">
                         $720.00
                         <i class="remove icon"></i>
@@ -48,8 +46,6 @@
                             <div class="item" data-value="3">Choice 3</div>
                         </div>
                     </div>
-                </div>
-                <div class="extra">
                     <h2 class="ui header right floated bottom">
                         $438.00
                         <i class="remove icon"></i>
