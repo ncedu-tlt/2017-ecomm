@@ -1,4 +1,4 @@
-<div class="ui center aligned text container tab segment" data-tab="profile">
+<div class="ui center aligned text container segment" data-tab="profile">
     <form class="ui form">
         <div class="field">
             <input type="text" name="firstName" placeholder="First Name">

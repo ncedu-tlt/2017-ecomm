@@ -4,7 +4,7 @@
         <a class="item" href="#">
             Profile
         </a>
-        <a class="item active"  href="#">
+        <a class="item"  href="#">
             Order History
         </a>
     </div>

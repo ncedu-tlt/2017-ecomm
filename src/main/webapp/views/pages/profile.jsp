@@ -27,10 +27,6 @@
 
 <c:import url="../components/profile.jsp"/>
 
-<c:import url="../components/ordersHistory.jsp"/>
-
-
-
 <c:import url="../components/companyInfo.jsp"/>
 
 </body>
