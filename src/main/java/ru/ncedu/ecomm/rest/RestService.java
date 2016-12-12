@@ -112,13 +112,12 @@ public class RestService {
         return getDAOFactory().getUserDAO().addUser(user);
     }
 
-    @POST
-    @Path("/users/update/{userId}")
+    @PUT
+    @Path("/users")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateUser(@PathParam("userId") long userId){
-        getDAOFactory().getUserDAO().updateUser(getDAOFactory().getUserDAO().getUserById(userId));
-        return Response.ok().build();
+    public User updateUser(User user){
+        return getDAOFactory().getUserDAO().updateUser(user);
     }
 
     @DELETE
