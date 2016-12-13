@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Andrey on 12/8/2016.
  */
 public interface UserDAO {
-    List<User> getUser();
+    List<User> getUsers();
     User getUserById(long id);
     List<User> getUserByRoleId(long roleId);
     User addUser(User user);

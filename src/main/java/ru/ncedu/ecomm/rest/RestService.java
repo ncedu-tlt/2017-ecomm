@@ -87,20 +87,20 @@ public class RestService {
     @Path("/users")
     @Produces(MediaType.APPLICATION_JSON)
     public List<User> getUsers(){
-        return getDAOFactory().getUserDAO().getUser();
+        return getDAOFactory().getUserDAO().getUsers();
     }
 
     @GET
     @Path("/users/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public User getUser(@PathParam("userId") long userId){
+    public User getUserById(@PathParam("userId") long userId){
         return getDAOFactory().getUserDAO().getUserById(userId);
     }
 
     @GET
     @Path("/users/role/{roleId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<User> getUserByRole(@PathParam("roleId") long roleId){
+    public List<User> getUserByRoleId(@PathParam("roleId") long roleId){
         return getDAOFactory().getUserDAO().getUserByRoleId(roleId);
     }
 

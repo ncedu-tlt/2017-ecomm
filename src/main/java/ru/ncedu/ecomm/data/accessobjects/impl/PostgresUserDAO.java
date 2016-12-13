@@ -1,5 +1,6 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
+import com.sun.jersey.api.NotFoundException;
 import ru.ncedu.ecomm.data.accessobjects.UserDAO;
 import ru.ncedu.ecomm.data.models.User;
 import ru.ncedu.ecomm.utils.DBUtils;
@@ -13,7 +14,7 @@ import static ru.ncedu.ecomm.utils.DBUtils.closeStatement;
 
 public class PostgresUserDAO implements UserDAO {
     @Override
-    public List<User> getUser() {
+    public List<User> getUsers() {
         List<User> users = new ArrayList<>();
         Statement statement = null;
         Connection connection = null;
@@ -68,7 +69,9 @@ public class PostgresUserDAO implements UserDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
+        } catch (NotFoundException f){
+            f.printStackTrace();
+        } finally{
             closeConnection(connection);
             closeStatement(statement);
         }
@@ -93,6 +96,8 @@ public class PostgresUserDAO implements UserDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }catch (NotFoundException f){
+            f.printStackTrace();
         } finally {
             closeConnection(connection);
             closeStatement(statement);
@@ -134,7 +139,9 @@ public class PostgresUserDAO implements UserDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
+        } catch (IllegalStateException i){
+            i.printStackTrace();
+        }finally {
             closeStatement(statement);
             closeConnection(connection);
         }
@@ -149,7 +156,8 @@ public class PostgresUserDAO implements UserDAO {
             connection = DBUtils.getConnection();
             statement = connection.prepareStatement("UPDATE users " +
                     "SET role_id = ?, login = ?, first_name = ?, last_name = ?, password = ?, phone = ?, email = ?" +
-                    "WHERE user_id = ?");
+                    "WHERE user_id = ?" +
+                    "RETURNING user_id, role_id, login, first_name, last_name, password, phone, email, registration_date");
             statement.setLong(1, user.getRoleId());
             statement.setString(2, user.getLogin());
             statement.setString(3, user.getFirstName());
@@ -160,9 +168,7 @@ public class PostgresUserDAO implements UserDAO {
             statement.setLong(8, user.getId());
             statement.execute();
 
-            statement = connection.prepareStatement("SELECT user_id, role_id, login, first_name, last_name, password, phone, email, registration_date FROM users WHERE user_id = ?");
-            statement.setLong(1, user.getId());
-            ResultSet resultSet = statement.executeQuery();
+            ResultSet resultSet = statement.getResultSet();
             if (resultSet.next()) {
                 User updateUser = new User(resultSet.getLong("user_id"), resultSet.getLong("role_id"), resultSet.getString("login"), resultSet.getString("first_name"),
                         resultSet.getString("last_name"), resultSet.getString("password"), resultSet.getString("phone"), resultSet.getString("email"),
@@ -172,6 +178,8 @@ public class PostgresUserDAO implements UserDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (IllegalStateException i){
+            i.printStackTrace();
         } finally {
             closeStatement(statement);
             closeConnection(connection);
@@ -186,7 +194,6 @@ public class PostgresUserDAO implements UserDAO {
 
         try {
             connection = DBUtils.getConnection();
-
             statement = connection.prepareStatement("DELETE FROM users" +
                     " WHERE user_id = ?");
             statement.setLong(1, user.getId());
