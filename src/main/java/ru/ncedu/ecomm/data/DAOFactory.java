@@ -1,22 +1,20 @@
 package ru.ncedu.ecomm.data;
 
 import ru.ncedu.ecomm.Configuration;
-import ru.ncedu.ecomm.data.accessobjects.CategoryDAO;
-import ru.ncedu.ecomm.data.accessobjects.PropertyDAO;
-import ru.ncedu.ecomm.data.accessobjects.RoleDAO;
-import ru.ncedu.ecomm.data.accessobjects.UserDAO;
-import ru.ncedu.ecomm.data.accessobjects.impl.PostgresCategoryDAO;
-import ru.ncedu.ecomm.data.accessobjects.impl.PostgresPropertyDAO;
-import ru.ncedu.ecomm.data.accessobjects.impl.PostgresRoleDAO;
-import ru.ncedu.ecomm.data.accessobjects.impl.PostgresUserDAO;
+import ru.ncedu.ecomm.data.accessobjects.*;
+import ru.ncedu.ecomm.data.accessobjects.impl.*;
 
 public abstract class DAOFactory {
 
     public abstract RoleDAO getRoleDAO();
+
     public abstract CategoryDAO getCategoryDAO();
+
     public abstract PropertyDAO getPropertyDAO();
+
     public abstract UserDAO getUserDAO();
 
+    public abstract ProductDAO getProductDAO();
     // public abstract CategoryDAO getCategoryDAO();
     // another DAO...
 
@@ -25,6 +23,10 @@ public abstract class DAOFactory {
         switch (Configuration.getProperty("db.type")) {
             case "postgresql":
                 return new DAOFactory() {
+                    @Override
+                    public ProductDAO getProductDAO() {
+                        return new PostgresProductDAO();
+                    }
 
                     @Override
                     public RoleDAO getRoleDAO() {
@@ -35,6 +37,7 @@ public abstract class DAOFactory {
                     public CategoryDAO getCategoryDAO() {
                         return new PostgresCategoryDAO();
                     }
+
 
                     @Override
                     public PropertyDAO getPropertyDAO() {

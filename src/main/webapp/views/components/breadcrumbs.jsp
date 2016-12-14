@@ -4,16 +4,30 @@
 <div class="ui container one column grid">
     <div class="ui large breadcrumb column">
 
-        <jsp:include page="/breadcrumbs?category_id=${param.category_id}" flush="true"/>
+        <jsp:include page="/breadcrumbs" flush="true">
+            <jsp:param name="category_id" value="${param.category_id}"/>
+            <jsp:param name="product_id" value="${param.product_id}"/>
+        </jsp:include>
 
-        <c:if test="${requestScope.categories.size() > 1}">
-            <c:forEach var="category" items="${requestScope.categories}" end="${requestScope.categories.size()-2}">
+        <c:if test="${param.product_id == null}">
+            <c:if test="${requestScope.categories.size() > 1}">
+                <c:forEach var="category" items="${requestScope.categories}" end="${requestScope.categories.size()-2}">
+                    <a class="section" href="\category?category_id=${category.categoryId}">${category.name}</a>
+                    <i class="right chevron icon divider"></i>
+                </c:forEach>
+            </c:if>
+            <c:set var="category" scope="page"
+                   value="${requestScope.categories.get(requestScope.categories.size()-1)}"/>
+            <a class="active section" href="\category?category_id=${category.getCategoryId()}">${category.getName()}</a>
+        </c:if>
+
+        <c:if test="${param.product_id != null}">
+            <c:forEach var="category" items="${requestScope.categories}">
                 <a class="section" href="\category?category_id=${category.categoryId}">${category.name}</a>
                 <i class="right chevron icon divider"></i>
             </c:forEach>
+            <a class="active section"
+               href="\product?product_id=${requestScope.product.getProductId()}">${requestScope.product.getName()}</a>
         </c:if>
-
-        <a class="active section" href="\category?category_id=${requestScope.categories.get(requestScope.categories.size()-1).getCategoryId()}">${requestScope.categories.get(requestScope.categories.size()-1).getName()}</a>
-
     </div>
 </div>

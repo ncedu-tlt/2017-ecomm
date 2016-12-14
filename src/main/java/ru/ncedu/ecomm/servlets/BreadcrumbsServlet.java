@@ -1,6 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.models.Category;
+import ru.ncedu.ecomm.data.models.Product;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 import static ru.ncedu.ecomm.utils.DBUtils.closeConnection;
 import static ru.ncedu.ecomm.utils.DBUtils.closeStatement;
 
@@ -26,11 +28,19 @@ import java.util.List;
 public class BreadcrumbsServlet extends HttpServlet{
 
         protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            List<Category> categories;
 
-            long id = Long.parseLong(request.getParameter("category_id"));
-            List<Category> categories = getCategoryHierarchy(id);
-
-            request.setAttribute("categories", categories);
+            if(!request.getParameter("product_id").isEmpty()){
+                long productId = Long.parseLong(request.getParameter("product_id"));
+                Product product = getDAOFactory().getProductDAO().getProductById(productId);
+                request.setAttribute("product", product);
+                categories = getCategoryHierarchy(product.getCategoryId());
+                request.setAttribute("categories", categories);
+            }else {
+                long id = Long.parseLong(request.getParameter("category_id"));
+                categories = getCategoryHierarchy(id);
+                request.setAttribute("categories", categories);
+            }
         }
 
     private List<Category> getCategoryHierarchy(long id) {
