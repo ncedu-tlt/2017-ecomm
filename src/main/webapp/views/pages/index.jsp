@@ -29,11 +29,11 @@
         <h1 class="ui header">Pages:</h1>
         <div class="ui vertical pointing menu">
             <a class="item" href="<c:url value="/cart"/>">cart</a>
-            <a class="item" href="<c:url value="/category"/>">category</a>
+            <a class="item" href="<c:url value="/category?category_id=2"/>">category</a>
             <a class="item" href="<c:url value="/login"/>">login</a>
             <a class="item" href="<c:url value="/orders"/>">ordersHistory</a>
             <a class="item" href="<c:url value="/recovery"/>">passwordRecovery</a>
-            <a class="item" href="<c:url value="/product"/>">product</a>
+            <a class="item" href="<c:url value="/product?category_id=2"/>">product</a>
             <a class="item" href="<c:url value="/profile"/>">profile</a>
             <a class="item" href="<c:url value="/registration"/>">registration</a>
             <a class="item" href="<c:url value="/users"/>">users</a>
