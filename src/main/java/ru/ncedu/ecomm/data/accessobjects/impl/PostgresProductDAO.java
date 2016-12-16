@@ -61,20 +61,19 @@ public class PostgresProductDAO implements ProductDAO {
             statement.setLong(1, product.getProductId());
             statement.setString(2, product.getName());
             statement.setString(3, product.getDescription());
-            statement.setLong(1, product.getDiscoundId());
+            statement.setLong(1, product.getDiscountId());
             statement.setLong(1, product.getPrice());
             statement.execute();
 
             ResultSet resultSet = statement.getResultSet();
             if (resultSet.next()) {
-                Product newProduct = new Product(
+                return new Product(
                         resultSet.getLong("product_id"),
                         resultSet.getLong("category_id"),
                         resultSet.getString("name"),
                         resultSet.getString("description"),
                         resultSet.getLong("discount_id"),
                         resultSet.getLong("price"));
-                return newProduct;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -100,7 +99,7 @@ public class PostgresProductDAO implements ProductDAO {
             statement.setLong(1, product.getCategoryId());
             statement.setString(2, product.getName());
             statement.setString(3, product.getDescription());
-            statement.setLong(4, product.getDiscoundId());
+            statement.setLong(4, product.getDiscountId());
             statement.setLong(5, product.getPrice());
             statement.setLong(6, product.getProductId());
             statement.execute();
@@ -111,14 +110,13 @@ public class PostgresProductDAO implements ProductDAO {
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                Product updatedProduct = new Product(
+                return new Product(
                         resultSet.getLong("product_id"),
                         resultSet.getLong("category_id"),
                         resultSet.getString("name"),
                         resultSet.getString("description"),
                         resultSet.getLong("discount_id"),
                         resultSet.getLong("price"));
-                return updatedProduct;
             }
 
         } catch (SQLException e) {
@@ -165,14 +163,13 @@ public class PostgresProductDAO implements ProductDAO {
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                Product product = new Product(
+                return new Product(
                         resultSet.getLong("product_id"),
                         resultSet.getLong("category_id"),
                         resultSet.getString("name"),
                         resultSet.getString("description"),
                         resultSet.getLong("discount_id"),
                         resultSet.getLong("price"));
-                return product;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -198,7 +195,7 @@ public class PostgresProductDAO implements ProductDAO {
             statement.setLong(1, categoryId);
 
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
+            while(resultSet.next()) {
                 Product product = new Product(
                         resultSet.getLong("product_id"),
                         resultSet.getLong("category_id"),
@@ -215,7 +212,7 @@ public class PostgresProductDAO implements ProductDAO {
             closeConnection(connection);
         }
 
-        return null;
+        return products;
     }
 
 

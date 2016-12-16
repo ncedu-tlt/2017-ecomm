@@ -6,18 +6,18 @@ public class Product {
     private long categoryId;
     private String name;
     private String description;
-    private long discoundId;
+    private long discountId;
     private long price;
 
     public Product() {
     }
 
-    public Product(long productId, long categoryId, String name, String description, long discoundId, long price) {
+    public Product(long productId, long categoryId, String name, String description, long discountId, long price) {
         this.productId = productId;
         this.categoryId = categoryId;
         this.name = name;
         this.description = description;
-        this.discoundId = discoundId;
+        this.discountId = discountId;
         this.price = price;
     }
 
@@ -94,12 +94,12 @@ public class Product {
         this.productId = productId;
     }
 
-    public long getDiscoundId() {
-        return discoundId;
+    public long getDiscountId() {
+        return discountId;
     }
 
-    public void setDiscoundId(long discoundId) {
-        this.discoundId = discoundId;
+    public void setDiscountId(long discountId) {
+        this.discountId = discountId;
     }
 
     public long getPrice() {

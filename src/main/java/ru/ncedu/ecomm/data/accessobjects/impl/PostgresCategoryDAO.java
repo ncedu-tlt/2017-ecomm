@@ -209,4 +209,39 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
         return categories;
     }
+
+    @Override
+    public List<Category> getCategoriesByHierarchy(long categoryId) {
+        List<Category> categories = new ArrayList<>();
+
+        PreparedStatement statement = null;
+        Connection connection = null;
+
+        try {
+            connection = DBUtils.getConnection();
+
+            statement = connection.prepareStatement("WITH RECURSIVE recquery (category_id, parent_id, name, description) as " +
+                                                        "(SELECT category_id, parent_id, name, description from categories WHERE category_id = ? " +
+                                                        "union " +
+                                                        "SELECT categories.category_id ,categories.parent_id, categories.name, categories.description " +
+                                                        "FROM categories INNER JOIN recquery ON (recquery.parent_id = categories.category_id)) " +
+                                                        "SELECT category_id, parent_id, name, description FROM recquery ORDER BY category_id");
+            statement.setLong(1, categoryId);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                categories.add(new Category(resultSet.getLong("category_id"),
+                                            resultSet.getLong("parent_id"),
+                                            resultSet.getString("name"),
+                                            resultSet.getString("description")));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+        return categories;
+    }
 }

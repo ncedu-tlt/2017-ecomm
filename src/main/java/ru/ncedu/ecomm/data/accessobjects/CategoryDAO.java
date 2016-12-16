@@ -20,4 +20,6 @@ public interface CategoryDAO {
     Category getCategoryById(long id);
 
     List<Category> getCategoriesByParentId(long parentId);
+
+    List<Category> getCategoriesByHierarchy(long parentId);
 }

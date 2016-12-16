@@ -34,42 +34,14 @@ public class BreadcrumbsServlet extends HttpServlet{
                 long productId = Long.parseLong(request.getParameter("product_id"));
                 Product product = getDAOFactory().getProductDAO().getProductById(productId);
                 request.setAttribute("product", product);
-                categories = getCategoryHierarchy(product.getCategoryId());
+                categories = getDAOFactory().getCategoryDAO().getCategoriesByHierarchy(product.getCategoryId());
                 request.setAttribute("categories", categories);
             }else {
                 long id = Long.parseLong(request.getParameter("category_id"));
-                categories = getCategoryHierarchy(id);
+                categories = getDAOFactory().getCategoryDAO().getCategoriesByHierarchy(id);
                 request.setAttribute("categories", categories);
             }
         }
 
-    private List<Category> getCategoryHierarchy(long id) {
-        List<Category> categories = new ArrayList<>();
-
-        Statement statement = null;
-        Connection connection = null;
-
-        try {
-            connection = DBUtils.getConnection();
-
-            statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("WITH RECURSIVE recquery (category_id, parent_id, name) as\n" +
-                    "(SELECT category_id, parent_id, name from categories\n" +
-                    "     WHERE category_id = " + id +"     union\n" +
-                    "     select categories.category_id ,categories.parent_id, categories.name\n" +
-                    "          FROM categories INNER JOIN recquery ON (recquery.parent_id = categories.category_id))\n" +
-                    "select category_id, name from recquery ORDER BY category_id;");
-            while (resultSet.next()) {
-                categories.add(new Category(resultSet.getLong("category_id"), resultSet.getString("name")));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            closeStatement(statement);
-            closeConnection(connection);
-        }
-
-        return categories;
-    }
 }
 

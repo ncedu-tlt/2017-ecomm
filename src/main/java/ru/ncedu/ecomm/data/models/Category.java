@@ -20,12 +20,6 @@ public class Category {
         this.description = description;
     }
 
-    public Category(long categoryId, String name) {
-        this.categoryId = categoryId;
-        this.name = name;
-    }
-
-
     public long getCategoryId() {
         return categoryId;
     }
