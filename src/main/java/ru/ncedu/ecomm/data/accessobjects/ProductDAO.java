@@ -8,5 +8,14 @@ public interface ProductDAO {
 
     List<Product> getProducts();
 
+    Product addProduct(Product product);
+
+    Product updateProduct(Product product);
+
+    void deleteProduct(Product product);
+
     Product getProductById(long id);
+
+    List<Product> getProductsByCategoryId(long categoryId);
+
 }
