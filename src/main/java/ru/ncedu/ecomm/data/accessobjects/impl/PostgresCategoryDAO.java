@@ -11,9 +11,6 @@ import java.util.List;
 import static ru.ncedu.ecomm.utils.DBUtils.closeConnection;
 import static ru.ncedu.ecomm.utils.DBUtils.closeStatement;
 
-/**
- * Created by Antoine on 07.12.2016.
- */
 public class PostgresCategoryDAO implements CategoryDAO {
 
     @Override

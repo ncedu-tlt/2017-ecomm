@@ -1,119 +1,33 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="ui container jsProductListComponent" style="margin: 1.5em 0;">
-   <h2 class="ui center aligned header horizontal divider"> <a href="#">Ultrabooks</a></h2>
-    <div class="ui grid">
-        <div class="three column row">
-            <div class="column">
-                <img class="ui fluid image" src="http://semantic-ui.com/images/wireframe/image.png">
-                <h3 class="ui center aligned header horizontal divider"><a href="#">
-                    MacBook Air
-                </a>
-                </h3>
-                <div class="ui center aligned massive rating" data-rating="1"></div>
-                <h3 class="ui center aligned grey header">
-                    Out of Stock
-                </h3>
-                <button class="ui labeled icon  fluid blue button">
-                    <i class="add to car icon"></i>
-                    Add to card
-                </button>
+    <c:forEach var="category" items="${requestScope.categories}">
+        <c:if test="${category.getParentId() != 0}">
+            <h2 class="ui center aligned header horizontal divider"><a href="#">${category.getName()}</a></h2>
+            <div class="ui grid">
+                <div class="three column row">
+                    <c:forEach var="product" items="${requestScope.products}">
+                        <c:if test="${product.getCategoryId() == category.getCategoryId()}">
+                            <div class="column">
+                                <img class="ui fluid image" src="http://semantic-ui.com/images/wireframe/image.png">
+                                <h3 class="ui center aligned header horizontal divider"><a href="#">
+                                        ${product.getName()}
+                                </a>
+                                </h3>
+                                <div class="ui center aligned massive rating" data-rating="1"></div>
+                                <h3 class="ui center aligned grey header">
+                                    $${product.getPrice()}
+                                </h3>
+                                <button class="ui labeled icon  fluid blue button">
+                                    <i class="add to car icon"></i>
+                                    Add to card
+                                </button>
+                            </div>
+                        </c:if>
+                    </c:forEach>
+                </div>
             </div>
-            <div class="column">
-                <img class="ui fluid image" src="http://semantic-ui.com/images/wireframe/image.png">
-
-                <h3 class="ui center aligned header horizontal divider">
-                    <a href="#">
-                        Dell XPS 13
-                    </a>
-                </h3>
-                <div class="ui center aligned massive rating" data-rating="1"></div>
-                <h3 class="ui center aligned grey header">
-                    $750.00
-                    <div class="ui left pointing label" style="text-decoration: line-through">
-                        $819.00
-                    </div>
-                </h3>
-                <button class="ui labeled icon  fluid blue button">
-                    <i class="add to car icon"></i>
-                    Add to card
-                </button>
-            </div>
-            <div class="column">
-                <img class="ui fluid image" src="http://semantic-ui.com/images/wireframe/image.png">
-
-                <h3 class="ui center aligned header horizontal divider">
-                    <a href="#">
-                        HP Spectre 13
-                    </a>
-                </h3>
-                <div class="ui center aligned massive rating" data-rating="1"></div>
-                <h3 class="ui center aligned grey header">
-                    $890.00
-                </h3>
-                <button class="ui labeled icon  fluid blue button">
-                    <i class="add to car icon"></i>
-                    Add to card
-                </button>
-            </div>
-        </div>
-    </div>
-    <h2 class="ui center aligned header horizontal divider"> <a href="#">Gaming</a></h2>
-    <div class="ui grid">
-        <div class="three column row">
-            <div class="column">
-                <img class="ui fluid image" src="http://semantic-ui.com/images/wireframe/image.png">
-
-                <h3 class="ui center aligned header horizontal divider">
-                    <a href="#">
-                        ASUS ROG Strix
-                    </a>
-                </h3>
-                <div class="ui center aligned massive rating" data-rating="1"></div>
-                <h3 class="ui center aligned grey header">
-                    $999.00
-                </h3>
-                <button class="ui labeled icon  fluid blue button">
-                    <i class="add to car icon"></i>
-                    Add to card
-                </button>
-            </div>
-            <div class="column">
-                <img class="ui fluid image" src="http://semantic-ui.com/images/wireframe/image.png">
-
-                <h3 class="ui center aligned header horizontal divider">
-                    <a href="#">
-                        MSI Ghost Pro
-                    </a>
-                </h3>
-                <div class="ui center aligned massive rating" data-rating="1"></div>
-                <h3 class="ui center aligned grey header">
-                    $750.00
-                    <div class="ui left pointing label" style="text-decoration: line-through">
-                        $819.00
-                    </div>
-                </h3>
-                <button class="ui labeled icon  fluid blue button">
-                    <i class="add to car icon"></i>
-                    Add to card
-                </button>
-            </div>
-            <div class="column">
-                <img class="ui fluid image" src="http://semantic-ui.com/images/wireframe/image.png">
-                <h3 class="ui center aligned header horizontal divider">
-                    <a href="#">
-                        HP Omen 17
-                    </a>
-                </h3>
-                <div class="ui center aligned massive rating" data-rating="1"></div>
-                <h3 class="ui center aligned grey header">
-                    $1099.00
-                </h3>
-                <button class="ui labeled icon  fluid blue button">
-                    <i class="add to car icon"></i>
-                    Add to card
-                </button>
-            </div>
-        </div>
-    </div>
+        </c:if>
+    </c:forEach>
 </div>
 <script>
     window.frm.components.init('ProductListComponent', '.jsProductListComponent');
