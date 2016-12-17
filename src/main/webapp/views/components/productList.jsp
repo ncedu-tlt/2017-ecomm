@@ -15,7 +15,9 @@
                                         ${product.getName()}
                                 </a>
                             </h3>
-                            <div class="ui center aligned massive rating" data-rating="1"></div>
+                            <div class="ui grid centered container">
+                                <div class="ui ten wide column  massive rating disabled" data-rating="1"></div>
+                            </div>
                             <h3 class="ui center aligned grey header">
                                 $${product.getPrice()}
                             </h3>
