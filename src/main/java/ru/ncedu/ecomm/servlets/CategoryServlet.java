@@ -23,18 +23,19 @@ public class CategoryServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // handle operations
         itemView(req, resp);
     }
 
     private void itemView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Category> categories;
         List<Product> products;
-            categories = getDAOFactory().getCategoryDAO().getCategories();
-            request.setAttribute("categories", categories);
-            products = getDAOFactory().getProductDAO().getProducts();
-            request.setAttribute("products", products);
-            request.getRequestDispatcher("/views/pages/category.jsp").forward(request, response);
 
+        categories = getDAOFactory().getCategoryDAO().getCategories();
+        products = getDAOFactory().getProductDAO().getProducts();
+
+        request.setAttribute("categories", categories);
+        request.setAttribute("products", products);
+        request.getRequestDispatcher("/views/pages/category.jsp").forward(request, response);
     }
+
 }
