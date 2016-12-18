@@ -15,8 +15,18 @@
                                         ${product.getName()}
                                 </a>
                             </h3>
+
                             <div class="ui grid centered container">
-                                <div class="ui ten wide column  massive rating disabled" data-rating="1"></div>
+                                <c:set var="productRaiting" value="0"/>
+                                <c:forEach var="raiting" items="${requestScope.raitingByProduct}">
+                                    <c:if test="${product.getId() == raiting.getProductId()}">
+                                        <c:set var="productRaiting" value="${raiting.getRaiting()}"/>
+                                    </c:if>
+
+                                </c:forEach>
+                                <div class="ui eleven wide column large rating disabled"
+                                     data-rating="${productRaiting}">
+                                </div>
                             </div>
                             <h3 class="ui center aligned grey header">
                                 $${product.getPrice()}

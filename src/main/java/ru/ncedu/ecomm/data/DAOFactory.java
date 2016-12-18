@@ -3,6 +3,7 @@ package ru.ncedu.ecomm.data;
 import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.accessobjects.*;
 import ru.ncedu.ecomm.data.accessobjects.impl.*;
+import ru.ncedu.ecomm.data.models.Review;
 
 public abstract class DAOFactory {
 
@@ -13,6 +14,8 @@ public abstract class DAOFactory {
     public abstract PropertyDAO getPropertyDAO();
 
     public abstract UserDAO getUserDAO();
+
+    public abstract ReviewsDAO getReviewDAO();
 
     public abstract ProductDAO getProductDAO();
     // public abstract CategoryDAO getCategoryDAO();
@@ -47,6 +50,11 @@ public abstract class DAOFactory {
                     @Override
                     public UserDAO getUserDAO() {
                         return new PostgresUserDAO();
+                    }
+
+                    @Override
+                    public ReviewsDAO getReviewDAO() {
+                        return new PostgresReviewsDAO();
                     }
                 };
             default:

@@ -2,6 +2,7 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.models.Category;
 import ru.ncedu.ecomm.data.models.Product;
+import ru.ncedu.ecomm.data.models.Raiting;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,18 +32,20 @@ public class CategoryServlet extends HttpServlet {
 
         List<Category> categoriesForView = getCategoryByParametr(request);
         List<Product> products = getDAOFactory().getProductDAO().getProducts();
+        List<Raiting> raitings = getDAOFactory().getReviewDAO().getAverageRaitingByProduct();
 
+        request.setAttribute("raitingByProduct", raitings);
         request.setAttribute("categoriesForView", categoriesForView);
         request.setAttribute("products", products);
         request.getRequestDispatcher("/views/pages/category.jsp").forward(request, response);
     }
 
-    private List<Category> getCategoryByParametr(HttpServletRequest request){
+    private List<Category> getCategoryByParametr(HttpServletRequest request) {
         long id = Long.parseLong(request.getParameter("category_id"));
 
-        List<Category>  categories = getDAOFactory().getCategoryDAO().getCategoriesByParentId(id);
-        if (categories.size() == 0){
-            categories= getDAOFactory().getCategoryDAO().getCategoriesByHierarchy(id);
+        List<Category> categories = getDAOFactory().getCategoryDAO().getCategoriesByParentId(id);
+        if (categories.size() == 0) {
+            categories = getDAOFactory().getCategoryDAO().getCategoriesByHierarchy(id);
         }
         return categories;
     }
