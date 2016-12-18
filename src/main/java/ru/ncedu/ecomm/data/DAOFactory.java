@@ -3,7 +3,6 @@ package ru.ncedu.ecomm.data;
 import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.accessobjects.*;
 import ru.ncedu.ecomm.data.accessobjects.impl.*;
-import ru.ncedu.ecomm.data.models.Review;
 
 public abstract class DAOFactory {
 
@@ -23,9 +22,17 @@ public abstract class DAOFactory {
 
     public abstract CharacteristicGroupDAO getCharacteristicGroupDAO();
 
+    public abstract SalesOrdersDAO getSalesOrderDAO();
+
+    public abstract RecomendedProductsDAO getRecomendedProductsDAO();
+
+    public abstract OrderSratusDAO getOrderStatusDAO();
+
+    public abstract OrderItemsDAO getOrderItemsDAO();
+
+    public abstract DiscountDAO getDiscountDAO();
+
     public abstract ProductDAO getProductDAO();
-    // public abstract CategoryDAO getCategoryDAO();
-    // another DAO...
 
     public static DAOFactory getDAOFactory() {
 
@@ -76,6 +83,31 @@ public abstract class DAOFactory {
                     @Override
                     public CharacteristicGroupDAO getCharacteristicGroupDAO() {
                         return new PostgersCharacteristicGroupDAO();
+                    }
+
+                    @Override
+                    public SalesOrdersDAO getSalesOrderDAO() {
+                        return new PostgresSalesOrderDAO();
+                    }
+
+                    @Override
+                    public RecomendedProductsDAO getRecomendedProductsDAO() {
+                        return new PostgresRecomendedProductsDAO();
+                    }
+
+                    @Override
+                    public OrderSratusDAO getOrderStatusDAO() {
+                        return new PostgresOrderStatusDAO();
+                    }
+
+                    @Override
+                    public OrderItemsDAO getOrderItemsDAO() {
+                        return new PostgresOrderItemsDAO();
+                    }
+
+                    @Override
+                    public DiscountDAO getDiscountDAO() {
+                        return new PostgresDiscountDAO();
                     }
                 };
             default:
