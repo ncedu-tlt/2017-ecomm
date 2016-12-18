@@ -1,15 +1,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="ui container jsProductListComponent" style="margin: 1.5em 0;">
-    <c:forEach var="category" items="${requestScope.categories}">
+    <c:forEach var="category" items="${requestScope.categoriesForView}">
         <c:if test="${category.getParentId() != 0}">
             <h2 class="ui center aligned header horizontal divider">
-                <a href="#">${category.getName()}</a>
+                <a href="\category?category_id=${category.categoryId}">${category.getName()}</a>
             </h2>
             <div class="ui grid centered container">
                 <c:forEach var="product" items="${requestScope.products}">
                     <c:if test="${product.getCategoryId() == category.getCategoryId()}">
                         <form action="shoppingCart.jsp" method="post" class="five wide column">
-                            <img class="ui fluid image" src="http://semantic-ui.com/images/wireframe/image.png">
+                            <img class="ui fluid image" src="\images\defaultimage\image.png">
                             <h3 class="ui center aligned header horizontal divider">
                                 <a href="\product?product_id=${product.getProductId()}">
                                         ${product.getName()}

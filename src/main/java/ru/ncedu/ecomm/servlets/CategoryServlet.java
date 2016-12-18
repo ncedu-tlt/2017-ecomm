@@ -27,11 +27,23 @@ public class CategoryServlet extends HttpServlet {
     }
 
     private void itemView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Category> categories = getDAOFactory().getCategoryDAO().getCategories();
+
+
+        List<Category> categoriesForView = getCategoryByParametr(request);
         List<Product> products = getDAOFactory().getProductDAO().getProducts();
 
-        request.setAttribute("categories", categories);
+        request.setAttribute("categoriesForView", categoriesForView);
         request.setAttribute("products", products);
         request.getRequestDispatcher("/views/pages/category.jsp").forward(request, response);
+    }
+
+    private List<Category> getCategoryByParametr(HttpServletRequest request){
+        long id = Long.parseLong(request.getParameter("category_id"));
+
+        List<Category>  categories = getDAOFactory().getCategoryDAO().getCategoriesByParentId(id);
+        if (categories.size() == 0){
+            categories= getDAOFactory().getCategoryDAO().getCategoriesByHierarchy(id);
+        }
+        return categories;
     }
 }
