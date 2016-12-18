@@ -17,6 +17,12 @@ public abstract class DAOFactory {
 
     public abstract ReviewsDAO getReviewDAO();
 
+    public abstract CharacteristicDAO getCahracteristicDAO();
+
+    public abstract CharacteristicValueDAO getCharacteristicValueDAO();
+
+    public abstract CharacteristicGroupDAO getCharacteristicGroupDAO();
+
     public abstract ProductDAO getProductDAO();
     // public abstract CategoryDAO getCategoryDAO();
     // another DAO...
@@ -55,6 +61,21 @@ public abstract class DAOFactory {
                     @Override
                     public ReviewsDAO getReviewDAO() {
                         return new PostgresReviewsDAO();
+                    }
+
+                    @Override
+                    public CharacteristicDAO getCahracteristicDAO() {
+                        return new PostgresCharacteristicDAO();
+                    }
+
+                    @Override
+                    public CharacteristicValueDAO getCharacteristicValueDAO() {
+                        return new PostgresCharacteristicVlaueDAO();
+                    }
+
+                    @Override
+                    public CharacteristicGroupDAO getCharacteristicGroupDAO() {
+                        return new PostgersCharacteristicGroupDAO();
                     }
                 };
             default:

@@ -3,7 +3,7 @@ package ru.ncedu.ecomm.data.models;
 public class CharacteristicValue {
     private long characteristicId;
     private long productId;
-    private String cahracteristicValue;
+    private String characteristicValue;
 
     public CharacteristicValue() {
     }
@@ -24,11 +24,11 @@ public class CharacteristicValue {
         this.productId = productId;
     }
 
-    public String getCahracteristicValue() {
-        return cahracteristicValue;
+    public String getCharacteristicValue() {
+        return characteristicValue;
     }
 
-    public void setCahracteristicValue(String cahracteristicValue) {
-        this.cahracteristicValue = cahracteristicValue;
+    public void setCharacteristicValue(String characteristicValue) {
+        this.characteristicValue = characteristicValue;
     }
 }
