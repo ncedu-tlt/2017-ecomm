@@ -1,6 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.models.Category;
+import ru.ncedu.ecomm.data.models.CharacteristicValue;
 import ru.ncedu.ecomm.data.models.Product;
 import ru.ncedu.ecomm.data.models.Raiting;
 
@@ -33,7 +34,9 @@ public class CategoryServlet extends HttpServlet {
         List<Category> categoriesForView = getCategoryByParametr(request);
         List<Product> products = getDAOFactory().getProductDAO().getProducts();
         List<Raiting> raitings = getDAOFactory().getReviewDAO().getAverageRaitingByProduct();
+        List<CharacteristicValue> characteristicValues = getDAOFactory().getCharacteristicValueDAO().getCharacteristicValue();
 
+        request.setAttribute("characteristicValues", characteristicValues);
         request.setAttribute("raitingByProduct", raitings);
         request.setAttribute("categoriesForView", categoriesForView);
         request.setAttribute("products", products);

@@ -12,7 +12,4 @@ public interface CharacteristicValueDAO {
     CharacteristicValue updateCharacteristicValue();
 
     void deleteCharacteristicValue();
-
-    List<CharacteristicValue> getAllCharacteristicByPorductId();
-
 }

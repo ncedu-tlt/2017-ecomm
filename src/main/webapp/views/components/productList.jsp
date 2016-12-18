@@ -9,7 +9,16 @@
                 <c:forEach var="product" items="${requestScope.products}">
                     <c:if test="${product.getCategoryId() == category.getCategoryId()}">
                         <form action="shoppingCart.jsp" method="post" class="five wide column">
-                            <img class="ui fluid image" src="\images\defaultimage\image.png">
+                            <c:set var="productImageURL" value="\images\defaultimage\image.png"/>
+                            <c:forEach var="characteristicValue" items="${requestScope.characteristicValues}">
+                                <c:if test="${product.getId() == characteristicValue.getProductId() &&
+                                characteristicValue.getCharacteristicId() == 28 ||
+                                characteristicValue.getCharacteristicId() == 29}">
+                                    <c:set var="productImageURL"
+                                           value="${characteristicValue.getCharacteristicValue()}"/>
+                                </c:if>
+                            </c:forEach>
+                            <img class="ui fluid image" src="${productImageURL}">
                             <h3 class="ui center aligned header horizontal divider">
                                 <a href="\product?product_id=${product.getProductId()}">
                                         ${product.getName()}
