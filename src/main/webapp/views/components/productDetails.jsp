@@ -46,3 +46,7 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    window.frm.components.init('ProductComponent', '.jsProductComponent');
+</script>
