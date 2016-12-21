@@ -1,4 +1,4 @@
-<div class="ui text two column grid container">
+<div class="ui text two column grid container jsProductDetailsComponent">
     <div class="column">
         <div class="ui one column grid">
             <div class="column">
@@ -28,7 +28,7 @@
     <div class="column">
         <h2 class="ui header">HP Spectre 13</h2>
         <div class="ui two column grid">
-            <div class="column jsProductComponent productRaiting">
+            <div class="column">
                 <div class="ui star rating" data-rating="4" data-max-rating="5"></div>
             </div>
             <div class="column right aligned container"><span class="productPrice">$850</span></div>
@@ -47,6 +47,7 @@
     </div>
 </div>
 
+<%-- JS controller initilization --%>
 <script type="text/javascript">
-    window.frm.components.init('ProductComponent', '.jsProductComponent');
+    window.frm.components.init('productDetails', '.jsProductDetailsComponent');
 </script>

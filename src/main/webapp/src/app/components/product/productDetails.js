@@ -4,14 +4,13 @@
 (function ($, window) {
 
     var frm = window.frm;
-
     var ProductComponent = frm.inheritance.inherits(frm.components.Component, {
 
         /**
          * Executed on component initialization
          */
         init: function () {
-            this.content.find('.productRaiting').rating({
+            this.content.find('.rating').rating({
                 initialRating: 3,
                 maxRating: 5
             });
@@ -19,6 +18,6 @@
 
     });
 
-    frm.components.register('ProductComponent', ProductComponent);
+    frm.components.register('productDetails', ProductComponent);
 
 })(jQuery, window);
