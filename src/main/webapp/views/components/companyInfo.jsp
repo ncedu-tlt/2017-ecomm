@@ -2,8 +2,11 @@
     <div class="column">
         <p>
             <a href="#" class="text-border-right">Facebook</a>
+            <span> | </span>
             <a href="#" class="text-border-right">Twitter</a>
+            <span> | </span>
             <a href="#">Google+</a>
+            <span> | </span>
         </p>
         <p>
             <a href="#" class="text-border-right">inbox@shop.com</a>
