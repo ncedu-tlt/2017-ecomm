@@ -2,6 +2,7 @@ package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import ru.ncedu.ecomm.data.accessobjects.CategoryDAO;
 import ru.ncedu.ecomm.data.models.Category;
+import ru.ncedu.ecomm.data.models.builders.CategoryBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -22,7 +23,12 @@ public class PostgresCategoryDAO implements CategoryDAO {
             ResultSet resultSet = statement.executeQuery("SELECT category_id, parent_id, name, description" +
                     " FROM public.categories");
             while (resultSet.next()) {
-                Category category = new Category(resultSet);
+                Category category = new CategoryBuilder()
+                        .setCategoryId(resultSet.getLong("category_id"))
+                        .setParentId(resultSet.getLong("parent_id"))
+                        .setName(resultSet.getString("name"))
+                        .setDescription(resultSet.getString("description"))
+                        .build();
 
                 categories.add(category);
             }
@@ -64,9 +70,12 @@ public class PostgresCategoryDAO implements CategoryDAO {
             // принято, прочитано
 
             if (resultSet.next()) {
-
-                Category newCategory = new Category(resultSet);
-                return newCategory;
+                return new CategoryBuilder()
+                        .setCategoryId(resultSet.getLong("category_id"))
+                        .setParentId(resultSet.getLong("parent_id"))
+                        .setName(resultSet.getString("name"))
+                        .setDescription(resultSet.getString("description"))
+                        .build();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -103,8 +112,12 @@ public class PostgresCategoryDAO implements CategoryDAO {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
 
-                Category updatedCategory = new Category(resultSet);
-                return updatedCategory;
+                return new CategoryBuilder()
+                        .setCategoryId(resultSet.getLong("category_id"))
+                        .setParentId(resultSet.getLong("parent_id"))
+                        .setName(resultSet.getString("name"))
+                        .setDescription(resultSet.getString("description"))
+                        .build();
             }
 
         } catch (SQLException e) {
@@ -135,17 +148,22 @@ public class PostgresCategoryDAO implements CategoryDAO {
     @Override
     public Category getCategoryById(long id) {
 
-        try(Connection connection = DBUtils.getConnection();
-        PreparedStatement statement = connection.prepareStatement("SELECT category_id, parent_id, name, description" +
-                " FROM public.categories" +
-                " WHERE category_id = ?")) {
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT category_id, parent_id, name, description" +
+                     " FROM public.categories" +
+                     " WHERE category_id = ?")) {
 
             statement.setLong(1, id);
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                Category category = new Category(resultSet);
-                return category;
+
+                return new CategoryBuilder()
+                        .setCategoryId(resultSet.getLong("category_id"))
+                        .setParentId(resultSet.getLong("parent_id"))
+                        .setName(resultSet.getString("name"))
+                        .setDescription(resultSet.getString("description"))
+                        .build();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -157,16 +175,21 @@ public class PostgresCategoryDAO implements CategoryDAO {
     public List<Category> getCategoriesByParentId(long parentId) {
         List<Category> categories = new ArrayList<>();
 
-        try(Connection connection = DBUtils.getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT category_id, parent_id, name, description" +
-                    " FROM public.categories" +
-                    " WHERE parent_id = ?")) {
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT category_id, parent_id, name, description" +
+                     " FROM public.categories" +
+                     " WHERE parent_id = ?")) {
 
             statement.setLong(1, parentId);
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Category category = new Category(resultSet);
+                Category category = new CategoryBuilder()
+                        .setCategoryId(resultSet.getLong("category_id"))
+                        .setParentId(resultSet.getLong("parent_id"))
+                        .setName(resultSet.getString("name"))
+                        .setDescription(resultSet.getString("description"))
+                        .build();
 
                 categories.add(category);
             }
@@ -180,7 +203,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
     public List<Category> getCategoriesByHierarchy(long categoryId) {
         List<Category> categories = new ArrayList<>();
 
-        try( Connection connection = DBUtils.getConnection();
+        try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement("WITH RECURSIVE recquery (category_id, parent_id, name, description) as " +
                      "(SELECT category_id, parent_id, name, description from categories WHERE category_id = ? " +
                      "union " +
@@ -193,10 +216,15 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                categories.add(new Category(resultSet.getLong("category_id"),
-                        resultSet.getLong("parent_id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("description")));
+
+                Category category = new CategoryBuilder()
+                        .setCategoryId(resultSet.getLong("category_id"))
+                        .setParentId(resultSet.getLong("parent_id"))
+                        .setName(resultSet.getString("name"))
+                        .setDescription(resultSet.getString("description"))
+                        .build();
+
+                categories.add(category);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

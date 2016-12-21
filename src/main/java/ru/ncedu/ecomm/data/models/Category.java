@@ -3,9 +3,6 @@ package ru.ncedu.ecomm.data.models;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created by Antoine on 07.12.2016.
- */
 public class Category {
 
     private long categoryId;
@@ -14,13 +11,6 @@ public class Category {
     private String description;
 
     public Category() {
-    }
-
-    public Category(ResultSet resultSet) throws SQLException {
-        this.categoryId = resultSet.getLong("category_id");
-        this.parentId = resultSet.getLong("parent_id");
-        this.name = resultSet.getString("name");
-        this.description = resultSet.getString("description");
     }
 
     public Category(long categoryId, long parentId, String name, String description) {
