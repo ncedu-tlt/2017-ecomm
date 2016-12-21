@@ -19,7 +19,7 @@ public class CategoryBuilder {
         return this;
     }
 
-    public CategoryBuilder setParentId(long parentId) throws SQLException {
+    public CategoryBuilder setParentId(long parentId){
       this.parentId = parentId;
 
         return this;
