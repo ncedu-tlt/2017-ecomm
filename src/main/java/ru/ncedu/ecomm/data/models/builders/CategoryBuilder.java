@@ -7,7 +7,7 @@ public class CategoryBuilder {
     private long categoryId;
     private long parentId;
     private String name;
-    private String dicription;
+    private String description;
 
     public CategoryBuilder(){
     }
@@ -32,7 +32,7 @@ public class CategoryBuilder {
     }
 
     public CategoryBuilder setDescription(String description) {
-        this.dicription = description;
+        this.description = description;
 
         return this;
     }
@@ -43,7 +43,7 @@ public class CategoryBuilder {
                 categoryId,
                 parentId,
                 name,
-                dicription
+                description
         );
     }
 }
