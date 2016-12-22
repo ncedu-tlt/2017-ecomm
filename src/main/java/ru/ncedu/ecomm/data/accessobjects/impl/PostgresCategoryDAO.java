@@ -223,7 +223,6 @@ public class PostgresCategoryDAO implements CategoryDAO {
                         .setName(resultSet.getString("name"))
                         .setDescription(resultSet.getString("description"))
                         .build();
-
                 categories.add(category);
             }
         } catch (SQLException e) {

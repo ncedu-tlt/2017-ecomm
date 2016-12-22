@@ -1,8 +1,5 @@
 package ru.ncedu.ecomm.data.models;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 public class Category {
 
     private long categoryId;

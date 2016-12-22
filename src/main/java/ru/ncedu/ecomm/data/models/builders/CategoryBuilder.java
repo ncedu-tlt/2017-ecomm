@@ -1,7 +1,5 @@
 package ru.ncedu.ecomm.data.models.builders;
 import ru.ncedu.ecomm.data.models.Category;
-import java.sql.SQLException;
-
 public class CategoryBuilder {
 
     private long categoryId;
