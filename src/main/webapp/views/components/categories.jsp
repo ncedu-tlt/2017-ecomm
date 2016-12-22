@@ -1,4 +1,4 @@
-<div class="jsCategoryComponent item main-content">
+<div class="jsCategoryComponent item">
     <a class="item categories">
         Categories
         <i class="dropdown icon"></i>

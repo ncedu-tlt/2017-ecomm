@@ -7,7 +7,7 @@ public class SalesOrder {
     private long userId;
     private Date creationDate;
     private long limit;
-    private int orderStatusId;
+    private long orderStatusId;
 
     public SalesOrder() {
     }
@@ -44,11 +44,11 @@ public class SalesOrder {
         this.limit = limit;
     }
 
-    public int getOrderStatusId() {
+    public long getOrderStatusId() {
         return orderStatusId;
     }
 
-    public void setOrderStatusId(int orderStatusId) {
+    public void setOrderStatusId(long orderStatusId) {
         this.orderStatusId = orderStatusId;
     }
 }
