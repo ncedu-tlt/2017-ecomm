@@ -90,5 +90,5 @@
     </div>
 </div>
 <script>
-    window.frm.components.init('ShoppingCardComponent', '.jsComponentDropdown');
+    window.frm.components.init('ShoppingCardComponent', '.jsShoppingCardComponent');
 </script>
