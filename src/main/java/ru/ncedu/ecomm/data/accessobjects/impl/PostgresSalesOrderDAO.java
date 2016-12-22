@@ -25,7 +25,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                         .setSalesOrderId(resultSet.getLong("sales_order_id"))
                         .setUserId(resultSet.getLong("user_id"))
                         .setCreationDate(resultSet.getDate("creation_date"))
-                        .setLimit(resultSet.getString("limit"))
+                        .setLimit(resultSet.getBigDecimal("limit"))
                         .setOrderStatus(resultSet.getLong("order_status_id"))
                         .build();
 
@@ -54,7 +54,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                         .setSalesOrderId(resultSet.getLong("sales_order_id"))
                         .setUserId(resultSet.getLong("user_id"))
                         .setCreationDate(resultSet.getDate("creation_date"))
-                        .setLimit(resultSet.getString("limit"))
+                        .setLimit(resultSet.getBigDecimal("limit"))
                         .setOrderStatus(resultSet.getLong("order_status_id"))
                         .build();
             }
@@ -69,16 +69,19 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
     public SalesOrder addSalesOrder(SalesOrder salesOrder) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "INSERT INTO  public.sales_orders (user_id, creation_date, limit, order_status_id) " +
+                     "INSERT INTO  public.sales_orders (user_id, creation_date, \"limit\", order_status_id) " +
                              "VALUES (?, ?, ?, ?) RETURNING sales_order_id")) {
 
             statement.setLong(1, salesOrder.getUserId());
-            statement.setDate(2, (Date) salesOrder.getCreationDate());
-            statement.setString(3, salesOrder.getLimit());
+            statement.setDate(2, salesOrder.getCreationDate());
+            statement.setBigDecimal(3, salesOrder.getLimit());
             statement.setLong(4, salesOrder.getSalesOrderId());
             statement.execute();
 
-            salesOrder.setSalesOrderId(statement.getResultSet().getLong("sales_order_id"));
+            ResultSet resultSet = statement.getResultSet();
+            if (resultSet.next()) {
+                salesOrder.setSalesOrderId(statement.getResultSet().getLong("sales_order_id"));
+            }
 
             return salesOrder;
 
@@ -94,8 +97,8 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                     " SET user_id = ?, creation_date = ?, limit = ?, order_status_id = ? " +
                     "WHERE sales_order_id = ?")) {
             statement.setLong(1, salesOrder.getUserId());
-            statement.setDate(2, (Date) salesOrder.getCreationDate());
-            statement.setString(3, salesOrder.getLimit());
+            statement.setDate(2, salesOrder.getCreationDate());
+            statement.setBigDecimal(3, salesOrder.getLimit());
             statement.setLong(4, salesOrder.getOrderStatusId());
             statement.setLong(5, salesOrder.getSalesOrderId());
             statement.execute();

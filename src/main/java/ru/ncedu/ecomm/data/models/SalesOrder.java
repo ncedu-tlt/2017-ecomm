@@ -1,6 +1,7 @@
 package ru.ncedu.ecomm.data.models;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.sql.Date;
 
 public class SalesOrder {
 
@@ -8,7 +9,7 @@ public class SalesOrder {
     private long salesOrderId;
     private long userId;
     private Date creationDate;
-    private String limit;
+    private BigDecimal limit;
     private long orderStatusId;
 
     public SalesOrder() {
@@ -17,7 +18,7 @@ public class SalesOrder {
     public SalesOrder(long salesOrderId,
                       long userId,
                       Date creationDate,
-                      String limit,
+                      BigDecimal limit,
                       long orderStatusId) {
 
         this.salesOrderId = salesOrderId;
@@ -51,11 +52,11 @@ public class SalesOrder {
         this.creationDate = creationDate;
     }
 
-    public String getLimit() {
+    public BigDecimal getLimit() {
         return limit;
     }
 
-    public void setLimit(String limit) {
+    public void setLimit(BigDecimal limit) {
         this.limit = limit;
     }
 

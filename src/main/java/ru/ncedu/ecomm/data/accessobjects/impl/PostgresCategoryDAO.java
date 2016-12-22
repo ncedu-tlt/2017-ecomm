@@ -40,94 +40,47 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
     @Override
     public Category addCategory(Category category) {
-        PreparedStatement statement = null;
-        Connection connection = null;
 
-        try {
-            connection = DBUtils.getConnection();
-
-            statement = connection.prepareStatement("INSERT INTO public.categories (parent_id, name, description)" +
-                    " VALUES (?, ?, ?) " +
-                    " RETURNING category_id");
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "INSERT INTO public.categories (parent_id, name, description)" +
+                     " VALUES (?, ?, ?) " +
+                     " RETURNING category_id")) {
             statement.setLong(1, category.getParentId());
             statement.setString(2, category.getName());
             statement.setString(3, category.getDescription());
             statement.execute();
 
-            int lastAddedCategoryId = 0;
-            ResultSet lastAddedCategory = statement.getResultSet();
-            if (lastAddedCategory.next()) {
-                lastAddedCategoryId = lastAddedCategory.getInt(1);
-            }
-
-            statement = connection.prepareStatement("SELECT category_id, parent_id, name, description" +
-                    " FROM public.categories" +
-                    " WHERE category_id = ?");
-            statement.setLong(1, lastAddedCategoryId);
-
-            ResultSet resultSet = statement.executeQuery();
-            // TODO: Use RETURNING: https://www.postgresql.org/docs/9.6/static/sql-insert.html
-            // принято, прочитано
-
+            ResultSet resultSet = statement.getResultSet();
             if (resultSet.next()) {
-                return new CategoryBuilder()
-                        .setCategoryId(resultSet.getLong("category_id"))
-                        .setParentId(resultSet.getLong("parent_id"))
-                        .setName(resultSet.getString("name"))
-                        .setDescription(resultSet.getString("description"))
-                        .build();
+                category.setCategoryId(statement.getResultSet().getLong("category_id"));
             }
+            return category;
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            closeStatement(statement);
-            closeConnection(connection);
         }
-
-        return null;
     }
 
     @Override
     public Category updateCategory(Category category) {
-        PreparedStatement statement = null;
-        Connection connection = null;
 
-        try {
-            connection = DBUtils.getConnection();
+        try(Connection connection = DBUtils.getConnection();
+            PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE public.categories SET parent_id = ?, name = ?," +
+                            " description = ? WHERE category_id = ?")) {
 
-            statement = connection.prepareStatement("UPDATE public.categories" +
-                    " SET parent_id = ?, name = ?, description = ?" +
-                    " WHERE category_id = ?");
             statement.setLong(1, category.getParentId());
             statement.setString(2, category.getName());
             statement.setString(3, category.getDescription());
             statement.setLong(4, category.getCategoryId());
             statement.execute();
 
-            statement = connection.prepareStatement("SELECT category_id, parent_id, name, description" +
-                    " FROM public.categories" +
-                    " WHERE category_id = ?");
-            statement.setLong(1, category.getCategoryId());
-
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-
-                return new CategoryBuilder()
-                        .setCategoryId(resultSet.getLong("category_id"))
-                        .setParentId(resultSet.getLong("parent_id"))
-                        .setName(resultSet.getString("name"))
-                        .setDescription(resultSet.getString("description"))
-                        .build();
-            }
+            return category;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            closeStatement(statement);
-            closeConnection(connection);
         }
 
-        return null;
     }
 
     @Override
@@ -177,8 +130,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT category_id, parent_id, name, description" +
-                     " FROM public.categories" +
-                     " WHERE parent_id = ?")) {
+                     " FROM public.categories WHERE parent_id = ?")) {
 
             statement.setLong(1, parentId);
 

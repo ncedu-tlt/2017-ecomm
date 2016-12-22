@@ -2,14 +2,15 @@ package ru.ncedu.ecomm.data.models.builders;
 
 import ru.ncedu.ecomm.data.models.SalesOrder;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.sql.Date;
 
 public class SalesOrderBuilder {
 
     private long salesOrderId;
     private long userId;
     private Date creationDate;
-    private String limit;
+    private BigDecimal limit;
     private long orderStatus;
     public SalesOrderBuilder(){
 
@@ -38,7 +39,7 @@ public class SalesOrderBuilder {
         return this;
     }
 
-    public SalesOrderBuilder setLimit(String limit) {
+    public SalesOrderBuilder setLimit(BigDecimal limit) {
         this.limit = limit;
 
         return this;

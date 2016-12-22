@@ -39,8 +39,15 @@ public class RestService {
     @GET
     @Path("/categories/{categoryId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Category getCategory(@PathParam("categoryId") long categoryId) {
+    public Category getCategoryById(@PathParam("categoryId") long categoryId) {
         return getDAOFactory().getCategoryDAO().getCategoryById(categoryId);
+    }
+    @PUT
+    @Path("/categories")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Category updateCategory(Category category){
+        return getDAOFactory().getCategoryDAO().updateCategory(category);
     }
 
     @DELETE
