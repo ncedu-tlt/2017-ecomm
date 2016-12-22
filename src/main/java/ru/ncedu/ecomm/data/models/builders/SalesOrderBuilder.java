@@ -2,6 +2,8 @@ package ru.ncedu.ecomm.data.models.builders;
 
 import ru.ncedu.ecomm.data.models.SalesOrder;
 
+import java.util.Date;
+
 public class SalesOrderBuilder {
 
     private SalesOrder instance;
@@ -17,28 +19,28 @@ public class SalesOrderBuilder {
         if (instance == null){
             instance = new SalesOrder();
         }
-        instance.setSalesOrderId(userId);
+        instance.setUserId(userId);
         return this;
     }
-    public SalesOrderBuilder setCreationDate(long creationDate){
+    public SalesOrderBuilder setCreationDate(Date creationDate){
         if (instance == null){
             instance = new SalesOrder();
         }
-        instance.setSalesOrderId(creationDate);
+        instance.setCreationDate(creationDate);
         return this;
     }
     public SalesOrderBuilder setLimit(long limit){
         if (instance == null){
             instance = new SalesOrder();
         }
-        instance.setSalesOrderId(limit);
+        instance.setLimit(limit);
         return this;
     }
     public SalesOrderBuilder setOrederStatusId(long orederStatusId){
         if (instance == null){
             instance = new SalesOrder();
         }
-        instance.setSalesOrderId(orederStatusId);
+        instance.setOrderStatusId(orederStatusId);
         return this;
     }
 
