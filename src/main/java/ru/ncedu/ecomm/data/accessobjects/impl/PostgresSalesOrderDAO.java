@@ -26,7 +26,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                         .setUserId(resultSet.getLong("user_id"))
                         .setCreationDate(resultSet.getDate("creation_date"))
                         .setLimit(resultSet.getString("limit"))
-                        .setOrederStatusId(resultSet.getLong("order_status_id"))
+                        .setOrderStatusId(resultSet.getLong("order_status_id"))
                         .build();
 
                 salesOrders.add(salesOrder);
@@ -55,7 +55,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                         .setUserId(resultSet.getLong("user_id"))
                         .setCreationDate(resultSet.getDate("creation_date"))
                         .setLimit(resultSet.getString("limit"))
-                        .setOrederStatusId(resultSet.getLong("order_status_id"))
+                        .setOrderStatusId(resultSet.getLong("order_status_id"))
                         .build();
             }
 

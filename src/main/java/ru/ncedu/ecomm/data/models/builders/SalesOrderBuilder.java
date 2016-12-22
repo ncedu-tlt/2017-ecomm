@@ -36,11 +36,11 @@ public class SalesOrderBuilder {
         instance.setLimit(limit);
         return this;
     }
-    public SalesOrderBuilder setOrederStatusId(long orederStatusId){
+    public SalesOrderBuilder setOrderStatusId(long oredrStatusId){
         if (instance == null){
             instance = new SalesOrder();
         }
-        instance.setOrderStatusId(orederStatusId);
+        instance.setOrderStatusId(oredrStatusId);
         return this;
     }
 
