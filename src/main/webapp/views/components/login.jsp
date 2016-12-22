@@ -1,4 +1,4 @@
-<div class="ui container jsLoginComponent">
+<div class="ui container jsLoginComponent main-content">
     <div class="ui three column centered grid">
         <div class="column">
             <h2 class="ui center aligned icon header">
@@ -37,7 +37,7 @@
                         </button>
                     </div>
                     <div class="ui two column centered row grid">
-                            <p>Not a member yet?<a href="#"> Register</a> </p>
+                            <p>Not a member yet?<a href="<c:url value="/"/>">Register</a> </p>
                     </div>
                 </div>
             </form>

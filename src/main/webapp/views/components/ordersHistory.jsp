@@ -1,4 +1,4 @@
-<div class="ui center aligned text container segment active" data-tab="orderHistory">
+<div class="ui center aligned text container segment active main-content" data-tab="orderHistory">
     <div class="ui items orders">
         <div class="item order">
             <div class="content">

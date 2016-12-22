@@ -7,9 +7,9 @@
     - shoppingCartIcon
 --%>
 
-<div class="ui menu">
+<div class="ui menu main-content">
     <div class="ui container">
-        <a href="#" class="header item">Shop</a>
+        <a class="header item" href="<c:url value="/home"/>">Shop</a>
         <c:import url="../components/categories.jsp"/>
         <div class="ui item right">
             <c:import url="../components/search.jsp"/>

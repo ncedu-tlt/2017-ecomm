@@ -11,3 +11,4 @@
         <a class="item">>></a>
     </div>
 </div>
+<div class="clear"></div>

@@ -1,8 +1,11 @@
-<div class="ui text two column grid container">
-    <div class="ui top attached tabular menu">
-        <div class="active item">General</div>
+<div class="ui text two column grid container main-content reviews jsReviewsComponent">
+    <div class="ui top attached menu">
+        <div class="item">
+            <i class="settings icon large"></i>
+        </div>
+        <a class="item">General</a>
     </div>
-    <div class="ui bottom attached active tab segment">
+    <div class="ui attached segment">
         <div class="ui computer reversed equal width grid">
             <div class="row">
                 <div class="column" id="brandValue">
@@ -31,10 +34,13 @@
         </div>
     </div>
 
-    <div class="ui top attached tabular menu">
-        <div class="active item">Display</div>
+    <div class="ui top attached menu">
+        <div class="item">
+            <i class="desktop icon large"></i>
+        </div>
+        <a class="item">Display</a>
     </div>
-    <div class="ui bottom attached active tab segment">
+    <div class="ui bottom attached active segment">
         <div class="ui computer reversed equal width grid">
             <div class="row">
                 <div class="column" id="sizeValue">
@@ -63,10 +69,13 @@
         </div>
     </div>
 
-    <div class="ui top attached tabular menu">
-        <div class="active item">Reviews</div>
+    <div class="ui top attached menu">
+        <div class="item">
+            <i class="comments icon large"></i>
+        </div>
+        <a class="item">Reviews</a>
     </div>
-    <div class="ui bottom attached active tab segment">
+    <div class="ui bottom attached active segment">
         <div class="ui grid">
             <div class="three wide column">
                 <img src="http://semantic-ui.com/images/wireframe/image.png" alt="avatar" class="ui image small">
@@ -95,7 +104,7 @@
                 </div>
             </div>
         </div>
-
+        <div class="ui divider"></div>
         <div class="ui grid">
             <div class="three wide column">
                 <img src="http://semantic-ui.com/images/wireframe/image.png" alt="avatar" class="ui image small">
@@ -130,3 +139,8 @@
         </div>
     </div>
 </div>
+
+<%-- JS controller initilization --%>
+<script type="text/javascript">
+    window.frm.components.init('productReviews', '.jsReviewsComponent');
+</script>

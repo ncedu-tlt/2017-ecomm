@@ -1,17 +1,25 @@
-<div class="ui center aligned text container">
-    <h3>Registration</h3>
+<div class="ui four column grid centered main-content">
+    <div class="row">
+        <h2 class="ui center aligned icon header">
+            <i class="circular registered in icon"></i>
+            Registration
+        </h2>
+    </div>
+    <form class="ui equal dividing width form">
+        <div class="field">
+            <label for="email">Your email:</label>
+            <input type="text" name="email" id="email" placeholder="E-mail">
+        </div>
+        <div class="field">
+            <label for="password">Your password</label>
+            <input type="password" name="password" id="password" placeholder="Password">
+        </div>
 
-    <form class="ui form">
-        <div class="field">
-            <input type="text" name="email" placeholder="Email">
+        <div class="ui blue animated fade button " tabindex="0">
+            <div class="visible content">Registration</div>
+            <div class="hidden content">Send data?</div>
         </div>
-        <div class="field">
-            <input type="password" name="password" placeholder="Password">
-        </div>
-        <div class="field">
-            <input type="password" name="confirmPassword" placeholder="Confirm Password">
-        </div>
-        <button class="ui button" type="submit">Register</button>
-        <p>Already a member? <a href="#">Login</a></p>
+
+        <p>Already a member? <a href="<c:url value="/login"/>">Login</a></p>
     </form>
 </div>

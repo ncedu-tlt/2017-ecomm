@@ -1,4 +1,4 @@
-<div class="ui container jsShoppingCardComponent">
+<div class="ui container jsShoppingCardComponent main-content">
     <h3 class="ui center aligned header">
         Your Cart
     </h3>
@@ -90,5 +90,5 @@
     </div>
 </div>
 <script>
-    window.frm.components.init('ShoppingCardComponent', '.jsShoppingCardComponent');
+    window.frm.components.init('ShoppingCardComponent', '.jsComponentDropdown');
 </script>

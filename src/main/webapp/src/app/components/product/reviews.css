@@ -1,0 +1,7 @@
+.ui.menu[class*="top attached"]:first-child {
+    margin-top: 1em;
+}
+
+.ui.segment[class*="bottom attached"]:last-child {
+    margin-bottom: 1em;
+}

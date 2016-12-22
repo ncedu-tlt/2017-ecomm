@@ -1,3 +1,4 @@
+<div class="ui divider"></div>
 <div class="ui grid one column center aligned container footerCompanyInfo">
     <div class="column">
         <p>

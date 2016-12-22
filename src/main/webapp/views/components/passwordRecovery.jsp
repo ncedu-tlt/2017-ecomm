@@ -1,4 +1,4 @@
-<div class="container jsPasswordRecovery">
+<div class="container jsPasswordRecovery main-content">
     <div class="ui two column centered grid">
         <div class="column">
             <h2 class="ui center aligned icon header">

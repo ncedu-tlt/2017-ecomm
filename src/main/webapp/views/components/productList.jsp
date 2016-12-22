@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div class="ui container jsProductListComponent" style="margin: 1.5em 0;">
+<div class="ui container jsProductListComponent main-content" style="margin: 1.5em 0;">
     <c:forEach var="category" items="${requestScope.categoriesForView}">
         <c:if test="${category.getParentId() != 0}">
             <h2 class="ui center aligned header horizontal divider">

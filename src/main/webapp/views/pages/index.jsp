@@ -24,8 +24,8 @@
 
     <c:import url="../components/productList.jsp"/>
 
-    <c:import url="../components/companyInfo.jsp"/>
-    <div class="ui container">
+
+    <div class="ui container main-content">
         <h1 class="ui header">Pages:</h1>
         <div class="ui vertical pointing menu">
             <a class="item" href="<c:url value="/cart"/>">cart</a>
@@ -39,5 +39,7 @@
             <a class="item" href="<c:url value="/users"/>">users</a>
         </div>
     </div>
+
+    <c:import url="../components/companyInfo.jsp"/>
 </body>
 </html>
