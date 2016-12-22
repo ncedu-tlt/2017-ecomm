@@ -3,13 +3,28 @@ package ru.ncedu.ecomm.data.models;
 import java.util.Date;
 
 public class SalesOrder {
+
+
     private long salesOrderId;
     private long userId;
     private Date creationDate;
-    private String  limit;
+    private String limit;
     private long orderStatusId;
 
     public SalesOrder() {
+    }
+
+    public SalesOrder(long salesOrderId,
+                      long userId,
+                      Date creationDate,
+                      String limit,
+                      long orderStatusId) {
+
+        this.salesOrderId = salesOrderId;
+        this.userId = userId;
+        this.creationDate = creationDate;
+        this.limit = limit;
+        this.orderStatusId = orderStatusId;
     }
 
     public long getSalesOrderId() {
@@ -36,11 +51,11 @@ public class SalesOrder {
         this.creationDate = creationDate;
     }
 
-    public String  getLimit() {
+    public String getLimit() {
         return limit;
     }
 
-    public void setLimit(String  limit) {
+    public void setLimit(String limit) {
         this.limit = limit;
     }
 

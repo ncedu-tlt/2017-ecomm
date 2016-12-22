@@ -6,45 +6,58 @@ import java.util.Date;
 
 public class SalesOrderBuilder {
 
-    private SalesOrder instance;
+    private long salesOrderId;
+    private long userId;
+    private Date creationDate;
+    private String limit;
+    private long orderStatus;
+    public SalesOrderBuilder(){
 
-    public SalesOrderBuilder setSalesOrderId(long salesOrderId){
-        if (instance == null){
-            instance = new SalesOrder();
-        }
-        instance.setSalesOrderId(salesOrderId);
-        return this;
     }
-    public SalesOrderBuilder setUserId(long userId){
-        if (instance == null){
-            instance = new SalesOrder();
-        }
-        instance.setUserId(userId);
-        return this;
+
+    SalesOrderBuilder(long salesOrderId) {
+        this.salesOrderId = salesOrderId;
     }
-    public SalesOrderBuilder setCreationDate(Date creationDate){
-        if (instance == null){
-            instance = new SalesOrder();
-        }
-        instance.setCreationDate(creationDate);
-        return this;
-    }
-    public SalesOrderBuilder setLimit(String  limit){
-        if (instance == null){
-            instance = new SalesOrder();
-        }
-        instance.setLimit(limit);
-        return this;
-    }
-    public SalesOrderBuilder setOrderStatusId(long oredrStatusId){
-        if (instance == null){
-            instance = new SalesOrder();
-        }
-        instance.setOrderStatusId(oredrStatusId);
+
+
+    public SalesOrderBuilder setSalesOrderId(long salesOrderId) {
+        this.salesOrderId = salesOrderId;
+
         return this;
     }
 
-    public SalesOrder build(){
-        return instance;
+    public SalesOrderBuilder setUserId(long userId) {
+        this.userId = userId;
+
+        return  this;
+    }
+
+    public SalesOrderBuilder setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+
+        return this;
+    }
+
+    public SalesOrderBuilder setLimit(String limit) {
+        this.limit = limit;
+
+        return this;
+    }
+
+    public SalesOrderBuilder setOrderStatus(long orderStatus) {
+        this.orderStatus = orderStatus;
+
+        return this;
+    }
+
+
+    public SalesOrder build() {
+        return new SalesOrder(
+                salesOrderId,
+                userId,
+                creationDate,
+                limit,
+                orderStatus
+                );
     }
 }

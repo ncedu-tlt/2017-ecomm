@@ -10,6 +10,9 @@ public class CategoryBuilder {
     public CategoryBuilder(){
     }
 
+    public CategoryBuilder(long categoryId) {
+        this.categoryId = categoryId;
+    }
 
     public CategoryBuilder setCategoryId(long categoryId) {
       this.categoryId = categoryId;
