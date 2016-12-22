@@ -153,4 +153,12 @@ public class RestService {
         getDAOFactory().getSalesOrderDAO().deleteSalesOrder(getDAOFactory().getSalesOrderDAO().getSalesOrderById(salesOrderId));
         return Response.ok().build();
     }
+    @PUT
+    @Path("/salesorder")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public SalesOrder updateSalesOrder(SalesOrder salesOrder){
+        return getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
+    }
+
 }
