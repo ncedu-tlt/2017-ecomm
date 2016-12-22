@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="ui container jsLoginComponent main-content">
     <div class="ui three column centered grid">
         <div class="column">
