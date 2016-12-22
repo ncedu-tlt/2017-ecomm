@@ -6,7 +6,7 @@ public class SalesOrder {
     private long salesOrderId;
     private long userId;
     private Date creationDate;
-    private long limit;
+    private String  limit;
     private long orderStatusId;
 
     public SalesOrder() {
@@ -36,11 +36,11 @@ public class SalesOrder {
         this.creationDate = creationDate;
     }
 
-    public long getLimit() {
+    public String  getLimit() {
         return limit;
     }
 
-    public void setLimit(long limit) {
+    public void setLimit(String  limit) {
         this.limit = limit;
     }
 

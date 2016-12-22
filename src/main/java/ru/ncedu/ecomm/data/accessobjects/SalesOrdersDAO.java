@@ -7,6 +7,8 @@ import java.util.List;
 public interface SalesOrdersDAO {
     List<SalesOrder> getSalesOrders();
 
+    SalesOrder getSalesOrderById(long id);
+
     SalesOrder addSalesOrder(SalesOrder salesOrder);
 
     SalesOrder updateSalesOrder(SalesOrder salesOrder);

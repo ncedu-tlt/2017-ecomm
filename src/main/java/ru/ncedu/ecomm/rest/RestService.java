@@ -1,9 +1,6 @@
 package ru.ncedu.ecomm.rest;
 
-import ru.ncedu.ecomm.data.models.Category;
-import ru.ncedu.ecomm.data.models.Property;
-import ru.ncedu.ecomm.data.models.Role;
-import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.data.models.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -125,6 +122,35 @@ public class RestService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteUser(@PathParam("userId") long userId){
         getDAOFactory().getUserDAO().deleteUser(getDAOFactory().getUserDAO().getUserById(userId));
+        return Response.ok().build();
+    }
+    @GET
+    @Path("/salesorder")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<SalesOrder> getSalesOrders() {
+        return getDAOFactory().getSalesOrderDAO().getSalesOrders();
+    }
+
+    @POST
+    @Path("/salesorder")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public SalesOrder addSalesOrder(SalesOrder salesOrder) {
+        return getDAOFactory().getSalesOrderDAO().addSalesOrder(salesOrder);
+    }
+
+    @GET
+    @Path("/salesorder/{salesOrderId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public SalesOrder getSalesOrderById(@PathParam("salesOrderId") long salesOrderId){
+        return getDAOFactory().getSalesOrderDAO().getSalesOrderById(salesOrderId);
+    }
+
+    @DELETE
+    @Path("/salesorder/{salesOrderId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteSalesOrder(@PathParam("salesOrderId") long salesOrderId) {
+        getDAOFactory().getSalesOrderDAO().deleteSalesOrder(getDAOFactory().getSalesOrderDAO().getSalesOrderById(salesOrderId));
         return Response.ok().build();
     }
 }

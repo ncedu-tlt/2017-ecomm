@@ -29,7 +29,7 @@ public class SalesOrderBuilder {
         instance.setCreationDate(creationDate);
         return this;
     }
-    public SalesOrderBuilder setLimit(long limit){
+    public SalesOrderBuilder setLimit(String  limit){
         if (instance == null){
             instance = new SalesOrder();
         }
