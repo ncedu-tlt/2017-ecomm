@@ -87,7 +87,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
     public void deleteCategory(Category category) {
 
         try (Connection connection = DBUtils.getConnection();
-             PreparedStatement statement = connection.prepareStatement("DELETE FROM public.categories" +
+             PreparedStatement statement = connection.prepareStatement(
+                     "DELETE FROM public.categories" +
                      " WHERE category_id = ?")) {
 
             statement.setLong(1, category.getCategoryId());
@@ -102,7 +103,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
     public Category getCategoryById(long id) {
 
         try (Connection connection = DBUtils.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT category_id, parent_id, name, description" +
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT category_id, parent_id, name, description" +
                      " FROM public.categories" +
                      " WHERE category_id = ?")) {
 
@@ -129,7 +131,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
         List<Category> categories = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT category_id, parent_id, name, description" +
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT category_id, parent_id, name, description" +
                      " FROM public.categories WHERE parent_id = ?")) {
 
             statement.setLong(1, parentId);
@@ -156,7 +159,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
         List<Category> categories = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
-             PreparedStatement statement = connection.prepareStatement("WITH RECURSIVE recquery (category_id, parent_id, name, description) as " +
+             PreparedStatement statement = connection.prepareStatement(
+                     "WITH RECURSIVE recquery (category_id, parent_id, name, description) as " +
                      "(SELECT category_id, parent_id, name, description from categories WHERE category_id = ? " +
                      "union " +
                      "SELECT categories.category_id ,categories.parent_id, categories.name, categories.description " +

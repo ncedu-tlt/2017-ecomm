@@ -7,9 +7,15 @@ import java.util.List;
 public interface CharacteristicValueDAO {
     List<CharacteristicValue> getCharacteristicValue();
 
-    CharacteristicValue addCharacteristicValue();
+    List<CharacteristicValue> getCharacteristicValueById(long id);
 
-    CharacteristicValue updateCharacteristicValue();
+    List<CharacteristicValue> getCharacteristicValueByProductId(long productId);
 
-    void deleteCharacteristicValue();
+    CharacteristicValue getCharacteristicValueByIdAndProductId(long productId, long characteristicId);
+
+    CharacteristicValue addCharacteristicValue(CharacteristicValue characteristicValue);
+
+    CharacteristicValue updateCharacteristicValue(CharacteristicValue characteristicValue);
+
+    void deleteCharacteristicValue(CharacteristicValue characteristicValue);
 }

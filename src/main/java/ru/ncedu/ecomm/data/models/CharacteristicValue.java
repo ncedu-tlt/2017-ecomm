@@ -8,6 +8,12 @@ public class CharacteristicValue {
     public CharacteristicValue() {
     }
 
+    public CharacteristicValue(long characteristicId, long productId, String characteristicValue) {
+        this.characteristicId = characteristicId;
+        this.productId = productId;
+        this.characteristicValue = characteristicValue;
+    }
+
     public long getCharacteristicId() {
         return characteristicId;
     }

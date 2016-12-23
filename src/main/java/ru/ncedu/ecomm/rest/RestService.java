@@ -1,5 +1,6 @@
 package ru.ncedu.ecomm.rest;
 
+import ru.ncedu.ecomm.data.DAOFactory;
 import ru.ncedu.ecomm.data.models.*;
 
 import javax.ws.rs.*;
@@ -167,5 +168,37 @@ public class RestService {
     public SalesOrder updateSalesOrder(SalesOrder salesOrder){
         return getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
     }
-
+    @GET
+    @Path("/characteristicvalue")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<CharacteristicValue> getCharacteristicValue() {
+        return getDAOFactory().getCharacteristicValueDAO().getCharacteristicValue();
+    }
+    @GET
+    @Path("/characteristicvalue/{characteristicvalue}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<CharacteristicValue> getCharacteristicValueById(
+            @PathParam("characteristicvalue") long characteristicvalue){
+        return getDAOFactory().getCharacteristicValueDAO().getCharacteristicValueById(characteristicvalue);
+    }
+    @GET
+    @Path("/characteristicvalue/byproduct/{productid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<CharacteristicValue> getCharacteristicValueByProductId(@PathParam("productid") long productid){
+        return getDAOFactory().getCharacteristicValueDAO().getCharacteristicValueByProductId(productid);
+    }
+    @POST
+    @Path("/characteristicvalue")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public CharacteristicValue addCharacteristicValue(CharacteristicValue characteristicValue) {
+        return getDAOFactory().getCharacteristicValueDAO().addCharacteristicValue(characteristicValue);
+    }
+    @PUT
+    @Path("/characteristicvalue")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public CharacteristicValue updateCharacteristicValue(CharacteristicValue characteristicValue){
+        return getDAOFactory().getCharacteristicValueDAO().updateCharacteristicValue(characteristicValue);
+    }
 }
