@@ -49,6 +49,7 @@ public class CategoryServlet extends HttpServlet {
         HashSet<Category> categoriesSet = new HashSet<>();
         List<Category> filteringCategory = new ArrayList<>();
 
+
         for (Category category : categoriesForView) {
             if (category.getParentId() == 0){
                 filteringCategory.add(category);
@@ -59,7 +60,21 @@ public class CategoryServlet extends HttpServlet {
                 }
             }
         }
+
         filteringCategory.addAll(categoriesSet);
+
+        Collections.sort(filteringCategory, new Comparator<Category>() {
+            public int compare(Category categoryOne, Category categoryTwo) {
+                if (categoryOne.getCategoryId() > categoryTwo.getCategoryId()) {
+                    return 1;
+                } else if (categoryOne.getCategoryId() == categoryTwo.getCategoryId()){
+                    return 0;
+                } else {
+                    return -1;
+                }
+            }
+        });
+
 
         return filteringCategory;
     }

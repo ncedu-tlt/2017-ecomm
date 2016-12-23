@@ -80,7 +80,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
 
             ResultSet resultSet = statement.getResultSet();
             if (resultSet.next()) {
-                salesOrder.setSalesOrderId(statement.getResultSet().getLong("sales_order_id"));
+                salesOrder.setSalesOrderId(statement.getResultSet().getLong(1));
             }
 
             return salesOrder;
@@ -94,7 +94,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
     public SalesOrder updateSalesOrder(SalesOrder salesOrder) {
         try(Connection connection = DBUtils.getConnection();
             PreparedStatement statement = connection.prepareStatement("UPDATE public.sales_orders" +
-                    " SET user_id = ?, creation_date = ?, limit = ?, order_status_id = ? " +
+                    " SET user_id = ?, creation_date = ?, \"limit\" = ?, order_status_id = ? " +
                     "WHERE sales_order_id = ?")) {
             statement.setLong(1, salesOrder.getUserId());
             statement.setDate(2, salesOrder.getCreationDate());
