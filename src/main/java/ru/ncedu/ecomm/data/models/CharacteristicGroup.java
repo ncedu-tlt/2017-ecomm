@@ -1,10 +1,16 @@
 package ru.ncedu.ecomm.data.models;
 
+
 public class CharacteristicGroup {
     private long characteristicGroupId;
-    private long characteristicGroupName;
+    private String characteristicGroupName;
 
     public CharacteristicGroup() {
+    }
+
+    public CharacteristicGroup(long characteristicGroupId, String characteristicGroupName) {
+        this.characteristicGroupId = characteristicGroupId;
+        this.characteristicGroupName = characteristicGroupName;
     }
 
     public long getCharacteristicGroupId() {
@@ -15,11 +21,11 @@ public class CharacteristicGroup {
         this.characteristicGroupId = characteristicGroupId;
     }
 
-    public long getCharacteristicGroupName() {
+    public String getCharacteristicGroupName() {
         return characteristicGroupName;
     }
 
-    public void setCharacteristicGroupName(long characteristicGroupName) {
+    public void setCharacteristicGroupName(String characteristicGroupName) {
         this.characteristicGroupName = characteristicGroupName;
     }
 }
