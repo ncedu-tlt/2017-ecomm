@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="ui four column grid centered main-content">
     <div class="row">
         <h2 class="ui center aligned icon header">
@@ -20,6 +21,6 @@
             <div class="hidden content">Send data?</div>
         </div>
 
-        <p>Already a member? <a href="<c:url value="/login"/>">Login</a></p>
+        <p>Already a member? <a href='<c:url value="/login"/>'> Login </a></p>
     </form>
 </div>
