@@ -82,7 +82,7 @@ public abstract class DAOFactory {
 
                     @Override
                     public CharacteristicGroupDAO getCharacteristicGroupDAO() {
-                        return new PostgersCharacteristicGroupDAO();
+                        return new PostgresCharacteristicGroupDAO();
                     }
 
                     @Override

@@ -7,9 +7,11 @@ import java.util.List;
 public interface CharacteristicGroupDAO {
     List<CharacteristicGroup> getCharacteristicGroup();
 
-    CharacteristicGroup addCharacteristicGroup();
+    CharacteristicGroup getCharacteristicGroupById(long characteristicGroupId);
 
-    CharacteristicGroup updateCharacteristicGroup();
+    CharacteristicGroup addCharacteristicGroup(CharacteristicGroup characteristicGroup);
 
-    void deleteCharacteristicGroup();
+    CharacteristicGroup updateCharacteristicGroup(CharacteristicGroup characteristicGroup);
+
+    void deleteCharacteristicGroup(CharacteristicGroup characteristicGroup);
 }

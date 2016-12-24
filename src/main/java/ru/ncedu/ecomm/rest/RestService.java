@@ -323,4 +323,38 @@ public class RestService {
         return getDAOFactory().getReviewDAO().updateReviews(review);
     }
 
+    @GET
+    @Path("/characteristicgroup")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<CharacteristicGroup> getCharacteristicGroup() {
+        return getDAOFactory().getCharacteristicGroupDAO().getCharacteristicGroup();
+    }
+    @GET
+    @Path("/characteristicgroup/{characteristicgroupbyid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public CharacteristicGroup getCharacteristicGroupById(
+            @PathParam("characteristicgroupbyid") long characteristicgroupbyid) {
+        return getDAOFactory().getCharacteristicGroupDAO().getCharacteristicGroupById(characteristicgroupbyid);
+    }
+    @POST
+    @Path("/characteristicgroup")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public CharacteristicGroup addCharacteristicGroup(CharacteristicGroup characteristicGroup) {
+        return getDAOFactory().getCharacteristicGroupDAO().addCharacteristicGroup(characteristicGroup);
+    }
+    @PUT
+    @Path("/characteristicgroup")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public CharacteristicGroup updateCharacteristicGroup(CharacteristicGroup characteristicGroup) {
+        return getDAOFactory().getCharacteristicGroupDAO().updateCharacteristicGroup(characteristicGroup);
+    }
+    @DELETE
+    @Path("/characteristicgroup/{characteristicgroup}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteCharacteristicGroup(@PathParam("characteristicgroup") long characteristicgroup) {
+        getDAOFactory().getCharacteristicGroupDAO().deleteCharacteristicGroup(getDAOFactory().getCharacteristicGroupDAO().getCharacteristicGroupById(characteristicgroup));
+        return Response.ok().build();
+    }
 }
