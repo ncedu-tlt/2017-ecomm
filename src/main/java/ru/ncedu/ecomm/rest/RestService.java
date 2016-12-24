@@ -278,4 +278,49 @@ public class RestService {
         getDAOFactory().getProductDAO().deleteProduct(getDAOFactory().getProductDAO().getProductById(productId));
         return Response.ok().build();
     }
+
+    @GET
+    @Path("/reviews")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Review> getReviews() {
+        return getDAOFactory().getReviewDAO().getReviews();
+    }
+
+    @GET
+    @Path("/reviews/averagerating")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Rating> getAverageRating() {
+        return getDAOFactory().getReviewDAO().getAverageRatingByProduct();
+    }
+
+    @GET
+    @Path("/reviews/byuserid/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Review> getReviewsByUserId(@PathParam("userId") long userId) {
+        return getDAOFactory().getReviewDAO().getReviewsByUserId(userId);
+    }
+
+    @GET
+    @Path("/reviews/byproductid/{productId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Review> getReviewsByProductId(@PathParam("productId") long productId) {
+        return getDAOFactory().getReviewDAO().getReviewsByProductId(productId);
+    }
+
+    @POST
+    @Path("/reviews")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Review addReview(Review review) {
+        return getDAOFactory().getReviewDAO().addReviews(review);
+    }
+
+    @PUT
+    @Path("/reviews")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Review updateReview(Review review) {
+        return getDAOFactory().getReviewDAO().updateReviews(review);
+    }
+
 }

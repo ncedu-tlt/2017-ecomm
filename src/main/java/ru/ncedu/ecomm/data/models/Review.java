@@ -1,17 +1,29 @@
 package ru.ncedu.ecomm.data.models;
 
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Review {
     private long productId;
     private long userId;
     private String description;
     private Date creationDate;
-    private int reaiting;
+    private int rating;
 
     public Review(){
 
+    }
+
+    public Review(long productId,
+                  long userId,
+                  String description,
+                  Date creationDate,
+                  int rating) {
+        this.productId = productId;
+        this.userId = userId;
+        this.description = description;
+        this.creationDate = creationDate;
+        this.rating = rating;
     }
 
     public long getProductId() {
@@ -46,11 +58,11 @@ public class Review {
         this.creationDate = creationDate;
     }
 
-    public int getReaiting() {
-        return reaiting;
+    public int getRating() {
+        return rating;
     }
 
-    public void setReaiting(int reaiting) {
-        this.reaiting = reaiting;
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 }

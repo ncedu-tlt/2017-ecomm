@@ -3,7 +3,7 @@ package ru.ncedu.ecomm.servlets;
 import ru.ncedu.ecomm.data.models.Category;
 import ru.ncedu.ecomm.data.models.CharacteristicValue;
 import ru.ncedu.ecomm.data.models.Product;
-import ru.ncedu.ecomm.data.models.Raiting;
+import ru.ncedu.ecomm.data.models.Rating;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,13 +33,13 @@ public class CategoryServlet extends HttpServlet {
 
         List<Product> products = getDAOFactory().getProductDAO().getProducts();
         List<Category> categoriesForView = categoriesFilter(getCategoryByParametr(request), products);
-        List<Raiting> raitings = getDAOFactory().getReviewDAO().getAverageRaitingByProduct();
+        List<Rating> ratings = getDAOFactory().getReviewDAO().getAverageRatingByProduct();
         List<CharacteristicValue> characteristicValues = getDAOFactory().getCharacteristicValueDAO().getCharacteristicValue();
 
 
 
         request.setAttribute("characteristicValues", characteristicValues);
-        request.setAttribute("raitingByProduct", raitings);
+        request.setAttribute("raitingByProduct", ratings);
         request.setAttribute("categoriesForView", categoriesForView);
         request.setAttribute("products", products);
         request.getRequestDispatcher("/views/pages/category.jsp").forward(request, response);

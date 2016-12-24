@@ -168,7 +168,7 @@ public class PostgresUserDAO implements UserDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
+        return user;
     }
 
     @Override

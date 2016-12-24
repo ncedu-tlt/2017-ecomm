@@ -111,6 +111,7 @@ public class PostgresPropertyDAO implements PropertyDAO {
                              " SET value = ?" +
                              " WHERE property_id = ?")) {
             statement.setString(1, property.getValue());
+            statement.setString(2, property.getId());
             statement.execute();
 
            return property;

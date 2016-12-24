@@ -1,16 +1,16 @@
 package ru.ncedu.ecomm.data.models;
 
-public class Raiting {
+public class Rating {
     private long productId;
-    private int raiting;
+    private int rating;
 
-    public Raiting(){
+    public Rating(){
 
     }
 
-    public Raiting(long productId, int raiting) {
+    public Rating(long productId, int raiting) {
         this.productId = productId;
-        this.raiting = raiting;
+        this.rating = raiting;
     }
 
     public long getProductId() {
@@ -22,10 +22,10 @@ public class Raiting {
     }
 
     public int getRaiting() {
-        return raiting;
+        return rating;
     }
 
     public void setRaiting(int raiting) {
-        this.raiting = raiting;
+        this.rating = raiting;
     }
 }

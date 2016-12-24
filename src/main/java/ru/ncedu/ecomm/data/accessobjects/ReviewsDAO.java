@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.Raiting;
+import ru.ncedu.ecomm.data.models.Rating;
 import ru.ncedu.ecomm.data.models.Review;
 
 import java.util.List;
@@ -8,13 +8,15 @@ import java.util.List;
 public interface ReviewsDAO {
     List<Review> getReviews();
 
-    boolean addReviews(Review review);
+    Review addReviews(Review review);
 
-    Review updateReviews();
+    Review updateReviews(Review review);
 
-    void deleteReviews();
+    void deleteReviews(Review review);
 
-    List<Review> getRewiesById(long productId);
+    List<Review> getReviewsByProductId(long productId);
 
-    List<Raiting> getAverageRaitingByProduct();
+    List<Review> getReviewsByUserId(long userId);
+
+    List<Rating> getAverageRatingByProduct();
 }

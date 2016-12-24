@@ -25,7 +25,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
                             " parent_id, " +
                             "name, " +
                             "description" +
-                            " FROM public.categories");
+                            " FROM public.categories"
+            );
             while (resultSet.next()) {
                 Category category = new CategoryBuilder()
                         .setCategoryId(resultSet.getLong("category_id"))
@@ -52,7 +53,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
                              "name, " +
                              "description)" +
                              " VALUES (?, ?, ?) " +
-                             " RETURNING category_id")) {
+                             " RETURNING category_id"
+             )) {
             statement.setLong(1, category.getParentId());
             statement.setString(2, category.getName());
             statement.setString(3, category.getDescription());
@@ -77,7 +79,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
                              "SET parent_id = ?, " +
                              "name = ?, " +
                              "description = ? " +
-                             "WHERE category_id = ?")) {
+                             "WHERE category_id = ?"
+             )) {
 
             statement.setLong(1, category.getParentId());
             statement.setString(2, category.getName());
@@ -99,7 +102,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "DELETE FROM public.categories" +
-                             " WHERE category_id = ?")) {
+                             " WHERE category_id = ?"
+             )) {
 
             statement.setLong(1, category.getCategoryId());
             statement.execute();
@@ -119,7 +123,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
                              "name, " +
                              "description " +
                              "FROM public.categories " +
-                             "WHERE category_id = ?")) {
+                             "WHERE category_id = ?"
+             )) {
 
             statement.setLong(1, id);
 
@@ -150,7 +155,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
                              "name, " +
                              "description " +
                              "FROM public.categories " +
-                             "WHERE parent_id = ?")) {
+                             "WHERE parent_id = ?"
+             )) {
 
             statement.setLong(1, parentId);
 
@@ -201,7 +207,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
                              "name, " +
                              "description " +
                              "FROM recquery " +
-                             "ORDER BY category_id")) {
+                             "ORDER BY category_id"
+             )) {
 
 
             statement.setLong(1, categoryId);
