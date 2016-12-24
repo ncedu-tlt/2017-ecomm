@@ -19,7 +19,11 @@ public class PostgresDiscountDAO implements DiscountDAO {
         try(Connection connection = DBUtils.getConnection();
             Statement statement = connection.createStatement()){
 
-            ResultSet resultSet = statement.executeQuery("SELECT discount_id, name, value FROM public.discount");
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT discount_id, " +
+                            "name, " +
+                            "value " +
+                            "FROM public.discount");
 
             while (resultSet.next()) {
                 Discount discount = new Discount(resultSet);

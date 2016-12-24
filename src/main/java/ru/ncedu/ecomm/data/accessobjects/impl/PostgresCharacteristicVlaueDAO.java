@@ -40,11 +40,11 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
     public List<CharacteristicValue> getCharacteristicValueById(long id) {
         List<CharacteristicValue> characteristicValuesById = new ArrayList<>();
 
-        try(Connection connection = DBUtils.getConnection();
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT characteristic_id, product_id, value" +
-                            " FROM public.characteristic_values " +
-                            "WHERE characteristic_id = ?")) {
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT characteristic_id, product_id, value" +
+                             " FROM public.characteristic_values " +
+                             "WHERE characteristic_id = ?")) {
             statement.setLong(1, id);
 
             ResultSet resultSet = statement.executeQuery();
@@ -69,11 +69,11 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
     public List<CharacteristicValue> getCharacteristicValueByProductId(long id) {
         List<CharacteristicValue> characteristicValuesByProductId = new ArrayList<>();
 
-        try(Connection connection = DBUtils.getConnection();
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT characteristic_id, product_id, value" +
-                            " FROM public.characteristic_values " +
-                            "WHERE product_id = ?")) {
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT characteristic_id, product_id, value" +
+                             " FROM public.characteristic_values " +
+                             "WHERE product_id = ?")) {
             statement.setLong(1, id);
 
             ResultSet resultSet = statement.executeQuery();
@@ -96,22 +96,24 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
 
     @Override
     public CharacteristicValue getCharacteristicValueByIdAndProductId(long productId, long characteristicId) {
-        try(Connection connection = DBUtils.getConnection();
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT characteristic_id, product_id, value " +
-                            "FROM public.characteristic_values " +
-                            "WHERE product_id = ? " +
-                            "AND characteristic_id = ?")){
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT characteristic_id, " +
+                             "product_id, " +
+                             "value " +
+                             "FROM public.characteristic_values " +
+                             "WHERE product_id = ? " +
+                             "AND characteristic_id = ?")) {
             statement.setLong(1, productId);
             statement.setLong(1, characteristicId);
 
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()){
-               return new CharacteristicValueBuilder()
-                       .setCharacteristicId(resultSet.getLong("characteristic_id"))
-                       .setCharacteristicValue(resultSet.getString("value"))
-                       .setProductId(resultSet.getLong("product_id"))
-                       .build();
+            if (resultSet.next()) {
+                return new CharacteristicValueBuilder()
+                        .setCharacteristicId(resultSet.getLong("characteristic_id"))
+                        .setCharacteristicValue(resultSet.getString("value"))
+                        .setProductId(resultSet.getLong("product_id"))
+                        .build();
             }
 
         } catch (SQLException e) {
@@ -126,8 +128,12 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "INSERT INTO public.characteristic_values (product_id, value, characteristic_id) " +
-                             "VALUES (?, ?, ?) RETURNING characteristic_id")) {
+                     "INSERT INTO public.characteristic_values " +
+                             "(product_id, " +
+                             "value, " +
+                             "characteristic_id) " +
+                             "VALUES (?, ?, ?) " +
+                             "RETURNING characteristic_id")) {
             statement.setLong(1, characteristicValue.getProductId());
             statement.setString(2, characteristicValue.getCharacteristicValue());
             statement.setLong(3, characteristicValue.getCharacteristicId());
@@ -169,12 +175,12 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
 
     @Override
     public void deleteCharacteristicValue(CharacteristicValue characteristicValue) {
-        try(Connection connection = DBUtils.getConnection();
-            PreparedStatement statement = connection.prepareStatement(
-                    "DELETE FROM public.characteristic_values" +
-                            " WHERE characteristic_id = ?" +
-                            " AND product_id = ?"
-            )){
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "DELETE FROM public.characteristic_values" +
+                             " WHERE characteristic_id = ?" +
+                             " AND product_id = ?"
+             )) {
             statement.setLong(1, characteristicValue.getCharacteristicId());
             statement.setLong(2, characteristicValue.getProductId());
             statement.execute();

@@ -63,15 +63,13 @@ public class CategoryServlet extends HttpServlet {
 
         filteringCategory.addAll(categoriesSet);
 
-        Collections.sort(filteringCategory, new Comparator<Category>() {
-            public int compare(Category categoryOne, Category categoryTwo) {
-                if (categoryOne.getCategoryId() > categoryTwo.getCategoryId()) {
-                    return 1;
-                } else if (categoryOne.getCategoryId() == categoryTwo.getCategoryId()){
-                    return 0;
-                } else {
-                    return -1;
-                }
+        Collections.sort(filteringCategory, (categoryOne, categoryTwo) -> {
+            if (categoryOne.getCategoryId() > categoryTwo.getCategoryId()) {
+                return 1;
+            } else if (categoryOne.getCategoryId() == categoryTwo.getCategoryId()){
+                return 0;
+            } else {
+                return -1;
             }
         });
 

@@ -12,7 +12,13 @@ public class Product {
     public Product() {
     }
 
-    public Product(long productId, long categoryId, String name, String description, long discountId, long price) {
+    public Product(long productId,
+                   long categoryId,
+                   String name,
+                   String description,
+                   long discountId,
+                   long price) {
+
         this.productId = productId;
         this.categoryId = categoryId;
         this.name = name;
