@@ -8,16 +8,20 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostgresOrderItemsDAO implements OrderItemsDAO{
+public class PostgresOrderItemsDAO implements OrderItemsDAO {
     @Override
     public List<OrderItem> getOrderItems() {
 
         List<OrderItem> orderItems = new ArrayList<>();
 
-        try(Connection connection = DBUtils.getConnection();
-            Statement statement = connection.createStatement()) {
+        try (Connection connection = DBUtils.getConnection();
+             Statement statement = connection.createStatement()) {
 
-            ResultSet resultSet = statement.executeQuery("SELECT product_id, sales_order_id, quantity FROM public.order_items");
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT product_id, " +
+                            "sales_order_id, " +
+                            "quantity " +
+                            "FROM public.order_items");
 
             while (resultSet.next()) {
                 OrderItem orderItem = new OrderItem();
