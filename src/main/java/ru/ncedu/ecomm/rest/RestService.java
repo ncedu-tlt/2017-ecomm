@@ -88,6 +88,28 @@ public class RestService {
     public Property getProperties(@PathParam("propertyId") String propertyId) {
         return getDAOFactory().getPropertyDAO().getPropertyById(propertyId);
     }
+    @POST
+    @Path("/properties")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Property addProperty(Property property) {
+        return getDAOFactory().getPropertyDAO().addProperty(property);
+    }
+    @DELETE
+    @Path("/properties/{propertiesId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteProperties(@PathParam("propertiesId") String propertiesId) {
+        getDAOFactory().getPropertyDAO().deleteProperty(getDAOFactory().getPropertyDAO().getPropertyById(propertiesId));
+        return Response.ok().build();
+    }
+    @PUT
+    @Path("/properties")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Property updateProperty(Property property) {
+        return getDAOFactory().getPropertyDAO().updateProperty(property);
+    }
+
 
     @GET
     @Path("/users")

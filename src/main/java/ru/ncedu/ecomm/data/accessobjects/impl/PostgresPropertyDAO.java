@@ -2,6 +2,7 @@ package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import ru.ncedu.ecomm.data.accessobjects.PropertyDAO;
 import ru.ncedu.ecomm.data.models.Property;
+import ru.ncedu.ecomm.data.models.builders.PropertyBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -18,56 +19,48 @@ public class PostgresPropertyDAO implements PropertyDAO {
     public List<Property> getProperties() {
         List<Property> properties = new ArrayList<>();
 
-        Statement stmt = null;
-        Connection con = null;
+        try (Connection connection = DBUtils.getConnection();
+             Statement statement = connection.createStatement()) {
 
-        try {
-            con = DBUtils.getConnection();
-            stmt =  con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT property_id, value FROM properties");
-            while (rs.next()) {
-                Property property = new Property();
-                property.setId(rs.getString("property_id"));
-                property.setValue(rs.getString("value"));
+            ResultSet resultSet = statement.executeQuery("SELECT" +
+                    " property_id," +
+                    " value FROM properties");
+            while (resultSet.next()) {
+                Property property = new PropertyBuilder()
+                        .setPropertyId(resultSet.getString("property_id"))
+                        .setValue(resultSet.getString("value"))
+                        .build();
 
                 properties.add(property);
-
             }
-        }catch(SQLException e) {
-                throw new RuntimeException(e);
-            }
-            finally{
-                closeStatement(stmt);
-                closeConnection(con);
-            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return properties;
     }
 
     @Override
     public Property getPropertyById(String id) {
 
-        PreparedStatement stmt = null;
-        Connection con = null;
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT property_id, " +
+                             "value " +
+                             "FROM properties " +
+                             "WHERE property_id = ?")) {
+            statement.setString(1, id);
 
-        try{
-            con = DBUtils.getConnection();
-            stmt = con.prepareStatement("SELECT property_id, value FROM properties WHERE property_id =?");
-            stmt.setString(1, id);
+            ResultSet resultSet = statement.executeQuery();
 
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()){
-                Property property = new Property();
-                property.setId(rs.getString("property_id"));
-                property.setValue(rs.getString("value"));
+            if (resultSet.next()) {
+                return new PropertyBuilder()
+                        .setPropertyId(resultSet.getString("property_id"))
+                        .setValue(resultSet.getString("value"))
+                        .build();
 
-                return property;
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
-        finally {
-            closeStatement(stmt);
-            closeConnection(con);
         }
         return null;
     }
@@ -75,92 +68,55 @@ public class PostgresPropertyDAO implements PropertyDAO {
     @Override
     public Property addProperty(Property property) {
 
-        PreparedStatement stmt = null;
-        Connection con = null;
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "INSERT INTO properties (" +
+                             "value, " +
+                             "property_id )" +
+                             "VALUES (?, ?) ")) {
 
-        try {
-            con = DBUtils.getConnection();
+            statement.setString(1, property.getValue());
+            statement.setString(2, property.getId());
+            statement.execute();
 
-            stmt = con.prepareStatement("INSERT INTO properties (value)" + " VALUES (?) " +" RETURNING property_id");
-            stmt.setString(1, property.getValue());
-            stmt.execute();
+            return property;
 
-            String lastPropertyId = null;
-            ResultSet lastProperty = stmt.getResultSet();
-            if(lastProperty.next()) {
-                lastPropertyId = lastProperty.getString(1);
-            }
-
-            stmt = con.prepareStatement("SELECT property_id, value" + " FROM properties" +" WHERE property_id = ?");
-            stmt.setString(1, lastPropertyId);
-
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                Property newProperty = new Property(rs.getString("property_id"), rs.getString("value"));
-                return newProperty;
-            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            closeStatement(stmt);
-            closeConnection(con);
         }
-
-        return null;
     }
 
     @Override
     public void deleteProperty(Property property) {
 
-        PreparedStatement stmt = null;
-        Connection con= null;
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "DELETE FROM properties" +
+                             " WHERE property_id = ?")) {
 
-        try {
-            con = DBUtils.getConnection();
-
-            stmt = con.prepareStatement("DELETE FROM properties" +" WHERE property_id = ?");
-            stmt.setString(1, property.getId());
-            stmt.execute();
+            statement.setString(1, property.getId());
+            statement.execute();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            closeStatement(stmt);
-            closeConnection(con);
         }
-
     }
 
     @Override
     public Property updateProperty(Property property) {
 
-        PreparedStatement stmt = null;
-        Connection con = null;
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "UPDATE properties" +
+                             " SET value = ?" +
+                             " WHERE property_id = ?")) {
+            statement.setString(1, property.getValue());
+            statement.execute();
 
-        try {
-            con = DBUtils.getConnection();
-
-            stmt = con.prepareStatement("UPDATE properties" + " SET value = ?" + " WHERE property_id = ?");
-            stmt.setString(1, property.getValue());
-            stmt.execute();
-
-            stmt = con.prepareStatement("SELECT property_id, value" + " FROM properties" + " WHERE category_id = ?");
-            stmt.setString(1, property.getId());
-
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                Property updatedProperty= new Property(rs.getString("property_id"), rs.getString("value"));
-                return updatedProperty;
-            }
+           return property;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            closeStatement(stmt);
-            closeConnection(con);
         }
-
-        return null;
     }
 }
