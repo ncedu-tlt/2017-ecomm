@@ -4,9 +4,21 @@ public class Characteristic {
     private long characteristicId;
     private long categoryId;
     private String characteristicName;
-    private long getCharacteristicGroupId;
+    private long characteristicGroupId;
+
+    public Characteristic(long characteristicId,
+                          long categoryId,
+                          String characteristicName,
+                          long characteristicGroupId) {
+
+        this.characteristicId = characteristicId;
+        this.categoryId = categoryId;
+        this.characteristicName = characteristicName;
+        this.characteristicGroupId = characteristicGroupId;
+    }
 
     public Characteristic() {
+
     }
 
     public long getCharacteristicId() {
@@ -33,11 +45,11 @@ public class Characteristic {
         this.characteristicName = characteristicName;
     }
 
-    public long getGetCharacteristicGroupId() {
-        return getCharacteristicGroupId;
+    public long getCharacteristicGroupId() {
+        return characteristicGroupId;
     }
 
-    public void setGetCharacteristicGroupId(long getCharacteristicGroupId) {
-        this.getCharacteristicGroupId = getCharacteristicGroupId;
+    public void setCharacteristicGroupId(long characteristicGroupId) {
+        this.characteristicGroupId = characteristicGroupId;
     }
 }

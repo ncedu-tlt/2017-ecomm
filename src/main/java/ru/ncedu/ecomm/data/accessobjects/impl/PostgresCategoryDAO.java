@@ -20,8 +20,12 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT category_id, parent_id, name, description" +
-                    " FROM public.categories");
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT category_id," +
+                            " parent_id, " +
+                            "name, " +
+                            "description" +
+                            " FROM public.categories");
             while (resultSet.next()) {
                 Category category = new CategoryBuilder()
                         .setCategoryId(resultSet.getLong("category_id"))
@@ -43,9 +47,12 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "INSERT INTO public.categories (parent_id, name, description)" +
-                     " VALUES (?, ?, ?) " +
-                     " RETURNING category_id")) {
+                     "INSERT INTO public.categories" +
+                             "(parent_id, " +
+                             "name, " +
+                             "description)" +
+                             " VALUES (?, ?, ?) " +
+                             " RETURNING category_id")) {
             statement.setLong(1, category.getParentId());
             statement.setString(2, category.getName());
             statement.setString(3, category.getDescription());
@@ -64,10 +71,13 @@ public class PostgresCategoryDAO implements CategoryDAO {
     @Override
     public Category updateCategory(Category category) {
 
-        try(Connection connection = DBUtils.getConnection();
-            PreparedStatement statement = connection.prepareStatement(
-                    "UPDATE public.categories SET parent_id = ?, name = ?," +
-                            " description = ? WHERE category_id = ?")) {
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "UPDATE public.categories " +
+                             "SET parent_id = ?, " +
+                             "name = ?, " +
+                             "description = ? " +
+                             "WHERE category_id = ?")) {
 
             statement.setLong(1, category.getParentId());
             statement.setString(2, category.getName());
@@ -89,7 +99,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "DELETE FROM public.categories" +
-                     " WHERE category_id = ?")) {
+                             " WHERE category_id = ?")) {
 
             statement.setLong(1, category.getCategoryId());
             statement.execute();
@@ -104,9 +114,12 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT category_id, parent_id, name, description" +
-                     " FROM public.categories" +
-                     " WHERE category_id = ?")) {
+                     "SELECT category_id, " +
+                             "parent_id, " +
+                             "name, " +
+                             "description " +
+                             "FROM public.categories " +
+                             "WHERE category_id = ?")) {
 
             statement.setLong(1, id);
 
@@ -132,8 +145,12 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT category_id, parent_id, name, description" +
-                     " FROM public.categories WHERE parent_id = ?")) {
+                     "SELECT category_id, " +
+                             "parent_id, " +
+                             "name, " +
+                             "description " +
+                             "FROM public.categories " +
+                             "WHERE parent_id = ?")) {
 
             statement.setLong(1, parentId);
 
@@ -160,12 +177,31 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "WITH RECURSIVE recquery (category_id, parent_id, name, description) as " +
-                     "(SELECT category_id, parent_id, name, description from categories WHERE category_id = ? " +
-                     "union " +
-                     "SELECT categories.category_id ,categories.parent_id, categories.name, categories.description " +
-                     "FROM categories INNER JOIN recquery ON (recquery.parent_id = categories.category_id)) " +
-                     "SELECT category_id, parent_id, name, description FROM recquery ORDER BY category_id")) {
+                     "WITH RECURSIVE recquery " +
+                             "(category_id, " +
+                             "parent_id, " +
+                             "name, " +
+                             "description) as " +
+                             "(SELECT category_id, " +
+                             "parent_id, " +
+                             "name, " +
+                             "description " +
+                             "from categories " +
+                             "WHERE category_id = ? " +
+                             "union " +
+                             "SELECT categories.category_id, " +
+                             "categories.parent_id, " +
+                             "categories.name, " +
+                             "categories.description " +
+                             "FROM categories " +
+                             "INNER JOIN recquery " +
+                             "ON (recquery.parent_id = categories.category_id)) " +
+                             "SELECT category_id, " +
+                             "parent_id, " +
+                             "name, " +
+                             "description " +
+                             "FROM recquery " +
+                             "ORDER BY category_id")) {
 
 
             statement.setLong(1, categoryId);

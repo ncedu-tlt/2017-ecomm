@@ -3,20 +3,29 @@ package ru.ncedu.ecomm.data.models;
 import java.sql.Date;
 
 public class User {
-    long id;
-    long roleId;
-    String login;
-    String firstName;
-    String lastName;
-    String password;
-    String phone;
-    String email;
-    Date registrationDate;
+    private long id;
+    private long roleId;
+    private String login;
+    private String firstName;
+    private String lastName;
+    private String password;
+    private String phone;
+    private String email;
+    private Date registrationDate;
 
     public User() {
     }
 
-    public User(long id, long roleId, String login, String firstName, String lastName, String password, String phone, String email, Date registrationDate) {
+    public User(long id,
+                long roleId,
+                String login,
+                String firstName,
+                String lastName,
+                String password,
+                String phone,
+                String email,
+                Date registrationDate) {
+
         this.id = id;
         this.roleId = roleId;
         this.login = login;
