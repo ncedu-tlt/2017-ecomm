@@ -15,8 +15,8 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
     public List<Characteristic> getCharacteristic() {
         List<Characteristic> characteristics = new ArrayList<>();
 
-        try(Connection connection = DBUtils.getConnection();
-            Statement statement = connection.createStatement()) {
+        try (Connection connection = DBUtils.getConnection();
+             Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(
                     "SELECT characteristic_id, " +
                             "category_id," +
@@ -24,7 +24,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
                             "characteristic_group_id " +
                             "FROM public.characteristics"
             );
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 Characteristic characteristic = new CharacteristicBuilder()
                         .setCharacteristicGroupId(resultSet.getLong("characteristic_group_id"))
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
@@ -44,7 +44,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
     @Override
     public Characteristic addCharacteristic(Characteristic characteristic) {
 
-        try (Connection  connection = DBUtils.getConnection();
+        try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "INSERT  INTO public.characteristics" +
                              "(characteristic_id, " +
@@ -53,7 +53,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
                              "characteristic_group_id) " +
                              "VALUES (?, ?, ?, ?) " +
                              "RETURNING characteristic_id"
-             )){
+             )) {
             statement.setLong(1, characteristic.getCharacteristicId());
             statement.setLong(2, characteristic.getCategoryId());
             statement.setString(3, characteristic.getCharacteristicName());
@@ -61,7 +61,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
             statement.execute();
 
             ResultSet resultSet = statement.getResultSet();
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 characteristic.setCharacteristicId(statement.getResultSet().getLong("characteristic_id"));
             }
 
@@ -75,22 +75,22 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
     @Override
     public Characteristic getCharacteristicById(long characteristicId) {
 
-        try(Connection connection = DBUtils.getConnection();
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT characteristic_id," +
-                            "category_id, " +
-                            "name, " +
-                            "characteristic_group_id " +
-                            "FROM public.characteristics " +
-                            "WHERE characteristic_id = ?"
-            )) {
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT characteristic_id," +
+                             "category_id, " +
+                             "name, " +
+                             "characteristic_group_id " +
+                             "FROM public.characteristics " +
+                             "WHERE characteristic_id = ?"
+             )) {
 
             statement.setLong(1, characteristicId);
 
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()){
+            if (resultSet.next()) {
 
-                return  new CharacteristicBuilder()
+                return new CharacteristicBuilder()
                         .setCharacteristicGroupId(resultSet.getLong("characteristic_group_id"))
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
                         .setCharacteristicName(resultSet.getString("name"))
@@ -108,13 +108,13 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
     public Characteristic updateCharacteristic(Characteristic characteristic) {
 
         try (Connection connection = DBUtils.getConnection();
-            PreparedStatement statement = connection.prepareStatement(
-                    "UPDATE public.characteristics " +
-                            "SET category_id = ?, " +
-                            "name = ?, " +
-                            "characteristic_group_id = ? " +
-                            "WHERE characteristic_id = ?"
-            )){
+             PreparedStatement statement = connection.prepareStatement(
+                     "UPDATE public.characteristics " +
+                             "SET category_id = ?, " +
+                             "name = ?, " +
+                             "characteristic_group_id = ? " +
+                             "WHERE characteristic_id = ?"
+             )) {
             statement.setLong(1, characteristic.getCategoryId());
             statement.setString(2, characteristic.getCharacteristicName());
             statement.setLong(3, characteristic.getCharacteristicGroupId());
@@ -131,11 +131,11 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
     @Override
     public void deleteCharacteristic(Characteristic characteristic) {
 
-        try(Connection connection = DBUtils.getConnection();
-        PreparedStatement statement = connection.prepareStatement(
-                "DELETE FROM public.characteristics " +
-                        "WHERE characteristic_id = ?"
-        )) {
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "DELETE FROM public.characteristics " +
+                             "WHERE characteristic_id = ?"
+             )) {
             statement.setLong(1, characteristic.getCharacteristicId());
             statement.execute();
 
