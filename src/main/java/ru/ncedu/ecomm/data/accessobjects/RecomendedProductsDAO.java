@@ -9,8 +9,6 @@ public interface RecomendedProductsDAO {
 
     RecomendedProduct addRecomendedProduct(RecomendedProduct recomendedProduct);
 
-    RecomendedProduct updateRecomendedProduct(RecomendedProduct recomendedProduct);
-
     void deleteRecomendedProduct(RecomendedProduct recomendedProduct);
 
 }

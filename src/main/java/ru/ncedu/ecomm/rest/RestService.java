@@ -424,4 +424,24 @@ public class RestService {
             @PathParam("oderStatusId") long oderStatusId) {
         return getDAOFactory().getOrderStatusDAO().getOrdersStatusById(oderStatusId);
     }
+    @GET
+    @Path("/recomendedproduct")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<RecomendedProduct> getRecomendedProducts() {
+        return getDAOFactory().getRecomendedProductsDAO().getRecomendedProducts();
+    }
+    @POST
+    @Path("/recomendedproduct")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public RecomendedProduct getRecomendedProducts(RecomendedProduct recomendedProduct) {
+        return getDAOFactory().getRecomendedProductsDAO().addRecomendedProduct(recomendedProduct);
+    }
+    @DELETE
+    @Path("/recomendedproduct")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteRecomendedProduct(RecomendedProduct recomendedProduct) {
+        getDAOFactory().getRecomendedProductsDAO().deleteRecomendedProduct(recomendedProduct);
+        return Response.ok().build();
+    }
 }

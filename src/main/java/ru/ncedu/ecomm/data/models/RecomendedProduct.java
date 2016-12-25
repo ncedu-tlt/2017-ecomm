@@ -7,6 +7,12 @@ public class RecomendedProduct {
     public RecomendedProduct() {
     }
 
+    public RecomendedProduct(long sourceProductId,
+                             long targetProductId) {
+        this.sourceProductId = sourceProductId;
+        this.targetProductId = targetProductId;
+    }
+
     public long getSourceProductId() {
         return sourceProductId;
     }
