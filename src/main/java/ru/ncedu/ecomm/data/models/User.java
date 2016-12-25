@@ -5,7 +5,6 @@ import java.sql.Date;
 public class User {
     private long id;
     private long roleId;
-    private String login;
     private String firstName;
     private String lastName;
     private String password;
@@ -18,7 +17,6 @@ public class User {
 
     public User(long id,
                 long roleId,
-                String login,
                 String firstName,
                 String lastName,
                 String password,
@@ -28,7 +26,6 @@ public class User {
 
         this.id = id;
         this.roleId = roleId;
-        this.login = login;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
@@ -51,14 +48,6 @@ public class User {
 
     public void setRoleId(long roleId) {
         this.roleId = roleId;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getFirstName() {
