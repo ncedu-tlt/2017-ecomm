@@ -16,7 +16,7 @@ public abstract class DAOFactory {
 
     public abstract ReviewsDAO getReviewDAO();
 
-    public abstract CharacteristicDAO getCahracteristicDAO();
+    public abstract CharacteristicDAO getChracteristicDAO();
 
     public abstract CharacteristicValueDAO getCharacteristicValueDAO();
 
@@ -71,7 +71,7 @@ public abstract class DAOFactory {
                     }
 
                     @Override
-                    public CharacteristicDAO getCahracteristicDAO() {
+                    public CharacteristicDAO getChracteristicDAO() {
                         return new PostgresCharacteristicDAO();
                     }
 

@@ -1,6 +1,5 @@
 package ru.ncedu.ecomm.rest;
 
-import ru.ncedu.ecomm.data.DAOFactory;
 import ru.ncedu.ecomm.data.models.*;
 
 import javax.ws.rs.*;
@@ -355,6 +354,40 @@ public class RestService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteCharacteristicGroup(@PathParam("characteristicgroup") long characteristicgroup) {
         getDAOFactory().getCharacteristicGroupDAO().deleteCharacteristicGroup(getDAOFactory().getCharacteristicGroupDAO().getCharacteristicGroupById(characteristicgroup));
+        return Response.ok().build();
+    }
+    @GET
+    @Path("/characteristic")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Characteristic> getCharacteristic() {
+        return getDAOFactory().getChracteristicDAO().getCharacteristic();
+    }
+    @GET
+    @Path("/characteristic/{characteristic}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Characteristic getCharacteristicById(
+            @PathParam("characteristic") long characteristic) {
+        return getDAOFactory().getChracteristicDAO().getCharacteristicById(characteristic);
+    }
+    @POST
+    @Path("/characteristic")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Characteristic addCharacteristic(Characteristic characteristic) {
+        return getDAOFactory().getChracteristicDAO().addCharacteristic(characteristic);
+    }
+    @PUT
+    @Path("/characteristic")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Characteristic updateCharacteristic(Characteristic characteristic) {
+        return getDAOFactory().getChracteristicDAO().updateCharacteristic(characteristic);
+    }
+    @DELETE
+    @Path("/characteristic/{characteristic}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteCharacteristic(@PathParam("characteristic") long characteristic) {
+        getDAOFactory().getChracteristicDAO().deleteCharacteristic(getDAOFactory().getChracteristicDAO().getCharacteristicById(characteristic));
         return Response.ok().build();
     }
 }

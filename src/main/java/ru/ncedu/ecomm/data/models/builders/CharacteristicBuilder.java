@@ -9,7 +9,7 @@ public class CharacteristicBuilder {
     private String characteristicName;
     private long characteristicGroupId;
 
-    CharacteristicBuilder(){
+    public CharacteristicBuilder(){
 
     }
     public CharacteristicBuilder setCharacteristicId(long characteristicId){
