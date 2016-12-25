@@ -9,6 +9,14 @@ public class OrderItem {
     public OrderItem() {
     }
 
+    public OrderItem(long productId,
+                     long salesOrderId,
+                     int quantity) {
+        this.productId = productId;
+        this.salesOrderId = salesOrderId;
+        this.quantity = quantity;
+    }
+
     public long getProductId() {
         return productId;
     }
