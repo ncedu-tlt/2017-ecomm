@@ -1,10 +1,15 @@
 package ru.ncedu.ecomm.data.models;
 
-import java.util.List;
 
 public class OrderStatus {
     private long orderStatusId;
     private String name;
+
+    public OrderStatus(long orderStatusId,
+                       String name) {
+        this.orderStatusId = orderStatusId;
+        this.name = name;
+    }
 
     public OrderStatus() {
     }

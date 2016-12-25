@@ -417,4 +417,11 @@ public class RestService {
         getDAOFactory().getOrderItemsDAO().deleteOrderItem(orderItem);
         return Response.ok().build();
     }
+    @GET
+    @Path("/orderstatus/{oderStatusId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public OrderStatus getOrderStatusById(
+            @PathParam("oderStatusId") long oderStatusId) {
+        return getDAOFactory().getOrderStatusDAO().getOrdersStatusById(oderStatusId);
+    }
 }
