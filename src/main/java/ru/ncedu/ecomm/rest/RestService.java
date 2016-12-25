@@ -390,4 +390,31 @@ public class RestService {
         getDAOFactory().getChracteristicDAO().deleteCharacteristic(getDAOFactory().getChracteristicDAO().getCharacteristicById(characteristic));
         return Response.ok().build();
     }
+    @GET
+    @Path("/orderitems")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<OrderItem> getOrderItems() {
+        return getDAOFactory().getOrderItemsDAO().getOrderItems();
+    }
+    @POST
+    @Path("/orderitems")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public OrderItem addOrderItem(OrderItem orderItem) {
+        return getDAOFactory().getOrderItemsDAO().addOrderItem(orderItem);
+    }
+    @PUT
+    @Path("/orderitems")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public OrderItem updateOrderItem(OrderItem orderItem) {
+        return getDAOFactory().getOrderItemsDAO().updateOrderItem(orderItem);
+    }
+    @DELETE
+    @Path("/orderitems")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteOrderItem(OrderItem orderItem) {
+        getDAOFactory().getOrderItemsDAO().deleteOrderItem(orderItem);
+        return Response.ok().build();
+    }
 }
