@@ -6,6 +6,9 @@
             Registration
         </h2>
     </div>
+    <div>
+        ${requestScope.answer}
+    </div>
     <form action= "/registration" method="post" class="ui equal dividing width form">
         <div class="field">
             <label for="email">Your email:</label>
@@ -21,6 +24,7 @@
         </div>
 
         <input class="ui blue animated fade button" type="submit" value="Registration" />
+
         <%--<div class="ui blue animated fade button " tabindex="0">--%>
             <%--<div class="visible content">Registration</div>--%>
             <%--<div class="hidden content">Send data?</div>--%>

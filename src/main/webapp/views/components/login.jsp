@@ -6,6 +6,9 @@
                 <i class="circular sign in icon"></i>
                 Login
             </h2>
+            <div>
+                ${requestScope.registration}
+            </div>
             <form class="ui equal dividing width form">
                 <div class="field">
                     <label> Your Login: </label>
