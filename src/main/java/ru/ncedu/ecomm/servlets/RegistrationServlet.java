@@ -2,6 +2,7 @@ package ru.ncedu.ecomm.servlets;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.data.models.builders.UserBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,26 +23,36 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // handle operations
 
         if(!req.getParameter("email").isEmpty()
                 && !req.getParameter("password").isEmpty()
                 && !req.getParameter("ConfirmPassword").isEmpty()) {
             if (checkEmail(req.getParameter("email"))) {
                 if (req.getParameter("password").equals(req.getParameter("ConfirmPassword"))) {
-                    User user = new User();
-                    user.setEmail(req.getParameter("email"));
-                    user.setPassword(req.getParameter("password"));
+                    User user = new UserBuilder()
+                            .setEmail(req.getParameter("email"))
+                            .setPassword(req.getParameter("password"))
+                            .build();
                     getDAOFactory().getUserDAO().addUser(user);
-                } else resp.getWriter().write("пароли не совпали");
-            } else  resp.getWriter().write("wrong email, чисто для теста");
-        } else  resp.getWriter().write("Строки не должны быть пустыми, тоже для теста");
-
-        //req.getRequestDispatcher("/views/pages/registration.jsp").forward(req, resp);
+                } else {
+                    req.setAttribute("answer", "Passwords don't match");
+                    req.getRequestDispatcher("/views/pages/registration.jsp").forward(req, resp);
+                }
+            } else  {
+                req.setAttribute("answer", "Wrong email");
+                req.getRequestDispatcher("/views/pages/registration.jsp").forward(req, resp);
+            }
+        } else  {
+            req.setAttribute("answer", "Fields must not be empty");
+            req.getRequestDispatcher("/views/pages/registration.jsp").forward(req, resp);
+        }
+        req.setAttribute("registration", "Registration success! Please sign in");
+        req.getRequestDispatcher("/views/pages/login.jsp").forward(req, resp);
     }
 
     public static boolean checkEmail(String email){
-        Pattern patternEmailValidation = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+        Pattern patternEmailValidation = Pattern.compile("^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$"
+                                                         ,Pattern.CASE_INSENSITIVE);
         Matcher matcher = patternEmailValidation.matcher(email);
 
         return matcher.find();
