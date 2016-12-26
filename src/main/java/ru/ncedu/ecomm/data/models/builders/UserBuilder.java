@@ -7,7 +7,6 @@ import java.sql.Date;
 public class UserBuilder {
     private long userId;
     private long roleId;
-    private String login;
     private String firstName;
     private String lastName;
     private String password;
@@ -27,12 +26,6 @@ public class UserBuilder {
 
     public UserBuilder setRoleId(long roleId) {
         this.roleId = roleId;
-
-        return this;
-    }
-
-    public UserBuilder setLogin(String login) {
-        this.login = login;
 
         return this;
     }
@@ -77,7 +70,6 @@ public class UserBuilder {
         return new User(
                 userId,
                 roleId,
-                login,
                 firstName,
                 lastName,
                 password,

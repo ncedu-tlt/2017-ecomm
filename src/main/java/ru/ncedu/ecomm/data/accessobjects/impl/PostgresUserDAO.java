@@ -24,7 +24,6 @@ public class PostgresUserDAO implements UserDAO {
             ResultSet resultSet = statement.executeQuery(
                     "SELECT user_id, " +
                             "role_id, " +
-                            "login, " +
                             "first_name, " +
                             "last_name, " +
                             "password, " +
@@ -36,7 +35,6 @@ public class PostgresUserDAO implements UserDAO {
                 User user = new UserBuilder()
                         .setUserId(resultSet.getLong("user_id"))
                         .setRoleId(resultSet.getLong("role_id"))
-                        .setLogin(resultSet.getString("login"))
                         .setFirstName(resultSet.getString("first_name"))
                         .setLastName(resultSet.getString("last_name"))
                         .setPassword(resultSet.getString("password"))
@@ -60,7 +58,6 @@ public class PostgresUserDAO implements UserDAO {
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT user_id," +
                              " role_id," +
-                             " login, " +
                              "first_name, " +
                              "last_name, " +
                              "password, " +
@@ -76,7 +73,6 @@ public class PostgresUserDAO implements UserDAO {
                 return new UserBuilder()
                         .setUserId(resultSet.getLong("user_id"))
                         .setRoleId(resultSet.getLong("role_id"))
-                        .setLogin(resultSet.getString("login"))
                         .setFirstName(resultSet.getString("first_name"))
                         .setLastName(resultSet.getString("last_name"))
                         .setPassword(resultSet.getString("password"))
@@ -99,7 +95,6 @@ public class PostgresUserDAO implements UserDAO {
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT user_id, " +
                              "role_id, " +
-                             "login, " +
                              "first_name, " +
                              "last_name, " +
                              "password, " +
@@ -116,7 +111,6 @@ public class PostgresUserDAO implements UserDAO {
                 User user = new UserBuilder()
                         .setUserId(resultSet.getLong("user_id"))
                         .setRoleId(resultSet.getLong("role_id"))
-                        .setLogin(resultSet.getString("login"))
                         .setFirstName(resultSet.getString("first_name"))
                         .setLastName(resultSet.getString("last_name"))
                         .setPassword(resultSet.getString("password"))
@@ -140,23 +134,21 @@ public class PostgresUserDAO implements UserDAO {
              PreparedStatement statement = connection.prepareStatement(
                      "INSERT INTO users " +
                              "(role_id, " +
-                             "login, " +
                              "first_name, " +
                              "last_name, " +
                              "password, " +
                              "phone, " +
                              "email, " +
                              "registration_date)" +
-                             "VALUES (?, ?, ?, ?, ?, ?, ?, current_timestamp)" +
+                             "VALUES (?, ?, ?, ?, ?, ?, current_timestamp)" +
                              "RETURNING user_id")) {
 
             statement.setLong(1, user.getRoleId());
-            statement.setString(2, user.getLogin());
-            statement.setString(3, user.getFirstName());
-            statement.setString(4, user.getLastName());
-            statement.setString(5, user.getPassword());
-            statement.setString(6, user.getPhone());
-            statement.setString(7, user.getEmail());
+            statement.setString(2, user.getFirstName());
+            statement.setString(3, user.getLastName());
+            statement.setString(4, user.getPassword());
+            statement.setString(5, user.getPhone());
+            statement.setString(6, user.getEmail());
             statement.execute();
 
             ResultSet resultSet = statement.getResultSet();
@@ -178,7 +170,6 @@ public class PostgresUserDAO implements UserDAO {
              PreparedStatement statement = connection.prepareStatement(
                      "UPDATE users " +
                              "SET role_id = ?, " +
-                             "login = ?, " +
                              "first_name = ?, " +
                              "last_name = ?, " +
                              "password = ?, " +
@@ -188,13 +179,12 @@ public class PostgresUserDAO implements UserDAO {
 
 
             statement.setLong(1, user.getRoleId());
-            statement.setString(2, user.getLogin());
-            statement.setString(3, user.getFirstName());
-            statement.setString(4, user.getLastName());
-            statement.setString(5, user.getPassword());
-            statement.setString(6, user.getPhone());
-            statement.setString(7, user.getEmail());
-            statement.setLong(8, user.getId());
+            statement.setString(2, user.getFirstName());
+            statement.setString(3, user.getLastName());
+            statement.setString(4, user.getPassword());
+            statement.setString(5, user.getPhone());
+            statement.setString(6, user.getEmail());
+            statement.setLong(7, user.getId());
             statement.execute();
 
             return user;

@@ -32,6 +32,7 @@ public class RegistrationServlet extends HttpServlet {
                     User user = new UserBuilder()
                             .setEmail(req.getParameter("email"))
                             .setPassword(req.getParameter("password"))
+                            .setRoleId(3)
                             .build();
                     getDAOFactory().getUserDAO().addUser(user);
                 } else {
