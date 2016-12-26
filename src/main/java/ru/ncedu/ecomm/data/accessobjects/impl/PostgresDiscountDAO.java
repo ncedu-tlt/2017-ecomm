@@ -2,6 +2,7 @@ package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import ru.ncedu.ecomm.data.accessobjects.DiscountDAO;
 import ru.ncedu.ecomm.data.models.Discount;
+import ru.ncedu.ecomm.data.models.builders.DiscountBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.Connection;
@@ -26,7 +27,11 @@ public class PostgresDiscountDAO implements DiscountDAO {
                             "FROM public.discount");
 
             while (resultSet.next()) {
-                Discount discount = new Discount(resultSet);
+                Discount discount = new DiscountBuilder()
+                        .setDiscountId(resultSet.getLong("discount_id"))
+                        .setName(resultSet.getString("name"))
+                        .setValue(resultSet.getInt("value"))
+                        .build();
 
                 discounts.add(discount);
             }

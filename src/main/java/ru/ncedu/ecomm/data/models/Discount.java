@@ -11,10 +11,13 @@ public class Discount {
     public Discount() {
     }
 
-    public Discount(ResultSet resultSet) throws SQLException {
-        this.discountId = resultSet.getLong("discount_id");
-        this.name = resultSet.getString("name");
-        this.value = resultSet.getInt("value");
+    public Discount(long discountId,
+                    String name,
+                    int value) {
+
+        this.discountId = discountId;
+        this.name = name;
+        this.value = value;
     }
 
     public long getDiscountId() {

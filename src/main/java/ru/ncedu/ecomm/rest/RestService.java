@@ -16,6 +16,13 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 public class RestService {
 
     @GET
+    @Path("/discounts")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Discount> getDiscount() {
+        return getDAOFactory().getDiscountDAO().getDiscount();
+    }
+
+    @GET
     @Path("/roles")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Role> getRoles() {
