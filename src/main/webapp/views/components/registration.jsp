@@ -11,7 +11,7 @@
     </div>
     <form action= "/registration" method="post" class="ui equal dividing width form">
         <div class="field">
-            <label for="email">Your email:</label>
+            <label for="email">Your E-mail:</label>
             <input type="text" name="email" id="email" placeholder="E-mail">
         </div>
         <div class="field">

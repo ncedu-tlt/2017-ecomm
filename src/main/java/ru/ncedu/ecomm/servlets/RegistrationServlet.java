@@ -52,7 +52,9 @@ public class RegistrationServlet extends HttpServlet {
     }
 
     public static boolean checkEmail(String email){
-        Pattern patternEmailValidation = Pattern.compile("^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$"
+        final String check = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
+
+        Pattern patternEmailValidation = Pattern.compile(check
                                                          ,Pattern.CASE_INSENSITIVE);
         Matcher matcher = patternEmailValidation.matcher(email);
 

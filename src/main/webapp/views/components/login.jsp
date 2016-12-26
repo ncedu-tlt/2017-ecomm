@@ -11,8 +11,8 @@
             </div>
             <form class="ui equal dividing width form">
                 <div class="field">
-                    <label> Your Login: </label>
-                    <input type="text" name="first-name" placeholder="Login">
+                    <label> Your E-mail: </label>
+                    <input type="text" name="first-name" placeholder="E-mail">
                 </div>
                 <div class="field">
                     <label> Your Password: </label>
