@@ -1,5 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
+import ru.ncedu.ecomm.data.models.User;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -9,9 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 @WebServlet(name = "PasswordRecoveryServlet", urlPatterns = {"/recovery"})
 public class PasswordRecoveryServlet extends HttpServlet {
@@ -32,11 +37,11 @@ public class PasswordRecoveryServlet extends HttpServlet {
         String fromEmail = "overylord@mail.ru";
         SendMail sender = new SendMail(toEmail, fromEmail, "Test message", "Hello. It's a first letter: yandex.ru");
 
-        if (sender.sendMail()) {
-            req.setAttribute("answer", true);
+        if (sender.checkEmail()) {
+            req.setAttribute("answer", sender.sendMail());
             req.getRequestDispatcher("/views/pages/passwordRecovery.jsp").forward(req, resp);
-        } else {
-            req.setAttribute("answer", false);
+        } else if (sender.checkEmail()) {
+            req.setAttribute("answer", "Uncorrect email! Please try enter other email");
             req.getRequestDispatcher("/views/pages/passwordRecovery.jsp").forward(req, resp);
         }
     }
@@ -57,7 +62,7 @@ class SendMail {
         SERVER_PROPERETIES = configServerForSend();
     }
 
-    public Properties configServerForSend() {
+    private Properties configServerForSend() {
         Properties serverProperties = new Properties();
         serverProperties.put("mail.smtp.auth", "true");
         serverProperties.put("mail.smtp.starttls.enable", "true");
@@ -67,21 +72,34 @@ class SendMail {
         return serverProperties;
     }
 
-    public boolean sendMail() {
-        if (checkEmail() == true) {
-            return sendLetterToUser();
+    public String sendMail() {
+        if (searchMailInDatabase(this.toEmail) == true) {
+            return sendLetterToUser() ?
+                    "Letter with instructions was sent in your email." :
+                    "Error. Letter wasn't sent in your email. Please try again";
         } else {
-            return false;
+            return "Email address not registrated in the databse.";
         }
     }
 
     public boolean checkEmail() {
-        Pattern patternEmailValidation = Pattern.compile("^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$", Pattern.CASE_INSENSITIVE);
+        String regPattern = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
+        Pattern patternEmailValidation = Pattern.compile(regPattern, Pattern.CASE_INSENSITIVE);
         Matcher matcher = patternEmailValidation.matcher(toEmail);
         return matcher.find();
     }
 
-    public boolean sendLetterToUser() {
+    private boolean searchMailInDatabase(String email) {
+        List<User> users = getDAOFactory().getUserDAO().getUsers();
+        for (User user : users) {
+            if (user.getEmail().equals(email)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean sendLetterToUser() {
         String username = "";//тут надо указать свой логин от gmail
         String password = "";//тут надо указать свой пароль от gmail
         Session session = Session.getInstance(SERVER_PROPERETIES, new Authenticator() {
@@ -97,6 +115,7 @@ class SendMail {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(this.toEmail));
             message.setSubject(this.subjectLetter);
             message.setText(this.messageLetter);
+            message.setContent("<a href='http://localhost:8050/passwordChange'></a>", "text/html; charset=utf-8");
 
 
             Transport.send(message);

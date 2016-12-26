@@ -1,25 +1,27 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<div class="container jsRecoveryComponent main-content">
+<div class="container jsChangePasswordComponent main-content">
     <div class="ui two column centered grid">
         <div class="column">
             <h2 class="ui center aligned icon header">
                 <i class="circular unlock icon"></i>
-                Password Recovery
+                Password Change
             </h2>
             <div class="ui center aligned vertical segment">
                 <p>
-                    We will send you further instructions to the provided email address
+                    Please, enter your new password.
                 </p>
             </div>
             <div class="ui three column centered grid">
                 <div class="column">
                     <form class="ui form" style="margin: 5em 0" method="post"
-                          action="${pageContext.request.contextPath}/recovery">
+                          action="#">
                         <div class="field">
-                            <input type="text" name="email" placeholder="Email">
+                            <input type="password" name="password" placeholder="Password">
+                        </div>
+                        <div class="field">
+                            <input type="password" name="passwordRepeat" placeholder="Repeat password">
                         </div>
                         <div class="ui error message"></div>
-                        <button class="fluid ui button">Send</button>
+                        <button class="fluid ui button">Change password</button>
                     </form>
                 </div>
             </div>
@@ -29,7 +31,8 @@
         </div>
     </div>
 </div>
+
 <%-- JS controller initilization --%>
 <script type="text/javascript">
-    window.frm.components.init('RecoveryComponent', '.jsRecoveryComponent');
+    window.frm.components.init('changePasswordComponent', '.jsChangePasswordComponent');
 </script>
