@@ -23,7 +23,8 @@ public class User {
                 String password,
                 String phone,
                 String email,
-                Date registrationDate) {
+                Date registrationDate,
+                String recoveryHash) {
 
         this.id = id;
         this.roleId = roleId;
@@ -33,6 +34,7 @@ public class User {
         this.phone = phone;
         this.email = email;
         this.registrationDate = registrationDate;
+        this.recoveryHash = recoveryHash;
     }
 
     public long getId() {

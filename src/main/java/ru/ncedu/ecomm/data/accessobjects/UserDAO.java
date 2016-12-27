@@ -10,9 +10,9 @@ import java.util.List;
 public interface UserDAO {
     List<User> getUsers();
     User getUserById(long id);
+    User getUserByEmail(String email);
     List<User> getUserByRoleId(long roleId);
     User addUser(User user);
-    User addRecoveryHash(User user, String recoveryHash);
     User updateUser(User user);
     void deleteUser(User user);
 }

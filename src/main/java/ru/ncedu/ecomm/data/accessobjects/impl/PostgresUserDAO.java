@@ -84,6 +84,44 @@ public class PostgresUserDAO implements UserDAO {
     }
 
     @Override
+    public User getUserByEmail(String email) {
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT user_id, " +
+                             "role_id, " +
+                             "first_name, " +
+                             "last_name, " +
+                             "password, " +
+                             "phone, " +
+                             "email, " +
+                             "registration_date," +
+                             "recovery_hash " +
+                             "FROM users " +
+                             "WHERE email = ?")) {
+
+
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                return new UserBuilder()
+                        .setUserId(resultSet.getLong("user_id"))
+                        .setRoleId(resultSet.getLong("role_id"))
+                        .setFirstName(resultSet.getString("first_name"))
+                        .setLastName(resultSet.getString("last_name"))
+                        .setPassword(resultSet.getString("password"))
+                        .setPhone(resultSet.getString("phone"))
+                        .setEmail(resultSet.getString("email"))
+                        .setRegistrationDate(resultSet.getDate("registration_date"))
+                        .setRecoveryHash(resultSet.getString("recovery_hash"))
+                        .build();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    @Override
     public List<User> getUserByRoleId(long roleId) {
         List<User> users = new ArrayList<>();
 
@@ -123,6 +161,7 @@ public class PostgresUserDAO implements UserDAO {
         return users;
     }
 
+
     @Override
     public User addUser(User user) {
 
@@ -135,8 +174,9 @@ public class PostgresUserDAO implements UserDAO {
                              "password, " +
                              "phone, " +
                              "email, " +
-                             "registration_date)" +
-                             "VALUES (?, ?, ?, ?, ?, ?, current_timestamp)" +
+                             "registration_date" +
+                             "recovery_hash)" +
+                             "VALUES (?, ?, ?, ?, ?, ?, current_timestamp, ?)" +
                              "RETURNING user_id")) {
 
             statement.setLong(1, user.getRoleId());
@@ -145,6 +185,7 @@ public class PostgresUserDAO implements UserDAO {
             statement.setString(4, user.getPassword());
             statement.setString(5, user.getPhone());
             statement.setString(6, user.getEmail());
+            statement.setString(7, user.getRecoveryHash());
             statement.execute();
 
             ResultSet resultSet = statement.getResultSet();
@@ -160,25 +201,6 @@ public class PostgresUserDAO implements UserDAO {
     }
 
     @Override
-    public User addRecoveryHash(User user, String recoveryHash) {
-        try (Connection connection = DBUtils.getConnection();
-             PreparedStatement statement = connection.prepareStatement(
-                     "UPDATE " +
-                             "users " +
-                             "SET recovery_hash = ? " +
-                             "WHERE email = ?"
-             )) {
-            statement.setString(1, user.getRecoveryHash());
-            statement.setString(2, user.getEmail());
-            statement.execute();
-
-            return user;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
     public User updateUser(User user) {
 
         try (Connection connection = DBUtils.getConnection();
@@ -189,17 +211,17 @@ public class PostgresUserDAO implements UserDAO {
                              "last_name = ?, " +
                              "password = ?, " +
                              "phone = ?, " +
-                             "email = ?" +
+                             "email = ?," +
+                             "recovery_hash = ?" +
                              "WHERE user_id = ?")) {
-
-
             statement.setLong(1, user.getRoleId());
             statement.setString(2, user.getFirstName());
             statement.setString(3, user.getLastName());
             statement.setString(4, user.getPassword());
             statement.setString(5, user.getPhone());
             statement.setString(6, user.getEmail());
-            statement.setLong(7, user.getId());
+            statement.setString(7, user.getRecoveryHash());
+            statement.setLong(8, user.getId());
             statement.execute();
 
             return user;

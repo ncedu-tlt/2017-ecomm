@@ -13,7 +13,7 @@ public class UserBuilder {
     private String phone;
     private String email;
     private Date registrationDate;
-    private int recoveryHash;
+    private String recoveryHash;
 
     public UserBuilder() {
 
@@ -67,7 +67,7 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder setRecoveryHash(int recoveryHash){
+    public UserBuilder setRecoveryHash(String recoveryHash){
         this.recoveryHash = recoveryHash;
 
         return this;
@@ -82,7 +82,8 @@ public class UserBuilder {
                 password,
                 phone,
                 email,
-                registrationDate);
+                registrationDate,
+                recoveryHash);
     }
 }
 
