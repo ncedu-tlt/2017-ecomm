@@ -33,8 +33,12 @@ public class PasswordRecoveryServlet extends HttpServlet {
     }
 
     private void sendLettersEmail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        User userByEmail = getDAOFactory().getUserDAO().getUserById(6);
+//        User users = getDAOFactory().getUserDAO().addRecoveryHash(userByEmail, "12wfsfws");
+
         String toEmail = req.getParameter("email");
         String fromEmail = "overylord@mail.ru";
+
         SendMail sender = new SendMail(toEmail, fromEmail, "Test message", "Hello. It's a first letter: yandex.ru");
 
         if (sender.checkEmail()) {
@@ -122,7 +126,6 @@ class SendMail {
         } catch (MessagingException e) {
             return false;
         }
-
         return true;
     }
 }

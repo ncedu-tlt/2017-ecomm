@@ -13,6 +13,7 @@ public class UserBuilder {
     private String phone;
     private String email;
     private Date registrationDate;
+    private int recoveryHash;
 
     public UserBuilder() {
 
@@ -62,6 +63,12 @@ public class UserBuilder {
 
     public UserBuilder setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
+
+        return this;
+    }
+
+    public UserBuilder setRecoveryHash(int recoveryHash){
+        this.recoveryHash = recoveryHash;
 
         return this;
     }

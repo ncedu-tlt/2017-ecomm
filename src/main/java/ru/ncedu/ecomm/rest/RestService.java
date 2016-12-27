@@ -403,6 +403,7 @@ public class RestService {
     public List<OrderItem> getOrderItems() {
         return getDAOFactory().getOrderItemsDAO().getOrderItems();
     }
+
     @POST
     @Path("/orderitems")
     @Produces(MediaType.APPLICATION_JSON)
@@ -451,4 +452,14 @@ public class RestService {
         getDAOFactory().getRecomendedProductsDAO().deleteRecomendedProduct(recomendedProduct);
         return Response.ok().build();
     }
+
+    @POST
+    @Path("/recovery")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public User addRecoveryHash(User user, String recoveryHash) {
+        return getDAOFactory().getUserDAO().addRecoveryHash(user, recoveryHash);
+    }
+
+
 }

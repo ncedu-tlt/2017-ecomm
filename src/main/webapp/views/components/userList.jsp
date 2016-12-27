@@ -1,19 +1,4 @@
 <div class="ui center aligned container">
-
-    <h3>Dashboard</h3>
-
-    <div class="ui vertically divided grid">
-        <div class="two column row">
-            <div class="column userListTitle">
-                <h3>Catalog</h3>
-            </div>
-            <div class="column userListTitle">
-                <h3 class="activePage">Users</h3>
-            </div>
-        </div>
-    </div>
-
-
     <table class="ui celled structured table">
         <thead>
         <tr>
@@ -43,23 +28,5 @@
             <td>17.10.2014</td>
         </tr>
         </tbody>
-        <tfoot>
-        <tr>
-            <th colspan="4">
-                <div class="ui right floated pagination menu">
-                    <a class="icon item">
-                        <i class="left chevron angle left icon"></i>
-                    </a>
-                    <a class="item">1</a>
-                    <a class="item">2</a>
-                    <a class="item">3</a>
-                    <a class="item">4</a>
-                    <a class="icon item">
-                        <i class="right chevron angle right icon"></i>
-                    </a>
-                </div>
-            </th>
-        </tr>
-        </tfoot>
     </table>
 </div>

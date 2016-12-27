@@ -11,6 +11,7 @@ public class User {
     private String phone;
     private String email;
     private Date registrationDate;
+    private String recoveryHash;
 
     public User() {
     }
@@ -98,5 +99,11 @@ public class User {
         this.registrationDate = registrationDate;
     }
 
+    public String getRecoveryHash() {
+        return recoveryHash;
+    }
 
+    public void setRecoveryHash(String recoveryHash) {
+        this.recoveryHash = recoveryHash;
+    }
 }

@@ -1,6 +1,5 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
-import com.sun.jersey.api.NotFoundException;
 import ru.ncedu.ecomm.data.accessobjects.UserDAO;
 import ru.ncedu.ecomm.data.models.User;
 import ru.ncedu.ecomm.data.models.builders.UserBuilder;
@@ -9,9 +8,6 @@ import ru.ncedu.ecomm.utils.DBUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import static ru.ncedu.ecomm.utils.DBUtils.closeConnection;
-import static ru.ncedu.ecomm.utils.DBUtils.closeStatement;
 
 public class PostgresUserDAO implements UserDAO {
     @Override
@@ -161,6 +157,25 @@ public class PostgresUserDAO implements UserDAO {
             throw new RuntimeException(e);
         }
         return user;
+    }
+
+    @Override
+    public User addRecoveryHash(User user, String recoveryHash) {
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "UPDATE " +
+                             "users " +
+                             "SET recovery_hash = ? " +
+                             "WHERE email = ?"
+             )) {
+            statement.setString(1, user.getRecoveryHash());
+            statement.setString(2, user.getEmail());
+            statement.execute();
+
+            return user;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

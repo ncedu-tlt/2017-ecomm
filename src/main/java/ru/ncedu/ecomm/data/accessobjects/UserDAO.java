@@ -12,6 +12,7 @@ public interface UserDAO {
     User getUserById(long id);
     List<User> getUserByRoleId(long roleId);
     User addUser(User user);
+    User addRecoveryHash(User user, String recoveryHash);
     User updateUser(User user);
     void deleteUser(User user);
 }
