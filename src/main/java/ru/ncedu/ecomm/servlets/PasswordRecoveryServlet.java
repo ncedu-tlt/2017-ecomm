@@ -52,6 +52,8 @@ public class PasswordRecoveryServlet extends HttpServlet {
         }
     }
 
+
+
     private String generateRecoveryHash(){
         List<Integer> uniqueHash = new ArrayList<Integer>();
         Random random = new Random();

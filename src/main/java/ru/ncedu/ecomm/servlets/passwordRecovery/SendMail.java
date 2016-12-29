@@ -86,11 +86,12 @@ public class SendMail {
     }
 
     private void sendMessageWithMimeMessage(MimeMessage message) throws MessagingException {
+        String textHtml = ("<a href='http://localhost:8050/passwordChange?email="+toEmail+"&recoveryHash="+recoveryHash+"'>To Recovery</a>");
+
         message.setFrom(new InternetAddress(this.fromEmail));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(this.toEmail));
         message.setSubject(this.subjectLetter);
-        message.setText(this.messageLetter);
-        message.setContent("<a href='http://localhost:8050/passwordChange'></a>", "text/html; charset=utf-8");
+        message.setContent(textHtml, "text/html; charset=utf-8");
         Transport.send(message);
     }
 }

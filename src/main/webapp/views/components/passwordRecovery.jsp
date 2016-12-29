@@ -19,7 +19,12 @@
                             <input type="text" name="email" placeholder="Email">
                         </div>
                         <div class="ui error message"></div>
-                        <button class="fluid ui button">Send</button>
+                        <button class="ui fluid animated primary button">
+                            <div class="visible content">Send</div>
+                            <div class="hidden content">
+                                <i class="mail outline icon"></i>
+                            </div>
+                        </button>
                     </form>
                 </div>
             </div>

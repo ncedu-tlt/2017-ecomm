@@ -26,7 +26,9 @@
                 </div>
             </div>
             <div class="ui message warning">
-                <p>${requestScope.answer}</p>
+                <p><c:forEach var="parameter" items="${requestScope.answer}">
+                    <c:out value="${parameter}"/>
+                </c:forEach></p>
             </div>
         </div>
     </div>
