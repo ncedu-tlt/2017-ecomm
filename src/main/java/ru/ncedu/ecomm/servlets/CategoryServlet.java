@@ -1,9 +1,8 @@
 package ru.ncedu.ecomm.servlets;
 
-import ru.ncedu.ecomm.data.models.Category;
-import ru.ncedu.ecomm.data.models.CharacteristicValue;
-import ru.ncedu.ecomm.data.models.Product;
-import ru.ncedu.ecomm.data.models.Rating;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
+import ru.ncedu.ecomm.data.models.*;
+import ru.ncedu.ecomm.data.models.builders.ProductItemsViewBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,31 +29,25 @@ public class CategoryServlet extends HttpServlet {
 
     private void itemView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
-        List<Product> products = getDAOFactory().getProductDAO().getProducts();
-        List<Category> categoriesForView = categoriesFilter(getCategoryByParametr(request), products);
-        List<Rating> ratings = getDAOFactory().getReviewDAO().getAverageRatingByProduct();
-        List<CharacteristicValue> characteristicValues = getDAOFactory().getCharacteristicValueDAO().getCharacteristicValue();
+        Set<ProductItemsView> productToView = addProductToView();
+        List<Category> categoriesForView = categoriesFilter(getCategoryByParametr(request), productToView);
 
 
-
-        request.setAttribute("characteristicValues", characteristicValues);
-        request.setAttribute("raitingByProduct", ratings);
         request.setAttribute("categoriesForView", categoriesForView);
-        request.setAttribute("products", products);
+        request.setAttribute("productToView", productToView);
         request.getRequestDispatcher("/views/pages/category.jsp").forward(request, response);
     }
 
-    private List<Category> categoriesFilter(List<Category> categoriesForView, List<Product> products) {
+    private List<Category> categoriesFilter(List<Category> categoriesForView, Set<ProductItemsView> products) {
         HashSet<Category> categoriesSet = new HashSet<>();
         List<Category> filteringCategory = new ArrayList<>();
 
 
         for (Category category : categoriesForView) {
-            if (category.getParentId() == 0){
+            if (category.getParentId() == 0) {
                 filteringCategory.add(category);
             }
-            for (Product product : products) {
+            for (ProductItemsView product : products) {
                 if (product.getCategoryId() == category.getCategoryId()) {
                     categoriesSet.add(category);
                 }
@@ -63,10 +56,10 @@ public class CategoryServlet extends HttpServlet {
 
         filteringCategory.addAll(categoriesSet);
 
-        Collections.sort(filteringCategory, (categoryOne, categoryTwo) -> {
+        filteringCategory.sort((categoryOne, categoryTwo) -> {
             if (categoryOne.getCategoryId() > categoryTwo.getCategoryId()) {
                 return 1;
-            } else if (categoryOne.getCategoryId() == categoryTwo.getCategoryId()){
+            } else if (categoryOne.getCategoryId() == categoryTwo.getCategoryId()) {
                 return 0;
             } else {
                 return -1;
@@ -75,6 +68,65 @@ public class CategoryServlet extends HttpServlet {
 
 
         return filteringCategory;
+    }
+
+    private HashSet<ProductItemsView> addProductToView() {
+
+        final int CHARACTERISTIC_ID_FOR_ONE_CATEGORY = 28;
+        final int CHARACTERISTIC_ID_FOR_FIVE_CATEGORY = 29;
+
+        HashSet<ProductItemsView> productItemsViewList = new HashSet<>();
+        ProductItemsView ItemForView = null;
+        Rating productAvergeRating;
+        CharacteristicValue characteristicValue;
+
+        List<Product> products = getDAOFactory()
+                .getProductDAO()
+                .getProducts();
+
+        long characteristicId = CHARACTERISTIC_ID_FOR_ONE_CATEGORY;
+
+        for (Product product : products) {
+
+            String imageUrl = "\\images\\defaultimage\\image.png";
+            int productRating = 0;
+
+            if (product.getCategoryId() == 5) {
+                characteristicId = CHARACTERISTIC_ID_FOR_FIVE_CATEGORY;
+            }
+
+            characteristicValue = getDAOFactory()
+                    .getCharacteristicValueDAO()
+                    .getCharacteristicValueByIdAndProductId(product.getId(),
+                            characteristicId);
+
+            if (characteristicValue != null) {
+                imageUrl = characteristicValue.getCharacteristicValue();
+            }
+
+            productAvergeRating = getDAOFactory()
+                    .getReviewDAO()
+                    .getAverageRatingByProductId(product.getId());
+
+            if (productAvergeRating != null) {
+                productRating = productAvergeRating.getRaiting();
+            }
+
+
+            ItemForView = new ProductItemsViewBuilder()
+                    .setProductId(product.getId())
+                    .setCategoryId(product.getCategoryId())
+                    .setName(product.getName())
+                    .setPrice(product.getPrice())
+                    .setDiscountId(product.getDiscountId())
+                    .setImageUrl(imageUrl)
+                    .setRating(productRating)
+                    .build();
+
+            productItemsViewList.add(ItemForView);
+        }
+
+        return productItemsViewList;
     }
 
 

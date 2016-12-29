@@ -6,35 +6,18 @@
                 <a href="\category?category_id=${category.categoryId}">${category.getName()}</a>
             </h2>
             <div class="ui grid centered container">
-                <c:forEach var="product" items="${requestScope.products}">
+                <c:forEach var="product" items="${requestScope.productToView}">
                     <c:if test="${product.getCategoryId() == category.getCategoryId()}">
                         <form action="shoppingCart.jsp" method="post" class="five wide column">
-                            <c:set var="productImageURL" value="\images\defaultimage\image.png"/>
-                            <c:forEach var="characteristicValue" items="${requestScope.characteristicValues}">
-                                <c:if test="${product.getId() == characteristicValue.getProductId() &&
-                                characteristicValue.getCharacteristicId() == 28 ||
-                                characteristicValue.getCharacteristicId() == 29}">
-                                    <c:set var="productImageURL"
-                                           value="${characteristicValue.getCharacteristicValue()}"/>
-                                </c:if>
-                            </c:forEach>
-                            <img class="ui fluid image" src="${productImageURL}">
+                            <img class="ui fluid image" src="${product.getImageUrl()}">
                             <h3 class="ui center aligned header horizontal divider">
                                 <a href="\product?product_id=${product.getProductId()}">
                                         ${product.getName()}
                                 </a>
                             </h3>
-
                             <div class="ui grid centered container">
-                                <c:set var="productRaiting" value="0"/>
-                                <c:forEach var="raiting" items="${requestScope.raitingByProduct}">
-                                    <c:if test="${product.getId() == raiting.getProductId()}">
-                                        <c:set var="productRaiting" value="${raiting.getRaiting()}"/>
-                                    </c:if>
-
-                                </c:forEach>
                                 <div class="ui eleven wide column large rating disabled"
-                                     data-rating="${productRaiting}">
+                                     data-rating="${product.getRating()}">
                                 </div>
                             </div>
                             <h3 class="ui center aligned grey header">

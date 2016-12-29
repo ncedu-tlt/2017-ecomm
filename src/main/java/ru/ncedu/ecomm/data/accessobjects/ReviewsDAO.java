@@ -19,4 +19,6 @@ public interface ReviewsDAO {
     List<Review> getReviewsByUserId(long userId);
 
     List<Rating> getAverageRatingByProduct();
+
+    Rating getAverageRatingByProductId(long productId);
 }

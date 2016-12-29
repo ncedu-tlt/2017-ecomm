@@ -209,4 +209,32 @@ public class PostgresReviewsDAO implements ReviewsDAO {
         }
         return raitings;
     }
+
+    @Override
+    public Rating getAverageRatingByProductId(long productId) {
+
+        try(Connection connection = DBUtils.getConnection();
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT product_id, " +
+                            "avg(raiting) as average_rating " +
+                            "FROM reviews " +
+                            "WHERE product_id = ? " +
+                            "GROUP BY product_id;")){
+
+            statement.setLong(1, productId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()){
+                return new RatingBuilder()
+                        .setProductId(resultSet.getLong("product_id"))
+                        .setRating(resultSet.getInt("average_rating"))
+                        .build();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
 }

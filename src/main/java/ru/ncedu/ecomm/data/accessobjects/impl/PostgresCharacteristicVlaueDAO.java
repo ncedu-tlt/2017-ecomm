@@ -96,6 +96,7 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
 
     @Override
     public CharacteristicValue getCharacteristicValueByIdAndProductId(long productId, long characteristicId) {
+
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT characteristic_id, " +
@@ -105,7 +106,7 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
                              "WHERE product_id = ? " +
                              "AND characteristic_id = ?")) {
             statement.setLong(1, productId);
-            statement.setLong(1, characteristicId);
+            statement.setLong(2, characteristicId);
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
