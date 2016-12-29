@@ -39,11 +39,11 @@ public class PasswordRecoveryServlet extends HttpServlet {
 
         SendMail sender = new SendMail(toEmail, fromEmail, "Test message", "Hello. It's a first letter: yandex.ru", recoveryHash);
 
-        User userByEmail = getDAOFactory().getUserDAO().getUserByEmail(toEmail);
-        userByEmail.setRecoveryHash(recoveryHash);
-        getDAOFactory().getUserDAO().updateUser(userByEmail);
-
         if (sender.checkEmail()) {
+            User userByEmail = getDAOFactory().getUserDAO().getUserByEmail(toEmail);
+            userByEmail.setRecoveryHash(recoveryHash);
+            getDAOFactory().getUserDAO().updateUser(userByEmail);
+
             req.setAttribute("answer", sender.sendMail());
             req.getRequestDispatcher("/views/pages/passwordRecovery.jsp").forward(req, resp);
         } else if (!sender.checkEmail()) {
@@ -53,17 +53,16 @@ public class PasswordRecoveryServlet extends HttpServlet {
     }
 
 
-
-    private String generateRecoveryHash(){
+    private String generateRecoveryHash() {
         List<Integer> uniqueHash = new ArrayList<Integer>();
         Random random = new Random();
 
-        while(uniqueHash.size() < 10){
+        while (uniqueHash.size() < 10) {
             uniqueHash.add(random.nextInt(9));
         }
 
         String recoveryHash = "";
-        for(Integer hash : uniqueHash){
+        for (Integer hash : uniqueHash) {
             recoveryHash += hash.toString();
         }
 

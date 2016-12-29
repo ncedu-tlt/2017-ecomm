@@ -17,8 +17,8 @@
                         email: {
                             rules: [
                                 {
-                                    type   : 'empty',
-                                    prompt : 'Enter email!'
+                                    type: 'empty',
+                                    prompt: 'Enter email!'
                                 }
                             ]
                         }

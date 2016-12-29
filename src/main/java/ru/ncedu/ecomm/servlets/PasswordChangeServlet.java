@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
@@ -25,46 +24,52 @@ public class PasswordChangeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String[] parameters = getParameters(req);
-
+        String email = getEmailFromURL(req);
+        String recoveryHash = getRecoveryHashFromURL(req);
         String newPassword = req.getParameter("password");
-        req.setAttribute("answer", parameters);
-        req.getRequestDispatcher("/views/pages/passwordChange.jsp").forward(req, resp);
-    }
-
-    private String[] getParameters(HttpServletRequest req){
-        String patternUrl = req.getQueryString();
-        String[] parametersFromUrl = patternUrl.split("=");
-        String[] parametersFromArray = parametersFromUrl[1].split("&");
-
-        String email = parametersFromArray[0];
-        String recoveryHash = parametersFromArray[1];
-
-        return parametersFromArray;
-    }
-
-    private String changePassword(String newPassword, String email) {
-
-        if (checkPassword(newPassword)) {
-            List<User> users = getDAOFactory().getUserDAO().getUsers();
-            for (User user : users) {
-                if (user.getEmail().equals(email)) {
-                    user.setPassword(newPassword);
-                }
-            }
-            return "Password was changed";
-        } else {
-            return "Error! Password wasn't changed";
+        if(checkEmailAndRecoveryHash(email, recoveryHash) ){
+            updatePassword(email, newPassword);
+            req.setAttribute("answer", "Your password was change.");
+            req.getRequestDispatcher("/views/pages/passwordChange.jsp").forward(req, resp);
+        }
+        else{
+            req.setAttribute("answer", "Error. Try again to recovery your password");
+            req.getRequestDispatcher("/views/pages/passwordChange.jsp").forward(req, resp);
         }
     }
 
-    private boolean checkPassword(String newPassword) {
-        if (newPassword.length() < 4) {
-            return false;
-        } else if (newPassword.length() > 4 && newPassword.length() < 20) {
+    private String getEmailFromURL(HttpServletRequest req){
+        String pattern = req.getQueryString();
+        String[] parametersFromUrl = pattern.split("&");
+        String[] parameters = parametersFromUrl[0].split("=");
+        String email = parameters[1];
+
+        return email;
+    }
+
+    private String getRecoveryHashFromURL(HttpServletRequest req){
+        String pattern = req.getQueryString();
+        String[] parametersFromUrl = pattern.split("&");
+        String[] parameters = parametersFromUrl[1].split("=");
+        String recoveryHash = parameters[1];
+
+        return recoveryHash;
+    }
+
+    private boolean checkEmailAndRecoveryHash(String email, String recoveryHash) {
+        User userByEmail = getDAOFactory().getUserDAO().getUserByEmail(email);
+        if(recoveryHash.equals(userByEmail.getRecoveryHash())){
             return true;
-        } else {
+        }
+        else{
             return false;
         }
+    }
+
+    private void updatePassword(String email, String newPassword){
+        User userNewPassword = getDAOFactory().getUserDAO().getUserByEmail(email);
+        userNewPassword.setPassword(newPassword);
+        userNewPassword.setRecoveryHash(null);
+        getDAOFactory().getUserDAO().updateUser(userNewPassword);
     }
 }

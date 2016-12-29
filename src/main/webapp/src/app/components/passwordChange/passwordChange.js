@@ -15,18 +15,20 @@
                 .form({
                     fields: {
                         password: {
+                            identifier: 'password',
                             rules: [
                                 {
-                                    type   : 'empty',
-                                    prompt : 'Enter new password.'
+                                    type: 'length[' + 4 + ']',
+                                    prompt: 'Password must be at least 4 characters in length'
                                 }
                             ]
                         },
-                        passwordRepeat:{
-                            rules:[
+                        passwordConfirm: {
+                            identifier: 'passwordConfirm',
+                            rules: [
                                 {
-                                    type : 'empty',
-                                    prompt : 'Enter repeat of new password.'
+                                    type: 'match[password]',
+                                    prompt: 'Mismatched password'
                                 }
                             ]
                         }

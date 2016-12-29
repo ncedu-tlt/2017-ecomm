@@ -28,9 +28,12 @@
                     </form>
                 </div>
             </div>
-            <div class="ui message warning">
-                <p>${requestScope.answer}</p>
-            </div>
+            <c:set var="request" scope="session" value="${requestScope.answer}"/>
+            <c:if test="${request != null}">
+                <div class="ui message warning">
+                    <p>${requestScope.answer}</p>
+                </div>
+            </c:if>
         </div>
     </div>
 </div>

@@ -41,7 +41,7 @@ public class SendMail {
     public String sendMail() {
         if (searchMailInDatabase() == true) {
             return sendLetterToUser() ?
-                    "Letter with instructions was sent in your email." :
+                    "Letter with instructions was sent in your email. Please check your post." :
                     "Error. Letter wasn't sent in your email. Please try again";
         } else {
             return "Email address not registrated in the databse.";
@@ -52,7 +52,12 @@ public class SendMail {
         String regPattern = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
         Pattern patternEmailValidation = Pattern.compile(regPattern, Pattern.CASE_INSENSITIVE);
         Matcher matcher = patternEmailValidation.matcher(toEmail);
-        return matcher.find();
+        if(matcher.find() && searchMailInDatabase()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     User userByEmail;
@@ -86,7 +91,8 @@ public class SendMail {
     }
 
     private void sendMessageWithMimeMessage(MimeMessage message) throws MessagingException {
-        String textHtml = ("<a href='http://localhost:8050/passwordChange?email="+toEmail+"&recoveryHash="+recoveryHash+"'>To Recovery</a>");
+        String textHtml = ("<p>Please change your password in here:</p>" +
+                "<a href='http://localhost:8050/passwordChange?email="+toEmail+"&recoveryHash="+recoveryHash+"'>Change Password</a>");
 
         message.setFrom(new InternetAddress(this.fromEmail));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(this.toEmail));
