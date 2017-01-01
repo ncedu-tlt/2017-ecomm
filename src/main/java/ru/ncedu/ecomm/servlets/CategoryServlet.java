@@ -1,8 +1,10 @@
 package ru.ncedu.ecomm.servlets;
 
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import ru.ncedu.ecomm.data.models.*;
-import ru.ncedu.ecomm.data.models.builders.ProductItemsViewBuilder;
+import ru.ncedu.ecomm.servlets.viewmodel.CategoryViewModel;
+import ru.ncedu.ecomm.servlets.viewmodel.viewmodelbuilders.CategoryViewBuilder;
+import ru.ncedu.ecomm.servlets.viewmodel.viewmodelbuilders.ProductItemsViewBuilder;
+import ru.ncedu.ecomm.servlets.viewmodel.ProductItemsView;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,60 +31,77 @@ public class CategoryServlet extends HttpServlet {
 
     private void itemView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        Set<ProductItemsView> productToView = addProductToView();
-        List<Category> categoriesForView = categoriesFilter(getCategoryByParametr(request), productToView);
+        CategoryViewModel categoryViewModels = getCategoryViewModels(request);
 
-
-        request.setAttribute("categoriesForView", categoriesForView);
-        request.setAttribute("productToView", productToView);
+        request.setAttribute("categoriesForView", categoryViewModels);
         request.getRequestDispatcher("/views/pages/category.jsp").forward(request, response);
     }
 
-    private List<Category> categoriesFilter(List<Category> categoriesForView, Set<ProductItemsView> products) {
-        HashSet<Category> categoriesSet = new HashSet<>();
-        List<Category> filteringCategory = new ArrayList<>();
 
+    private CategoryViewModel getCategoryViewModels(HttpServletRequest request) {
+        long categoryId = Long.parseLong(request.getParameter("category_id"));
 
-        for (Category category : categoriesForView) {
-            if (category.getParentId() == 0) {
-                filteringCategory.add(category);
-            }
-            for (ProductItemsView product : products) {
-                if (product.getCategoryId() == category.getCategoryId()) {
-                    categoriesSet.add(category);
-                }
-            }
-        }
+        Category categoryByRequestId = getDAOFactory()
+                .getCategoryDAO()
+                .getCategoryById(categoryId);
 
-        filteringCategory.addAll(categoriesSet);
+        CategoryViewModel categoryByRequest = new CategoryViewBuilder()
+                .setCategoryId(categoryByRequestId.getCategoryId())
+                .setCategoryName(categoryByRequestId.getName())
+                .setProductInCategory(addProductToViewByCategoryId(categoryId))
+                .setChildCategory(addAllChildCategory(categoryId))
+                .build();
 
-        filteringCategory.sort((categoryOne, categoryTwo) -> {
-            if (categoryOne.getCategoryId() > categoryTwo.getCategoryId()) {
-                return 1;
-            } else if (categoryOne.getCategoryId() == categoryTwo.getCategoryId()) {
-                return 0;
-            } else {
-                return -1;
-            }
-        });
+        removeEmptyCategory(categoryByRequest);
+        sortingDataInCategory(categoryByRequest);
 
-
-        return filteringCategory;
+        return categoryByRequest;
     }
 
-    private HashSet<ProductItemsView> addProductToView() {
+    private List<CategoryViewModel> addAllChildCategory(long categoryId) {
+
+        CategoryViewModel categoryToChildList = null;
+
+        Set<CategoryViewModel> childCategory = new HashSet<>();
+        List<CategoryViewModel> categoryViewModels = new ArrayList<>();
+
+        List<Category> allCategories = getDAOFactory()
+                .getCategoryDAO()
+                .getCategories();
+
+        for (Category category : allCategories) {
+            if (category.getParentId() == categoryId)
+                categoryToChildList = new CategoryViewBuilder()
+                        .setCategoryId(category.getCategoryId())
+                        .setCategoryName(category.getName())
+                        .setProductInCategory(addProductToViewByCategoryId(category.getCategoryId()))
+                        .setChildCategory(addAllChildCategory(category.getCategoryId()))
+                        .setParentId(category.getParentId())
+                        .build();
+
+            childCategory.add(categoryToChildList);
+        }
+
+        categoryViewModels.addAll(childCategory);
+
+        return categoryViewModels;
+    }
+
+    private List<ProductItemsView> addProductToViewByCategoryId(long categoryId) {
 
         final int CHARACTERISTIC_ID_FOR_ONE_CATEGORY = 28;
         final int CHARACTERISTIC_ID_FOR_FIVE_CATEGORY = 29;
 
-        HashSet<ProductItemsView> productItemsViewList = new HashSet<>();
-        ProductItemsView ItemForView = null;
+        Set<ProductItemsView> productItemsViewList = new HashSet<>();
+        List<ProductItemsView> productItemsViews = new ArrayList<>();
+
+        ProductItemsView ItemForView;
         Rating productAvergeRating;
         CharacteristicValue characteristicValue;
 
         List<Product> products = getDAOFactory()
                 .getProductDAO()
-                .getProducts();
+                .getProductsByCategoryId(categoryId);
 
         long characteristicId = CHARACTERISTIC_ID_FOR_ONE_CATEGORY;
 
@@ -126,18 +145,57 @@ public class CategoryServlet extends HttpServlet {
             productItemsViewList.add(ItemForView);
         }
 
-        return productItemsViewList;
+        productItemsViews.addAll(productItemsViewList);
+
+        return productItemsViews;
     }
 
 
-    private List<Category> getCategoryByParametr(HttpServletRequest request) {
-        long id = Long.parseLong(request.getParameter("category_id"));
+    private void removeEmptyCategory(CategoryViewModel categoryViewModel) {
 
-        List<Category> categories = getDAOFactory().getCategoryDAO().getCategoriesByParentId(id);
-        if (categories.size() == 0) {
-            categories = getDAOFactory().getCategoryDAO().getCategoriesByHierarchy(id);
+        Iterator categoryIterator = categoryViewModel.getChildCategory().iterator();
+
+        while (categoryIterator.hasNext()) {
+            CategoryViewModel collectionItem = (CategoryViewModel) categoryIterator.next();
+            if (collectionItem != null &&
+                    collectionItem.getProductInCategory().size() == 0) {
+                categoryIterator.remove();
+            }
+
         }
+    }
 
-        return categories;
+    private void sortingDataInCategory(CategoryViewModel categoryByRequest) {
+        Comparator categoryComparator = (objectOne, objectTwo) -> {
+            CategoryViewModel firstCategory = (CategoryViewModel) objectOne;
+            CategoryViewModel secondCategory = (CategoryViewModel) objectTwo;
+
+            if (firstCategory.getCategoryId() > secondCategory.getCategoryId()) {
+                return 1;
+            } else {
+                return -1;
+            }
+        };
+        Comparator productComparator = (objectOne, objectTwo) -> {
+            ProductItemsView firstProduct = (ProductItemsView) objectOne;
+            ProductItemsView secondProduct = (ProductItemsView) objectTwo;
+
+            if (firstProduct.getPrice() > secondProduct.getPrice()) {
+                return 1;
+            } else {
+                return -1;
+            }
+        };
+
+        (categoryByRequest.getChildCategory()).sort(categoryComparator);
+
+        (categoryByRequest.getProductInCategory()).sort(productComparator);
+
+
+        for (CategoryViewModel categoryViewModel : categoryByRequest.getChildCategory()) {
+            if (categoryViewModel != null) {
+                (categoryViewModel.getProductInCategory()).sort(productComparator);
+            }
+        }
     }
 }
