@@ -27,7 +27,7 @@
                     </div>
                     <div class="field">
                         <div class="ui item right">
-                            <p><a href="#">Forgot</a> your password?</p>
+                            <p><a class="item" href="<c:url value="/recovery"/>">Forgot your password?</a></p>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         </button>
                     </div>
                     <div class="ui two column centered row grid">
-                            <p>Not a member yet?<a href="<c:url value="/"/>">Register</a> </p>
+                            <p>Not a member yet?<a class="item" href="<c:url value="/registration"/>">Register</a></p>
                     </div>
                 </div>
             </form>

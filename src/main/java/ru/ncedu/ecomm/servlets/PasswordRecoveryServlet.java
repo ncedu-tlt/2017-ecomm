@@ -37,7 +37,7 @@ public class PasswordRecoveryServlet extends HttpServlet {
         String fromEmail = "overylord@mail.ru";
         String recoveryHash = generateRecoveryHash();
 
-        SendMail sender = new SendMail(toEmail, fromEmail, "Test message", "Hello. It's a first letter: yandex.ru", recoveryHash);
+        SendMail sender = new SendMail(toEmail, fromEmail, "Password recovery", recoveryHash);
 
         if (sender.checkEmail()) {
             User userByEmail = getDAOFactory().getUserDAO().getUserByEmail(toEmail);

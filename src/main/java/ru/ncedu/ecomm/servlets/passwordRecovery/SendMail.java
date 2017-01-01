@@ -19,12 +19,11 @@ public class SendMail {
     private final Properties SERVER_PROPERETIES;
     private final String recoveryHash;
 
-    public SendMail(String toMail, String fromMail, String subject, String message, String recoveryHash) {
+    public SendMail(String toMail, String fromMail, String subject, String recoveryHash) {
         this.toEmail = toMail;
         this.fromEmail = fromMail;
         this.subjectLetter = subject;
         this.recoveryHash = recoveryHash;
-        this.messageLetter = message;
         SERVER_PROPERETIES = configServerForSend();
     }
 
@@ -71,8 +70,8 @@ public class SendMail {
     }
 
     private boolean sendLetterToUser() {
-        String username = "";//тут надо указать свой логин от gmail
-        String password = "";//тут надо указать свой пароль от gmail
+        String username = "netcracker.ecomm@gmail.com";//тут надо указать свой логин от gmail
+        String password = "Sx8jfJnbmd";//тут надо указать свой пароль от gmail
         userByEmail = getDAOFactory().getUserDAO().getUserByEmail(toEmail);
 
         Session session = Session.getInstance(SERVER_PROPERETIES, new Authenticator() {
