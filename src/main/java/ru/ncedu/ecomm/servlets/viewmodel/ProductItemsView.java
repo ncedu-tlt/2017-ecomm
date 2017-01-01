@@ -4,7 +4,7 @@ public class ProductItemsView {
     private long categoryId;
     private long productId;
     private int rating;
-    private long discountId;
+    private int discount;
     private long price;
     private String name;
     private String imageUrl;
@@ -16,7 +16,7 @@ public class ProductItemsView {
     public ProductItemsView(long categoryId,
                             long productId,
                             int rating,
-                            long discountId,
+                            int discount,
                             long price,
                             String name,
                             String imageUrl) {
@@ -24,7 +24,7 @@ public class ProductItemsView {
         this.categoryId = categoryId;
         this.productId = productId;
         this.rating = rating;
-        this.discountId = discountId;
+        this.discount = discount;
         this.price = price;
         this.name = name;
         this.imageUrl = imageUrl;
@@ -54,12 +54,12 @@ public class ProductItemsView {
         this.rating = rating;
     }
 
-    public long getDiscountId() {
-        return discountId;
+    public int getDiscount() {
+        return discount;
     }
 
-    public void setDiscountId(long discountId) {
-        this.discountId = discountId;
+    public void setDiscount(int discount) {
+        this.discount = discount;
     }
 
     public long getPrice() {

@@ -137,7 +137,7 @@ public class CategoryServlet extends HttpServlet {
                     .setCategoryId(product.getCategoryId())
                     .setName(product.getName())
                     .setPrice(product.getPrice())
-                    .setDiscountId(product.getDiscountId())
+                    .setDiscount(getDiscountValue(product.getDiscountId()))
                     .setImageUrl(imageUrl)
                     .setRating(productRating)
                     .build();
@@ -150,6 +150,21 @@ public class CategoryServlet extends HttpServlet {
         return productItemsViews;
     }
 
+    private int getDiscountValue(long discountId){
+        int discountValue = 0;
+
+        List<Discount> allDiscountValues = getDAOFactory()
+                .getDiscountDAO()
+                .getDiscount();
+
+        for (Discount discount : allDiscountValues){
+            if (discount.getDiscountId() == discountId){
+                discountValue = discount.getValue();
+            }
+        }
+
+        return discountValue;
+    }
 
     private void removeEmptyCategory(CategoryViewModel categoryViewModel) {
 

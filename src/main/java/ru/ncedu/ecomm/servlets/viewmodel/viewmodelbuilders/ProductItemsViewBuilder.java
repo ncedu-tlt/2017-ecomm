@@ -6,7 +6,7 @@ public class ProductItemsViewBuilder {
     private long categoryId;
     private long productId;
     private int rating;
-    private long discountId;
+    private int discount;
     private long price;
     private String name;
     private String imageUrl;
@@ -32,8 +32,8 @@ public class ProductItemsViewBuilder {
         return this;
     }
 
-    public ProductItemsViewBuilder setDiscountId(long discountId) {
-        this.discountId = discountId;
+    public ProductItemsViewBuilder setDiscount(int discount) {
+        this.discount = discount;
 
         return this;
     }
@@ -61,7 +61,7 @@ public class ProductItemsViewBuilder {
                 categoryId,
                 productId,
                 rating,
-                discountId,
+                discount,
                 price,
                 name,
                 imageUrl
