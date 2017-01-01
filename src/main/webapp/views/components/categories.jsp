@@ -1,32 +1,35 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <div class="jsCategoryComponent item">
+    <jsp:include page="/CategoriesServlet"/>
     <a class="ui floating labeled icon dropdown button categories">
         Categories
         <i class="dropdown icon"></i>
     </a>
     <div class="ui flowing basic admission popup">
         <div class="ui link vertical menu">
-            <div class="ui dropdown center aligned blue item">
-                <b>Electronics</b>
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                    <div class="header"><a href="#">Computers & Tablets</a></div>
-                    <a class="item">Desktops</a>
-                    <a class="item">Laptopss</a>
-                    <a class="item">Nettops</a>
-                    <a class="item">Mini PCs</a>
-                    <div class="header"><a href="#">TV, Video & Audio</a></div>
-                    <a class="item">TVs</a>
-                    <a class="item">Home Audio</a>
-                    <a class="item">Headphones</a>
+            <c:forEach var="categories" items="${requestScope.categories}">
+                <div class="ui dropdown center aligned blue item">
+                    <b>${categories.getHead().getName()}</b>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <c:forEach var="middle" items="${categories.getMiddles()}">
+                            <div class="header"><a href="#">${middle.getHead().getName()}</a></div>
+                            <c:if test="${!middle.getCategories().isEmpty()}">
+                                <c:forEach var="category" items="${middle.getCategories()}">
+                                    <a class="item">${category.getName()}</a>
+                                </c:forEach>
+                            </c:if>
+                        </c:forEach>
+                    </div>
                 </div>
-            </div>
-            <a class="item">Fashion</a>
-            <a class="item">Home & Garden</a>
-            <a class="item">Food</a>
-            <a class="item">Books</a>
+            </c:forEach>
         </div>
     </div>
 </div>
+
 <script type="text/javascript">
     window.frm.components.init('CategoryComponent', '.jsCategoryComponent');
 </script>
