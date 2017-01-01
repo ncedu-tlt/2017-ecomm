@@ -1,4 +1,4 @@
-package ru.ncedu.ecomm.data.models;
+package ru.ncedu.ecomm.servlets.viewmodel;
 
 public class ProductItemsView {
     private long categoryId;
@@ -8,6 +8,10 @@ public class ProductItemsView {
     private long price;
     private String name;
     private String imageUrl;
+
+    public ProductItemsView(){
+
+    }
 
     public ProductItemsView(long categoryId,
                             long productId,
