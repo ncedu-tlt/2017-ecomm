@@ -11,7 +11,7 @@
          * Executed on component initialization
          */
         init: function () {
-            var href=$(".item");
+            var href=$(".menuElement");
             href.click(function () {
                 changeActive($(this));
                 return false;

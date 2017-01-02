@@ -1,10 +1,10 @@
 <div class="ui center aligned text container jsDashboardComponent">
     <h3>Dashboard</h3>
     <div class="ui two item menu secondary pointing">
-        <a class="active item">
+        <a class="active item menuElement">
             Profile
         </a>
-        <a class="item">
+        <a class="item menuElement">
             Order History
         </a>
     </div>
