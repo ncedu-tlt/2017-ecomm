@@ -70,7 +70,8 @@ public class CategoryServlet extends HttpServlet {
                 .getCategories();
 
         for (Category category : allCategories) {
-            if (category.getParentId() == categoryId)
+
+            if (category.getParentId() == categoryId) {
                 categoryToChildList = new CategoryViewBuilder()
                         .setCategoryId(category.getCategoryId())
                         .setCategoryName(category.getName())
@@ -78,6 +79,7 @@ public class CategoryServlet extends HttpServlet {
                         .setChildCategory(addAllChildCategory(category.getCategoryId()))
                         .setParentId(category.getParentId())
                         .build();
+            }
 
             childCategory.add(categoryToChildList);
         }
@@ -150,15 +152,15 @@ public class CategoryServlet extends HttpServlet {
         return productItemsViews;
     }
 
-    private int getDiscountValue(long discountId){
+    private int getDiscountValue(long discountId) {
         int discountValue = 0;
 
         List<Discount> allDiscountValues = getDAOFactory()
                 .getDiscountDAO()
                 .getDiscount();
 
-        for (Discount discount : allDiscountValues){
-            if (discount.getDiscountId() == discountId){
+        for (Discount discount : allDiscountValues) {
+            if (discount.getDiscountId() == discountId) {
                 discountValue = discount.getValue();
             }
         }
@@ -172,8 +174,10 @@ public class CategoryServlet extends HttpServlet {
 
         while (categoryIterator.hasNext()) {
             CategoryViewModel collectionItem = (CategoryViewModel) categoryIterator.next();
+
             if (collectionItem != null &&
-                    collectionItem.getProductInCategory().size() == 0) {
+                    collectionItem.getProductInCategory().size() == 0 &&
+                    collectionItem.getChildCategory().size() < 2) {
                 categoryIterator.remove();
             }
 
@@ -182,30 +186,40 @@ public class CategoryServlet extends HttpServlet {
 
     private void sortingDataInCategory(CategoryViewModel categoryByRequest) {
         Comparator categoryComparator = (objectOne, objectTwo) -> {
-            CategoryViewModel firstCategory = (CategoryViewModel) objectOne;
-            CategoryViewModel secondCategory = (CategoryViewModel) objectTwo;
 
-            if (firstCategory.getCategoryId() > secondCategory.getCategoryId()) {
-                return 1;
-            } else {
-                return -1;
+            if (objectOne != null && objectTwo != null) {
+                CategoryViewModel firstCategory = (CategoryViewModel) objectOne;
+                CategoryViewModel secondCategory = (CategoryViewModel) objectTwo;
+
+                if (firstCategory.getCategoryId() > secondCategory.getCategoryId()) {
+                    return 1;
+                } else {
+                    return -1;
+                }
             }
+            return 0;
         };
         Comparator productComparator = (objectOne, objectTwo) -> {
-            ProductItemsView firstProduct = (ProductItemsView) objectOne;
-            ProductItemsView secondProduct = (ProductItemsView) objectTwo;
 
-            if (firstProduct.getPrice() > secondProduct.getPrice()) {
-                return 1;
-            } else {
-                return -1;
+            if (objectOne != null && objectTwo != null) {
+                ProductItemsView firstProduct = (ProductItemsView) objectOne;
+                ProductItemsView secondProduct = (ProductItemsView) objectTwo;
+
+                if (firstProduct.getPrice() > secondProduct.getPrice()) {
+                    return 1;
+                } else {
+                    return -1;
+                }
             }
+            return 0;
         };
 
-        (categoryByRequest.getChildCategory()).sort(categoryComparator);
-
-        (categoryByRequest.getProductInCategory()).sort(productComparator);
-
+        if (categoryByRequest.getChildCategory().size() != 0) {
+            (categoryByRequest.getChildCategory()).sort(categoryComparator);
+        }
+        if (categoryByRequest.getProductInCategory().size() != 0) {
+            (categoryByRequest.getProductInCategory()).sort(productComparator);
+        }
 
         for (CategoryViewModel categoryViewModel : categoryByRequest.getChildCategory()) {
             if (categoryViewModel != null) {
