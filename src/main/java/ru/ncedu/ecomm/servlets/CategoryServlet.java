@@ -21,15 +21,15 @@ public class CategoryServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        itemView(req, resp);
+        browseCategories(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        itemView(req, resp);
+        browseCategories(req, resp);
     }
 
-    private void itemView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void browseCategories(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         List<CategoryViewModel> categoryViewModels = getCategoryViewModels(request);
 
@@ -49,7 +49,7 @@ public class CategoryServlet extends HttpServlet {
                     .setCategoryId(category.getCategoryId())
                     .setCategoryName(category.getName())
                     .setProductInCategory(addProductToViewByCategoryId(category.getCategoryId()))
-                    .setChildCategory(addAllChildCategory(category.getCategoryId()))
+                    .setChildCategory(getChildCategories(category.getCategoryId()))
                     .build();
 
             removeEmptyCategory(categoryByRequest);
@@ -86,12 +86,10 @@ public class CategoryServlet extends HttpServlet {
         return categories;
     }
 
-    private List<CategoryViewModel> addAllChildCategory(long categoryId) {
+    private Set<CategoryViewModel> getChildCategories(long categoryId) {
 
-        CategoryViewModel categoryToChildList = null;
-
-        Set<CategoryViewModel> childCategory = new HashSet<>();
-        List<CategoryViewModel> categoryViewModels = new ArrayList<>();
+        CategoryViewModel categoryForChildList = null;
+        Set<CategoryViewModel> allChildCategories = new HashSet<>();
 
         List<Category> allCategories = getDAOFactory()
                 .getCategoryDAO()
@@ -100,26 +98,23 @@ public class CategoryServlet extends HttpServlet {
         for (Category category : allCategories) {
 
             if (category.getParentId() == categoryId) {
-                categoryToChildList = new CategoryViewBuilder()
+                categoryForChildList = new CategoryViewBuilder()
                         .setCategoryId(category.getCategoryId())
                         .setCategoryName(category.getName())
                         .setProductInCategory(addProductToViewByCategoryId(category.getCategoryId()))
-                        .setChildCategory(addAllChildCategory(category.getCategoryId()))
+                        .setChildCategory(getChildCategories(category.getCategoryId()))
                         .setParentId(category.getParentId())
                         .build();
             }
 
-            childCategory.add(categoryToChildList);
+            allChildCategories.add(categoryForChildList);
         }
-
-        categoryViewModels.addAll(childCategory);
-
-        return categoryViewModels;
+      return allChildCategories;
     }
 
     private Set<ProductItemsView> addProductToViewByCategoryId(long categoryId) {
 
-        long characteristicId = 28;
+        long characteristicIdForImageURL = 28;
 
         Set<ProductItemsView> notRepeatedItems = new HashSet<>();
 
@@ -131,15 +126,15 @@ public class CategoryServlet extends HttpServlet {
                 .getProductDAO()
                 .getProductsByCategoryId(categoryId);
 
-        for (Product product : products) {
+        String imageUrl = "/images/defaultimage/image.png";
 
-            String imageUrl = "/images/defaultimage/image.png";
+        for (Product product : products) {
             int productRating = 0;
 
             characteristicValue = getDAOFactory()
                     .getCharacteristicValueDAO()
                     .getCharacteristicValueByIdAndProductId(product.getId(),
-                            characteristicId);
+                            characteristicIdForImageURL);
 
             if (characteristicValue != null) {
                 imageUrl = characteristicValue.getCharacteristicValue();

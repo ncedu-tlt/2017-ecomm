@@ -25,8 +25,9 @@ public class PostgresCategoryDAO implements CategoryDAO {
                     "SELECT category_id," +
                             " parent_id, " +
                             "name, " +
-                            "description" +
-                            " FROM public.categories"
+                            "description " +
+                            "FROM public.categories " +
+                            "ORDER BY category_id ASC"
             );
             while (resultSet.next()) {
                 Category category = new CategoryBuilder()
@@ -157,7 +158,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
                             "name, " +
                             "description " +
                             "FROM public.categories " +
-                            "WHERE parent_id ISNULL"
+                            "WHERE parent_id ISNULL " +
+                            "ORDER BY category_id ASC"
             );
             while (resultSet.next()) {
                 Category category = new CategoryBuilder()

@@ -172,9 +172,10 @@ public class PostgresProductDAO implements ProductDAO {
                              "name, " +
                              "description, " +
                              "discount_id, " +
-                             "price" +
-                             " FROM public.products " +
-                             "WHERE category_id = ?")) {
+                             "price " +
+                             "FROM public.products " +
+                             "WHERE category_id = ? " +
+                             "ORDER BY product_id ASC")) {
 
             statement.setLong(1, categoryId);
 

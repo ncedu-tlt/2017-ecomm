@@ -10,7 +10,7 @@ public class CategoryViewBuilder {
     private long categoryId;
     private long parentId;
     private String  categoryName;
-    private List<CategoryViewModel> childCategory;
+    private Set<CategoryViewModel> childCategory;
     private Set<ProductItemsView> productInCategory;
 
     public CategoryViewBuilder() {
@@ -34,7 +34,7 @@ public class CategoryViewBuilder {
         return this;
     }
 
-    public CategoryViewBuilder setChildCategory(List<CategoryViewModel> childCategory) {
+    public CategoryViewBuilder setChildCategory(Set<CategoryViewModel> childCategory) {
         this.childCategory = childCategory;
 
         return this;
