@@ -31,39 +31,58 @@ public class CategoryServlet extends HttpServlet {
 
     private void itemView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        CategoryViewModel categoryViewModels = getCategoryViewModels(request);
+        List<CategoryViewModel> categoryViewModels = getCategoryViewModels(request);
 
         request.setAttribute("categoriesForView", categoryViewModels);
         request.getRequestDispatcher("/views/pages/category.jsp").forward(request, response);
     }
 
 
-    private CategoryViewModel getCategoryViewModels(HttpServletRequest request) {
-        long DEFAULT_VALUE = 1;
-        long categoryId = Long.parseLong(request.getParameter("category_id"));
+    private List<CategoryViewModel> getCategoryViewModels(HttpServletRequest request) {
+        long categoryId = 0;
+        String categoryIdByRequest;
+
+        List<Category> categories;
+        List<CategoryViewModel> viewCategories = new ArrayList<>();
+
+
+        categoryIdByRequest = request.getParameter("category_id");
+
+        if (categoryIdByRequest != null) {
+            categoryId = Long.parseLong(categoryIdByRequest);
+        }
 
         Category categoryByRequestId = getDAOFactory()
                 .getCategoryDAO()
                 .getCategoryById(categoryId);
 
-        if (categoryByRequestId == null) {
+        if (categoryIdByRequest != null) {
+            categories = new ArrayList<>();
 
-            categoryByRequestId = getDAOFactory()
+            categories.add(categoryByRequestId);
+        } else {
+            categories = getDAOFactory()
                     .getCategoryDAO()
-                    .getCategoryById(DEFAULT_VALUE);
+                    .getParentCategory();
         }
 
-        CategoryViewModel categoryByRequest = new CategoryViewBuilder()
-                .setCategoryId(categoryByRequestId.getCategoryId())
-                .setCategoryName(categoryByRequestId.getName())
-                .setProductInCategory(addProductToViewByCategoryId(categoryId))
-                .setChildCategory(addAllChildCategory(categoryId))
-                .build();
+        for (Category category : categories) {
 
-        removeEmptyCategory(categoryByRequest);
-        sortingDataInCategory(categoryByRequest);
+            CategoryViewModel categoryByRequest = new CategoryViewBuilder()
+                    .setCategoryId(category.getCategoryId())
+                    .setCategoryName(category.getName())
+                    .setProductInCategory(addProductToViewByCategoryId(category.getCategoryId()))
+                    .setChildCategory(addAllChildCategory(category.getCategoryId()))
+                    .build();
 
-        return categoryByRequest;
+            removeEmptyCategory(categoryByRequest);
+            sortingDataInCategory(categoryByRequest);
+
+            viewCategories.add(categoryByRequest);
+        }
+
+
+        return viewCategories;
 
     }
 
@@ -118,7 +137,7 @@ public class CategoryServlet extends HttpServlet {
 
         for (Product product : products) {
 
-            String imageUrl = "\\images\\defaultimage\\image.png";
+            String imageUrl = "/images/defaultimage/image.png";
             int productRating = 0;
 
             if (product.getCategoryId() == 5) {
@@ -192,7 +211,7 @@ public class CategoryServlet extends HttpServlet {
     }
 
     private boolean checkForRemoving(CategoryViewModel collectionItem) {
-        return  collectionItem != null &&
+        return collectionItem != null &&
                 collectionItem.getProductInCategory().size() == 0 &&
                 collectionItem.getChildCategory().size() < 2;
 

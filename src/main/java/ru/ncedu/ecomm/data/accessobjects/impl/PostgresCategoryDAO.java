@@ -7,6 +7,7 @@ import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static ru.ncedu.ecomm.utils.DBUtils.closeConnection;
@@ -142,6 +143,36 @@ public class PostgresCategoryDAO implements CategoryDAO {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    @Override
+    public List<Category> getParentCategory() {
+        List<Category> categories = new ArrayList<>();
+
+        try (Connection connection = DBUtils.getConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT category_id, " +
+                            "parent_id, " +
+                            "name, " +
+                            "description " +
+                            "FROM public.categories " +
+                            "WHERE parent_id ISNULL"
+            );
+            while (resultSet.next()) {
+                Category category = new CategoryBuilder()
+                        .setCategoryId(resultSet.getLong("category_id"))
+                        .setParentId(resultSet.getLong("parent_id"))
+                        .setName(resultSet.getString("name"))
+                        .setDescription(resultSet.getString("description"))
+                        .build();
+
+                categories.add(category);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return categories;
     }
 
     @Override

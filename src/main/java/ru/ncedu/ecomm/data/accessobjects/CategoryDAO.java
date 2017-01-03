@@ -18,5 +18,7 @@ public interface CategoryDAO {
 
     List<Category> getCategoriesByParentId(long parentId);
 
+    List<Category> getParentCategory();
+
     List<Category> getCategoriesByHierarchy(long parentId);
 }

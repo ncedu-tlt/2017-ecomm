@@ -1,9 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="category" scope="page" value="${requestScope.categoriesForView}"/>
-<div class="ui container jsProductListComponent main-content" style="margin: 1.5em 0;">
+<c:forEach var="category" items="${requestScope.categoriesForView}">
+    <div class="ui container jsProductListComponent main-content" style="margin: 1.5em 0;">
     <h2 class="ui center aligned header horizontal divider">
         <a href="\category?category_id=${category.getCategoryId()}">
-            ${category.getCategoryName()}
+                ${category.getCategoryName()}
         </a>
     </h2>
     <div class="ui grid centered container">
@@ -91,6 +91,7 @@
             </div>
         </c:forEach>
     </c:forEach>
+</c:forEach>
 </div>
 <script>
     window.frm.components.init('ProductListComponent', '.jsProductListComponent');
