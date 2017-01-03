@@ -39,32 +39,9 @@ public class CategoryServlet extends HttpServlet {
 
 
     private List<CategoryViewModel> getCategoryViewModels(HttpServletRequest request) {
-        long categoryId = 0;
-        String categoryIdByRequest;
 
-        List<Category> categories;
+        List<Category> categories = getCategoryListByRequest(request);
         List<CategoryViewModel> viewCategories = new ArrayList<>();
-
-
-        categoryIdByRequest = request.getParameter("category_id");
-
-        if (categoryIdByRequest != null) {
-            categoryId = Long.parseLong(categoryIdByRequest);
-        }
-
-        Category categoryByRequestId = getDAOFactory()
-                .getCategoryDAO()
-                .getCategoryById(categoryId);
-
-        if (categoryIdByRequest != null) {
-            categories = new ArrayList<>();
-
-            categories.add(categoryByRequestId);
-        } else {
-            categories = getDAOFactory()
-                    .getCategoryDAO()
-                    .getParentCategory();
-        }
 
         for (Category category : categories) {
 
@@ -76,14 +53,37 @@ public class CategoryServlet extends HttpServlet {
                     .build();
 
             removeEmptyCategory(categoryByRequest);
-            sortingDataInCategory(categoryByRequest);
-
             viewCategories.add(categoryByRequest);
         }
 
-
         return viewCategories;
+    }
 
+    private List<Category> getCategoryListByRequest(HttpServletRequest request) {
+        List<Category> categories;
+        long categoryId = 0;
+
+        String categoryIdByRequest = request.getParameter("category_id");
+
+        if (categoryIdByRequest != null) {
+            categoryId = Long.parseLong(categoryIdByRequest);
+        }
+
+        if (categoryIdByRequest != null) {
+            categories = new ArrayList<>();
+
+            Category categoryByRequestId = getDAOFactory()
+                    .getCategoryDAO()
+                    .getCategoryById(categoryId);
+
+            categories.add(categoryByRequestId);
+        } else {
+            categories = getDAOFactory()
+                    .getCategoryDAO()
+                    .getParentCategory();
+        }
+
+        return categories;
     }
 
     private List<CategoryViewModel> addAllChildCategory(long categoryId) {
@@ -117,13 +117,11 @@ public class CategoryServlet extends HttpServlet {
         return categoryViewModels;
     }
 
-    private List<ProductItemsView> addProductToViewByCategoryId(long categoryId) {
+    private Set<ProductItemsView> addProductToViewByCategoryId(long categoryId) {
 
-        final int CHARACTERISTIC_ID_FOR_ONE_CATEGORY = 28;
-        final int CHARACTERISTIC_ID_FOR_FIVE_CATEGORY = 29;
+        long characteristicId = 28;
 
         Set<ProductItemsView> notRepeatedItems = new HashSet<>();
-        List<ProductItemsView> productItemsViews = new ArrayList<>();
 
         ProductItemsView ItemForView;
         Rating productAvergeRating;
@@ -133,16 +131,10 @@ public class CategoryServlet extends HttpServlet {
                 .getProductDAO()
                 .getProductsByCategoryId(categoryId);
 
-        long characteristicId = CHARACTERISTIC_ID_FOR_ONE_CATEGORY;
-
         for (Product product : products) {
 
             String imageUrl = "/images/defaultimage/image.png";
             int productRating = 0;
-
-            if (product.getCategoryId() == 5) {
-                characteristicId = CHARACTERISTIC_ID_FOR_FIVE_CATEGORY;
-            }
 
             characteristicValue = getDAOFactory()
                     .getCharacteristicValueDAO()
@@ -175,9 +167,7 @@ public class CategoryServlet extends HttpServlet {
             notRepeatedItems.add(ItemForView);
         }
 
-        productItemsViews.addAll(notRepeatedItems);
-
-        return productItemsViews;
+        return notRepeatedItems;
     }
 
     private int getDiscountValue(long discountId) {
@@ -214,51 +204,5 @@ public class CategoryServlet extends HttpServlet {
         return collectionItem != null &&
                 collectionItem.getProductInCategory().size() == 0 &&
                 collectionItem.getChildCategory().size() < 2;
-
-    }
-
-    private void sortingDataInCategory(CategoryViewModel categoryByRequest) {
-        Comparator categoryComparator = (objectOne, objectTwo) -> {
-
-            if (objectOne != null && objectTwo != null) {
-                CategoryViewModel firstCategory = (CategoryViewModel) objectOne;
-                CategoryViewModel secondCategory = (CategoryViewModel) objectTwo;
-
-                if (firstCategory.getCategoryId() > secondCategory.getCategoryId()) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            }
-            return 0;
-        };
-        Comparator productComparator = (objectOne, objectTwo) -> {
-
-            if (objectOne != null && objectTwo != null) {
-                ProductItemsView firstProduct = (ProductItemsView) objectOne;
-                ProductItemsView secondProduct = (ProductItemsView) objectTwo;
-
-                if (firstProduct.getPrice() > secondProduct.getPrice()) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            }
-            return 0;
-        };
-
-
-        if (categoryByRequest.getChildCategory().size() != 0) {
-            (categoryByRequest.getChildCategory()).sort(categoryComparator);
-        }
-        if (categoryByRequest.getProductInCategory().size() != 0) {
-            (categoryByRequest.getProductInCategory()).sort(productComparator);
-        }
-
-        for (CategoryViewModel categoryViewModel : categoryByRequest.getChildCategory()) {
-            if (categoryViewModel != null) {
-                (categoryViewModel.getProductInCategory()).sort(productComparator);
-            }
-        }
     }
 }

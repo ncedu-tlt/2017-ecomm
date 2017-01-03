@@ -8,7 +8,7 @@ public class CategoryViewModel {
     private long parentId;
     private String  categoryName;
     private List<CategoryViewModel> childCategory;
-    private List<ProductItemsView> productInCategory;
+    private Set<ProductItemsView> productInCategory;
 
     public CategoryViewModel() {
     }
@@ -17,7 +17,7 @@ public class CategoryViewModel {
                              long parentId,
                              String  categoryName,
                              List<CategoryViewModel> childCategory,
-                             List<ProductItemsView> productInCategory) {
+                             Set<ProductItemsView> productInCategory) {
 
         this.categoryId = categoryId;
         this.parentId = parentId;
@@ -58,11 +58,11 @@ public class CategoryViewModel {
         this.childCategory = childCategory;
     }
 
-    public List<ProductItemsView> getProductInCategory() {
+    public Set<ProductItemsView> getProductInCategory() {
         return productInCategory;
     }
 
-    public void setProductInCategory(List<ProductItemsView> productInCategory) {
+    public void setProductInCategory(Set<ProductItemsView> productInCategory) {
         this.productInCategory = productInCategory;
     }
 }
