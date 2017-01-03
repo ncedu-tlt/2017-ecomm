@@ -49,10 +49,10 @@ public class CategoryServlet extends HttpServlet {
         for (Category category : categories) {
 
             CategoryViewModel categoryByRequest = new CategoryViewBuilder()
-                    .setCategoryId(category.getCategoryId())
-                    .setCategoryName(category.getName())
-                    .setProductInCategory(addProductToViewByCategoryId(category.getCategoryId()))
-                    .setChildCategory(getChildCategories(category.getCategoryId()))
+                    .setId(category.getCategoryId())
+                    .setName(category.getName())
+                    .setProducts(addProductToViewByCategoryId(category.getCategoryId()))
+                    .setCategories(getChildCategories(category.getCategoryId()))
                     .build();
 
             removeEmptyCategory(categoryByRequest);
@@ -102,17 +102,16 @@ public class CategoryServlet extends HttpServlet {
 
             if (category.getParentId() == categoryId) {
                 categoryForChildList = new CategoryViewBuilder()
-                        .setCategoryId(category.getCategoryId())
-                        .setCategoryName(category.getName())
-                        .setProductInCategory(addProductToViewByCategoryId(category.getCategoryId()))
-                        .setChildCategory(getChildCategories(category.getCategoryId()))
-                        .setParentId(category.getParentId())
+                        .setId(category.getCategoryId())
+                        .setName(category.getName())
+                        .setProducts(addProductToViewByCategoryId(category.getCategoryId()))
+                        .setCategories(getChildCategories(category.getCategoryId()))
                         .build();
             }
 
             allChildCategories.add(categoryForChildList);
         }
-      return allChildCategories;
+        return allChildCategories;
     }
 
     private Set<ProductViewModel> addProductToViewByCategoryId(long categoryId) {
@@ -127,9 +126,10 @@ public class CategoryServlet extends HttpServlet {
                 .getProductDAO()
                 .getProductsByCategoryId(categoryId);
 
-        String imageUrl = DEFAULT_IMAGE_URL;
 
         for (Product product : products) {
+
+            String imageUrl = DEFAULT_IMAGE_URL;
             int productRating = 0;
 
             characteristicValue = getDAOFactory()
@@ -152,7 +152,6 @@ public class CategoryServlet extends HttpServlet {
 
             ItemForView = new ProductItemsViewBuilder()
                     .setProductId(product.getId())
-                    .setCategoryId(product.getCategoryId())
                     .setName(product.getName())
                     .setPrice(product.getPrice())
                     .setDiscount(getDiscountValue(product.getDiscountId()))
@@ -184,7 +183,7 @@ public class CategoryServlet extends HttpServlet {
 
     private void removeEmptyCategory(CategoryViewModel categoryViewModel) {
 
-        Iterator categoryIterator = categoryViewModel.getChildCategory().iterator();
+        Iterator categoryIterator = categoryViewModel.getCategories().iterator();
 
         while (categoryIterator.hasNext()) {
             CategoryViewModel collectionItem = (CategoryViewModel) categoryIterator.next();
@@ -198,7 +197,7 @@ public class CategoryServlet extends HttpServlet {
 
     private boolean checkForRemoving(CategoryViewModel collectionItem) {
         return collectionItem != null &&
-                collectionItem.getProductInCategory().size() == 0 &&
-                collectionItem.getChildCategory().size() < 2;
+                collectionItem.getProducts().isEmpty() &&
+                collectionItem.getCategories().size() < 2;
     }
 }

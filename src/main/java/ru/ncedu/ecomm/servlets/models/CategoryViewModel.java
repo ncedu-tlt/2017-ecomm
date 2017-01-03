@@ -3,65 +3,53 @@ package ru.ncedu.ecomm.servlets.models;
 import java.util.Set;
 
 public class CategoryViewModel {
-    private long categoryId;
-    private long parentId;
-    private String  categoryName;
-    private Set<CategoryViewModel> childCategory;
-    private Set<ProductViewModel> productInCategory;
+    private long id;
+    private String  name;
+    private Set<CategoryViewModel> categories;
+    private Set<ProductViewModel> products;
 
     public CategoryViewModel() {
     }
 
-    public CategoryViewModel(long categoryId,
-                             long parentId,
-                             String  categoryName,
-                             Set<CategoryViewModel> childCategory,
-                             Set<ProductViewModel> productInCategory) {
-
-        this.categoryId = categoryId;
-        this.parentId = parentId;
-        this.categoryName = categoryName;
-        this.childCategory = childCategory;
-        this.productInCategory = productInCategory;
+    public CategoryViewModel(long id,
+                             String  name,
+                             Set<CategoryViewModel> categories,
+                             Set<ProductViewModel> products) {
+        this.id = id;
+        this.name = name;
+        this.categories = categories;
+        this.products = products;
     }
 
-    public long getParentId() {
-        return parentId;
+    public long getId() {
+        return id;
     }
 
-    public void setParentId(long parentId) {
-        this.parentId = parentId;
+    public void setId(long categoryId) {
+        this.id = categoryId;
     }
 
-    public long getCategoryId() {
-        return categoryId;
+    public String  getName() {
+        return name;
     }
 
-    public void setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
+    public void setName(String  categoryName) {
+        this.name = name;
     }
 
-    public String  getCategoryName() {
-        return categoryName;
+    public Set<CategoryViewModel> getCategories() {
+        return categories;
     }
 
-    public void setCategoryName(String  categoryName) {
-        this.categoryName = categoryName;
+    public void setCategories(Set<CategoryViewModel> childCategory) {
+        this.categories = childCategory;
     }
 
-    public Set<CategoryViewModel> getChildCategory() {
-        return childCategory;
+    public Set<ProductViewModel> getProducts() {
+        return products;
     }
 
-    public void setChildCategory(Set<CategoryViewModel> childCategory) {
-        this.childCategory = childCategory;
-    }
-
-    public Set<ProductViewModel> getProductInCategory() {
-        return productInCategory;
-    }
-
-    public void setProductInCategory(Set<ProductViewModel> productInCategory) {
-        this.productInCategory = productInCategory;
+    public void setProducts(Set<ProductViewModel> products) {
+        this.products = products;
     }
 }

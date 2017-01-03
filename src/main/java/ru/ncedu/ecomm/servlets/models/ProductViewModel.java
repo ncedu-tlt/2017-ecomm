@@ -1,28 +1,25 @@
 package ru.ncedu.ecomm.servlets.models;
 
 public class ProductViewModel {
-    private long categoryId;
-    private long productId;
+    private long id;
     private int rating;
     private int discount;
     private long price;
     private String name;
     private String imageUrl;
 
-    public ProductViewModel(){
+    public ProductViewModel() {
 
     }
 
-    public ProductViewModel(long categoryId,
-                            long productId,
+    public ProductViewModel(long productId,
                             int rating,
                             int discount,
                             long price,
                             String name,
                             String imageUrl) {
 
-        this.categoryId = categoryId;
-        this.productId = productId;
+        this.id = productId;
         this.rating = rating;
         this.discount = discount;
         this.price = price;
@@ -30,20 +27,12 @@ public class ProductViewModel {
         this.imageUrl = imageUrl;
     }
 
-    public long getCategoryId() {
-        return categoryId;
+    public long getId() {
+        return id;
     }
 
-    public void setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(long productId) {
-        this.productId = productId;
+    public void setId(long productId) {
+        this.id = productId;
     }
 
     public int getRating() {

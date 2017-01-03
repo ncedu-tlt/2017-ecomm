@@ -3,7 +3,6 @@ package ru.ncedu.ecomm.servlets.models.builders;
 import ru.ncedu.ecomm.servlets.models.ProductViewModel;
 
 public class ProductItemsViewBuilder {
-    private long categoryId;
     private long productId;
     private int rating;
     private int discount;
@@ -12,12 +11,6 @@ public class ProductItemsViewBuilder {
     private String imageUrl;
 
     public ProductItemsViewBuilder() {
-    }
-
-    public ProductItemsViewBuilder setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
-
-        return this;
     }
 
     public ProductItemsViewBuilder setProductId(long productId) {
@@ -58,7 +51,6 @@ public class ProductItemsViewBuilder {
 
     public ProductViewModel build(){
         return new ProductViewModel(
-                categoryId,
                 productId,
                 rating,
                 discount,

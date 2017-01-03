@@ -2,16 +2,16 @@
 <c:forEach var="category" items="${requestScope.categoriesForView}">
     <div class="ui container jsProductListComponent main-content" style="margin: 1.5em 0;">
     <h2 class="ui center aligned header horizontal divider">
-        <a href="\category?category_id=${category.getCategoryId()}">
-                ${category.getCategoryName()}
+        <a href="\category?category_id=${category.getId()}">
+                ${category.getName()}
         </a>
     </h2>
     <div class="ui grid centered container">
-        <c:forEach var="product" items="${category.getProductInCategory()}">
+        <c:forEach var="product" items="${category.getProducts()}">
             <form action="shoppingCart.jsp" method="post" class="five wide column">
                 <img class="ui fluid image" src="${product.getImageUrl()}">
                 <h3 class="ui center aligned header horizontal divider">
-                    <a href="\product?product_id=${product.getProductId()}">
+                    <a href="\product?product_id=${product.getId()}">
                             ${product.getName()}
                     </a>
                 </h3>
@@ -24,23 +24,23 @@
                     $${product.getPrice()}
                 </h3>
                 <button class="ui labeled icon  fluid blue button" type="submit"
-                        value="${product.getProductId()}">
+                        value="${product.getId()}">
                     <i class="add to car icon"></i>
                     Add to card
                 </button>
             </form>
         </c:forEach>
     </div>
-    <c:forEach var="childCategory" items="${category.getChildCategory()}">
+    <c:forEach var="childCategory" items="${category.getCategories()}">
         <h2 class="ui center aligned header horizontal divider">
-            <a href="\category?category_id=${childCategory.categoryId}">${childCategory.getCategoryName()}</a>
+            <a href="\category?category_id=${childCategory.getId()}">${childCategory.getName()}</a>
         </h2>
         <div class="ui grid centered container">
-            <c:forEach var="product" items="${childCategory.getProductInCategory()}">
+            <c:forEach var="product" items="${childCategory.getProducts()}">
                 <form action="shoppingCart.jsp" method="post" class="five wide column">
                     <img class="ui fluid image" src="${product.getImageUrl()}">
                     <h3 class="ui center aligned header horizontal divider">
-                        <a href="\product?product_id=${product.getProductId()}">
+                        <a href="\product?product_id=${product.getId()}">
                                 ${product.getName()}
                         </a>
                     </h3>
@@ -53,23 +53,23 @@
                         $${product.getPrice()}
                     </h3>
                     <button class="ui labeled icon  fluid blue button" type="submit"
-                            value="${product.getProductId()}">
+                            value="${product.getId()}">
                         <i class="add to car icon"></i>
                         Add to card
                     </button>
                 </form>
             </c:forEach>
         </div>
-        <c:forEach var="entry" items="${childCategory.getChildCategory()}">
+        <c:forEach var="entry" items="${childCategory.getCategories()}">
             <h2 class="ui center aligned header horizontal divider">
-                <a href="\category?category_id=${entry.categoryId}">${entry.getCategoryName()}</a>
+                <a href="\category?category_id=${entry.getId()}">${entry.getName()}</a>
             </h2>
             <div class="ui grid centered container">
-                <c:forEach var="product" items="${entry.getProductInCategory()}">
+                <c:forEach var="product" items="${entry.getProducts()}">
                     <form action="shoppingCart.jsp" method="post" class="five wide column">
                         <img class="ui fluid image" src="${product.getImageUrl()}">
                         <h3 class="ui center aligned header horizontal divider">
-                            <a href="\product?product_id=${product.getProductId()}">
+                            <a href="\product?product_id=${product.getId()}">
                                     ${product.getName()}
                             </a>
                         </h3>
@@ -82,7 +82,7 @@
                             $${product.getPrice()}
                         </h3>
                         <button class="ui labeled icon  fluid blue button" type="submit"
-                                value="${product.getProductId()}">
+                                value="${product.getId()}">
                             <i class="add to car icon"></i>
                             Add to card
                         </button>
