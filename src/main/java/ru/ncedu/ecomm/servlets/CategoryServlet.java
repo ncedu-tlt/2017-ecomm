@@ -1,10 +1,10 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.models.*;
-import ru.ncedu.ecomm.servlets.viewmodel.CategoryViewModel;
-import ru.ncedu.ecomm.servlets.viewmodel.viewmodelbuilders.CategoryViewBuilder;
-import ru.ncedu.ecomm.servlets.viewmodel.viewmodelbuilders.ProductItemsViewBuilder;
-import ru.ncedu.ecomm.servlets.viewmodel.ProductItemsView;
+import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
+import ru.ncedu.ecomm.servlets.models.builders.CategoryViewBuilder;
+import ru.ncedu.ecomm.servlets.models.builders.ProductItemsViewBuilder;
+import ru.ncedu.ecomm.servlets.models.ProductItemsView;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

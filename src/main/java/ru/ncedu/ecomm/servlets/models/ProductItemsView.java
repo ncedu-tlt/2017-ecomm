@@ -1,4 +1,4 @@
-package ru.ncedu.ecomm.servlets.viewmodel;
+package ru.ncedu.ecomm.servlets.models;
 
 public class ProductItemsView {
     private long categoryId;

@@ -1,6 +1,6 @@
-package ru.ncedu.ecomm.servlets.viewmodel.viewmodelbuilders;
+package ru.ncedu.ecomm.servlets.models.builders;
 
-import ru.ncedu.ecomm.servlets.viewmodel.ProductItemsView;
+import ru.ncedu.ecomm.servlets.models.ProductItemsView;
 
 public class ProductItemsViewBuilder {
     private long categoryId;

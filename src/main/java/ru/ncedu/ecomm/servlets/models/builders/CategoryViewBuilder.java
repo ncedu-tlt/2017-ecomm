@@ -1,9 +1,8 @@
-package ru.ncedu.ecomm.servlets.viewmodel.viewmodelbuilders;
+package ru.ncedu.ecomm.servlets.models.builders;
 
-import ru.ncedu.ecomm.servlets.viewmodel.CategoryViewModel;
-import ru.ncedu.ecomm.servlets.viewmodel.ProductItemsView;
+import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
+import ru.ncedu.ecomm.servlets.models.ProductItemsView;
 
-import java.util.List;
 import java.util.Set;
 
 public class CategoryViewBuilder {

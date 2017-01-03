@@ -1,6 +1,5 @@
-package ru.ncedu.ecomm.servlets.viewmodel;
+package ru.ncedu.ecomm.servlets.models;
 
-import java.util.List;
 import java.util.Set;
 
 public class CategoryViewModel {
