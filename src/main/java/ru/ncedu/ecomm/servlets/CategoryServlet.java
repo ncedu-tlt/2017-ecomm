@@ -19,6 +19,9 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 @WebServlet(name = "CategoryServlet", urlPatterns = {"/category"})
 public class CategoryServlet extends HttpServlet {
 
+    private final long CHARACTERISTIC_ID_FOR_IMAGE_URL = 28;
+    private final String DEFAULT_IMAGE_URL = "/images/defaultimage/image.png";
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         browseCategories(req, resp);
@@ -114,8 +117,6 @@ public class CategoryServlet extends HttpServlet {
 
     private Set<ProductItemsView> addProductToViewByCategoryId(long categoryId) {
 
-        long characteristicIdForImageURL = 28;
-
         Set<ProductItemsView> notRepeatedItems = new HashSet<>();
 
         ProductItemsView ItemForView;
@@ -126,7 +127,7 @@ public class CategoryServlet extends HttpServlet {
                 .getProductDAO()
                 .getProductsByCategoryId(categoryId);
 
-        String imageUrl = "/images/defaultimage/image.png";
+        String imageUrl = DEFAULT_IMAGE_URL;
 
         for (Product product : products) {
             int productRating = 0;
@@ -134,7 +135,7 @@ public class CategoryServlet extends HttpServlet {
             characteristicValue = getDAOFactory()
                     .getCharacteristicValueDAO()
                     .getCharacteristicValueByIdAndProductId(product.getId(),
-                            characteristicIdForImageURL);
+                            CHARACTERISTIC_ID_FOR_IMAGE_URL);
 
             if (characteristicValue != null) {
                 imageUrl = characteristicValue.getCharacteristicValue();
