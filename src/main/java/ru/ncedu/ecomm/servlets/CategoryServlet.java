@@ -39,23 +39,32 @@ public class CategoryServlet extends HttpServlet {
 
 
     private CategoryViewModel getCategoryViewModels(HttpServletRequest request) {
+        long DEFAULT_VALUE = 1;
         long categoryId = Long.parseLong(request.getParameter("category_id"));
 
         Category categoryByRequestId = getDAOFactory()
                 .getCategoryDAO()
                 .getCategoryById(categoryId);
 
-        CategoryViewModel categoryByRequest = new CategoryViewBuilder()
-                .setCategoryId(categoryByRequestId.getCategoryId())
-                .setCategoryName(categoryByRequestId.getName())
-                .setProductInCategory(addProductToViewByCategoryId(categoryId))
-                .setChildCategory(addAllChildCategory(categoryId))
-                .build();
+         if (categoryByRequestId == null){
 
-        removeEmptyCategory(categoryByRequest);
-        sortingDataInCategory(categoryByRequest);
+         categoryByRequestId = getDAOFactory()
+                     .getCategoryDAO()
+                     .getCategoryById(DEFAULT_VALUE);
+         }
 
-        return categoryByRequest;
+            CategoryViewModel categoryByRequest = new CategoryViewBuilder()
+                    .setCategoryId(categoryByRequestId.getCategoryId())
+                    .setCategoryName(categoryByRequestId.getName())
+                    .setProductInCategory(addProductToViewByCategoryId(categoryId))
+                    .setChildCategory(addAllChildCategory(categoryId))
+                    .build();
+
+            removeEmptyCategory(categoryByRequest);
+            sortingDataInCategory(categoryByRequest);
+
+            return categoryByRequest;
+
     }
 
     private List<CategoryViewModel> addAllChildCategory(long categoryId) {
