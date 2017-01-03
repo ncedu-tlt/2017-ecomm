@@ -46,24 +46,24 @@ public class CategoryServlet extends HttpServlet {
                 .getCategoryDAO()
                 .getCategoryById(categoryId);
 
-         if (categoryByRequestId == null){
+        if (categoryByRequestId == null) {
 
-         categoryByRequestId = getDAOFactory()
-                     .getCategoryDAO()
-                     .getCategoryById(DEFAULT_VALUE);
-         }
+            categoryByRequestId = getDAOFactory()
+                    .getCategoryDAO()
+                    .getCategoryById(DEFAULT_VALUE);
+        }
 
-            CategoryViewModel categoryByRequest = new CategoryViewBuilder()
-                    .setCategoryId(categoryByRequestId.getCategoryId())
-                    .setCategoryName(categoryByRequestId.getName())
-                    .setProductInCategory(addProductToViewByCategoryId(categoryId))
-                    .setChildCategory(addAllChildCategory(categoryId))
-                    .build();
+        CategoryViewModel categoryByRequest = new CategoryViewBuilder()
+                .setCategoryId(categoryByRequestId.getCategoryId())
+                .setCategoryName(categoryByRequestId.getName())
+                .setProductInCategory(addProductToViewByCategoryId(categoryId))
+                .setChildCategory(addAllChildCategory(categoryId))
+                .build();
 
-            removeEmptyCategory(categoryByRequest);
-            sortingDataInCategory(categoryByRequest);
+        removeEmptyCategory(categoryByRequest);
+        sortingDataInCategory(categoryByRequest);
 
-            return categoryByRequest;
+        return categoryByRequest;
 
     }
 
@@ -103,7 +103,7 @@ public class CategoryServlet extends HttpServlet {
         final int CHARACTERISTIC_ID_FOR_ONE_CATEGORY = 28;
         final int CHARACTERISTIC_ID_FOR_FIVE_CATEGORY = 29;
 
-        Set<ProductItemsView> productItemsViewList = new HashSet<>();
+        Set<ProductItemsView> notRepeatedItems = new HashSet<>();
         List<ProductItemsView> productItemsViews = new ArrayList<>();
 
         ProductItemsView ItemForView;
@@ -153,10 +153,10 @@ public class CategoryServlet extends HttpServlet {
                     .setRating(productRating)
                     .build();
 
-            productItemsViewList.add(ItemForView);
+            notRepeatedItems.add(ItemForView);
         }
 
-        productItemsViews.addAll(productItemsViewList);
+        productItemsViews.addAll(notRepeatedItems);
 
         return productItemsViews;
     }
@@ -184,13 +184,18 @@ public class CategoryServlet extends HttpServlet {
         while (categoryIterator.hasNext()) {
             CategoryViewModel collectionItem = (CategoryViewModel) categoryIterator.next();
 
-            if (collectionItem != null &&
-                    collectionItem.getProductInCategory().size() == 0 &&
-                    collectionItem.getChildCategory().size() < 2) {
+            if (checkForRemoving(collectionItem)) {
                 categoryIterator.remove();
             }
 
         }
+    }
+
+    private boolean checkForRemoving(CategoryViewModel collectionItem) {
+        return  collectionItem != null &&
+                collectionItem.getProductInCategory().size() == 0 &&
+                collectionItem.getChildCategory().size() < 2;
+
     }
 
     private void sortingDataInCategory(CategoryViewModel categoryByRequest) {
@@ -222,6 +227,7 @@ public class CategoryServlet extends HttpServlet {
             }
             return 0;
         };
+
 
         if (categoryByRequest.getChildCategory().size() != 0) {
             (categoryByRequest.getChildCategory()).sort(categoryComparator);
