@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets.models.builders;
 
 import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
-import ru.ncedu.ecomm.servlets.models.ProductItemsView;
+import ru.ncedu.ecomm.servlets.models.ProductViewModel;
 
 import java.util.Set;
 
@@ -10,7 +10,7 @@ public class CategoryViewBuilder {
     private long parentId;
     private String  categoryName;
     private Set<CategoryViewModel> childCategory;
-    private Set<ProductItemsView> productInCategory;
+    private Set<ProductViewModel> productInCategory;
 
     public CategoryViewBuilder() {
     }
@@ -39,7 +39,7 @@ public class CategoryViewBuilder {
         return this;
     }
 
-    public CategoryViewBuilder setProductInCategory(Set<ProductItemsView> productInCategory) {
+    public CategoryViewBuilder setProductInCategory(Set<ProductViewModel> productInCategory) {
         this.productInCategory = productInCategory;
 
         return this;

@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets.models;
 
-public class ProductItemsView {
+public class ProductViewModel {
     private long categoryId;
     private long productId;
     private int rating;
@@ -9,11 +9,11 @@ public class ProductItemsView {
     private String name;
     private String imageUrl;
 
-    public ProductItemsView(){
+    public ProductViewModel(){
 
     }
 
-    public ProductItemsView(long categoryId,
+    public ProductViewModel(long categoryId,
                             long productId,
                             int rating,
                             int discount,

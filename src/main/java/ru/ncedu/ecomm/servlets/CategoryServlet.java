@@ -4,7 +4,7 @@ import ru.ncedu.ecomm.data.models.*;
 import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.CategoryViewBuilder;
 import ru.ncedu.ecomm.servlets.models.builders.ProductItemsViewBuilder;
-import ru.ncedu.ecomm.servlets.models.ProductItemsView;
+import ru.ncedu.ecomm.servlets.models.ProductViewModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -115,11 +115,11 @@ public class CategoryServlet extends HttpServlet {
       return allChildCategories;
     }
 
-    private Set<ProductItemsView> addProductToViewByCategoryId(long categoryId) {
+    private Set<ProductViewModel> addProductToViewByCategoryId(long categoryId) {
 
-        Set<ProductItemsView> notRepeatedItems = new HashSet<>();
+        Set<ProductViewModel> notRepeatedItems = new HashSet<>();
 
-        ProductItemsView ItemForView;
+        ProductViewModel ItemForView;
         Rating productAvergeRating;
         CharacteristicValue characteristicValue;
 

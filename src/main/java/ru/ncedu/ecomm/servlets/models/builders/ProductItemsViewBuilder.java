@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets.models.builders;
 
-import ru.ncedu.ecomm.servlets.models.ProductItemsView;
+import ru.ncedu.ecomm.servlets.models.ProductViewModel;
 
 public class ProductItemsViewBuilder {
     private long categoryId;
@@ -56,8 +56,8 @@ public class ProductItemsViewBuilder {
         return this;
     }
 
-    public ProductItemsView build(){
-        return new ProductItemsView(
+    public ProductViewModel build(){
+        return new ProductViewModel(
                 categoryId,
                 productId,
                 rating,
