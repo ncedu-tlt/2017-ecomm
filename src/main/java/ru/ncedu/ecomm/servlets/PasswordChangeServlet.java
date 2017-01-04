@@ -23,7 +23,6 @@ public class PasswordChangeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String email = getEmailFromURL(req);
         String recoveryHash = getRecoveryHashFromURL(req);
         String newPassword = req.getParameter("password");
