@@ -18,6 +18,10 @@ public interface CategoryDAO {
 
     List<Category> getCategoriesByParentId(long parentId);
 
+    List<Category> getAllNotEmptyChildrenCategoryById(long categoryId);
+
+    List<Category> getAllNotEmptyCategory();
+
     List<Category> getParentCategory();
 
     List<Category> getCategoriesByHierarchy(long parentId);

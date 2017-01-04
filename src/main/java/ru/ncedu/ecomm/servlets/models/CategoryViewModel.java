@@ -1,24 +1,34 @@
 package ru.ncedu.ecomm.servlets.models;
 
+import java.util.List;
 import java.util.Set;
 
 public class CategoryViewModel {
     private long id;
-    private String  name;
-    private Set<CategoryViewModel> categories;
-    private Set<ProductViewModel> products;
+    private String name;
+    private String description;
+    private List<ProductViewModel> products;
 
     public CategoryViewModel() {
     }
 
     public CategoryViewModel(long id,
-                             String  name,
-                             Set<CategoryViewModel> categories,
-                             Set<ProductViewModel> products) {
+                             String name,
+                             List<ProductViewModel> products,
+                             String description) {
+
+        this.description = description;
         this.id = id;
         this.name = name;
-        this.categories = categories;
         this.products = products;
+    }
+
+    public String getDescriprion() {
+        return description;
+    }
+
+    public void setDescriprion(String description) {
+        this.description = description;
     }
 
     public long getId() {
@@ -29,27 +39,19 @@ public class CategoryViewModel {
         this.id = categoryId;
     }
 
-    public String  getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(String  categoryName) {
+    public void setName(String categoryName) {
         this.name = name;
     }
 
-    public Set<CategoryViewModel> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(Set<CategoryViewModel> childCategory) {
-        this.categories = childCategory;
-    }
-
-    public Set<ProductViewModel> getProducts() {
+    public List<ProductViewModel> getProducts() {
         return products;
     }
 
-    public void setProducts(Set<ProductViewModel> products) {
+    public void setProducts(List<ProductViewModel> products) {
         this.products = products;
     }
 }

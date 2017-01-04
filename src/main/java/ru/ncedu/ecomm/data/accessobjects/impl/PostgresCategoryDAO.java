@@ -46,6 +46,59 @@ public class PostgresCategoryDAO implements CategoryDAO {
     }
 
     @Override
+    public List<Category> getAllNotEmptyCategory() {
+        List<Category> categories = new ArrayList<>();
+
+        try (Connection connection = DBUtils.getConnection();
+             Statement statement = connection.createStatement()) {
+
+            ResultSet resultSet = statement.executeQuery(
+                    "WITH RECURSIVE req AS ( " +
+                            "SELECT " +
+                            "category_id, " +
+                            "parent_id, " +
+                            "name, " +
+                            "description " +
+                            "FROM categories " +
+                            "UNION " +
+                            "SELECT " +
+                            "categories.category_id, " +
+                            "categories.parent_id, " +
+                            "categories.name, " +
+                            "categories.description " +
+                            "FROM categories " +
+                            "JOIN req " +
+                            "ON categories.parent_id = req.category_id " +
+                            ") " +
+                            "SELECT " +
+                            "req.category_id, " +
+                            "req.parent_id, " +
+                            "req.description, " +
+                            "req.name, " +
+                            "count(product_id) as amount_product_in_category " +
+                            "FROM req " +
+                            "JOIN products ON req.category_id = products.category_id " +
+                            "GROUP BY req.category_id, req.parent_id, req.description, req.name " +
+                            "ORDER BY req.category_id ASC, " +
+                            "req.parent_id ASC; "
+            );
+            while (resultSet.next()) {
+                Category category = new CategoryBuilder()
+                        .setCategoryId(resultSet.getLong("category_id"))
+                        .setParentId(resultSet.getLong("parent_id"))
+                        .setName(resultSet.getString("name"))
+                        .setDescription(resultSet.getString("description"))
+                        .build();
+
+                categories.add(category);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return categories;
+    }
+
+    @Override
     public Category addCategory(Category category) {
 
         try (Connection connection = DBUtils.getConnection();
@@ -161,6 +214,63 @@ public class PostgresCategoryDAO implements CategoryDAO {
                             "WHERE parent_id ISNULL " +
                             "ORDER BY category_id ASC"
             );
+            while (resultSet.next()) {
+                Category category = new CategoryBuilder()
+                        .setCategoryId(resultSet.getLong("category_id"))
+                        .setParentId(resultSet.getLong("parent_id"))
+                        .setName(resultSet.getString("name"))
+                        .setDescription(resultSet.getString("description"))
+                        .build();
+
+                categories.add(category);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return categories;
+    }
+
+
+    @Override
+    public List<Category> getAllNotEmptyChildrenCategoryById(long categoryId) {
+        List<Category> categories = new ArrayList<>();
+
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "WITH RECURSIVE req AS ( " +
+                             "SELECT " +
+                             "category_id, " +
+                             "parent_id, " +
+                             "name, " +
+                             "description " +
+                             "FROM categories " +
+                             "WHERE category_id = ? " +
+                             "UNION " +
+                             "SELECT " +
+                             "categories.category_id, " +
+                             "categories.parent_id, " +
+                             "categories.name, " +
+                             "categories.description " +
+                             "FROM categories " +
+                             "JOIN req " +
+                             "ON categories.parent_id = req.category_id " +
+                             ") " +
+                             "SELECT " +
+                             "req.category_id, " +
+                             "req.parent_id, " +
+                             "req.description, " +
+                             "req.name, " +
+                             "count(product_id) as amount_product_in_category " +
+                             "FROM req " +
+                             "JOIN products ON req.category_id = products.category_id " +
+                             "GROUP BY req.category_id, req.parent_id, req.description, req.name " +
+                             "ORDER BY req.category_id ASC, " +
+                             "req.parent_id ASC; "
+             )) {
+
+            statement.setLong(1, categoryId);
+
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Category category = new CategoryBuilder()
                         .setCategoryId(resultSet.getLong("category_id"))

@@ -52,10 +52,8 @@ public class CategoryServlet extends HttpServlet {
                     .setId(category.getCategoryId())
                     .setName(category.getName())
                     .setProducts(addProductToViewByCategoryId(category.getCategoryId()))
-                    .setCategories(getChildCategories(category.getCategoryId()))
                     .build();
 
-            removeEmptyCategory(categoryByRequest);
             viewCategories.add(categoryByRequest);
         }
 
@@ -73,50 +71,23 @@ public class CategoryServlet extends HttpServlet {
         }
 
         if (categoryIdByRequest != null) {
-            categories = new ArrayList<>();
-
-            Category categoryByRequestId = getDAOFactory()
+            categories = getDAOFactory()
                     .getCategoryDAO()
-                    .getCategoryById(categoryId);
+                    .getAllNotEmptyChildrenCategoryById(categoryId);
 
-            categories.add(categoryByRequestId);
         } else {
             categories = getDAOFactory()
                     .getCategoryDAO()
-                    .getParentCategory();
+                    .getAllNotEmptyCategory();
         }
 
         return categories;
     }
 
-    private Set<CategoryViewModel> getChildCategories(long categoryId) {
 
-        CategoryViewModel categoryForChildList = null;
-        Set<CategoryViewModel> allChildCategories = new HashSet<>();
+    private List<ProductViewModel> addProductToViewByCategoryId(long categoryId) {
 
-        List<Category> allCategories = getDAOFactory()
-                .getCategoryDAO()
-                .getCategories();
-
-        for (Category category : allCategories) {
-
-            if (category.getParentId() == categoryId) {
-                categoryForChildList = new CategoryViewBuilder()
-                        .setId(category.getCategoryId())
-                        .setName(category.getName())
-                        .setProducts(addProductToViewByCategoryId(category.getCategoryId()))
-                        .setCategories(getChildCategories(category.getCategoryId()))
-                        .build();
-            }
-
-            allChildCategories.add(categoryForChildList);
-        }
-        return allChildCategories;
-    }
-
-    private Set<ProductViewModel> addProductToViewByCategoryId(long categoryId) {
-
-        Set<ProductViewModel> notRepeatedItems = new HashSet<>();
+        List<ProductViewModel> productsInCategory = new ArrayList<>();
 
         ProductViewModel ItemForView;
         Rating productAvergeRating;
@@ -159,10 +130,10 @@ public class CategoryServlet extends HttpServlet {
                     .setRating(productRating)
                     .build();
 
-            notRepeatedItems.add(ItemForView);
+            productsInCategory.add(ItemForView);
         }
 
-        return notRepeatedItems;
+        return productsInCategory;
     }
 
     private int getDiscountValue(long discountId) {
@@ -179,25 +150,5 @@ public class CategoryServlet extends HttpServlet {
         }
 
         return discountValue;
-    }
-
-    private void removeEmptyCategory(CategoryViewModel categoryViewModel) {
-
-        Iterator categoryIterator = categoryViewModel.getCategories().iterator();
-
-        while (categoryIterator.hasNext()) {
-            CategoryViewModel collectionItem = (CategoryViewModel) categoryIterator.next();
-
-            if (checkForRemoving(collectionItem)) {
-                categoryIterator.remove();
-            }
-
-        }
-    }
-
-    private boolean checkForRemoving(CategoryViewModel collectionItem) {
-        return collectionItem != null &&
-                collectionItem.getProducts().isEmpty() &&
-                collectionItem.getCategories().size() < 2;
     }
 }

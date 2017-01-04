@@ -44,10 +44,24 @@ public class RestService {
     }
 
     @GET
+    @Path("/categories/notempty")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Category> getNotEmptyCategories() {
+        return getDAOFactory().getCategoryDAO().getAllNotEmptyCategory();
+    }
+
+    @GET
     @Path("/categories/{categoryId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Category getCategoryById(@PathParam("categoryId") long categoryId) {
         return getDAOFactory().getCategoryDAO().getCategoryById(categoryId);
+    }
+
+    @GET
+    @Path("/categories/getallchild/{categoryId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Category> getAllChildrenCategory(@PathParam("categoryId") long categoryId) {
+        return getDAOFactory().getCategoryDAO().getAllNotEmptyChildrenCategoryById(categoryId);
     }
 
     @PUT
