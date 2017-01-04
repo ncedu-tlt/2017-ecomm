@@ -16,6 +16,7 @@
                     fields: {
                         password: {
                             identifier: 'password',
+                            optional: true,
                             rules: [
                                 {
                                     type: 'length[' + 4 + ']',

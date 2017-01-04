@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div class="ui center aligned text container segment jsProfileComponent" data-tab="profile">
+<div class="ui center aligned text container segment jsProfileComponent" id="profileBlock" data-tab="profile">
     <form class="ui form" method="post"
           action="#">
         <div class="field">
@@ -25,14 +25,16 @@
         </button>
         <div class="ui error message"></div>
     </form>
+    <c:set var="request" scope="session" value="${requestScope.answer}"/>
+    <c:if test="${request != null}">
+        <div class="ui message warning ">
+            <p>${requestScope.answer}</p>
+        </div>
+    </c:if>
 </div>
-<c:set var="request" scope="session" value="${requestScope.answer}"/>
-<c:if test="${request != null}">
-    <div class="ui message warning ">
-        <p>${requestScope.answer}</p>
-    </div>
-</c:if>
+
 <%-- JS controller initilization --%>
 <script type="text/javascript">
+    window.frm.components.init('DashboardComponent', '.jsDashboardComponent');
     window.frm.components.init('profileComponent', '.jsProfileComponent');
 </script>

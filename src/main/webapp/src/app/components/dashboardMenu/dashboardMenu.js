@@ -11,6 +11,14 @@
          * Executed on component initialization
          */
         init: function () {
+            if($(".jsProfileComponent").length) {
+                $("#profile").addClass("active");
+            }
+
+            if($(".jsOrdersHistoryComponent").length) {
+                $("#orderHistory").addClass("active");
+            }
+
             var href=$(".menuElement");
             href.click(function () {
                 changeActive($(this));
@@ -21,6 +29,19 @@
                 console.log(href);
                 href.removeClass("active");
                 current.addClass("active");
+            }
+
+            $(".item").click(function(){
+                changeStateDisplay($(this).attr('id'));
+            });
+
+            function changeStateDisplay(block){
+                if(block === 'profile'){
+                    window.location.replace("/views/pages/profile.jsp?user_id=6");
+                }
+                if(block === 'orderHistory'){
+                    window.location.replace("/views/pages/ordersHistory.jsp");
+                }
             }
         }
     });
