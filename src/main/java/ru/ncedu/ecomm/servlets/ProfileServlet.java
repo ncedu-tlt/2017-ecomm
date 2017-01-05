@@ -26,20 +26,13 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long userId = getUserIdFromUrl(req.getQueryString());
-        changeProfile(userId, req);
-        req.setAttribute("answer", "Profile was changed.");
-        req.getRequestDispatcher("/views/pages/profile.jsp?user_id=" + userId).forward(req, resp);
-    }
-
-    private boolean changeProfile(long userId, HttpServletRequest req){
-        String firstName = req.getParameter("firstName");
-        String lastName = req.getParameter("lastName");
-        String email = getEmail(req.getParameter("email"));
-        String password = req.getParameter("password");
-
-        updateUser(userId, firstName, lastName, email, password);
-
-        return true;
+        if (changeProfile(userId, req)) {
+            req.setAttribute("answer", "Profile was changed.");
+            req.getRequestDispatcher("/views/pages/profile.jsp?user_id=" + userId).forward(req, resp);
+        } else {
+            req.setAttribute("answer", "Nothing change.");
+            req.getRequestDispatcher("/views/pages/profile.jsp?user_id=" + userId).forward(req, resp);
+        }
     }
 
     private long getUserIdFromUrl(String query) {
@@ -48,12 +41,62 @@ public class ProfileServlet extends HttpServlet {
         return userId;
     }
 
-    private String getEmail(String email) {
+    private boolean changeProfile(long userId, HttpServletRequest req) {
+        String firstName = getFirstName(req.getParameter("firstName"), userId);
+        String lastName = getLastName(req.getParameter("lastName"), userId);
+        String email = getEmail(req.getParameter("email"), userId);
+        String password = getPassword(req.getParameter("password"), userId);
+
+        if (firstName == null && lastName == null && email == null && password == null) {
+            return false;
+        } else {
+            updateUser(userId, firstName, lastName, email, password);
+            return true;
+        }
+    }
+
+    private String getFirstName(String firstName, long userId) {
+        if (!firstName.trim().isEmpty()) {
+            User userById = getDAOFactory().getUserDAO().getUserById(userId);
+            return userById.getFirstName() != firstName ?
+                    firstName :
+                    null;
+        } else {
+            return null;
+        }
+    }
+
+    private String getLastName(String lastName, long userId) {
+        if (!lastName.trim().isEmpty()) {
+            User userById = getDAOFactory().getUserDAO().getUserById(userId);
+            return userById.getLastName() != lastName ?
+                    lastName :
+                    null;
+        } else {
+            return null;
+        }
+    }
+
+    private String getEmail(String email, long userId) {
         String regPattern = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
         Pattern patternEmailValidation = Pattern.compile(regPattern, Pattern.CASE_INSENSITIVE);
         Matcher matcher = patternEmailValidation.matcher(email);
         if (matcher.find()) {
-            return email;
+            User userById = getDAOFactory().getUserDAO().getUserById(userId);
+            return userById.getEmail() != email ?
+                    email :
+                    null;
+        } else {
+            return null;
+        }
+    }
+
+    private String getPassword(String password, long userId) {
+        if (!password.trim().isEmpty()) {
+            User userById = getDAOFactory().getUserDAO().getUserById(userId);
+            return userById.getPassword() != password ?
+                    password :
+                    null;
         } else {
             return null;
         }

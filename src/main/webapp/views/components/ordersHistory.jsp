@@ -1,4 +1,4 @@
-<div class="ui center aligned text container segment active main-content" data-tab="orderHistory">
+<div class="ui center aligned text container segment active main-content jsOrdersHistoryComponent" id="orderHistoryBlock" data-tab="orderHistory">
     <div class="ui items orders">
         <div class="item order">
             <div class="content">
@@ -146,7 +146,6 @@
         </div>
     </div>
 </div>
-
 <script type="text/javascript">
     window.frm.components.init('DashboardComponent', '.jsDashboardComponent');
 </script>
