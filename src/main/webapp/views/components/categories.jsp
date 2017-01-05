@@ -10,18 +10,23 @@
     </a>
     <div class="ui flowing basic admission popup">
         <div class="ui link vertical menu">
-            <c:forEach var="categories" items="${requestScope.categories}">
+            <c:forEach var="head" items="${requestScope.heads}">
                 <div class="ui dropdown center aligned blue item">
-                    <b>${categories.getHead().getName()}</b>
+                    <b>${head.getName()}</b>
                     <i class="dropdown icon"></i>
                     <div class="menu">
-                        <c:forEach var="middle" items="${categories.getMiddles()}">
-                            <div class="header"><a href="#">${middle.getHead().getName()}</a></div>
-                            <c:if test="${!middle.getCategories().isEmpty()}">
-                                <c:forEach var="category" items="${middle.getCategories()}">
-                                    <a class="item">${category.getName()}</a>
-                                </c:forEach>
-                            </c:if>
+                        <c:forEach var="subcategory" items="${head.getSubcategories()}">
+                            <div class="header">
+                                <a href="\category?category_id=${subcategory.getCategoryId()}">${subcategory.getName()}</a>
+                            </div>
+                            <c:forEach var="child" items="${requestScope.child}">
+                                <c:if test="${subcategory.getCategoryId() == child.getId()}">
+                                    <c:forEach var="category" items="${child.getSubcategories()}">
+                                        <a class="item"
+                                           href="\category?category_id=${category.getCategoryId()}">${category.getName()}</a>
+                                    </c:forEach>
+                                </c:if>
+                            </c:forEach>
                         </c:forEach>
                     </div>
                 </div>

@@ -298,7 +298,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
                              "name, " +
                              "description " +
                              "FROM public.categories " +
-                             "WHERE parent_id = ?"
+                             "WHERE parent_id = ?" +
+                             "ORDER BY category_id"
              )) {
 
             statement.setLong(1, parentId);
