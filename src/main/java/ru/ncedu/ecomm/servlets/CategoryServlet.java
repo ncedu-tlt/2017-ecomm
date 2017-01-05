@@ -62,26 +62,34 @@ public class CategoryServlet extends HttpServlet {
 
     private List<Category> getCategoryListByRequest(HttpServletRequest request) {
         List<Category> categories;
-        long categoryId = 0;
 
         String categoryIdByRequest = request.getParameter("category_id");
 
-        if (categoryIdByRequest != null) {
-            categoryId = Long.parseLong(categoryIdByRequest);
-        }
+        if (!checkInNull(categoryIdByRequest)) {
 
-        if (categoryIdByRequest != null) {
-            categories = getDAOFactory()
-                    .getCategoryDAO()
-                    .getAllNotEmptyChildrenCategoryById(categoryId);
-
+            categories = getCategoriesById(
+                    getCategoryId(categoryIdByRequest)
+            );
         } else {
-            categories = getDAOFactory()
-                    .getCategoryDAO()
-                    .getAllNotEmptyCategory();
+            categories = getCategories();
         }
-
         return categories;
+    }
+
+    private long getCategoryId(String categoryIdByRequest){
+        return Long.parseLong(categoryIdByRequest);
+    }
+
+    private List<Category> getCategoriesById(long categoryId){
+        return getDAOFactory()
+                .getCategoryDAO()
+                .getAllNotEmptyChildrenCategoryById(categoryId);
+    }
+
+    private List<Category> getCategories(){
+        return getDAOFactory()
+                .getCategoryDAO()
+                .getAllNotEmptyCategory();
     }
 
 
@@ -89,34 +97,27 @@ public class CategoryServlet extends HttpServlet {
 
         List<ProductViewModel> productsInCategory = new ArrayList<>();
 
+        List<Product> products = getProductsById(categoryId);
+
         ProductViewModel ItemForView;
         Rating productAvergeRating;
         CharacteristicValue characteristicValue;
 
-        List<Product> products = getDAOFactory()
-                .getProductDAO()
-                .getProductsByCategoryId(categoryId);
-
 
         for (Product product : products) {
-
-            String imageUrl = DEFAULT_IMAGE_URL;
             int productRating = 0;
 
-            characteristicValue = getDAOFactory()
-                    .getCharacteristicValueDAO()
-                    .getCharacteristicValueByIdAndProductId(product.getId(),
-                            CHARACTERISTIC_ID_FOR_IMAGE_URL);
+            String imageUrl = DEFAULT_IMAGE_URL;
 
-            if (characteristicValue != null) {
+            characteristicValue = getImageUrl(product.getId());
+
+            if (!checkInNull(characteristicValue)) {
                 imageUrl = characteristicValue.getCharacteristicValue();
             }
 
-            productAvergeRating = getDAOFactory()
-                    .getReviewDAO()
-                    .getAverageRatingByProductId(product.getId());
+            productAvergeRating = getRating(product.getId());
 
-            if (productAvergeRating != null) {
+            if (!checkInNull(productAvergeRating)) {
                 productRating = productAvergeRating.getRaiting();
             }
 
@@ -134,6 +135,27 @@ public class CategoryServlet extends HttpServlet {
         }
 
         return productsInCategory;
+    }
+
+    private boolean checkInNull(Object object){
+        return object == null;
+    }
+
+    private List<Product> getProductsById(long categoryId){
+        return getDAOFactory().getProductDAO()
+                .getProductsByCategoryId(categoryId);
+    }
+
+    private CharacteristicValue getImageUrl(long productId){
+        return getDAOFactory()
+                .getCharacteristicValueDAO()
+                .getCharacteristicValueByIdAndProductId(productId,
+                        CHARACTERISTIC_ID_FOR_IMAGE_URL);
+    }
+    private Rating getRating(long productId){
+        return getDAOFactory()
+                .getReviewDAO()
+                .getAverageRatingByProductId(productId);
     }
 
     private int getDiscountValue(long discountId) {
