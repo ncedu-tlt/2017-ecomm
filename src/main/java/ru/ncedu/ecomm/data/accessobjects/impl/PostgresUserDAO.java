@@ -25,8 +25,8 @@ public class PostgresUserDAO implements UserDAO {
                             "password, " +
                             "phone, " +
                             "email, " +
-                            "registration_date" +
-                            " FROM users");
+                            "registration_date " +
+                            "FROM users");
             while (resultSet.next()) {
                 User user = new UserBuilder()
                         .setUserId(resultSet.getLong("user_id"))
@@ -211,8 +211,8 @@ public class PostgresUserDAO implements UserDAO {
                              "last_name = ?, " +
                              "password = ?, " +
                              "phone = ?, " +
-                             "email = ?," +
-                             "recovery_hash = ?" +
+                             "email = ?, " +
+                             "recovery_hash = ? " +
                              "WHERE user_id = ?")) {
             statement.setLong(1, user.getRoleId());
             statement.setString(2, user.getFirstName());
@@ -235,8 +235,8 @@ public class PostgresUserDAO implements UserDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "DELETE FROM users" +
-                             " WHERE user_id = ?")) {
+                     "DELETE FROM users " +
+                             "WHERE user_id = ?")) {
             statement.setLong(1, user.getId());
             statement.execute();
 

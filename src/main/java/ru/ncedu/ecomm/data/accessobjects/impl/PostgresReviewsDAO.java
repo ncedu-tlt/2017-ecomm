@@ -53,8 +53,8 @@ public class PostgresReviewsDAO implements ReviewsDAO {
                              "description, " +
                              "creation_date, " +
                              "raiting)" +
-                             "VALUES (?,?,?,?,?)" +
-                             " RETURNING product_id")) {
+                             "VALUES (?,?,?,?,?) " +
+                             "RETURNING product_id")) {
             statement.setLong(1, review.getProductId());
             statement.setLong(2, review.getUserId());
             statement.setString(3, review.getDescription());

@@ -28,8 +28,8 @@ public class PostgresProductDAO implements ProductDAO {
                             "name, " +
                             "description, " +
                             "discount_id, " +
-                            "price" +
-                            " FROM public.products");
+                            "price " +
+                            "FROM public.products");
 
             while (resultSet.next()) {
                 Product product = new ProductBuilder()
@@ -60,9 +60,9 @@ public class PostgresProductDAO implements ProductDAO {
                              "name, " +
                              "description, " +
                              "discount_id, " +
-                             "price)" +
-                             " VALUES (?, ?, ?, ?, ?) " +
-                             " RETURNING product_id")) {
+                             "price) " +
+                             "VALUES (?, ?, ?, ?, ?) " +
+                             "RETURNING product_id")) {
 
             statement.setLong(1, product.getProductId());
             statement.setString(2, product.getName());
@@ -87,13 +87,13 @@ public class PostgresProductDAO implements ProductDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "UPDATE public.products" +
-                             " SET category_id = ?, " +
+                     "UPDATE public.products " +
+                             "SET category_id = ?, " +
                              "name = ?, " +
                              "description = ?, " +
                              "discount_id = ?, " +
-                             "price = ?" +
-                             " WHERE product_id = ?")) {
+                             "price = ? " +
+                             "WHERE product_id = ?")) {
 
             statement.setLong(1, product.getCategoryId());
             statement.setString(2, product.getName());
@@ -136,8 +136,8 @@ public class PostgresProductDAO implements ProductDAO {
                              "name, " +
                              "description, " +
                              "discount_id, " +
-                             "price" +
-                             " FROM public.products " +
+                             "price " +
+                             "FROM public.products " +
                              "WHERE product_id = ?")) {
 
 

@@ -91,8 +91,8 @@ public class PostgresPropertyDAO implements PropertyDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "DELETE FROM properties" +
-                             " WHERE property_id = ?")) {
+                     "DELETE FROM properties " +
+                             "WHERE property_id = ?")) {
 
             statement.setString(1, property.getId());
             statement.execute();
@@ -107,9 +107,9 @@ public class PostgresPropertyDAO implements PropertyDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "UPDATE properties" +
-                             " SET value = ?" +
-                             " WHERE property_id = ?")) {
+                     "UPDATE properties " +
+                             "SET value = ? " +
+                             "WHERE property_id = ?")) {
             statement.setString(1, property.getValue());
             statement.setString(2, property.getId());
             statement.execute();

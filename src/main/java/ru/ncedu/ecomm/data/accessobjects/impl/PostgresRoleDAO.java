@@ -22,8 +22,8 @@ public class PostgresRoleDAO implements RoleDAO {
             Statement statement = connection.createStatement()) {
 
             ResultSet resultSet = statement.executeQuery(
-                    "select role_id," +
-                            " name " +
+                    "select role_id, " +
+                            "name " +
                             "from roles");
             while (resultSet.next()) {
                 Role role = new RoleBuilder()

@@ -18,8 +18,10 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT characteristic_id, product_id, value" +
-                            " FROM public.characteristic_values");
+                    "SELECT characteristic_id, " +
+                            "product_id, " +
+                            "value " +
+                            "FROM public.characteristic_values");
             while (resultSet.next()) {
                 CharacteristicValue characteristicValue = new CharacteristicValueBuilder()
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
@@ -42,8 +44,10 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT characteristic_id, product_id, value" +
-                             " FROM public.characteristic_values " +
+                     "SELECT characteristic_id, " +
+                             "product_id, " +
+                             "value " +
+                             "FROM public.characteristic_values " +
                              "WHERE characteristic_id = ?")) {
             statement.setLong(1, id);
 
@@ -71,8 +75,10 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT characteristic_id, product_id, value" +
-                             " FROM public.characteristic_values " +
+                     "SELECT characteristic_id, " +
+                             "product_id, " +
+                             "value " +
+                             "FROM public.characteristic_values " +
                              "WHERE product_id = ?")) {
             statement.setLong(1, id);
 
@@ -178,9 +184,9 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
     public void deleteCharacteristicValue(CharacteristicValue characteristicValue) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "DELETE FROM public.characteristic_values" +
-                             " WHERE characteristic_id = ?" +
-                             " AND product_id = ?"
+                     "DELETE FROM public.characteristic_values " +
+                             "WHERE characteristic_id = ? " +
+                             "AND product_id = ?"
              )) {
             statement.setLong(1, characteristicValue.getCharacteristicId());
             statement.setLong(2, characteristicValue.getProductId());

@@ -106,9 +106,9 @@ public class PostgresCategoryDAO implements CategoryDAO {
                      "INSERT INTO public.categories" +
                              "(parent_id, " +
                              "name, " +
-                             "description)" +
-                             " VALUES (?, ?, ?) " +
-                             " RETURNING category_id"
+                             "description) " +
+                             "VALUES (?, ?, ?) " +
+                             "RETURNING category_id"
              )) {
             statement.setLong(1, category.getParentId());
             statement.setString(2, category.getName());
