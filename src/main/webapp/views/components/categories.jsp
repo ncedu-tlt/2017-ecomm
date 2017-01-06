@@ -16,16 +16,22 @@
                     <i class="dropdown icon"></i>
                     <div class="menu">
                         <c:forEach var="subcategory" items="${head.getSubcategories()}">
-                            <div class="header">
-                                <a href="\category?category_id=${subcategory.getCategoryId()}">${subcategory.getName()}</a>
-                            </div>
                             <c:forEach var="child" items="${requestScope.child}">
-                                <c:if test="${subcategory.getCategoryId() == child.getId()}">
-                                    <c:forEach var="category" items="${child.getSubcategories()}">
+                                <c:choose>
+                                    <c:when test="${subcategory.getName() == child.getName() && child.getSubcategories().isEmpty()}">
                                         <a class="item"
-                                           href="\category?category_id=${category.getCategoryId()}">${category.getName()}</a>
-                                    </c:forEach>
-                                </c:if>
+                                           href="\category?category_id=${child.getId()}">${child.getName()}</a>
+                                    </c:when>
+                                    <c:when test="${subcategory.getName() == child.getName() && !child.getSubcategories().isEmpty()}">
+                                        <div class="header">
+                                            <a href="\category?category_id=${subcategory.getCategoryId()}">${subcategory.getName()}</a>
+                                        </div>
+                                        <c:forEach var="category" items="${child.getSubcategories()}">
+                                            <a class="item"
+                                               href="\category?category_id=${category.getCategoryId()}">${category.getName()}</a>
+                                        </c:forEach>
+                                    </c:when>
+                                </c:choose>
                             </c:forEach>
                         </c:forEach>
                     </div>
