@@ -68,8 +68,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
                             "categories.description " +
                             "FROM categories " +
                             "JOIN req " +
-                            "ON categories.parent_id = req.category_id " +
-                            ") " +
+                            "ON categories.parent_id = req.category_id) " +
                             "SELECT " +
                             "req.category_id, " +
                             "req.parent_id, " +
@@ -253,8 +252,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
                              "categories.description " +
                              "FROM categories " +
                              "JOIN req " +
-                             "ON categories.parent_id = req.category_id " +
-                             ") " +
+                             "ON categories.parent_id = req.category_id) " +
                              "SELECT " +
                              "req.category_id, " +
                              "req.parent_id, " +
