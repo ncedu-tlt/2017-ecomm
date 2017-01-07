@@ -18,4 +18,6 @@ public interface ProductDAO {
 
     List<Product> getProductsByCategoryId(long categoryId);
 
+    List<Product> getBestOffersProducts();
+
 }

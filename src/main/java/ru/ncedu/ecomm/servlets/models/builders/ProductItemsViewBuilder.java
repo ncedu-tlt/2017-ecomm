@@ -5,7 +5,7 @@ import ru.ncedu.ecomm.servlets.models.ProductViewModel;
 public class ProductItemsViewBuilder {
     private long productId;
     private int rating;
-    private int discount;
+    private long discount;
     private long price;
     private String name;
     private String imageUrl;
@@ -25,7 +25,7 @@ public class ProductItemsViewBuilder {
         return this;
     }
 
-    public ProductItemsViewBuilder setDiscount(int discount) {
+    public ProductItemsViewBuilder setDiscount(long discount) {
         this.discount = discount;
 
         return this;

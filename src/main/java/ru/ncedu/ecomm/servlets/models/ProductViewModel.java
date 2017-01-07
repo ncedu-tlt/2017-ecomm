@@ -3,7 +3,7 @@ package ru.ncedu.ecomm.servlets.models;
 public class ProductViewModel {
     private long id;
     private int rating;
-    private int discount;
+    private long discount;
     private long price;
     private String name;
     private String imageUrl;
@@ -14,7 +14,7 @@ public class ProductViewModel {
 
     public ProductViewModel(long productId,
                             int rating,
-                            int discount,
+                            long discount,
                             long price,
                             String name,
                             String imageUrl) {
@@ -43,11 +43,11 @@ public class ProductViewModel {
         this.rating = rating;
     }
 
-    public int getDiscount() {
+    public long getDiscount() {
         return discount;
     }
 
-    public void setDiscount(int discount) {
+    public void setDiscount(long discount) {
         this.discount = discount;
     }
 

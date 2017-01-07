@@ -20,8 +20,17 @@
                          data-rating="${product.getRating()}">
                     </div>
                 </div>
+
                 <h3 class="ui center aligned grey header">
-                    $${product.getPrice()}
+                    <c:if test="${product.getDiscount() != 0}">
+                        $<b style="text-decoration: line-through;">${product.getPrice()}</b>
+                            <a style="margin-left: .2em" class="ui red label">
+                                $${product.getDiscount()}
+                            </a>
+                    </c:if>
+                    <c:if test="${product.getDiscount() == 0}">
+                        $${product.getPrice()}
+                    </c:if>
                 </h3>
                 <button class="ui labeled icon  fluid blue button" type="submit"
                         value="${product.getId()}">

@@ -175,9 +175,45 @@ public class PostgresProductDAO implements ProductDAO {
                              "price " +
                              "FROM public.products " +
                              "WHERE category_id = ? " +
-                             "ORDER BY product_id ASC")) {
+                             "ORDER BY product_id ASC " +
+                             "LIMIT 6")) {
 
             statement.setLong(1, categoryId);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Product product = new ProductBuilder()
+                        .setProductId(resultSet.getLong("product_id"))
+                        .setCategoryId(resultSet.getLong("category_id"))
+                        .setName(resultSet.getString("name"))
+                        .setDescription(resultSet.getString("description"))
+                        .setDiscountId(resultSet.getLong("discount_id"))
+                        .setPrice(resultSet.getLong("price"))
+                        .build();
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return products;
+    }
+
+    @Override
+    public List<Product> getBestOffersProducts() {
+        List<Product> products = new ArrayList<>();
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT " +
+                             "product_id, " +
+                             "category_id, " +
+                             "name, " +
+                             "price, " +
+                             "description, " +
+                             "discount_id " +
+                             "FROM public.products " +
+                             "WHERE discount_id = (SELECT max(discount_id) " +
+                             "FROM products) " +
+                             "LIMIT 12")) {
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {

@@ -16,8 +16,11 @@ public class ProductViewService {
 
     private static final long CHARACTERISTIC_ID_FOR_IMAGE_URL = 28;
     private static final String DEFAULT_IMAGE_URL = "/images/defaultimage/image.png";
+    private static final String HOME_PAGE_URL = "/home";
+    private static final int CATEGORY_ID_FOR_BEST_OFFERS = 0;
 
-    private ProductViewService(){}
+    private ProductViewService() {
+    }
 
     private static ProductViewService instance;
 
@@ -27,10 +30,47 @@ public class ProductViewService {
         }
         return instance;
     }
+
     public List<CategoryViewModel> getCategoryViewModels(HttpServletRequest request) {
 
+        String categoryIdByRequest = request.getParameter("category_id");
+
+        List<CategoryViewModel> viewCategories;
+
+        if (request.getServletPath().equalsIgnoreCase(HOME_PAGE_URL) ||
+                getCategoryId(categoryIdByRequest) == 0) {
+
+            viewCategories = getBestOffersCategory();
+
+        } else {
+            viewCategories = getCategoriesById(request);
+        }
+
+        return viewCategories;
+    }
+
+    private long getCategoryId(String categoryIdByRequest) {
+        return Long.parseLong(categoryIdByRequest);
+    }
+
+    private List<CategoryViewModel> getBestOffersCategory() {
+        List<CategoryViewModel> bestOffersCategory = new ArrayList<>();
+
+        CategoryViewModel bestOffers = new CategoryViewBuilder()
+                .setName("Best Offers")
+                .setId(CATEGORY_ID_FOR_BEST_OFFERS)
+                .setProducts(addProductToViewByCategoryId(CATEGORY_ID_FOR_BEST_OFFERS))
+                .build();
+
+        bestOffersCategory.add(bestOffers);
+        return bestOffersCategory;
+    }
+
+    private List<CategoryViewModel> getCategoriesById(HttpServletRequest request) {
+
+        List<CategoryViewModel> categoriesById = new ArrayList<>();
+
         List<Category> categories = getCategoryListByRequest(request);
-        List<CategoryViewModel> viewCategories = new ArrayList<>();
 
         for (Category category : categories) {
 
@@ -40,31 +80,28 @@ public class ProductViewService {
                     .setProducts(addProductToViewByCategoryId(category.getCategoryId()))
                     .build();
 
-            viewCategories.add(categoryByRequest);
+            categoriesById.add(categoryByRequest);
         }
-
-        return viewCategories;
+        return categoriesById;
     }
+
 
     private List<Category> getCategoryListByRequest(HttpServletRequest request) {
         List<Category> categories;
-
         String categoryIdByRequest = request.getParameter("category_id");
 
-        if (!checkInNull(categoryIdByRequest)) {
+        if (checkInNull(categoryIdByRequest)) {
+
+            categories = getCategories();
+        } else {
 
             categories = getCategoriesById(
                     getCategoryId(categoryIdByRequest)
             );
-        } else {
-            categories = getCategories();
         }
         return categories;
     }
 
-    private long getCategoryId(String categoryIdByRequest) {
-        return Long.parseLong(categoryIdByRequest);
-    }
 
     private List<Category> getCategoriesById(long categoryId) {
         return getDAOFactory()
@@ -85,7 +122,7 @@ public class ProductViewService {
 
         List<Product> products = getProductsById(categoryId);
 
-        ProductViewModel ItemForView;
+        ProductViewModel itemForView;
         Rating productAvergeRating;
         CharacteristicValue characteristicValue;
 
@@ -108,16 +145,20 @@ public class ProductViewService {
             }
 
 
-            ItemForView = new ProductItemsViewBuilder()
+            itemForView = new ProductItemsViewBuilder()
                     .setProductId(product.getId())
                     .setName(product.getName())
                     .setPrice(product.getPrice())
-                    .setDiscount(getDiscountValue(product.getDiscountId()))
                     .setImageUrl(imageUrl)
                     .setRating(productRating)
                     .build();
 
-            productsInCategory.add(ItemForView);
+            if (product.getDiscountId() > 1){
+                itemForView.setDiscount(getDiscountPrice(product.getDiscountId(),
+                        product.getPrice()));
+            }
+
+            productsInCategory.add(itemForView);
         }
 
         return productsInCategory;
@@ -128,8 +169,13 @@ public class ProductViewService {
     }
 
     private List<Product> getProductsById(long categoryId) {
-        return getDAOFactory().getProductDAO()
-                .getProductsByCategoryId(categoryId);
+        if (categoryId == CATEGORY_ID_FOR_BEST_OFFERS) {
+            return getDAOFactory().getProductDAO()
+                    .getBestOffersProducts();
+        } else {
+            return getDAOFactory().getProductDAO()
+                    .getProductsByCategoryId(categoryId);
+        }
     }
 
     private CharacteristicValue getImageUrl(long productId) {
@@ -145,19 +191,25 @@ public class ProductViewService {
                 .getAverageRatingByProductId(productId);
     }
 
-    private int getDiscountValue(long discountId) {
-        int discountValue = 0;
+    private long getDiscountPrice(long discountId, long price){
+        double discountValue = price * (getDiscountValue(discountId) / 100.0);
 
-        List<Discount> allDiscountValues = getDAOFactory()
+        long discount = (long) discountValue;
+
+        return price - discount;
+    }
+
+    private int getDiscountValue(long discountId) {
+     List<Discount> allDiscountValues = getDAOFactory()
                 .getDiscountDAO()
                 .getDiscount();
 
         for (Discount discount : allDiscountValues) {
             if (discount.getDiscountId() == discountId) {
-                discountValue = discount.getValue();
+                return discount.getValue();
             }
         }
 
-        return discountValue;
+        return 0;
     }
 }
