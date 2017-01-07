@@ -25,23 +25,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "BreadcrumbsServlet", urlPatterns = {"/breadcrumbs"})
-public class BreadcrumbsServlet extends HttpServlet{
+public class BreadcrumbsServlet extends HttpServlet {
 
-        protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            List<Category> categories;
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Category> categories;
 
-            if(!request.getParameter("product_id").isEmpty()){
-                long productId = Long.parseLong(request.getParameter("product_id"));
+        if (!request.getParameter("product_id").isEmpty()) {
+            long productId = Long.parseLong(request.getParameter("product_id"));
+            if (productId != 0) {
                 Product product = getDAOFactory().getProductDAO().getProductById(productId);
                 request.setAttribute("product", product);
-                categories = getDAOFactory().getCategoryDAO().getCategoriesByHierarchy(product.getCategoryId());
-                request.setAttribute("categories", categories);
-            }else {
-                long id = Long.parseLong(request.getParameter("category_id"));
-                categories = getDAOFactory().getCategoryDAO().getCategoriesByHierarchy(id);
-                request.setAttribute("categories", categories);
+                if(product != null) {
+                    categories = getDAOFactory().getCategoryDAO().getCategoriesByHierarchy(product.getCategoryId());
+                    request.setAttribute("categories", categories);
+                }
+            }
+        } else {
+            if (!request.getParameter("category_id").isEmpty()) {
+                long categoryId = Long.parseLong(request.getParameter("category_id"));
+                if (categoryId != 0) {
+                    categories = getDAOFactory().getCategoryDAO().getCategoriesByHierarchy(categoryId);
+                    request.setAttribute("categories", categories);
+                }
             }
         }
+    }
 
 }
 
