@@ -33,24 +33,24 @@ public class ProductViewService {
 
     public List<CategoryViewModel> getCategoryViewModels(HttpServletRequest request) {
 
-        String categoryIdByRequest = request.getParameter("category_id");
-
         List<CategoryViewModel> viewCategories;
 
-        if (request.getServletPath().equalsIgnoreCase(HOME_PAGE_URL) ||
-                getCategoryId(categoryIdByRequest) == 0) {
+        if (request.getServletPath().equalsIgnoreCase(HOME_PAGE_URL)) {
 
-            viewCategories = getBestOffersCategory();
-
+             viewCategories = getBestOffersCategory();
         } else {
+
             viewCategories = getCategoriesById(request);
         }
-
         return viewCategories;
     }
 
     private long getCategoryId(String categoryIdByRequest) {
-        return Long.parseLong(categoryIdByRequest);
+        if (categoryIdByRequest != null) {
+            return Long.parseLong(categoryIdByRequest);
+        } else {
+            return 0;
+        }
     }
 
     private List<CategoryViewModel> getBestOffersCategory() {
@@ -90,7 +90,7 @@ public class ProductViewService {
         List<Category> categories;
         String categoryIdByRequest = request.getParameter("category_id");
 
-        if (checkInNull(categoryIdByRequest)) {
+        if (checkInNull(categoryIdByRequest) || getCategoryId(categoryIdByRequest) == 0) {
 
             categories = getCategories();
         } else {
