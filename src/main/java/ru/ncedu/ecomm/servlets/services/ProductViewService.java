@@ -15,9 +15,9 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 public class ProductViewService {
 
     private static final long CHARACTERISTIC_ID_FOR_IMAGE_URL = 28;
+    private static final int CATEGORY_ID_FOR_BEST_OFFERS = 0;
     private static final String DEFAULT_IMAGE_URL = "/images/defaultimage/image.png";
     private static final String HOME_PAGE_URL = "/home";
-    private static final int CATEGORY_ID_FOR_BEST_OFFERS = 0;
 
     private ProductViewService() {
     }

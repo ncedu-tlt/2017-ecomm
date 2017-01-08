@@ -211,8 +211,8 @@ public class PostgresProductDAO implements ProductDAO {
                              "description, " +
                              "discount_id " +
                              "FROM public.products " +
-                             "WHERE discount_id = (SELECT max(discount_id) " +
-                             "FROM products) " +
+                             "WHERE discount_id > 1" +
+                             "ORDER BY discount_id DESC " +
                              "LIMIT 12")) {
 
             ResultSet resultSet = statement.executeQuery();
