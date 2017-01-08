@@ -36,17 +36,15 @@ public class ProductViewService {
         List<CategoryViewModel> viewCategories;
 
         if (request.getServletPath().equalsIgnoreCase(HOME_PAGE_URL)) {
-
-             viewCategories = getBestOffersCategory();
+            viewCategories = getBestOffersCategory();
         } else {
-
             viewCategories = getCategoriesById(request);
         }
         return viewCategories;
     }
 
     private long getCategoryId(String categoryIdByRequest) {
-        if (categoryIdByRequest != null) {
+        if (!checkInNull(categoryIdByRequest)) {
             return Long.parseLong(categoryIdByRequest);
         } else {
             return 0;
@@ -91,10 +89,8 @@ public class ProductViewService {
         String categoryIdByRequest = request.getParameter("category_id");
 
         if (checkInNull(categoryIdByRequest) || getCategoryId(categoryIdByRequest) == 0) {
-
             categories = getCategories();
         } else {
-
             categories = getCategoriesById(
                     getCategoryId(categoryIdByRequest)
             );
@@ -153,7 +149,7 @@ public class ProductViewService {
                     .setRating(productRating)
                     .build();
 
-            if (product.getDiscountId() > 1){
+            if (product.getDiscountId() > 1) {
                 itemForView.setDiscount(getDiscountPrice(product.getDiscountId(),
                         product.getPrice()));
             }
@@ -191,7 +187,7 @@ public class ProductViewService {
                 .getAverageRatingByProductId(productId);
     }
 
-    private long getDiscountPrice(long discountId, long price){
+    private long getDiscountPrice(long discountId, long price) {
         double discountValue = price * (getDiscountValue(discountId) / 100.0);
 
         long discount = (long) discountValue;
@@ -200,7 +196,7 @@ public class ProductViewService {
     }
 
     private int getDiscountValue(long discountId) {
-     List<Discount> allDiscountValues = getDAOFactory()
+        List<Discount> allDiscountValues = getDAOFactory()
                 .getDiscountDAO()
                 .getDiscount();
 

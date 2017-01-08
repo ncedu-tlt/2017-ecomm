@@ -24,7 +24,7 @@
                 <h3 class="ui center aligned grey header">
                     <c:if test="${product.getDiscount() != 0}">
                         $<b style="text-decoration: line-through;">${product.getPrice()}</b>
-                            <a style="margin-left: .2em" class="ui red large label">
+                            <a style="margin-left: .2em" href="\product?product_id=${product.getId()}" class="ui red large label">
                                 $${product.getDiscount()}
                             </a>
                     </c:if>
