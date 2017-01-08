@@ -14,6 +14,17 @@
             this.content.find('.ui.form')
                 .form({
                     fields: {
+
+                        email: {
+                            identifier: 'email',
+                            optional: true,
+                            rules: [
+                                {
+                                    type: 'email',
+                                    prompt: 'Please enter a valid e-mail'
+                                }
+                            ]
+                        },
                         password: {
                             identifier: 'password',
                             optional: true,
