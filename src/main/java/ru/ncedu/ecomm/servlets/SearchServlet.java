@@ -25,7 +25,7 @@ public class SearchServlet extends HttpServlet {
         categoryViewModels.add(new CategoryViewBuilder()
                 .setName(products.isEmpty() ? "Sorry, no products matched \"" + name + "\"" : "Found products")
                 .setId(0)
-                .setProducts(ProductViewService.getInstance().fromProductsToView(products))
+                .setProducts(ProductViewService.getInstance().getProductsToView(products))
                 .build());
 
         request.setAttribute("categoriesForView", categoryViewModels);

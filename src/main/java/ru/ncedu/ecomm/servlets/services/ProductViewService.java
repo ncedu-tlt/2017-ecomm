@@ -113,7 +113,7 @@ public class ProductViewService {
 
 
     private List<ProductViewModel> addProductToViewByCategoryId(long categoryId) {
-        return fromProductsToView(getProductsById(categoryId));
+        return getProductsToView(getProductsById(categoryId));
     }
 
     private boolean checkInNull(Object object) {
@@ -165,7 +165,7 @@ public class ProductViewService {
         return 0;
     }
 
-    public List<ProductViewModel> fromProductsToView (List<Product> products){
+    public List<ProductViewModel> getProductsToView (List<Product> products){
 
         List<ProductViewModel> productsView = new ArrayList<>();
 
