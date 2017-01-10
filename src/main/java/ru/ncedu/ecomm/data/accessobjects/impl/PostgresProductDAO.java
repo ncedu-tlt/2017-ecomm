@@ -233,6 +233,31 @@ public class PostgresProductDAO implements ProductDAO {
         }
         return products;
     }
+
+    public List<Product> searchProductsByName(String name) {
+        List<Product> products = new ArrayList<>();
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT * FROM public.products where name ~* '" + name + "'")) {
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Product product = new ProductBuilder()
+                        .setProductId(resultSet.getLong("product_id"))
+                        .setCategoryId(resultSet.getLong("category_id"))
+                        .setName(resultSet.getString("name"))
+                        .setDescription(resultSet.getString("description"))
+                        .setDiscountId(resultSet.getLong("discount_id"))
+                        .setPrice(resultSet.getLong("price"))
+                        .build();
+
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return products;
+    }
 }
 
 

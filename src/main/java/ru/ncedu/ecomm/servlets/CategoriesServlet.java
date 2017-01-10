@@ -18,12 +18,10 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 @WebServlet(name = "CategoriesServlet", urlPatterns = {"/CategoriesServlet"})
 public class CategoriesServlet extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    private void process(HttpServletRequest request) {
         List<Category> categories = getDAOFactory().getCategoryDAO().getCategories();
         List<CategoriesViewModel> heads = new ArrayList<CategoriesViewModel>();
         List<CategoriesViewModel> child = new ArrayList<CategoriesViewModel>();
-
 
         for (Category category : categories) {
             if (category.getParentId() == 0) {
@@ -47,6 +45,13 @@ public class CategoriesServlet extends HttpServlet {
 
         request.setAttribute("heads", heads);
         request.setAttribute("child", child);
+    }
 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        process(request);
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        process(request);
     }
 }

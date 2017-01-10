@@ -113,51 +113,7 @@ public class ProductViewService {
 
 
     private List<ProductViewModel> addProductToViewByCategoryId(long categoryId) {
-
-        List<ProductViewModel> productsInCategory = new ArrayList<>();
-
-        List<Product> products = getProductsById(categoryId);
-
-        ProductViewModel itemForView;
-        Rating productAvergeRating;
-        CharacteristicValue characteristicValue;
-
-
-        for (Product product : products) {
-            int productRating = 0;
-
-            String imageUrl = DEFAULT_IMAGE_URL;
-
-            characteristicValue = getImageUrl(product.getId());
-
-            if (!checkInNull(characteristicValue)) {
-                imageUrl = characteristicValue.getCharacteristicValue();
-            }
-
-            productAvergeRating = getRating(product.getId());
-
-            if (!checkInNull(productAvergeRating)) {
-                productRating = productAvergeRating.getRaiting();
-            }
-
-
-            itemForView = new ProductItemsViewBuilder()
-                    .setProductId(product.getId())
-                    .setName(product.getName())
-                    .setPrice(product.getPrice())
-                    .setImageUrl(imageUrl)
-                    .setRating(productRating)
-                    .build();
-
-            if (product.getDiscountId() > 1) {
-                itemForView.setDiscount(getDiscountPrice(product.getDiscountId(),
-                        product.getPrice()));
-            }
-
-            productsInCategory.add(itemForView);
-        }
-
-        return productsInCategory;
+        return fromProductsToView(getProductsById(categoryId));
     }
 
     private boolean checkInNull(Object object) {
@@ -207,5 +163,49 @@ public class ProductViewService {
         }
 
         return 0;
+    }
+
+    public List<ProductViewModel> fromProductsToView (List<Product> products){
+
+        List<ProductViewModel> productsView = new ArrayList<>();
+
+        ProductViewModel itemForView;
+        Rating productAverageRating;
+        CharacteristicValue characteristicValue;
+
+        for (Product product : products) {
+            int productRating = 0;
+
+            String imageUrl = DEFAULT_IMAGE_URL;
+
+            characteristicValue = getImageUrl(product.getId());
+
+            if (!checkInNull(characteristicValue)) {
+                imageUrl = characteristicValue.getCharacteristicValue();
+            }
+
+            productAverageRating = getRating(product.getId());
+
+            if (!checkInNull(productAverageRating)) {
+                productRating = productAverageRating.getRaiting();
+            }
+
+
+            itemForView = new ProductItemsViewBuilder()
+                    .setProductId(product.getId())
+                    .setName(product.getName())
+                    .setPrice(product.getPrice())
+                    .setImageUrl(imageUrl)
+                    .setRating(productRating)
+                    .build();
+
+            if (product.getDiscountId() > 1) {
+                itemForView.setDiscount(getDiscountPrice(product.getDiscountId(),
+                        product.getPrice()));
+            }
+
+            productsView.add(itemForView);
+        }
+        return productsView;
     }
 }

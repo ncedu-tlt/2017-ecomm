@@ -20,4 +20,6 @@ public interface ProductDAO {
 
     List<Product> getBestOffersProducts();
 
+    List<Product> searchProductsByName(String name);
+
 }
