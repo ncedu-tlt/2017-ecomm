@@ -12,11 +12,11 @@
             <form class="ui equal dividing width form">
                 <div class="field">
                     <label> Your E-mail: </label>
-                    <input type="text" name="first-name" placeholder="E-mail">
+                    <input type="text" name="email" placeholder="E-mail">
                 </div>
                 <div class="field">
                     <label> Your Password: </label>
-                    <input type="password" name="last-name" placeholder="Password">
+                    <input type="password" name="password" placeholder="Password">
                 </div>
                 <div class="two fields">
                     <div class="field">
@@ -40,6 +40,12 @@
                             </div>
                         </button>
                     </div>
+                    <c:set var="eMail" scope="session" value="${requestScope.answer}"/>
+                    <c:if test="${eMail != null}">
+                        <div class="ui message warning">
+                            <p>${requestScope.answer}</p>
+                        </div>
+                    </c:if>
                     <div class="ui two column centered row grid">
                             <p>Not a member yet?<a class="item" href="<c:url value="/registration"/>">Register</a></p>
                     </div>

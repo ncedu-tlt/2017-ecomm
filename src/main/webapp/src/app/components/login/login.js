@@ -8,7 +8,28 @@
          * Executed on component initialization
          */
         init: function () {
-
+            this.content.find('.ui.equal.dividing.width.form')
+                .form({
+                    fields:{
+                        email: {
+                            rules:[
+                                {
+                                    type: 'empty',
+                                    prompt: ''
+                                }
+                            ]
+                        },
+                        password:{
+                            rules:[
+                                {
+                                    type: 'empty',
+                                    prompt: ''
+                                }
+                            ]
+                        }
+                    }
+                })
+            ;
         }
     });
 
