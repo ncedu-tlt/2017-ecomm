@@ -8,7 +8,7 @@
     </h2>
     <div class="ui grid centered container">
         <c:forEach var="product" items="${category.getProducts()}">
-            <form action="shoppingCart.jsp" method="post" class="five wide column">
+            <form action="${pageContext.request.contextPath}/addToShoppingCart" method="post" class="five wide column">
                 <img class="ui fluid image" src="${product.getImageUrl()}">
                 <h3 class="ui center aligned header horizontal divider">
                     <a href="\product?product_id=${product.getId()}">
@@ -23,24 +23,29 @@
 
                 <h3 class="ui center aligned grey header">
                     <c:if test="${product.getDiscount() != 0}">
-                        $<b style="text-decoration: line-through;">${product.getPrice()}</b>
-                            <a style="margin-left: .2em" href="\product?product_id=${product.getId()}" class="ui red large label">
-                                $${product.getDiscount()}
-                            </a>
+                        <b style="text-decoration: line-through;">${product.getPrice()}</b>
+                        <a style="margin-left: .2em" href="\product?product_id=${product.getId()}"
+                           class="ui red large label">
+                            $${product.getDiscount()}
+                        </a>
                     </c:if>
                     <c:if test="${product.getDiscount() == 0}">
-                        $${product.getPrice()}
+                        ${product.getPrice()}
                     </c:if>
                 </h3>
+                <%--<input type="hidden" name="productId" value="${product.getId()}" />--%>
                 <button class="ui labeled icon  fluid blue button" type="submit"
-                        value="${product.getId()}">
-                    <i class="add to car icon"></i>
+                        name="productId" value="${product.getId()}">
+                    <i class="add
+                    to car icon"></i>
                     Add to card
                 </button>
             </form>
         </c:forEach>
     </div>
 </c:forEach>
+
+<p>${requestScope.var}</p>
 </div>
 <script>
     window.frm.components.init('ProductListComponent', '.jsProductListComponent');
