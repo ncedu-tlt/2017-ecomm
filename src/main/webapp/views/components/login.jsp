@@ -40,18 +40,18 @@
                             </div>
                         </button>
                     </div>
-                    <c:set var="eMail" scope="session" value="${requestScope.answer}"/>
-                    <c:if test="${eMail != null}">
-                        <div class="ui message warning">
-                            <p>${requestScope.answer}</p>
-                        </div>
-                    </c:if>
                     <div class="ui two column centered row grid">
                             <p>Not a member yet?<a class="item" href="<c:url value="/registration"/>">Register</a></p>
                     </div>
                 </div>
             </form>
             <div class="ui hidden divider"></div>
+            <c:set var="request" scope="session" value="${requestScope.answer}"/>
+            <c:if test="${request != null}">
+                <div class="ui message warning">
+                    <p>${requestScope.answer}</p>
+                </div>
+            </c:if>
         </div>
     </div>
 </div>
