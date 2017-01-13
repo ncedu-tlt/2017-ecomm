@@ -9,18 +9,18 @@
             <div>
                 ${requestScope.answer}
             </div>
-            <form class="ui equal dividing width form">
+            <form class="ui equal dividing width form" method="post">
                 <div class="field">
                     <label for="email">E-mail: </label>
-                    <input type="text" id="email" name="first-name" placeholder="E-mail">
+                    <input type="text" id="email" name="email" placeholder="E-mail">
                 </div>
                 <div class="field">
                     <label for="password">Password: </label>
-                    <input type="password" id="password" name="last-name" placeholder="Password">
+                    <input type="password" id="password" name="password" placeholder="Password">
                 </div>
                 <div class="field">
                     <label for="confirmPassword">Confirm password: </label>
-                    <input type="password" id="confirmPassword" name="last-name" placeholder="Confirm password">
+                    <input type="password" id="confirmPassword" name="ConfirmPassword" placeholder="Confirm password">
                 </div>
                 <div class="column">
                     <button class="ui fluid animated primary button" type="submit">

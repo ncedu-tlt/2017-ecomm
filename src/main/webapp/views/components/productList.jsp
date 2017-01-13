@@ -44,8 +44,6 @@
         </c:forEach>
     </div>
 </c:forEach>
-
-<p>${requestScope.var}</p>
 </div>
 <script>
     window.frm.components.init('ProductListComponent', '.jsProductListComponent');

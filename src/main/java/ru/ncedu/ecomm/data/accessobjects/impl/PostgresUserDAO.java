@@ -174,9 +174,8 @@ public class PostgresUserDAO implements UserDAO {
                              "password, " +
                              "phone, " +
                              "email, " +
-                             "registration_date" +
-                             "recovery_hash)" +
-                             "VALUES (?, ?, ?, ?, ?, ?, current_timestamp, ?)" +
+                             "registration_date)" +
+                             "VALUES (?, ?, ?, ?, ?, ?, current_timestamp)" +
                              "RETURNING user_id")) {
 
             statement.setLong(1, user.getRoleId());
@@ -185,7 +184,6 @@ public class PostgresUserDAO implements UserDAO {
             statement.setString(4, user.getPassword());
             statement.setString(5, user.getPhone());
             statement.setString(6, user.getEmail());
-            statement.setString(7, user.getRecoveryHash());
             statement.execute();
 
             ResultSet resultSet = statement.getResultSet();
