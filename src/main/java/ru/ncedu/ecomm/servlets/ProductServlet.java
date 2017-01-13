@@ -67,12 +67,10 @@ public class ProductServlet extends HttpServlet {
         Product productForBuilding = getProductForBuild(productId);
         Rating avergeRating = getAvergeRating(productId);
 
-        return new ProductDetailsModelBuilder()
+        ProductDetailsModel productDetailsModel = new ProductDetailsModelBuilder()
                 .setRating(avergeRating.getRaiting())
                 .setId(productForBuilding.getId())
                 .setPrice(productForBuilding.getPrice())
-                .setDiscount(getDiscountValue(productForBuilding.getDiscountId(),
-                        productForBuilding.getPrice()))
                 .setName(productForBuilding.getName())
                 .setDescription(productForBuilding.getDescription())
                 .setCharacteristicGroupModels(getCharacteristicGroupModel(
@@ -80,13 +78,22 @@ public class ProductServlet extends HttpServlet {
                 .setProductImages(getImageLinkByProductId(productId))
                 .setUserReview(getReviewByProductId(productId))
                 .build();
+
+        if (productForBuilding.getDiscountId() > 1) {
+            productDetailsModel.setDiscount(
+                    getDiscountValue(productForBuilding
+                                    .getDiscountId(),
+                            productForBuilding
+                                    .getPrice()));
+        }
+        return productDetailsModel;
     }
 
     private List<Review> getReviewByProductId(long productId) {
-    return DAOFactory
-            .getDAOFactory()
-            .getReviewDAO()
-            .getReviewsByProductId(productId);
+        return DAOFactory
+                .getDAOFactory()
+                .getReviewDAO()
+                .getReviewsByProductId(productId);
     }
 
     private List<Images> getImageLinkByProductId(long productId) {
@@ -135,9 +142,9 @@ public class ProductServlet extends HttpServlet {
                     .build();
 
 
-                if (!characteristicGroupModel.getCharacteristics().isEmpty()) {
-                    characteristicGroupModels.add(characteristicGroupModel);
-                }
+            if (!characteristicGroupModel.getCharacteristics().isEmpty()) {
+                characteristicGroupModels.add(characteristicGroupModel);
+            }
         }
 
         return characteristicGroupModels;

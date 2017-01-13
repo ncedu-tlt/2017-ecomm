@@ -23,14 +23,14 @@
 
                 <h3 class="ui center aligned grey header">
                     <c:if test="${product.getDiscount() != 0}">
-                        <b style="text-decoration: line-through;">${product.getPrice()}</b>
+                        <b style="text-decoration: line-through;">$${product.getPrice()}</b>
                         <a style="margin-left: .2em" href="\product?product_id=${product.getId()}"
                            class="ui red large label">
                             $${product.getDiscount()}
                         </a>
                     </c:if>
                     <c:if test="${product.getDiscount() == 0}">
-                        ${product.getPrice()}
+                        $${product.getPrice()}
                     </c:if>
                 </h3>
                 <%--<input type="hidden" name="productId" value="${product.getId()}" />--%>
