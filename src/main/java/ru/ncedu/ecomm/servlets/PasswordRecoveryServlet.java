@@ -2,7 +2,7 @@ package ru.ncedu.ecomm.servlets;
 
 
 import ru.ncedu.ecomm.data.models.User;
-import ru.ncedu.ecomm.servlets.passwordRecovery.SendMail;
+import ru.ncedu.ecomm.servlets.services.passwordRecovery.SendMail;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

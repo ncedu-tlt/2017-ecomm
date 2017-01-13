@@ -1,4 +1,4 @@
-package ru.ncedu.ecomm.servlets.passwordRecovery;
+package ru.ncedu.ecomm.servlets.services.passwordRecovery;
 
 import ru.ncedu.ecomm.data.models.User;
 
