@@ -42,6 +42,81 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
     }
 
     @Override
+    public List<Characteristic> getCharacteristicByGroupId(long characteristicGroupId) {
+        List<Characteristic> characteristics = new ArrayList<>();
+
+        try(Connection connection = DBUtils.getConnection();
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT characteristic_id, " +
+                            "category_id, " +
+                            "name, " +
+                            "characteristic_group_id " +
+                            "FROM public.characteristics " +
+                            "WHERE characteristic_group_id = ?"
+
+            )){
+
+            statement.setLong(1, characteristicGroupId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()){
+                Characteristic characteristic = new CharacteristicBuilder()
+                        .setCharacteristicId(resultSet.getLong("characteristic_id"))
+                        .setCharacteristicName(resultSet.getString("name"))
+                        .setCharacteristicGroupId(resultSet.getLong("characteristic_group_id"))
+                        .setCategoryId(resultSet.getLong("category_id"))
+                        .build();
+
+                characteristics.add(characteristic);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return characteristics;
+    }
+
+    @Override
+    public List<Characteristic> getCharacteristicByCategoryIdAndGroupId(long categoryId, long groupId) {
+        List<Characteristic> characteristics = new ArrayList<>();
+
+        try(Connection connection = DBUtils.getConnection();
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT characteristic_id, " +
+                            "category_id, " +
+                            "name, " +
+                            "characteristic_group_id " +
+                            "FROM public.characteristics " +
+                            "WHERE category_id = ? " +
+                            "AND  characteristic_group_id = ?"
+
+            )){
+            statement.setLong(1, categoryId);
+            statement.setLong(2, groupId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()){
+                Characteristic characteristic = new CharacteristicBuilder()
+                        .setCharacteristicId(resultSet.getLong("characteristic_id"))
+                        .setCharacteristicName(resultSet.getString("name"))
+                        .setCharacteristicGroupId(resultSet.getLong("characteristic_group_id"))
+                        .setCategoryId(resultSet.getLong("category_id"))
+                        .build();
+
+                characteristics.add(characteristic);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return characteristics;
+    }
+
+    @Override
     public Characteristic addCharacteristic(Characteristic characteristic) {
 
         try (Connection connection = DBUtils.getConnection();

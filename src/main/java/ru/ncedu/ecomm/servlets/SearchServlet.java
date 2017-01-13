@@ -20,7 +20,7 @@ public class SearchServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("search");
         List<Product> products = DAOFactory.getDAOFactory().getProductDAO().searchProductsByName(name);
-        List<CategoryViewModel> categoryViewModels = new ArrayList<CategoryViewModel>();
+        List<CategoryViewModel> categoryViewModels = new ArrayList<>();
 
         categoryViewModels.add(new CategoryViewBuilder()
                 .setName(products.isEmpty() ? "Sorry, no products matched \"" + name + "\"" : "Found products")

@@ -14,9 +14,10 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 public class ProductViewService {
 
-    private static final long CHARACTERISTIC_ID_FOR_IMAGE_URL = 28;
+    public static final String DEFAULT_IMAGE_URL = "/images/defaultimage/image.png";
+    public static final long CHARACTERISTIC_ID_FOR_IMAGE_URL = 28;
+
     private static final int CATEGORY_ID_FOR_BEST_OFFERS = 0;
-    private static final String DEFAULT_IMAGE_URL = "/images/defaultimage/image.png";
     private static final String HOME_PAGE_URL = "/home";
 
     private ProductViewService() {
@@ -130,7 +131,7 @@ public class ProductViewService {
         }
     }
 
-    private CharacteristicValue getImageUrl(long productId) {
+    private List<CharacteristicValue> getImageUrl(long productId) {
         return getDAOFactory()
                 .getCharacteristicValueDAO()
                 .getCharacteristicValueByIdAndProductId(productId,
@@ -143,26 +144,10 @@ public class ProductViewService {
                 .getAverageRatingByProductId(productId);
     }
 
-    private long getDiscountPrice(long discountId, long price) {
-        double discountValue = price * (getDiscountValue(discountId) / 100.0);
-
-        long discount = (long) discountValue;
-
-        return price - discount;
-    }
-
-    private int getDiscountValue(long discountId) {
-        List<Discount> allDiscountValues = getDAOFactory()
-                .getDiscountDAO()
-                .getDiscount();
-
-        for (Discount discount : allDiscountValues) {
-            if (discount.getDiscountId() == discountId) {
-                return discount.getValue();
-            }
-        }
-
-        return 0;
+    private long getDiscountPrice(long discountId, long price){
+        return DiscountService
+                .getInstance()
+                .getDiscountPrice(discountId, price);
     }
 
     public List<ProductViewModel> getProductsToView (List<Product> products){
@@ -171,17 +156,18 @@ public class ProductViewService {
 
         ProductViewModel itemForView;
         Rating productAverageRating;
-        CharacteristicValue characteristicValue;
+        List<CharacteristicValue> characteristicValues;
 
         for (Product product : products) {
             int productRating = 0;
 
             String imageUrl = DEFAULT_IMAGE_URL;
 
-            characteristicValue = getImageUrl(product.getId());
+            characteristicValues = getImageUrl(product.getId());
 
-            if (!checkInNull(characteristicValue)) {
-                imageUrl = characteristicValue.getCharacteristicValue();
+            if (!characteristicValues.isEmpty()) {
+
+                imageUrl = getImageUrlByCharacteristicList(characteristicValues);
             }
 
             productAverageRating = getRating(product.getId());
@@ -207,5 +193,15 @@ public class ProductViewService {
             productsView.add(itemForView);
         }
         return productsView;
+    }
+
+    private String getImageUrlByCharacteristicList(List<CharacteristicValue> characteristicValues) {
+        String imageURL = null;
+
+        for (CharacteristicValue characteristicValue : characteristicValues){
+            imageURL = characteristicValue.getCharacteristicValue();
+        }
+
+        return imageURL;
     }
 }

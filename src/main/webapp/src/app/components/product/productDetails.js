@@ -1,6 +1,3 @@
-/**
- * Created by Alexander on 08.12.2016.
- */
 (function ($, window) {
 
     var frm = window.frm;
@@ -10,11 +7,28 @@
          * Executed on component initialization
          */
         init: function () {
-            this.content.find('.rating').rating({
-                initialRating: 3,
-                maxRating: 5
+            this.content.find('.rating').rating({initialRating: 2, maxRating: 10}).rating('disable');
+            this.content.find('.slideShowPic').on('click', function (e) {
+                e.preventDefault();
+
+                var
+                    $this = $(this),
+                    item = $this.closest('.slideShowItem'),
+                    container = $this.closest('.slideShow'),
+                    display = container.find('.showDisplay'),
+                    path = item.find('img').attr('src'),
+                    duration = 300;
+
+                if (!item.hasClass('active')) {
+                    item.addClass('active').siblings().removeClass('active');
+
+                    display.find('img').fadeOut(duration, function () {
+                        $(this).attr('src', path).fadeIn(duration);
+                    });
+                }
             });
         }
+
 
     });
 
