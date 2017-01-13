@@ -44,6 +44,7 @@
         </c:forEach>
     </div>
 </c:forEach>
+<p>${requestScope.max}</p>
 </div>
 <script>
     window.frm.components.init('ProductListComponent', '.jsProductListComponent');

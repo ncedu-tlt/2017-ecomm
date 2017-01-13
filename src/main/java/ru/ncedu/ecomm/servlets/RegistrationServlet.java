@@ -1,6 +1,5 @@
 package ru.ncedu.ecomm.servlets;
 
-import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 import ru.ncedu.ecomm.data.models.User;
 import ru.ncedu.ecomm.data.models.builders.UserBuilder;
 
@@ -12,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 @WebServlet(name = "RegistrationServlet", urlPatterns = {"/registration"})
 public class RegistrationServlet extends HttpServlet {

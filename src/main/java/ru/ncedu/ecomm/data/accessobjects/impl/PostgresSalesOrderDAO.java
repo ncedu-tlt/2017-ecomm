@@ -88,7 +88,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
             statement.setLong(1, salesOrder.getUserId());
             statement.setDate(2, salesOrder.getCreationDate());
             statement.setBigDecimal(3, salesOrder.getLimit());
-            statement.setLong(4, salesOrder.getSalesOrderId());
+            statement.setLong(4, salesOrder.getOrderStatusId());
             statement.execute();
 
             ResultSet resultSet = statement.getResultSet();

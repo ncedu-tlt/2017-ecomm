@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets;
 
-import ru.ncedu.ecomm.servlets.services.ProductToShoppingCart;
+import ru.ncedu.ecomm.data.models.SalesOrder;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.sql.Date;
+
+import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 @WebServlet(name = "AddToShoppingCartServlet", urlPatterns = {"/addToShoppingCart"})
 public class AddToShoppingCartServlet extends HttpServlet {
@@ -20,15 +24,31 @@ public class AddToShoppingCartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession userSession = req.getSession();
-        if(userSession.getAttribute("sales_order_id") == null){
-            userSession.setAttribute("sales_order_id", ProductToShoppingCart.nextSalesOrderId());
+        HttpSession authorization = req.getSession();
+        if(authorization.getAttribute("user_id") == null){
+            req.getRequestDispatcher("/views/pages/login.jsp").forward(req, resp);
         }
+        long userId = Long.parseLong(authorization.getAttribute("userId").toString());
         long productId = Long.parseLong(req.getParameter("productId"));
-        long salesOrderId = Long.parseLong(userSession.getAttribute("sales_order_id").toString());
-        ProductToShoppingCart productToShoppingCart = new ProductToShoppingCart(productId, salesOrderId);
-        productToShoppingCart.addToShoppingCart();
-        req.getRequestDispatcher("/views/pages/index.jsp").forward(req, resp);
+        addToShoppingCart(userId);
+        req.getRequestDispatcher("/views/pages/cart.jsp").forward(req, resp);
     }
 
+   private void addToShoppingCart(long userId){
+       BigDecimal limit = new BigDecimal("2000.00");
+       Date creationDate = java.sql.Date.valueOf("2016-11-11");
+       long orderStatusId = 1;
+       SalesOrder saleOrder = addToSalesOrder(userId, limit, creationDate, orderStatusId);
+       getDAOFactory().getSalesOrderDAO().addSalesOrder(saleOrder);
+   }
+
+    private SalesOrder addToSalesOrder(long userId, BigDecimal limit, Date creationDate, long orderStatusId) {
+        SalesOrder saleOrder = new SalesOrder();
+        saleOrder.setUserId(userId);
+        saleOrder.setCreationDate(creationDate);
+        saleOrder.setLimit(limit);
+        saleOrder.setOrderStatusId(orderStatusId);
+
+        return saleOrder;
+    }
 }
