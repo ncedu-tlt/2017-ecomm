@@ -384,6 +384,28 @@ public class RestService {
         return getDAOFactory().getChracteristicDAO().getCharacteristic();
     }
     @GET
+    @Path("/characteristic/{categoryId}/{groupId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Characteristic> getCharacteristicByCategoryIdAndGroupId(
+            @PathParam("categoryId") long categoryId,
+            @PathParam("groupId") long groupId
+    ) {
+        return getDAOFactory()
+                .getChracteristicDAO()
+                .getCharacteristicByCategoryIdAndGroupId(
+                        categoryId,
+                        groupId
+                );
+    }
+
+    @GET
+    @Path("/characteristic/groupId/{characteristicGroupId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Characteristic> getCharacteristicByGroupId(
+            @PathParam("characteristicGroupId") long characteristicGroupId) {
+        return getDAOFactory().getChracteristicDAO().getCharacteristicByGroupId(characteristicGroupId);
+    }
+    @GET
     @Path("/characteristic/{characteristic}")
     @Produces(MediaType.APPLICATION_JSON)
     public Characteristic getCharacteristicById(

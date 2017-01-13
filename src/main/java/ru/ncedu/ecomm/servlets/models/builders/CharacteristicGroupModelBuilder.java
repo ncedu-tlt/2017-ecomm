@@ -3,15 +3,22 @@ package ru.ncedu.ecomm.servlets.models.builders;
 import ru.ncedu.ecomm.data.models.Characteristic;
 import ru.ncedu.ecomm.data.models.CharacteristicValue;
 import ru.ncedu.ecomm.servlets.models.CharacteristicGroupModel;
+import ru.ncedu.ecomm.servlets.models.CharacteristicModel;
 
 import java.util.List;
 
 public class CharacteristicGroupModelBuilder {
+    private long productId;
     private String characteristicGroupName;
-    private List<Characteristic> characteristics;
-    private List<CharacteristicValue> characteristicValues;
+    private List<CharacteristicModel> characteristics;
 
     public CharacteristicGroupModelBuilder() {
+    }
+
+    public CharacteristicGroupModelBuilder setProductId(long productId) {
+        this.productId = productId;
+
+        return this;
     }
 
     public CharacteristicGroupModelBuilder setCharacteristicGroupName(String characteristicGroupName) {
@@ -20,23 +27,17 @@ public class CharacteristicGroupModelBuilder {
         return this;
     }
 
-    public CharacteristicGroupModelBuilder setCharacteristics(List<Characteristic> characteristics) {
+    public CharacteristicGroupModelBuilder setCharacteristics(List<CharacteristicModel> characteristics) {
         this.characteristics = characteristics;
 
         return this;
     }
 
-    public CharacteristicGroupModelBuilder setCharacteristicValues(List<CharacteristicValue> characteristicValues) {
-        this.characteristicValues = characteristicValues;
-
-        return this;
-    }
-
-    private CharacteristicGroupModel build(){
+    public CharacteristicGroupModel build(){
         return new CharacteristicGroupModel(
+                productId,
                 characteristicGroupName,
-                characteristics,
-                characteristicValues
+                characteristics
         );
     }
 }

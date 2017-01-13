@@ -1,5 +1,6 @@
 package ru.ncedu.ecomm.servlets.models.builders;
 
+import ru.ncedu.ecomm.data.models.Review;
 import ru.ncedu.ecomm.servlets.models.CharacteristicGroupModel;
 import ru.ncedu.ecomm.servlets.models.Images;
 import ru.ncedu.ecomm.servlets.models.ProductDetailsModel;
@@ -16,10 +17,12 @@ public class ProductDetailsModelBuilder {
     private String description;
 
     private List<CharacteristicGroupModel> characteristicGroupModels;
-    private List<Images> proudctImages;
+    private List<Images> productImages;
+    private List<Review> userReview;
 
     public ProductDetailsModelBuilder() {
     }
+
 
     public ProductDetailsModelBuilder setRating(int rating) {
         this.rating = rating;
@@ -63,8 +66,14 @@ public class ProductDetailsModelBuilder {
         return this;
     }
 
-    public ProductDetailsModelBuilder setProudctImages(List<Images> proudctImages) {
-        this.proudctImages = proudctImages;
+    public ProductDetailsModelBuilder setProductImages(List<Images> productImages) {
+        this.productImages = productImages;
+
+        return this;
+    }
+
+    public ProductDetailsModelBuilder setUserReview(List<Review> userReview) {
+        this.userReview = userReview;
 
         return this;
     }
@@ -78,7 +87,8 @@ public class ProductDetailsModelBuilder {
                 name,
                 description,
                 characteristicGroupModels,
-                proudctImages
+                productImages,
+                userReview
 
         );
     }

@@ -1,6 +1,7 @@
 package ru.ncedu.ecomm.servlets.models;
 
 import ru.ncedu.ecomm.data.models.CharacteristicGroup;
+import ru.ncedu.ecomm.data.models.Review;
 
 import java.util.List;
 
@@ -15,6 +16,8 @@ public class ProductDetailsModel {
 
     private List<CharacteristicGroupModel> characteristicGroupModels;
     private List<Images> imagesList;
+    private List<Review> userReview;
+
 
     public ProductDetailsModel() {
     }
@@ -26,7 +29,8 @@ public class ProductDetailsModel {
                                String name,
                                String description,
                                List<CharacteristicGroupModel> characteristicGroupModels,
-                               List<Images> imagesList) {
+                               List<Images> imagesList,
+                               List<Review> userReview) {
         this.rating = rating;
         this.id = id;
         this.price = price;
@@ -35,6 +39,7 @@ public class ProductDetailsModel {
         this.description = description;
         this.characteristicGroupModels = characteristicGroupModels;
         this.imagesList = imagesList;
+        this.userReview = userReview;
     }
 
     public int getRating() {
@@ -99,5 +104,13 @@ public class ProductDetailsModel {
 
     public void setImagesList(List<Images> imagesList) {
         this.imagesList = imagesList;
+    }
+
+    public List<Review> getUserReview() {
+        return userReview;
+    }
+
+    public void setUserReview(List<Review> userReview) {
+        this.userReview = userReview;
     }
 }
