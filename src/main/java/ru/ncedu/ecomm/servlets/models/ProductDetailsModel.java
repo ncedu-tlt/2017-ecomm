@@ -16,7 +16,6 @@ public class ProductDetailsModel {
 
     private List<CharacteristicGroupModel> characteristicGroupModels;
     private List<Images> imagesList;
-    private List<Review> userReview;
 
 
     public ProductDetailsModel() {
@@ -29,8 +28,7 @@ public class ProductDetailsModel {
                                String name,
                                String description,
                                List<CharacteristicGroupModel> characteristicGroupModels,
-                               List<Images> imagesList,
-                               List<Review> userReview) {
+                               List<Images> imagesList) {
         this.rating = rating;
         this.id = id;
         this.price = price;
@@ -39,7 +37,6 @@ public class ProductDetailsModel {
         this.description = description;
         this.characteristicGroupModels = characteristicGroupModels;
         this.imagesList = imagesList;
-        this.userReview = userReview;
     }
 
     public int getRating() {
@@ -106,11 +103,4 @@ public class ProductDetailsModel {
         this.imagesList = imagesList;
     }
 
-    public List<Review> getUserReview() {
-        return userReview;
-    }
-
-    public void setUserReview(List<Review> userReview) {
-        this.userReview = userReview;
-    }
 }

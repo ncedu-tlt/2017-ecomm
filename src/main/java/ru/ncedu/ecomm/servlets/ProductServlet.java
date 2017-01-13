@@ -76,7 +76,6 @@ public class ProductServlet extends HttpServlet {
                 .setCharacteristicGroupModels(getCharacteristicGroupModel(
                         productForBuilding.getId()))
                 .setProductImages(getImageLinkByProductId(productId))
-                .setUserReview(getReviewByProductId(productId))
                 .build();
 
         if (productForBuilding.getDiscountId() > 1) {
@@ -87,13 +86,6 @@ public class ProductServlet extends HttpServlet {
                                     .getPrice()));
         }
         return productDetailsModel;
-    }
-
-    private List<Review> getReviewByProductId(long productId) {
-        return DAOFactory
-                .getDAOFactory()
-                .getReviewDAO()
-                .getReviewsByProductId(productId);
     }
 
     private List<Images> getImageLinkByProductId(long productId) {

@@ -2,18 +2,18 @@
 <c:set var="browseProduct" scope="page"
        value="${requestScope.browseProduct}"/>
 <div class="ui text two column grid container jsProductDetailsComponent">
-    <div class="column">
-        <div class="ui one column grid">
-            <div class="column">
+    <div class="column slideShow">
+        <div class="ui one column grid ">
+            <div class="column showDisplay">
                 <a href="#">
-                    <img class="ui large image" src="http://semantic-ui.com/images/wireframe/image.png" alt="">
+                    <img class="ui large image" src="${browseProduct.getImagesList().get(0).getImagesLinks()}" alt="">
                 </a>
             </div>
         </div>
         <div class="ui three column grid">
             <c:forEach var="image" items="${browseProduct.getImagesList()}">
-                <div class="column">
-                    <a href="#">
+                <div class="column slideShowItem">
+                    <a class="slideShowPic" href="#">
                         <img class="ui large image" src="${image.getImagesLinks()}" alt="">
                     </a>
                 </div>

@@ -18,7 +18,6 @@ public class ProductDetailsModelBuilder {
 
     private List<CharacteristicGroupModel> characteristicGroupModels;
     private List<Images> productImages;
-    private List<Review> userReview;
 
     public ProductDetailsModelBuilder() {
     }
@@ -72,12 +71,6 @@ public class ProductDetailsModelBuilder {
         return this;
     }
 
-    public ProductDetailsModelBuilder setUserReview(List<Review> userReview) {
-        this.userReview = userReview;
-
-        return this;
-    }
-
     public ProductDetailsModel build(){
         return new ProductDetailsModel(
                 rating,
@@ -87,9 +80,7 @@ public class ProductDetailsModelBuilder {
                 name,
                 description,
                 characteristicGroupModels,
-                productImages,
-                userReview
-
+                productImages
         );
     }
 }
