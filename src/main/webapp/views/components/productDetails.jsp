@@ -39,8 +39,8 @@
             </div>
         </div>
         <div class="ui two column grid">
-            <form action="shoppingCart.jsp" method="post" class="column aligned left">
-                <button value="${browseProduct.getId()}" class="ui button">ADD TO CART</button>
+            <form action="${pageContext.request.contextPath}/addToShoppingCart" method="post" class="column aligned left">
+                <button name="productId" value="${browseProduct.getId()}" class="ui button">ADD TO CART</button>
             </form>
             <div class="column right aligned container">
                 <div class="ui button" tabindex="0">COMPARE</div>
