@@ -16,7 +16,7 @@
                     </a>
                 </h3>
                 <div class="ui grid centered container">
-                    <div class="ui seven wide column centered grid large rating disabled"
+                    <div class="ui ten wide column centered grid massive rating disabled"
                          data-rating="${product.getRating()}">
                     </div>
                 </div>

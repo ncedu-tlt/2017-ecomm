@@ -52,9 +52,6 @@
     </div>
 <c:forEach var="characteristicGroup" items="${browseProduct.getCharacteristicGroupModels()}">
     <div class="ui top attached menu">
-        <div class="item">
-            <i class="settings icon large"></i>
-        </div>
         <a class="item">${characteristicGroup.getCharacteristicGroupName()}</a>
     </div>
     <div class="ui attached segment">
