@@ -6,7 +6,7 @@
         <div class="ui one column grid ">
             <div class="column showDisplay">
                 <a href="#">
-                    <img class="ui large image" src="${browseProduct.getImagesList().get(0).getImagesLinks()}" alt="">
+                    <img class="ui large image" src="${browseProduct.getImagesList().get(0)}" alt="">
                 </a>
             </div>
         </div>
@@ -14,7 +14,7 @@
             <c:forEach var="image" items="${browseProduct.getImagesList()}">
                 <div class="column slideShowItem">
                     <a class="slideShowPic" href="#">
-                        <img class="ui large image" src="${image.getImagesLinks()}" alt="">
+                        <img class="ui large image" src="${image}" alt="">
                     </a>
                 </div>
             </c:forEach>
@@ -24,7 +24,7 @@
         <h2 class="ui header">${browseProduct.getName()}</h2>
         <div class="ui two column grid">
             <div class="column">
-                <div class="ui eleven wide column large rating disabled" data-rating="${browseProduct.getRating()}" data-max-rating="10"></div>
+                <div class="ui eleven wide column large rating disabled" data-rating="${browseProduct.getRating()}" data-max-rating="5"></div>
             </div>
             <div class="column right aligned container">
                 <c:if test="${browseProduct.getDiscount() != 0}">

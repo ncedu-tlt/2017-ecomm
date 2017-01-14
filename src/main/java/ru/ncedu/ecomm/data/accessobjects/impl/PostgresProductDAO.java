@@ -9,10 +9,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.ncedu.ecomm.utils.DBUtils.closeConnection;
-import static ru.ncedu.ecomm.utils.DBUtils.closeStatement;
-
 public class PostgresProductDAO implements ProductDAO {
+
+    private static final int MAX_ITEM_FOR_MAIN_PAGE = 12;
+    private static final int MAX_ITEM_FOR_CATEGORY_PAGE = 6;
 
     @Override
     public List<Product> getProducts() {
@@ -23,12 +23,13 @@ public class PostgresProductDAO implements ProductDAO {
              Statement statement = connection.createStatement()) {
 
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT product_id, " +
-                            "category_id, " +
-                            "name, " +
-                            "description, " +
-                            "discount_id, " +
-                            "price " +
+                    "SELECT\n" +
+                            "  product_id,\n" +
+                            "  category_id,\n" +
+                            "  name,\n" +
+                            "  description,\n" +
+                            "  discount_id,\n" +
+                            "  price\n" +
                             "FROM public.products");
 
             while (resultSet.next()) {
@@ -55,13 +56,13 @@ public class PostgresProductDAO implements ProductDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "INSERT INTO public.products " +
-                             "(category_id, " +
-                             "name, " +
-                             "description, " +
-                             "discount_id, " +
-                             "price) " +
-                             "VALUES (?, ?, ?, ?, ?) " +
+                     "INSERT INTO public.products\n" +
+                             "(category_id,\n" +
+                             " name,\n" +
+                             " description,\n" +
+                             " discount_id,\n" +
+                             " price)\n" +
+                             "VALUES (?, ?, ?, ?, ?)\n" +
                              "RETURNING product_id")) {
 
             statement.setLong(1, product.getProductId());
@@ -87,12 +88,12 @@ public class PostgresProductDAO implements ProductDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "UPDATE public.products " +
-                             "SET category_id = ?, " +
-                             "name = ?, " +
-                             "description = ?, " +
-                             "discount_id = ?, " +
-                             "price = ? " +
+                     "UPDATE public.products\n" +
+                             "SET category_id = ?,\n" +
+                             "  name          = ?,\n" +
+                             "  description   = ?,\n" +
+                             "  discount_id   = ?,\n" +
+                             "  price         = ?\n" +
                              "WHERE product_id = ?")) {
 
             statement.setLong(1, product.getCategoryId());
@@ -115,8 +116,8 @@ public class PostgresProductDAO implements ProductDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "DELETE FROM public.products" +
-                             " WHERE product_id = ?")) {
+                     "DELETE FROM public.products\n" +
+                             "WHERE product_id = ?")) {
 
             statement.setLong(1, product.getProductId());
             statement.execute();
@@ -131,13 +132,14 @@ public class PostgresProductDAO implements ProductDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT product_id, " +
-                             "category_id, " +
-                             "name, " +
-                             "description, " +
-                             "discount_id, " +
-                             "price " +
-                             "FROM public.products " +
+                     "SELECT\n" +
+                             "  product_id,\n" +
+                             "  category_id,\n" +
+                             "  name,\n" +
+                             "  description,\n" +
+                             "  discount_id,\n" +
+                             "  price\n" +
+                             "FROM public.products\n" +
                              "WHERE product_id = ?")) {
 
 
@@ -167,16 +169,17 @@ public class PostgresProductDAO implements ProductDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT product_id, " +
-                             "category_id, " +
-                             "name, " +
-                             "description, " +
-                             "discount_id, " +
-                             "price " +
-                             "FROM public.products " +
-                             "WHERE category_id = ? " +
-                             "ORDER BY product_id ASC " +
-                             "LIMIT 6")) {
+                     "SELECT\n" +
+                             "  product_id,\n" +
+                             "  category_id,\n" +
+                             "  name,\n" +
+                             "  description,\n" +
+                             "  discount_id,\n" +
+                             "  price\n" +
+                             "FROM public.products\n" +
+                             "WHERE category_id = ?\n" +
+                             "ORDER BY product_id ASC\n" +
+                             "LIMIT " + MAX_ITEM_FOR_CATEGORY_PAGE)) {
 
             statement.setLong(1, categoryId);
 
@@ -203,17 +206,19 @@ public class PostgresProductDAO implements ProductDAO {
         List<Product> products = new ArrayList<>();
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT " +
-                             "product_id, " +
-                             "category_id, " +
-                             "name, " +
-                             "price, " +
-                             "description, " +
-                             "discount_id " +
-                             "FROM public.products " +
-                             "WHERE discount_id > 1" +
-                             "ORDER BY discount_id DESC " +
-                             "LIMIT 12")) {
+                     "SELECT\n" +
+                             "  product_id,\n" +
+                             "  category_id,\n" +
+                             "  products.name,\n" +
+                             "  price,\n" +
+                             "  description,\n" +
+                             "  products.discount_id\n" +
+                             "FROM public.products\n" +
+                             "  JOIN discount\n" +
+                             "  ON products.discount_id = discount.discount_id\n" +
+                             "WHERE discount.value > 0\n" +
+                             "ORDER BY discount.value DESC\n" +
+                             "LIMIT " + MAX_ITEM_FOR_MAIN_PAGE)) {
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -238,7 +243,9 @@ public class PostgresProductDAO implements ProductDAO {
         List<Product> products = new ArrayList<>();
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT * FROM public.products where name ~* '" + name + "'")) {
+                     "SELECT *\n" +
+                             "FROM public.products\n" +
+                             "WHERE name ~* '" + name + "'")) {
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {

@@ -15,7 +15,7 @@ public class ProductDetailsModel {
 
 
     private List<CharacteristicGroupModel> characteristicGroupModels;
-    private List<Images> imagesList;
+    private List<String> imagesList;
 
 
     public ProductDetailsModel() {
@@ -28,7 +28,7 @@ public class ProductDetailsModel {
                                String name,
                                String description,
                                List<CharacteristicGroupModel> characteristicGroupModels,
-                               List<Images> imagesList) {
+                               List<String> imagesList) {
         this.rating = rating;
         this.id = id;
         this.price = price;
@@ -95,11 +95,11 @@ public class ProductDetailsModel {
         this.characteristicGroupModels = characteristicGroupModels;
     }
 
-    public List<Images> getImagesList() {
+    public List<String> getImagesList() {
         return imagesList;
     }
 
-    public void setImagesList(List<Images> imagesList) {
+    public void setImagesList(List<String> imagesList) {
         this.imagesList = imagesList;
     }
 

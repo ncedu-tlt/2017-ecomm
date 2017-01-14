@@ -131,7 +131,7 @@ public class ProductViewService {
         }
     }
 
-    private List<CharacteristicValue> getImageUrl(long productId) {
+    private CharacteristicValue getImageUrl(long productId) {
         return getDAOFactory()
                 .getCharacteristicValueDAO()
                 .getCharacteristicValueByIdAndProductId(productId,
@@ -156,18 +156,18 @@ public class ProductViewService {
 
         ProductViewModel itemForView;
         Rating productAverageRating;
-        List<CharacteristicValue> characteristicValues;
+        CharacteristicValue characteristicValue;
 
         for (Product product : products) {
             int productRating = 0;
 
             String imageUrl = DEFAULT_IMAGE_URL;
 
-            characteristicValues = getImageUrl(product.getId());
+            characteristicValue = getImageUrl(product.getId());
 
-            if (!characteristicValues.isEmpty()) {
+            if (characteristicValue != null) {
 
-                imageUrl = getImageUrlByCharacteristicList(characteristicValues);
+                imageUrl = getImageUrlByCharacteristicList(characteristicValue);
             }
 
             productAverageRating = getRating(product.getId());
@@ -195,13 +195,10 @@ public class ProductViewService {
         return productsView;
     }
 
-    private String getImageUrlByCharacteristicList(List<CharacteristicValue> characteristicValues) {
-        String imageURL = null;
+    private String getImageUrlByCharacteristicList(CharacteristicValue characteristicValue) {
+        String imageURL = characteristicValue.getCharacteristicValue();
+        String[] links = imageURL.trim().split(",");
 
-        for (CharacteristicValue characteristicValue : characteristicValues){
-            imageURL = characteristicValue.getCharacteristicValue();
-        }
-
-        return imageURL;
+        return links[0];
     }
 }

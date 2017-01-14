@@ -7,7 +7,7 @@
          * Executed on component initialization
          */
         init: function () {
-            this.content.find('.rating').rating({initialRating: 2, maxRating: 10}).rating('disable');
+            this.content.find('.rating').rating({initialRating: 2, maxRating: 5}).rating('disable');
             this.content.find('.slideShowPic').on('click', function (e) {
                 e.preventDefault();
 

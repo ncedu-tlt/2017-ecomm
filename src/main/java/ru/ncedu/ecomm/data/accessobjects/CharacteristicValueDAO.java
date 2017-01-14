@@ -11,7 +11,7 @@ public interface CharacteristicValueDAO {
 
     List<CharacteristicValue> getCharacteristicValueByProductId(long productId);
 
-    List<CharacteristicValue> getCharacteristicValueByIdAndProductId(long productId, long characteristicId);
+    CharacteristicValue getCharacteristicValueByIdAndProductId(long productId, long characteristicId);
 
     CharacteristicValue addCharacteristicValue(CharacteristicValue characteristicValue);
 

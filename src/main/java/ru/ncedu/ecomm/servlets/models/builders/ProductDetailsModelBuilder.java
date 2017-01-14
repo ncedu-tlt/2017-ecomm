@@ -17,7 +17,7 @@ public class ProductDetailsModelBuilder {
     private String description;
 
     private List<CharacteristicGroupModel> characteristicGroupModels;
-    private List<Images> productImages;
+    private List<String> productImages;
 
     public ProductDetailsModelBuilder() {
     }
@@ -65,7 +65,7 @@ public class ProductDetailsModelBuilder {
         return this;
     }
 
-    public ProductDetailsModelBuilder setProductImages(List<Images> productImages) {
+    public ProductDetailsModelBuilder setProductImages(List<String> productImages) {
         this.productImages = productImages;
 
         return this;

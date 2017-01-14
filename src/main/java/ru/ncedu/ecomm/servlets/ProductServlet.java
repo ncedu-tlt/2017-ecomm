@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static ru.ncedu.ecomm.servlets.services.ProductViewService.CHARACTERISTIC_ID_FOR_IMAGE_URL;
@@ -88,10 +89,10 @@ public class ProductServlet extends HttpServlet {
         return productDetailsModel;
     }
 
-    private List<Images> getImageLinkByProductId(long productId) {
-        List<Images> imagesList = new ArrayList<>();
+    private List<String> getImageLinkByProductId(long productId) {
+        List<String> imagesList = new ArrayList<>();
 
-        List<CharacteristicValue> characteristicValues = DAOFactory
+        CharacteristicValue characteristicValue = DAOFactory
                 .getDAOFactory()
                 .getCharacteristicValueDAO()
                 .getCharacteristicValueByIdAndProductId(
@@ -99,18 +100,16 @@ public class ProductServlet extends HttpServlet {
                         CHARACTERISTIC_ID_FOR_IMAGE_URL
                 );
 
-        for (CharacteristicValue characteristicValue : characteristicValues) {
-            imagesList.add(new Images(characteristicValue.getCharacteristicValue()));
-        }
+        if (characteristicValue != null ) {
+            String imageLink = characteristicValue.getCharacteristicValue();
+            String links[] = imageLink.trim().split(",");
 
-        if (imagesList.isEmpty()) {
-            imagesList = new ArrayList<>();
+            for (String link : links){
+                imagesList.add(link);
+            }
 
-            Images images = new Images(
-                    DEFAULT_IMAGE_URL
-            );
-
-            imagesList.add(images);
+        }else {
+            imagesList.add(DEFAULT_IMAGE_URL);
         }
         return imagesList;
     }

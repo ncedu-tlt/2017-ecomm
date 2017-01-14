@@ -16,7 +16,7 @@
                     </a>
                 </h3>
                 <div class="ui grid centered container">
-                    <div class="ui eleven wide column large rating disabled"
+                    <div class="ui seven wide column centered grid large rating disabled"
                          data-rating="${product.getRating()}">
                     </div>
                 </div>
@@ -33,12 +33,11 @@
                         $${product.getPrice()}
                     </c:if>
                 </h3>
-                <%--<input type="hidden" name="productId" value="${product.getId()}" />--%>
                 <button class="ui labeled icon  fluid blue button" type="submit"
                         name="productId" value="${product.getId()}">
                     <i class="add
                     to car icon"></i>
-                    Add to card
+                    Add to cart
                 </button>
             </form>
         </c:forEach>
