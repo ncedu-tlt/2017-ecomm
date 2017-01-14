@@ -7,11 +7,7 @@ import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import static ru.ncedu.ecomm.utils.DBUtils.closeConnection;
-import static ru.ncedu.ecomm.utils.DBUtils.closeStatement;
 
 public class PostgresCategoryDAO implements CategoryDAO {
 
