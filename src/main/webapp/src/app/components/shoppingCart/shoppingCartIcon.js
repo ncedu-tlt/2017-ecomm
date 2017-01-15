@@ -12,6 +12,11 @@
             $(".shoppingCartIcon").click(function(){
                 window.location.replace("/views/pages/cart.jsp");
             });
+            $.get("shoppingCartIcon", function(responseText) {   // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response text...
+                $("#quantityProducts").text(responseText);           // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
+            });
+
+
         }
     });
 

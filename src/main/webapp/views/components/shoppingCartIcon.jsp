@@ -1,7 +1,7 @@
 <div class="ui item jsShoppingCartIcon">
     <button class="circular ui icon button shoppingCartIcon">
         <i class="icon shop"></i>
-        <div class="floating ui circular teal label counter">0</div>
+        <div class="floating ui circular teal label" id="quantityProducts">0</div>
     </button>
 </div>
 <%-- JS controller initilization --%>
