@@ -15,8 +15,6 @@
             $.get("shoppingCartIcon", function(responseText) {
                 $("#quantityProducts").text(responseText);
             });
-
-
         }
     });
 

@@ -17,8 +17,8 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 public class ShoppingCartIconServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        long userId = getUserIdFromSession(req, resp);
-
+//        long userId = getUserIdFromSession(req, resp);
+        long userId = 1;
         String quantityProducts = String.valueOf(getQuantityProducts(userId));
         resp.setContentType("text/plain");
         resp.setCharacterEncoding("UTF-8");
