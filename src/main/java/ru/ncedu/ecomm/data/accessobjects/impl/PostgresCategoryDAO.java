@@ -18,11 +18,12 @@ public class PostgresCategoryDAO implements CategoryDAO {
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT category_id," +
-                            " parent_id, " +
-                            "name, " +
-                            "description " +
-                            "FROM public.categories " +
+                    "SELECT\n" +
+                            "  category_id,\n" +
+                            "  parent_id,\n" +
+                            "  name,\n" +
+                            "  description\n" +
+                            "FROM public.categories\n" +
                             "ORDER BY category_id ASC"
             );
             while (resultSet.next()) {
@@ -49,33 +50,33 @@ public class PostgresCategoryDAO implements CategoryDAO {
              Statement statement = connection.createStatement()) {
 
             ResultSet resultSet = statement.executeQuery(
-                    "WITH RECURSIVE req AS ( " +
-                            "SELECT " +
-                            "category_id, " +
-                            "parent_id, " +
-                            "name, " +
-                            "description " +
-                            "FROM categories " +
-                            "UNION " +
-                            "SELECT " +
-                            "categories.category_id, " +
-                            "categories.parent_id, " +
-                            "categories.name, " +
-                            "categories.description " +
-                            "FROM categories " +
-                            "JOIN req " +
-                            "ON categories.parent_id = req.category_id) " +
-                            "SELECT " +
-                            "req.category_id, " +
-                            "req.parent_id, " +
-                            "req.description, " +
-                            "req.name, " +
-                            "count(product_id) as amount_product_in_category " +
-                            "FROM req " +
-                            "JOIN products ON req.category_id = products.category_id " +
-                            "GROUP BY req.category_id, req.parent_id, req.description, req.name " +
-                            "ORDER BY req.category_id ASC, " +
-                            "req.parent_id ASC; "
+                    "WITH RECURSIVE req AS (\n" +
+                            "  SELECT\n" +
+                            "    category_id,\n" +
+                            "    parent_id,\n" +
+                            "    name,\n" +
+                            "    description\n" +
+                            "  FROM categories\n" +
+                            "  UNION\n" +
+                            "  SELECT\n" +
+                            "    categories.category_id,\n" +
+                            "    categories.parent_id,\n" +
+                            "    categories.name,\n" +
+                            "    categories.description\n" +
+                            "  FROM categories\n" +
+                            "    JOIN req\n" +
+                            "      ON categories.parent_id = req.category_id)\n" +
+                            "SELECT\n" +
+                            "  req.category_id,\n" +
+                            "  req.parent_id,\n" +
+                            "  req.description,\n" +
+                            "  req.name,\n" +
+                            "  count(product_id) AS amount_product_in_category\n" +
+                            "FROM req\n" +
+                            "  JOIN products ON req.category_id = products.category_id\n" +
+                            "GROUP BY req.category_id, req.parent_id, req.description, req.name\n" +
+                            "ORDER BY req.category_id ASC,\n" +
+                            "  req.parent_id ASC"
             );
             while (resultSet.next()) {
                 Category category = new CategoryBuilder()
@@ -98,11 +99,11 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "INSERT INTO public.categories" +
-                             "(parent_id, " +
-                             "name, " +
-                             "description) " +
-                             "VALUES (?, ?, ?) " +
+                     "INSERT INTO public.categories\n" +
+                             "(parent_id,\n" +
+                             " name,\n" +
+                             " description)\n" +
+                             "VALUES (?, ?, ?)\n" +
                              "RETURNING category_id"
              )) {
             statement.setLong(1, category.getParentId());
@@ -125,10 +126,10 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "UPDATE public.categories " +
-                             "SET parent_id = ?, " +
-                             "name = ?, " +
-                             "description = ? " +
+                     "UPDATE public.categories\n" +
+                             "SET parent_id = ?,\n" +
+                             "  name        = ?,\n" +
+                             "  description = ?\n" +
                              "WHERE category_id = ?"
              )) {
 
@@ -151,8 +152,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "DELETE FROM public.categories" +
-                             " WHERE category_id = ?"
+                     "DELETE FROM public.categories\n" +
+                             "WHERE category_id = ?"
              )) {
 
             statement.setLong(1, category.getCategoryId());
@@ -168,11 +169,12 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT category_id, " +
-                             "parent_id, " +
-                             "name, " +
-                             "description " +
-                             "FROM public.categories " +
+                     "SELECT\n" +
+                             "  category_id,\n" +
+                             "  parent_id,\n" +
+                             "  name,\n" +
+                             "  description\n" +
+                             "FROM public.categories\n" +
                              "WHERE category_id = ?"
              )) {
 
@@ -201,12 +203,13 @@ public class PostgresCategoryDAO implements CategoryDAO {
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT category_id, " +
-                            "parent_id, " +
-                            "name, " +
-                            "description " +
-                            "FROM public.categories " +
-                            "WHERE parent_id ISNULL " +
+                    "SELECT\n" +
+                            "  category_id,\n" +
+                            "  parent_id,\n" +
+                            "  name,\n" +
+                            "  description\n" +
+                            "FROM public.categories\n" +
+                            "WHERE parent_id ISNULL\n" +
                             "ORDER BY category_id ASC"
             );
             while (resultSet.next()) {
@@ -232,34 +235,34 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "WITH RECURSIVE req AS ( " +
-                             "SELECT " +
-                             "category_id, " +
-                             "parent_id, " +
-                             "name, " +
-                             "description " +
-                             "FROM categories " +
-                             "WHERE category_id = ? " +
-                             "UNION " +
-                             "SELECT " +
-                             "categories.category_id, " +
-                             "categories.parent_id, " +
-                             "categories.name, " +
-                             "categories.description " +
-                             "FROM categories " +
-                             "JOIN req " +
-                             "ON categories.parent_id = req.category_id) " +
-                             "SELECT " +
-                             "req.category_id, " +
-                             "req.parent_id, " +
-                             "req.description, " +
-                             "req.name, " +
-                             "count(product_id) as amount_product_in_category " +
-                             "FROM req " +
-                             "JOIN products ON req.category_id = products.category_id " +
-                             "GROUP BY req.category_id, req.parent_id, req.description, req.name " +
-                             "ORDER BY req.category_id ASC, " +
-                             "req.parent_id ASC; "
+                     "WITH RECURSIVE req AS (\n" +
+                             "  SELECT\n" +
+                             "    category_id,\n" +
+                             "    parent_id,\n" +
+                             "    name,\n" +
+                             "    description\n" +
+                             "  FROM categories\n" +
+                             "  WHERE category_id = ?\n" +
+                             "  UNION\n" +
+                             "  SELECT\n" +
+                             "    categories.category_id,\n" +
+                             "    categories.parent_id,\n" +
+                             "    categories.name,\n" +
+                             "    categories.description\n" +
+                             "  FROM categories\n" +
+                             "    JOIN req\n" +
+                             "      ON categories.parent_id = req.category_id)\n" +
+                             "SELECT\n" +
+                             "  req.category_id,\n" +
+                             "  req.parent_id,\n" +
+                             "  req.description,\n" +
+                             "  req.name,\n" +
+                             "  count(product_id) AS amount_product_in_category\n" +
+                             "FROM req\n" +
+                             "  JOIN products ON req.category_id = products.category_id\n" +
+                             "GROUP BY req.category_id, req.parent_id, req.description, req.name\n" +
+                             "ORDER BY req.category_id ASC,\n" +
+                             "  req.parent_id ASC"
              )) {
 
             statement.setLong(1, categoryId);
@@ -287,12 +290,13 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT category_id, " +
-                             "parent_id, " +
-                             "name, " +
-                             "description " +
-                             "FROM public.categories " +
-                             "WHERE parent_id = ?" +
+                     "SELECT\n" +
+                             "  category_id,\n" +
+                             "  parent_id,\n" +
+                             "  name,\n" +
+                             "  description\n" +
+                             "FROM public.categories\n" +
+                             "WHERE parent_id = ?\n" +
                              "ORDER BY category_id"
              )) {
 
@@ -321,30 +325,33 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "WITH RECURSIVE recquery " +
-                             "(category_id, " +
-                             "parent_id, " +
-                             "name, " +
-                             "description) as " +
-                             "(SELECT category_id, " +
-                             "parent_id, " +
-                             "name, " +
-                             "description " +
-                             "from categories " +
-                             "WHERE category_id = ? " +
-                             "union " +
-                             "SELECT categories.category_id, " +
-                             "categories.parent_id, " +
-                             "categories.name, " +
-                             "categories.description " +
-                             "FROM categories " +
-                             "INNER JOIN recquery " +
-                             "ON (recquery.parent_id = categories.category_id)) " +
-                             "SELECT category_id, " +
-                             "parent_id, " +
-                             "name, " +
-                             "description " +
-                             "FROM recquery " +
+                     "WITH RECURSIVE recquery\n" +
+                             "(category_id,\n" +
+                             "    parent_id,\n" +
+                             "    name,\n" +
+                             "    description) AS\n" +
+                             "(SELECT\n" +
+                             "   category_id,\n" +
+                             "   parent_id,\n" +
+                             "   name,\n" +
+                             "   description\n" +
+                             " FROM categories\n" +
+                             " WHERE category_id = ?\n" +
+                             " UNION\n" +
+                             " SELECT\n" +
+                             "   categories.category_id,\n" +
+                             "   categories.parent_id,\n" +
+                             "   categories.name,\n" +
+                             "   categories.description\n" +
+                             " FROM categories\n" +
+                             "   INNER JOIN recquery\n" +
+                             "     ON (recquery.parent_id = categories.category_id))\n" +
+                             "SELECT\n" +
+                             "  category_id,\n" +
+                             "  parent_id,\n" +
+                             "  name,\n" +
+                             "  description\n" +
+                             "FROM recquery\n" +
                              "ORDER BY category_id"
              )) {
 

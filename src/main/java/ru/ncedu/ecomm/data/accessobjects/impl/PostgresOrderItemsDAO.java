@@ -19,9 +19,10 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
              Statement statement = connection.createStatement()) {
 
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT product_id, " +
-                            "sales_order_id, " +
-                            "quantity " +
+                    "SELECT\n" +
+                            "  product_id,\n" +
+                            "  sales_order_id,\n" +
+                            "  quantity\n" +
                             "FROM public.order_items");
 
             while (resultSet.next()) {
@@ -44,8 +45,8 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
     public OrderItem addOrderItem(OrderItem orderItem) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "INSERT INTO  public.order_items " +
-                             "(product_id, sales_order_id, quantity) " +
+                     "INSERT INTO public.order_items\n" +
+                             "(product_id, sales_order_id, quantity)\n" +
                              "VALUES (?, ?, ?)"
              )) {
             statement.setLong(1, orderItem.getProductId());
@@ -64,10 +65,10 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "UPDATE public.order_items " +
-                             "SET quantity = ? " +
-                             "WHERE product_id = ? " +
-                             "AND sales_order_id = ?"
+                     "UPDATE public.order_items\n" +
+                             "SET quantity = ?\n" +
+                             "WHERE product_id = ?\n" +
+                             "      AND sales_order_id = ?"
              )) {
 
             statement.setInt(1, orderItem.getQuantity());
@@ -84,12 +85,12 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
 
     @Override
     public void deleteOrderItem(OrderItem orderItem) {
-        try(Connection connection = DBUtils.getConnection();
-            PreparedStatement statement = connection.prepareStatement(
-                    "DELETE FROM public.order_items " +
-                            "WHERE product_id = ? " +
-                            "AND sales_order_id = ?"
-            )) {
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "DELETE FROM public.order_items\n" +
+                             "WHERE product_id = ?\n" +
+                             "      AND sales_order_id = ?"
+             )) {
             statement.setLong(1, orderItem.getProductId());
             statement.setLong(2, orderItem.getSalesOrderId());
             statement.execute();

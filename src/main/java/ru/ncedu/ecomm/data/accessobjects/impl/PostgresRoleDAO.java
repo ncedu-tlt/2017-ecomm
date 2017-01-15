@@ -9,9 +9,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.ncedu.ecomm.utils.DBUtils.closeConnection;
-import static ru.ncedu.ecomm.utils.DBUtils.closeStatement;
-
 public class PostgresRoleDAO implements RoleDAO {
 
     @Override
@@ -22,9 +19,10 @@ public class PostgresRoleDAO implements RoleDAO {
             Statement statement = connection.createStatement()) {
 
             ResultSet resultSet = statement.executeQuery(
-                    "select role_id, " +
-                            "name " +
-                            "from roles");
+                    "SELECT\n" +
+                            "  role_id,\n" +
+                            "  name\n" +
+                            "FROM roles");
             while (resultSet.next()) {
                 Role role = new RoleBuilder()
                         .setId(resultSet.getLong("role_id"))
@@ -46,10 +44,11 @@ public class PostgresRoleDAO implements RoleDAO {
 
         try(Connection connection = DBUtils.getConnection();
             PreparedStatement statement = connection.prepareStatement(
-                    "select role_id, " +
-                            "name " +
-                            "from roles " +
-                            "where role_id = ?"
+                    "SELECT\n" +
+                            "  role_id,\n" +
+                            "  name\n" +
+                            "FROM roles\n" +
+                            "WHERE role_id = ?"
             )) {
 
             statement.setLong(1, id);

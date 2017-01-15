@@ -18,14 +18,15 @@ public class PostgresUserDAO implements UserDAO {
              Statement statement = connection.createStatement()) {
 
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT user_id, " +
-                            "role_id, " +
-                            "first_name, " +
-                            "last_name, " +
-                            "password, " +
-                            "phone, " +
-                            "email, " +
-                            "registration_date " +
+                    "SELECT\n" +
+                            "  user_id,\n" +
+                            "  role_id,\n" +
+                            "  first_name,\n" +
+                            "  last_name,\n" +
+                            "  password,\n" +
+                            "  phone,\n" +
+                            "  email,\n" +
+                            "  registration_date\n" +
                             "FROM users");
             while (resultSet.next()) {
                 User user = new UserBuilder()
@@ -52,15 +53,16 @@ public class PostgresUserDAO implements UserDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT user_id," +
-                             " role_id," +
-                             "first_name, " +
-                             "last_name, " +
-                             "password, " +
-                             "phone, " +
-                             "email, " +
-                             "registration_date " +
-                             "FROM users " +
+                     "SELECT\n" +
+                             "  user_id,\n" +
+                             "  role_id,\n" +
+                             "  first_name,\n" +
+                             "  last_name,\n" +
+                             "  password,\n" +
+                             "  phone,\n" +
+                             "  email,\n" +
+                             "  registration_date\n" +
+                             "FROM users\n" +
                              "WHERE user_id = ?")) {
 
             statement.setLong(1, id);
@@ -87,22 +89,23 @@ public class PostgresUserDAO implements UserDAO {
     public User getUserByEmail(String email) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT user_id, " +
-                             "role_id, " +
-                             "first_name, " +
-                             "last_name, " +
-                             "password, " +
-                             "phone, " +
-                             "email, " +
-                             "registration_date," +
-                             "recovery_hash " +
-                             "FROM users " +
+                     "SELECT\n" +
+                             "  user_id,\n" +
+                             "  role_id,\n" +
+                             "  first_name,\n" +
+                             "  last_name,\n" +
+                             "  password,\n" +
+                             "  phone,\n" +
+                             "  email,\n" +
+                             "  registration_date,\n" +
+                             "  recovery_hash\n" +
+                             "FROM users\n" +
                              "WHERE email = ?")) {
-
 
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
+            if (resultSet.next()){
+
                 return new UserBuilder()
                         .setUserId(resultSet.getLong("user_id"))
                         .setRoleId(resultSet.getLong("role_id"))
@@ -127,15 +130,16 @@ public class PostgresUserDAO implements UserDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT user_id, " +
-                             "role_id, " +
-                             "first_name, " +
-                             "last_name, " +
-                             "password, " +
-                             "phone, " +
-                             "email, " +
-                             "registration_date " +
-                             "FROM users " +
+                     "SELECT\n" +
+                             "  user_id,\n" +
+                             "  role_id,\n" +
+                             "  first_name,\n" +
+                             "  last_name,\n" +
+                             "  password,\n" +
+                             "  phone,\n" +
+                             "  email,\n" +
+                             "  registration_date\n" +
+                             "FROM users\n" +
                              "WHERE role_id = ?")) {
 
 
@@ -167,15 +171,15 @@ public class PostgresUserDAO implements UserDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "INSERT INTO users " +
-                             "(role_id, " +
-                             "first_name, " +
-                             "last_name, " +
-                             "password, " +
-                             "phone, " +
-                             "email, " +
-                             "registration_date)" +
-                             "VALUES (?, ?, ?, ?, ?, ?, current_timestamp)" +
+                     "INSERT INTO users\n" +
+                             "(role_id,\n" +
+                             " first_name,\n" +
+                             " last_name,\n" +
+                             " password,\n" +
+                             " phone,\n" +
+                             " email,\n" +
+                             " registration_date)\n" +
+                             "VALUES (?, ?, ?, ?, ?, ?, current_timestamp)\n" +
                              "RETURNING user_id")) {
 
             statement.setLong(1, user.getRoleId());
@@ -203,14 +207,14 @@ public class PostgresUserDAO implements UserDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "UPDATE users " +
-                             "SET role_id = ?, " +
-                             "first_name = ?, " +
-                             "last_name = ?, " +
-                             "password = ?, " +
-                             "phone = ?, " +
-                             "email = ?, " +
-                             "recovery_hash = ? " +
+                     "UPDATE users\n" +
+                             "SET role_id     = ?,\n" +
+                             "  first_name    = ?,\n" +
+                             "  last_name     = ?,\n" +
+                             "  password      = ?,\n" +
+                             "  phone         = ?,\n" +
+                             "  email         = ?,\n" +
+                             "  recovery_hash = ?\n" +
                              "WHERE user_id = ?")) {
             statement.setLong(1, user.getRoleId());
             statement.setString(2, user.getFirstName());
@@ -233,7 +237,7 @@ public class PostgresUserDAO implements UserDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "DELETE FROM users " +
+                     "DELETE FROM users\n" +
                              "WHERE user_id = ?")) {
             statement.setLong(1, user.getId());
             statement.execute();

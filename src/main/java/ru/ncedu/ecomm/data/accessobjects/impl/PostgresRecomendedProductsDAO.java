@@ -17,8 +17,9 @@ public class PostgresRecomendedProductsDAO implements RecomendedProductsDAO{
         try(Connection connection = DBUtils.getConnection();
             Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT  target_product_id, " +
-                            "source_product_id " +
+                    "SELECT\n" +
+                            "  target_product_id,\n" +
+                            "  source_product_id\n" +
                             "FROM public.recommended_products"
             );
             while (resultSet.next()) {
@@ -41,8 +42,8 @@ public class PostgresRecomendedProductsDAO implements RecomendedProductsDAO{
 
         try(Connection connection = DBUtils.getConnection();
             PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO public.recommended_products " +
-                            "(source_product_id, target_product_id) " +
+                    "INSERT INTO public.recommended_products\n" +
+                            "(source_product_id, target_product_id)\n" +
                             "VALUES (?, ?)"
             )) {
                 statement.setLong(1, recomendedProduct.getSourceProductId());
@@ -61,9 +62,9 @@ public class PostgresRecomendedProductsDAO implements RecomendedProductsDAO{
 
         try(Connection connection = DBUtils.getConnection();
             PreparedStatement statement = connection.prepareStatement(
-                    "DELETE  FROM public.recommended_products " +
-                            "WHERE source_product_id = ? " +
-                            "AND target_product_id = ?"
+                    "DELETE FROM public.recommended_products\n" +
+                            "WHERE source_product_id = ?\n" +
+                            "      AND target_product_id = ?"
             )) {
             statement.setLong(1, recomendedProduct.getSourceProductId());
             statement.setLong(2, recomendedProduct.getTargetProductId());

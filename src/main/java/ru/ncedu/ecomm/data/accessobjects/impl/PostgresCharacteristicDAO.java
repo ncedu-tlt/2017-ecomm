@@ -18,10 +18,11 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT characteristic_id, " +
-                            "category_id," +
-                            "name," +
-                            "characteristic_group_id " +
+                    "SELECT\n" +
+                            "  characteristic_id,\n" +
+                            "  category_id,\n" +
+                            "  name,\n" +
+                            "  characteristic_group_id\n" +
                             "FROM public.characteristics"
             );
             while (resultSet.next()) {
@@ -47,11 +48,12 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
 
         try(Connection connection = DBUtils.getConnection();
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT characteristic_id, " +
-                            "category_id, " +
-                            "name, " +
-                            "characteristic_group_id " +
-                            "FROM public.characteristics " +
+                    "SELECT\n" +
+                            "  characteristic_id,\n" +
+                            "  category_id,\n" +
+                            "  name,\n" +
+                            "  characteristic_group_id\n" +
+                            "FROM public.characteristics\n" +
                             "WHERE characteristic_group_id = ?"
 
             )){
@@ -84,13 +86,14 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
 
         try(Connection connection = DBUtils.getConnection();
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT characteristic_id, " +
-                            "category_id, " +
-                            "name, " +
-                            "characteristic_group_id " +
-                            "FROM public.characteristics " +
-                            "WHERE category_id = ? " +
-                            "AND  characteristic_group_id = ?"
+                    "SELECT\n" +
+                            "  characteristic_id,\n" +
+                            "  category_id,\n" +
+                            "  name,\n" +
+                            "  characteristic_group_id\n" +
+                            "FROM public.characteristics\n" +
+                            "WHERE category_id = ?\n" +
+                            "      AND characteristic_group_id = ?"
 
             )){
             statement.setLong(1, categoryId);
@@ -121,12 +124,12 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "INSERT  INTO public.characteristics" +
-                             "(characteristic_id, " +
-                             "category_id, " +
-                             "name, " +
-                             "characteristic_group_id) " +
-                             "VALUES (?, ?, ?, ?) " +
+                     "INSERT INTO public.characteristics\n" +
+                             "(characteristic_id,\n" +
+                             " category_id,\n" +
+                             " name,\n" +
+                             " characteristic_group_id)\n" +
+                             "VALUES (?, ?, ?, ?)\n" +
                              "RETURNING characteristic_id"
              )) {
             statement.setLong(1, characteristic.getCharacteristicId());
@@ -152,11 +155,12 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT characteristic_id," +
-                             "category_id, " +
-                             "name, " +
-                             "characteristic_group_id " +
-                             "FROM public.characteristics " +
+                     "SELECT\n" +
+                             "  characteristic_id,\n" +
+                             "  category_id,\n" +
+                             "  name,\n" +
+                             "  characteristic_group_id\n" +
+                             "FROM public.characteristics\n" +
                              "WHERE characteristic_id = ?"
              )) {
 
@@ -184,10 +188,10 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "UPDATE public.characteristics " +
-                             "SET category_id = ?, " +
-                             "name = ?, " +
-                             "characteristic_group_id = ? " +
+                     "UPDATE public.characteristics\n" +
+                             "SET category_id           = ?,\n" +
+                             "  name                    = ?,\n" +
+                             "  characteristic_group_id = ?\n" +
                              "WHERE characteristic_id = ?"
              )) {
             statement.setLong(1, characteristic.getCategoryId());
@@ -208,7 +212,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "DELETE FROM public.characteristics " +
+                     "DELETE FROM public.characteristics\n" +
                              "WHERE characteristic_id = ?"
              )) {
             statement.setLong(1, characteristic.getCharacteristicId());

@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 public class PostgresOrderStatusDAO implements OrderSratusDAO{
 
@@ -17,9 +16,10 @@ public class PostgresOrderStatusDAO implements OrderSratusDAO{
     public OrderStatus getOrdersStatusById(long oderStatusId) {
         try(Connection connection = DBUtils.getConnection();
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT order_status_id, " +
-                            "name " +
-                            "FROM order_statuses " +
+                    "SELECT\n" +
+                            "  order_status_id,\n" +
+                            "  name\n" +
+                            "FROM order_statuses\n" +
                             "WHERE order_status_id = ?"
             )) {
             statement.setLong(1, oderStatusId);

@@ -9,9 +9,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.ncedu.ecomm.utils.DBUtils.closeConnection;
-import static ru.ncedu.ecomm.utils.DBUtils.closeStatement;
-
 
 public class PostgresPropertyDAO implements PropertyDAO {
 
@@ -22,9 +19,11 @@ public class PostgresPropertyDAO implements PropertyDAO {
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
 
-            ResultSet resultSet = statement.executeQuery("SELECT" +
-                    " property_id," +
-                    " value FROM properties");
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT\n" +
+                            "  property_id,\n" +
+                            "  value\n" +
+                            "FROM properties");
             while (resultSet.next()) {
                 Property property = new PropertyBuilder()
                         .setPropertyId(resultSet.getString("property_id"))
@@ -44,9 +43,10 @@ public class PostgresPropertyDAO implements PropertyDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT property_id, " +
-                             "value " +
-                             "FROM properties " +
+                     "SELECT\n" +
+                             "  property_id,\n" +
+                             "  value\n" +
+                             "FROM properties\n" +
                              "WHERE property_id = ?")) {
             statement.setString(1, id);
 
@@ -70,10 +70,10 @@ public class PostgresPropertyDAO implements PropertyDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "INSERT INTO properties (" +
-                             "value, " +
-                             "property_id )" +
-                             "VALUES (?, ?) ")) {
+                     "INSERT INTO properties (\n" +
+                             "  value,\n" +
+                             "  property_id)\n" +
+                             "VALUES (?, ?)")) {
 
             statement.setString(1, property.getValue());
             statement.setString(2, property.getId());
@@ -91,7 +91,7 @@ public class PostgresPropertyDAO implements PropertyDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "DELETE FROM properties " +
+                     "DELETE FROM properties\n" +
                              "WHERE property_id = ?")) {
 
             statement.setString(1, property.getId());
@@ -107,8 +107,8 @@ public class PostgresPropertyDAO implements PropertyDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "UPDATE properties " +
-                             "SET value = ? " +
+                     "UPDATE properties\n" +
+                             "SET value = ?\n" +
                              "WHERE property_id = ?")) {
             statement.setString(1, property.getValue());
             statement.setString(2, property.getId());

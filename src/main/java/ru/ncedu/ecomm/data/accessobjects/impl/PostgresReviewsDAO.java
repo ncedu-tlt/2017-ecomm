@@ -19,10 +19,12 @@ public class PostgresReviewsDAO implements ReviewsDAO {
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT product_id, " +
-                            "user_id, " +
-                            "description, " +
-                            "creation_date, raiting " +
+                    "SELECT\n" +
+                            "  product_id,\n" +
+                            "  user_id,\n" +
+                            "  description,\n" +
+                            "  creation_date,\n" +
+                            "  raiting\n" +
                             "FROM public.reviews");
 
             while (resultSet.next()) {
@@ -47,18 +49,19 @@ public class PostgresReviewsDAO implements ReviewsDAO {
     public Review addReviews(Review review) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "INSERT INTO public.reviews " +
-                             "(product_id, " +
-                             "user_id, " +
-                             "description, " +
-                             "creation_date, " +
-                             "raiting)" +
-                             "VALUES (?,?,?,?,?) " +
+                     "INSERT INTO public.reviews\n" +
+                             "(product_id,\n" +
+                             " user_id,\n" +
+                             " description,\n" +
+                             " creation_date,\n" +
+                             " raiting)\n" +
+                             "VALUES (?, ?, ?, ?, ?)\n" +
                              "RETURNING product_id")) {
+
             statement.setLong(1, review.getProductId());
             statement.setLong(2, review.getUserId());
             statement.setString(3, review.getDescription());
-            statement.setDate(4, (Date) review.getCreationDate());
+            statement.setDate(4, review.getCreationDate());
             statement.setInt(5, review.getRating());
 
             ResultSet resultSet = statement.getResultSet();
@@ -77,12 +80,12 @@ public class PostgresReviewsDAO implements ReviewsDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "UPDATE public.reviews " +
-                             "SET description = ?, " +
-                             "creation_date = ?, " +
-                             "raiting = ? " +
-                             "WHERE product_id = ? " +
-                             "AND user_id = ?"
+                     "UPDATE public.reviews\n" +
+                             "SET description = ?,\n" +
+                             "  creation_date = ?,\n" +
+                             "  raiting       = ?\n" +
+                             "WHERE product_id = ?\n" +
+                             "      AND user_id = ?"
              )) {
             statement.setString(1, review.getDescription());
             statement.setDate(2, review.getCreationDate());
@@ -102,9 +105,9 @@ public class PostgresReviewsDAO implements ReviewsDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "DELETE FROM public.reviews " +
-                             "WHERE product_id = ? " +
-                             "AND user_id = ?"
+                     "DELETE FROM public.reviews\n" +
+                             "WHERE product_id = ?\n" +
+                             "      AND user_id = ?"
              )) {
             statement.setLong(1, review.getProductId());
             statement.setLong(2, review.getUserId());
@@ -122,11 +125,12 @@ public class PostgresReviewsDAO implements ReviewsDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT description, " +
-                             "creation_date, " +
-                             "raiting, " +
-                             "user_id " +
-                             "FROM public.reviews " +
+                     "SELECT\n" +
+                             "  description,\n" +
+                             "  creation_date,\n" +
+                             "  raiting,\n" +
+                             "  user_id\n" +
+                             "FROM public.reviews\n" +
                              "WHERE product_id = ?"
              )) {
             statement.setLong(1, productId);
@@ -157,11 +161,12 @@ public class PostgresReviewsDAO implements ReviewsDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT description, " +
-                             "creation_date, " +
-                             "raiting, " +
-                             "product_id " +
-                             "FROM public.reviews " +
+                     "SELECT\n" +
+                             "  description,\n" +
+                             "  creation_date,\n" +
+                             "  raiting,\n" +
+                             "  product_id\n" +
+                             "FROM public.reviews\n" +
                              "WHERE user_id = ?"
              )) {
             statement.setLong(1, userId);
@@ -191,11 +196,15 @@ public class PostgresReviewsDAO implements ReviewsDAO {
         List<Rating> raitings = new ArrayList<>();
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
+
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT product_id, " +
-                            "avg(raiting) as average_rating " +
-                            "FROM reviews " +
-                            "GROUP BY product_id;");
+                    "SELECT\n" +
+                            "  product_id,\n" +
+                            "  avg(raiting) AS average_rating\n" +
+                            "FROM reviews\n" +
+                            "GROUP BY product_id"
+            );
+
             while (resultSet.next()) {
                 Rating raiting = new RatingBuilder()
                         .setProductId(resultSet.getLong("product_id"))
@@ -213,19 +222,21 @@ public class PostgresReviewsDAO implements ReviewsDAO {
     @Override
     public Rating getAverageRatingByProductId(long productId) {
 
-        try(Connection connection = DBUtils.getConnection();
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT product_id, " +
-                            "avg(raiting) as average_rating " +
-                            "FROM reviews " +
-                            "WHERE product_id = ? " +
-                            "GROUP BY product_id;")){
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT\n" +
+                             "  product_id,\n" +
+                             "  avg(raiting) AS average_rating\n" +
+                             "FROM reviews\n" +
+                             "WHERE product_id = ?\n" +
+                             "GROUP BY product_id"
+             )) {
 
             statement.setLong(1, productId);
 
             ResultSet resultSet = statement.executeQuery();
 
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 return new RatingBuilder()
                         .setProductId(resultSet.getLong("product_id"))
                         .setRating(resultSet.getInt("average_rating"))
