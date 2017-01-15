@@ -1,5 +1,5 @@
 <div class="ui item">
-    <form method="POST" action="/search" id="form_who_should_be_checked" class="ui icon input">
+    <form class="ui icon input" method="POST" action="/search" >
             <input type="text" name="search" placeholder="Search...">
             <i class="search icon"></i>
     </form>

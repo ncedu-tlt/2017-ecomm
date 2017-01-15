@@ -7,6 +7,7 @@
         /**
          * Executed on component initialization
          */
+
         init: function () {
             this.content.find('.ui.dropdown').dropdown();
             this.content.find('.categories').popup({

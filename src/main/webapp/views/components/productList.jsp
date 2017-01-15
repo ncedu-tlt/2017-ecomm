@@ -1,10 +1,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="HIDDEN_ID" value="-1"/>
 <c:forEach var="category" items="${requestScope.categoriesForView}">
     <div class="ui container jsProductListComponent main-content" style="margin: 1.5em 0;">
     <h2 class="ui center aligned header horizontal divider">
-        <a href="\category?category_id=${category.getId()}">
-                ${category.getName()}
-        </a>
+        <c:if test="${category.getId() == HIDDEN_ID}">
+            ${category.getName()}
+        </c:if>
+        <c:if test="${category.getId() >= 0}">
+            <a href="\category?category_id=${category.getId()}">
+                    ${category.getName()}
+            </a>
+        </c:if>
     </h2>
     <div class="ui grid centered container">
         <c:forEach var="product" items="${category.getProducts()}">
