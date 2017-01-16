@@ -153,7 +153,7 @@ public class RestService {
     }
 
     @GET
-    @Path("/users/{password}")
+    @Path("/users/password/{password}")
     @Produces(MediaType.APPLICATION_JSON)
     public User getUserByPassword(@PathParam("password") String password){
         return getDAOFactory().getUserDAO().getUserByPassword(password);
