@@ -165,6 +165,44 @@ public class PostgresUserDAO implements UserDAO {
         return users;
     }
 
+    @Override
+    public User getUserByPassword(String password) {
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT\n" +
+                             "  user_id,\n" +
+                             "  role_id,\n" +
+                             "  first_name,\n" +
+                             "  last_name,\n" +
+                             "  password,\n" +
+                             "  phone,\n" +
+                             "  email,\n" +
+                             "  registration_date,\n" +
+                             "  recovery_hash\n" +
+                             "FROM users\n" +
+                             "WHERE password = ?")) {
+
+            statement.setString(1, password);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()){
+
+                return new UserBuilder()
+                        .setUserId(resultSet.getLong("user_id"))
+                        .setRoleId(resultSet.getLong("role_id"))
+                        .setFirstName(resultSet.getString("first_name"))
+                        .setLastName(resultSet.getString("last_name"))
+                        .setPassword(resultSet.getString("password"))
+                        .setPhone(resultSet.getString("phone"))
+                        .setEmail(resultSet.getString("email"))
+                        .setRegistrationDate(resultSet.getDate("registration_date"))
+                        .build();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
 
     @Override
     public User addUser(User user) {

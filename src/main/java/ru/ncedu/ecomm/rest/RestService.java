@@ -152,6 +152,13 @@ public class RestService {
         return getDAOFactory().getUserDAO().getUserByRoleId(roleId);
     }
 
+    @GET
+    @Path("/users/{password}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public User getUserByPassword(@PathParam("password") String password){
+        return getDAOFactory().getUserDAO().getUserByPassword(password);
+    }
+
     @POST
     @Path("/users")
     @Produces(MediaType.APPLICATION_JSON)
