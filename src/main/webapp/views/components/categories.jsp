@@ -11,13 +11,11 @@
     <div class="ui flowing basic admission popup">
         <div class="ui vertical menu">
             <c:forEach var="head" items="${requestScope.heads}">
-                <div class="ui dropdown center aligned item">
-                    <a href="/category?category_id=${head.getId()}">
-                        <div class="item">
-                            <b>${head.getName()}</b>
-                            <i class="dropdown icon"></i>
-                        </div>
+                <div class="ui left pointing dropdown link item">
+                    <a href="/category?category_id=${head.getId()}" style="color: #000;">
+                        <b>${head.getName()}</b>
                     </a>
+                    <i class="dropdown icon"></i>
                     <div class="menu">
                         <c:forEach var="subcategory" items="${head.getSubcategories()}">
                             <c:if test="${subcategory.getSubcategories().isEmpty()}">
