@@ -8,7 +8,7 @@ import java.util.List;
 public class CategoriesViewBuilder {
     private long id;
     private String name;
-    private List<Category> subcategories;
+    private List<CategoriesViewModel> subcategories;
 
     public CategoriesViewBuilder() {
     }
@@ -25,7 +25,7 @@ public class CategoriesViewBuilder {
         return this;
     }
 
-    public CategoriesViewBuilder setSubcategories(List<Category> subcategories) {
+    public CategoriesViewBuilder setSubcategories(List<CategoriesViewModel> subcategories) {
         this.subcategories = subcategories;
 
         return this;

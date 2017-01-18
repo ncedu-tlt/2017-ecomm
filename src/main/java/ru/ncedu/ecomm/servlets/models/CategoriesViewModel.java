@@ -7,9 +7,9 @@ import java.util.List;
 public class CategoriesViewModel {
     private long id;
     private String name;
-    private List<Category> subcategories;
+    private List<CategoriesViewModel> subcategories;
 
-    public CategoriesViewModel(long id, String name, List<Category> subcategories) {
+    public CategoriesViewModel(long id, String name, List<CategoriesViewModel> subcategories) {
 
         this.id = id;
         this.name = name;
@@ -24,7 +24,7 @@ public class CategoriesViewModel {
         return name;
     }
 
-    public List<Category> getSubcategories() {
+    public List<CategoriesViewModel> getSubcategories() {
         return subcategories;
     }
 

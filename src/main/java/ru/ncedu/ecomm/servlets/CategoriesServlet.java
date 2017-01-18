@@ -15,17 +15,29 @@ import java.util.List;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
-@WebServlet(name = "CategoriesServlet", urlPatterns = {"/CategoriesServlet"})
+@WebServlet(name = "CategoriesServlet", urlPatterns = {"/categories"})
 public class CategoriesServlet extends HttpServlet {
+
+    private List<CategoriesViewModel> getSubcategoriesViewByParentID(long id){
+        List<Category> categories = getDAOFactory().getCategoryDAO().getCategoriesByParentId(id);
+        List<CategoriesViewModel> subcategories = new ArrayList<CategoriesViewModel>();
+        for (Category category : categories) {
+            subcategories.add(new CategoriesViewBuilder()
+                    .setId(category.getCategoryId())
+                    .setName(category.getName())
+                    .setSubcategories(new ArrayList<CategoriesViewModel>())
+                    .build());
+        }
+        return subcategories;
+    }
 
     private void process(HttpServletRequest request) {
         List<Category> categories = getDAOFactory().getCategoryDAO().getCategories();
         List<CategoriesViewModel> heads = new ArrayList<CategoriesViewModel>();
-        List<CategoriesViewModel> child = new ArrayList<CategoriesViewModel>();
 
         for (Category category : categories) {
             if (category.getParentId() == 0) {
-                List<Category> subcategories = getDAOFactory().getCategoryDAO().getCategoriesByParentId(category.getCategoryId());
+                List<CategoriesViewModel> subcategories = getSubcategoriesViewByParentID(category.getCategoryId());
 
                 heads.add(new CategoriesViewBuilder()
                         .setId(category.getCategoryId())
@@ -33,18 +45,13 @@ public class CategoriesServlet extends HttpServlet {
                         .setSubcategories(subcategories)
                         .build());
 
-                for (Category subcategory : subcategories) {
-                    child.add(new CategoriesViewBuilder()
-                            .setId(subcategory.getCategoryId())
-                            .setName(subcategory.getName())
-                            .setSubcategories(getDAOFactory().getCategoryDAO().getCategoriesByParentId(subcategory.getCategoryId()))
-                            .build());
+                for (CategoriesViewModel subcategory : subcategories) {
+                    subcategory.getSubcategories().addAll(getSubcategoriesViewByParentID(subcategory.getId()));
                 }
             }
         }
 
         request.setAttribute("heads", heads);
-        request.setAttribute("child", child);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

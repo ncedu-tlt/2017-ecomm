@@ -23,40 +23,31 @@ public class SearchServlet extends HttpServlet {
     private final static long HIDDEN_ID = -1;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("search");
-        if (isEmpty(name)) {
-            List<Category> categories = DAOFactory.getDAOFactory().getCategoryDAO().getCategories();
-            List<CategoryViewModel> categoryViewModels = new ArrayList<>();
-            for (Category category : categories) {
-                categoryViewModels.add(new CategoryViewBuilder()
-                        .setName(category.getName())
-                        .setId(category.getCategoryId())
-                        .build());
-            }
-            request.setAttribute("categoriesForView", categoryViewModels);
-            request.getRequestDispatcher("/views/pages/index.jsp").forward(request, response);
+        String query = request.getParameter("search");
+        if (isEmpty(query)) {
+            request.getRequestDispatcher("/home").forward(request, response);
         }
 
-        List<Product> products = DAOFactory.getDAOFactory().getProductDAO().searchProductsByName(name);
+        List<Product> products = DAOFactory.getDAOFactory().getProductDAO().searchProductsByName(query);
         List<CategoryViewModel> categoryViewModels = new ArrayList<>();
 
         categoryViewModels.add(new CategoryViewBuilder()
-                .setName(products.isEmpty() ? "Sorry, no products matched \"" + name + "\"" : "Search results")
+                .setName(products.isEmpty() ? "Sorry, no products matched \"" + query + "\"" : "Search results")
                 .setId(HIDDEN_ID)
                 .setProducts(ProductViewService.getInstance().getProductsToView(products))
                 .build());
         request.setAttribute("categoriesForView", categoryViewModels);
-        request.getRequestDispatcher("/views/pages/index.jsp").forward(request, response);
+        request.getRequestDispatcher("/home").forward(request, response);
     }
 
-    private boolean isEmpty(String name) {
+    private boolean isEmpty(String query) {
         final String check = "\\s+";
 
         Pattern patternEmailValidation = Pattern.compile(check
                 , Pattern.CASE_INSENSITIVE);
-        Matcher matcher = patternEmailValidation.matcher(name);
+        Matcher matcher = patternEmailValidation.matcher(query);
 
-        return matcher.find() || name.isEmpty();
+        return matcher.find() || query.isEmpty();
     }
 
 }
