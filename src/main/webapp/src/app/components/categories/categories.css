@@ -1,0 +1,3 @@
+.item[class*="categoriesHeader"]:first-child  {
+    padding: 0;
+}
