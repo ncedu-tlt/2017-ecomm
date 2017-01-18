@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
@@ -23,23 +24,21 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // handle login parameters
-        goToUserList(req, resp);
+        login(req, resp);
     }
 
-    private void goToUserList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
+    private void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             String email = req.getParameter("email");
             String password = req.getParameter("password");
-            User userEmail = getDAOFactory().getUserDAO().getUserByEmail(email);
-            if (userEmail != null && userEmail.getPassword().equals(password)) {
+            HttpSession session = req.getSession();
+            User user = getDAOFactory().getUserDAO().getUserByEmail(email);
+            if (user != null && user.getPassword().equals(password)) {
+                session.setAttribute("userId", user.getId());
                 req.setAttribute("answer", "User was found");
                 req.getRequestDispatcher("/home").forward(req, resp);
             }else{
                 req.setAttribute("answer", "Uncorrect user! Check email and password");
                 req.getRequestDispatcher("/views/pages/login.jsp").forward(req, resp);
             }
-        }catch (NullPointerException e){
-
-        }
     }
 }
