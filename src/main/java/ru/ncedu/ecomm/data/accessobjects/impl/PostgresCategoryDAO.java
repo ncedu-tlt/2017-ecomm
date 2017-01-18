@@ -203,14 +203,33 @@ public class PostgresCategoryDAO implements CategoryDAO {
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT\n" +
-                            "  category_id,\n" +
+                    "WITH RECURSIVE recquery\n" +
+                            "(category_id,\n" +
+                            "    parent_id,\n" +
+                            "    name,\n" +
+                            "    description) AS\n" +
+                            "(SELECT\n" +
+                            "   category_id,\n" +
+                            "   parent_id,\n" +
+                            "   name,\n" +
+                            "   description\n" +
+                            " FROM categories\n" +
+                            " UNION\n" +
+                            " SELECT\n" +
+                            "   categories.category_id,\n" +
+                            "   categories.parent_id,\n" +
+                            "   categories.name,\n" +
+                            "   categories.description\n" +
+                            " FROM categories\n" +
+                            "   INNER JOIN recquery\n" +
+                            "     ON (recquery.parent_id = categories.category_id))\n" +
+                            "SELECT\n" +
+                            "  recquery.category_id,\n" +
                             "  parent_id,\n" +
-                            "  name,\n" +
-                            "  description\n" +
-                            "FROM public.categories\n" +
-                            "WHERE parent_id ISNULL\n" +
-                            "ORDER BY category_id ASC"
+                            "  recquery.name,\n" +
+                            "  recquery.description\n" +
+                            "FROM recquery\n" +
+                            "ORDER BY category_id"
             );
             while (resultSet.next()) {
                 Category category = new CategoryBuilder()

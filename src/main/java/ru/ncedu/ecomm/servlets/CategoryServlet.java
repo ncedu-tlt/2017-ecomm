@@ -25,7 +25,7 @@ public class CategoryServlet extends HttpServlet {
 
     private void browseCategories(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        List<CategoryViewModel> categoryViewModels = ProductViewService.getInstance().getCategoryViewModels(request);
+        List<CategoryViewModel> categoryViewModels = ProductViewService.getInstance().getCategoriesById(request);
 
         request.setAttribute("categoriesForView", categoryViewModels);
         request.getRequestDispatcher("/views/pages/category.jsp").forward(request, response);

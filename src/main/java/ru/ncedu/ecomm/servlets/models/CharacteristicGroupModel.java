@@ -1,36 +1,22 @@
 package ru.ncedu.ecomm.servlets.models;
 
-import ru.ncedu.ecomm.data.models.Characteristic;
-import ru.ncedu.ecomm.data.models.CharacteristicValue;
-
 import java.util.List;
 
 public class CharacteristicGroupModel {
-    private long productId;
     private String characteristicGroupName;
     private List<CharacteristicModel> characteristics;
 
     public CharacteristicGroupModel() {
     }
 
-    public CharacteristicGroupModel(long productId,
-                                    String characteristicGroupName,
+    public CharacteristicGroupModel(String characteristicGroupName,
                                     List<CharacteristicModel> characteristics) {
-        this.productId = productId;
         this.characteristicGroupName = characteristicGroupName;
         this.characteristics = characteristics;
     }
 
     public String getCharacteristicGroupName() {
         return characteristicGroupName;
-    }
-
-    public long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(long productId) {
-        this.productId = productId;
     }
 
     public void setCharacteristicGroupName(String characteristicGroupName) {

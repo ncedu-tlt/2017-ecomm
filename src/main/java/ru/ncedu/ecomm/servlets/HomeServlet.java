@@ -26,7 +26,11 @@ public class HomeServlet extends HttpServlet {
 
     private void browseCategories(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        List<CategoryViewModel> categoryViewModels = ProductViewService.getInstance().getCategoryViewModels(request);
+        List<CategoryViewModel> categoryViewModels = ProductViewService.getInstance().getBestOffersCategory();
+
+        List<CategoryViewModel> allTopCategory = ProductViewService.getInstance().getCategoriesById(request);
+
+        categoryViewModels.addAll(allTopCategory);
 
         request.setAttribute("categoriesForView", categoryViewModels);
         request.getRequestDispatcher("/views/pages/index.jsp").forward(request, response);

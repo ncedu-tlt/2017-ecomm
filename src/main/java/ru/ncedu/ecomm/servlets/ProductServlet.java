@@ -19,10 +19,11 @@ import java.util.Collections;
 import java.util.List;
 
 import static ru.ncedu.ecomm.servlets.services.ProductViewService.CHARACTERISTIC_ID_FOR_IMAGE_URL;
+import static ru.ncedu.ecomm.servlets.services.ProductViewService.DEFAULT_IMAGE_URL;
 
 @WebServlet(name = "ProductServlet", urlPatterns = {"/product"})
 public class ProductServlet extends HttpServlet {
-    private static final String DEFAULT_IMAGE_URL = "/images/defaultimage/image.png";
+
     private static final long DEFAULT_CATEGORY_ID = 0;
 
     @Override
@@ -44,23 +45,6 @@ public class ProductServlet extends HttpServlet {
 
         request.setAttribute("browseProduct", browseProduct);
         request.getRequestDispatcher("/views/pages/product.jsp").forward(request, response);
-    }
-
-    private long changeProductId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        long productId = 0;
-
-        String categoryIdByRequest = request.getParameter("product_id");
-
-        if (categoryIdByRequest == null) {
-            request.setAttribute("category_id", DEFAULT_CATEGORY_ID);
-            request.getRequestDispatcher("/views/pages/category.jsp").forward(request, response);
-
-        } else {
-            productId = Long.parseLong(categoryIdByRequest);
-
-        }
-        return productId;
     }
 
     private ProductDetailsModel getProductToView(long productId) {
@@ -89,6 +73,69 @@ public class ProductServlet extends HttpServlet {
         return productDetailsModel;
     }
 
+    private long changeProductId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        long productId = 0;
+
+        String categoryIdByRequest = request.getParameter("product_id");
+
+        if (categoryIdByRequest == null) {
+            request.setAttribute("category_id", DEFAULT_CATEGORY_ID);
+            request.getRequestDispatcher("/views/pages/category.jsp").forward(request, response);
+
+        } else {
+            productId = Long.parseLong(categoryIdByRequest);
+
+        }
+        return productId;
+    }
+
+    private Rating getAvergeRating(long productId) {
+        return DAOFactory
+                .getDAOFactory()
+                .getReviewDAO()
+                .getAverageRatingByProductId(productId);
+    }
+
+    private Product getProductForBuild(long productId) {
+        return DAOFactory
+                .getDAOFactory()
+                .getProductDAO()
+                .getProductById(productId);
+    }
+    private List<CharacteristicGroupModel> getCharacteristicGroupModel(long productId) {
+
+        CharacteristicGroupModel characteristicGroupModel;
+
+        List<CharacteristicGroupModel> characteristicGroupModels = new ArrayList<>();
+        List<CharacteristicGroup> characteristicGroups = getCharacteristicGroup();
+
+        for (CharacteristicGroup characteristicGroup : characteristicGroups) {
+
+            characteristicGroupModel = new CharacteristicGroupModelBuilder()
+                    .setCharacteristicGroupName(characteristicGroup.getCharacteristicGroupName())
+                    .setCharacteristics(getCharacteristicModelByGroup(
+                            characteristicGroup.getCharacteristicGroupId(),
+                            productId))
+
+                    .build();
+
+
+            if (!characteristicGroupModel.getCharacteristics().isEmpty()) {
+                characteristicGroupModels.add(characteristicGroupModel);
+            }
+        }
+
+        return characteristicGroupModels;
+    }
+
+    private List<CharacteristicGroup> getCharacteristicGroup() {
+        return DAOFactory
+                .getDAOFactory()
+                .getCharacteristicGroupDAO()
+                .getCharacteristicGroup();
+    }
+
     private List<String> getImageLinkByProductId(long productId) {
         List<String> imagesList = new ArrayList<>();
 
@@ -104,41 +151,12 @@ public class ProductServlet extends HttpServlet {
             String imageLink = characteristicValue.getCharacteristicValue();
             String links[] = imageLink.trim().split(",");
 
-            for (String link : links){
-                imagesList.add(link);
-            }
+            Collections.addAll(imagesList, links);
 
         }else {
             imagesList.add(DEFAULT_IMAGE_URL);
         }
         return imagesList;
-    }
-
-    private List<CharacteristicGroupModel> getCharacteristicGroupModel(long productId) {
-
-        CharacteristicGroupModel characteristicGroupModel;
-
-        List<CharacteristicGroupModel> characteristicGroupModels = new ArrayList<>();
-        List<CharacteristicGroup> characteristicGroups = getCharacteristicGroup();
-
-        for (CharacteristicGroup characteristicGroup : characteristicGroups) {
-
-            characteristicGroupModel = new CharacteristicGroupModelBuilder()
-                    .setProductId(productId)
-                    .setCharacteristicGroupName(characteristicGroup.getCharacteristicGroupName())
-                    .setCharacteristics(getCharacteristicModelByGroup(
-                            characteristicGroup.getCharacteristicGroupId(),
-                            productId))
-
-                    .build();
-
-
-            if (!characteristicGroupModel.getCharacteristics().isEmpty()) {
-                characteristicGroupModels.add(characteristicGroupModel);
-            }
-        }
-
-        return characteristicGroupModels;
     }
 
     private List<CharacteristicModel> getCharacteristicModelByGroup(long characteristicGroupId, long productId) {
@@ -160,6 +178,7 @@ public class ProductServlet extends HttpServlet {
 
         return characteristicModels;
     }
+
 
     private CharacteristicModel getCharacteristicModel(
             Characteristic characteristic,
@@ -194,13 +213,6 @@ public class ProductServlet extends HttpServlet {
                 .getCharacteristicValueByProductId(productId);
     }
 
-    private List<CharacteristicGroup> getCharacteristicGroup() {
-        return DAOFactory
-                .getDAOFactory()
-                .getCharacteristicGroupDAO()
-                .getCharacteristicGroup();
-    }
-
     private long getDiscountValue(long discountId, long price) {
         return DiscountService
                 .getInstance()
@@ -208,19 +220,6 @@ public class ProductServlet extends HttpServlet {
     }
 
 
-    private Product getProductForBuild(long productId) {
-        return DAOFactory
-                .getDAOFactory()
-                .getProductDAO()
-                .getProductById(productId);
-    }
-
-    private Rating getAvergeRating(long productId) {
-        return DAOFactory
-                .getDAOFactory()
-                .getReviewDAO()
-                .getAverageRatingByProductId(productId);
-    }
 
 
 }

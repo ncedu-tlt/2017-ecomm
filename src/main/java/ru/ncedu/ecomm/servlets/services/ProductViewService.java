@@ -18,7 +18,6 @@ public class ProductViewService {
     public static final long CHARACTERISTIC_ID_FOR_IMAGE_URL = 28;
 
     private static final int CATEGORY_ID_FOR_BEST_OFFERS = 0;
-    private static final String HOME_PAGE_URL = "/home";
 
     private ProductViewService() {
     }
@@ -32,27 +31,15 @@ public class ProductViewService {
         return instance;
     }
 
-    public List<CategoryViewModel> getCategoryViewModels(HttpServletRequest request) {
-
-        List<CategoryViewModel> viewCategories;
-
-        if (request.getServletPath().equalsIgnoreCase(HOME_PAGE_URL)) {
-            viewCategories = getBestOffersCategory();
-        } else {
-            viewCategories = getCategoriesById(request);
-        }
-        return viewCategories;
-    }
-
     private long getCategoryId(String categoryIdByRequest) {
-        if (!checkInNull(categoryIdByRequest)) {
+        if (categoryIdByRequest != null) {
             return Long.parseLong(categoryIdByRequest);
         } else {
             return 0;
         }
     }
 
-    private List<CategoryViewModel> getBestOffersCategory() {
+    public List<CategoryViewModel> getBestOffersCategory() {
         List<CategoryViewModel> bestOffersCategory = new ArrayList<>();
 
         CategoryViewModel bestOffers = new CategoryViewBuilder()
@@ -65,7 +52,7 @@ public class ProductViewService {
         return bestOffersCategory;
     }
 
-    private List<CategoryViewModel> getCategoriesById(HttpServletRequest request) {
+    public List<CategoryViewModel> getCategoriesById(HttpServletRequest request) {
 
         List<CategoryViewModel> categoriesById = new ArrayList<>();
 
@@ -89,8 +76,8 @@ public class ProductViewService {
         List<Category> categories;
         String categoryIdByRequest = request.getParameter("category_id");
 
-        if (checkInNull(categoryIdByRequest) || getCategoryId(categoryIdByRequest) == 0) {
-            categories = getCategories();
+        if (categoryIdByRequest == null || getCategoryId(categoryIdByRequest) == 0) {
+            categories = getParentCategory();
         } else {
             categories = getCategoriesById(
                     getCategoryId(categoryIdByRequest)
@@ -106,19 +93,15 @@ public class ProductViewService {
                 .getAllNotEmptyChildrenCategoryById(categoryId);
     }
 
-    private List<Category> getCategories() {
+    private List<Category> getParentCategory() {
         return getDAOFactory()
                 .getCategoryDAO()
-                .getAllNotEmptyCategory();
+                .getParentCategory();
     }
 
 
     private List<ProductViewModel> addProductToViewByCategoryId(long categoryId) {
         return getProductsToView(getProductsById(categoryId));
-    }
-
-    private boolean checkInNull(Object object) {
-        return object == null;
     }
 
     private List<Product> getProductsById(long categoryId) {
@@ -172,7 +155,7 @@ public class ProductViewService {
 
             productAverageRating = getRating(product.getId());
 
-            if (!checkInNull(productAverageRating)) {
+            if (productAverageRating != null) {
                 productRating = productAverageRating.getRaiting();
             }
 
