@@ -1,5 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
+import ru.ncedu.ecomm.data.models.User;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,15 +30,16 @@ public class LoginServlet extends HttpServlet {
         try {
             String email = req.getParameter("email");
             String password = req.getParameter("password");
-            String userEmail = getDAOFactory().getUserDAO().getUserByEmail(email).getEmail();
-            String userPassword = getDAOFactory().getUserDAO().getUserByPassword(password).getPassword();
-            if (email.equals(userEmail) && password.equals(userPassword)) {
+            User userEmail = getDAOFactory().getUserDAO().getUserByEmail(email);
+            if (userEmail != null && userEmail.getPassword().equals(password)) {
                 req.setAttribute("answer", "User was found");
                 req.getRequestDispatcher("/home").forward(req, resp);
+            }else{
+                req.setAttribute("answer", "Uncorrect user! Check email and password");
+                req.getRequestDispatcher("/views/pages/login.jsp").forward(req, resp);
             }
         }catch (NullPointerException e){
-            req.setAttribute("answer", "Uncorrect user! Check email and password");
-            req.getRequestDispatcher("/views/pages/login.jsp").forward(req, resp);
+
         }
     }
 }
