@@ -9,7 +9,7 @@
             <div>
                 ${requestScope.registration}
             </div>
-            <form class="ui equal dividing width form">
+            <form class="ui equal dividing width form" action="/login" method="post">
                 <div class="field">
                     <label> Your E-mail: </label>
                     <input type="text" name="email" placeholder="E-mail">
