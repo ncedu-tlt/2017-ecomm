@@ -20,6 +20,8 @@ public interface ProductDAO {
 
     List<Product> getBestOffersProducts();
 
+    List<Product> getProductAllChildrenCategory(long categoryId);
+
     List<Product> searchProductsByName(String name);
 
 }

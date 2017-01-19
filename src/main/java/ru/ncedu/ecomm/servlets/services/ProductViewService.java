@@ -1,6 +1,8 @@
 package ru.ncedu.ecomm.servlets.services;
 
+import ru.ncedu.ecomm.data.DAOFactory;
 import ru.ncedu.ecomm.data.models.*;
+import ru.ncedu.ecomm.data.models.builders.CategoryBuilder;
 import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
 import ru.ncedu.ecomm.servlets.models.ProductViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.CategoryViewBuilder;
@@ -45,7 +47,11 @@ public class ProductViewService {
         CategoryViewModel bestOffers = new CategoryViewBuilder()
                 .setName("Best Offers")
                 .setId(CATEGORY_ID_FOR_BEST_OFFERS)
-                .setProducts(addProductToViewByCategoryId(CATEGORY_ID_FOR_BEST_OFFERS))
+                .setProducts(addProductToViewByCategoryId(
+                        new CategoryBuilder()
+                                .setCategoryId(CATEGORY_ID_FOR_BEST_OFFERS)
+                                .build())
+                )
                 .build();
 
         bestOffersCategory.add(bestOffers);
@@ -63,7 +69,7 @@ public class ProductViewService {
             CategoryViewModel categoryByRequest = new CategoryViewBuilder()
                     .setId(category.getCategoryId())
                     .setName(category.getName())
-                    .setProducts(addProductToViewByCategoryId(category.getCategoryId()))
+                    .setProducts(addProductToViewByCategoryId(category))
                     .build();
 
             categoriesById.add(categoryByRequest);
@@ -100,8 +106,15 @@ public class ProductViewService {
     }
 
 
-    private List<ProductViewModel> addProductToViewByCategoryId(long categoryId) {
-        return getProductsToView(getProductsById(categoryId));
+    private List<ProductViewModel> addProductToViewByCategoryId(Category category) {
+
+        if (category.getParentId() == 0 && category.getCategoryId() != CATEGORY_ID_FOR_BEST_OFFERS) {
+            return getProductsToView(getProductAllChildrenCategory(category.getCategoryId()));
+
+        } else {
+            return getProductsToView(getProductsById(category.getCategoryId()));
+
+        }
     }
 
     private List<Product> getProductsById(long categoryId) {
@@ -127,13 +140,13 @@ public class ProductViewService {
                 .getAverageRatingByProductId(productId);
     }
 
-    private long getDiscountPrice(long discountId, long price){
+    private long getDiscountPrice(long discountId, long price) {
         return DiscountService
                 .getInstance()
                 .getDiscountPrice(discountId, price);
     }
 
-    public List<ProductViewModel> getProductsToView (List<Product> products){
+    public List<ProductViewModel> getProductsToView(List<Product> products) {
 
         List<ProductViewModel> productsView = new ArrayList<>();
 
@@ -183,5 +196,12 @@ public class ProductViewService {
         String[] links = imageURL.trim().split(",");
 
         return links[0];
+    }
+
+    private List<Product> getProductAllChildrenCategory(long categoryId) {
+        return DAOFactory
+                .getDAOFactory()
+                .getProductDAO()
+                .getProductAllChildrenCategory(categoryId);
     }
 }
