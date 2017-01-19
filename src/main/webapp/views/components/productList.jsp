@@ -39,7 +39,7 @@
                         $${product.getPrice()}
                     </c:if>
                 </h3>
-                <button class="ui labeled icon  fluid blue button" type="submit"
+                <button class="ui labeled icon fluid blue button" id="addToCart" type="submit"
                         name="productId" value="${product.getId()}">
                     <i class="add
                     to car icon"></i>
