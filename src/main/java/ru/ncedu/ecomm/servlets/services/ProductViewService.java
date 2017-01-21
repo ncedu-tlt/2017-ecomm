@@ -19,6 +19,7 @@ public class ProductViewService {
     public static final String DEFAULT_IMAGE_URL = "/images/defaultimage/image.png";
     public static final long CHARACTERISTIC_ID_FOR_IMAGE_URL = 28;
 
+    private static final String NAME_FOR_BEST_OFFERS_CATEGORY = "Best Offers";
     private static final int CATEGORY_ID_FOR_BEST_OFFERS = 0;
 
     private ProductViewService() {
@@ -33,19 +34,11 @@ public class ProductViewService {
         return instance;
     }
 
-    private long getCategoryId(String categoryIdByRequest) {
-        if (categoryIdByRequest != null) {
-            return Long.parseLong(categoryIdByRequest);
-        } else {
-            return 0;
-        }
-    }
-
     public List<CategoryViewModel> getBestOffersCategory() {
         List<CategoryViewModel> bestOffersCategory = new ArrayList<>();
 
         CategoryViewModel bestOffers = new CategoryViewBuilder()
-                .setName("Best Offers")
+                .setName(NAME_FOR_BEST_OFFERS_CATEGORY)
                 .setId(CATEGORY_ID_FOR_BEST_OFFERS)
                 .setProducts(addProductToViewByCategoryId(
                         new CategoryBuilder()
@@ -58,11 +51,9 @@ public class ProductViewService {
         return bestOffersCategory;
     }
 
-    public List<CategoryViewModel> getCategoriesById(HttpServletRequest request) {
+    public List<CategoryViewModel> getCategoriesById(List<Category> categories) {
 
         List<CategoryViewModel> categoriesById = new ArrayList<>();
-
-        List<Category> categories = getCategoryListByRequest(request);
 
         for (Category category : categories) {
 
@@ -76,35 +67,6 @@ public class ProductViewService {
         }
         return categoriesById;
     }
-
-
-    private List<Category> getCategoryListByRequest(HttpServletRequest request) {
-        List<Category> categories;
-        String categoryIdByRequest = request.getParameter("category_id");
-
-        if (categoryIdByRequest == null || getCategoryId(categoryIdByRequest) == 0) {
-            categories = getParentCategory();
-        } else {
-            categories = getCategoriesById(
-                    getCategoryId(categoryIdByRequest)
-            );
-        }
-        return categories;
-    }
-
-
-    private List<Category> getCategoriesById(long categoryId) {
-        return getDAOFactory()
-                .getCategoryDAO()
-                .getAllNotEmptyChildrenCategoryById(categoryId);
-    }
-
-    private List<Category> getParentCategory() {
-        return getDAOFactory()
-                .getCategoryDAO()
-                .getParentCategory();
-    }
-
 
     private List<ProductViewModel> addProductToViewByCategoryId(Category category) {
 

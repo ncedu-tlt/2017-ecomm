@@ -3,7 +3,7 @@ package ru.ncedu.ecomm.servlets.models;
 import java.util.List;
 
 public class CharacteristicGroupModel {
-    private String characteristicGroupName;
+    private String name;
     private List<CharacteristicModel> characteristics;
 
     public CharacteristicGroupModel() {
@@ -11,16 +11,16 @@ public class CharacteristicGroupModel {
 
     public CharacteristicGroupModel(String characteristicGroupName,
                                     List<CharacteristicModel> characteristics) {
-        this.characteristicGroupName = characteristicGroupName;
+        this.name = characteristicGroupName;
         this.characteristics = characteristics;
     }
 
-    public String getCharacteristicGroupName() {
-        return characteristicGroupName;
+    public String getName() {
+        return name;
     }
 
-    public void setCharacteristicGroupName(String characteristicGroupName) {
-        this.characteristicGroupName = characteristicGroupName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<CharacteristicModel> getCharacteristics() {

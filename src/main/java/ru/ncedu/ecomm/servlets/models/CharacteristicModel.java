@@ -1,31 +1,31 @@
 package ru.ncedu.ecomm.servlets.models;
 
 public class CharacteristicModel {
-    private String characteristicName;
-    private String characteristicValue;
+    private String name;
+    private String value;
 
     public CharacteristicModel() {
     }
 
     public CharacteristicModel(String characteristicName,
                                String characteristicValue) {
-        this.characteristicName = characteristicName;
-        this.characteristicValue = characteristicValue;
+        this.name = characteristicName;
+        this.value = characteristicValue;
     }
 
-    public String getCharacteristicName() {
-        return characteristicName;
+    public String getName() {
+        return name;
     }
 
-    public void setCharacteristicName(String characteristicName) {
-        this.characteristicName = characteristicName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getCharacteristicValue() {
-        return characteristicValue;
+    public String getValue() {
+        return value;
     }
 
-    public void setCharacteristicValue(String characteristicValue) {
-        this.characteristicValue = characteristicValue;
+    public void setValue(String value) {
+        this.value = value;
     }
 }

@@ -189,8 +189,8 @@ public class ProductServlet extends HttpServlet {
         for (CharacteristicValue characteristicValue : characteristicValues) {
             if (characteristic.getCharacteristicId() == characteristicValue.getCharacteristicId()) {
                 characteristicModel = new CharacteristicModelBuilder()
-                        .setCharacteristicName(characteristic.getCharacteristicName())
-                        .setCahracteristicValue(characteristicValue.getCharacteristicValue())
+                        .setName(characteristic.getCharacteristicName())
+                        .setValue(characteristicValue.getCharacteristicValue())
                         .build();
 
             }
