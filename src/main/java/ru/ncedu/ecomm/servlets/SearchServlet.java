@@ -22,11 +22,8 @@ import java.util.regex.Pattern;
 public class SearchServlet extends HttpServlet {
     private final static long HIDDEN_ID = -1;
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String query = request.getParameter("search");
-        if (isEmpty(query)) {
-            request.getRequestDispatcher("/home").forward(request, response);
-        }
 
         List<Product> products = DAOFactory.getDAOFactory().getProductDAO().searchProductsByName(query);
         List<CategoryViewModel> categoryViewModels = new ArrayList<>();
@@ -37,17 +34,7 @@ public class SearchServlet extends HttpServlet {
                 .setProducts(ProductViewService.getInstance().getProductsToView(products))
                 .build());
         request.setAttribute("categoriesForView", categoryViewModels);
-        request.getRequestDispatcher("/home").forward(request, response);
-    }
-
-    private boolean isEmpty(String query) {
-        final String check = "\\s+";
-
-        Pattern patternEmailValidation = Pattern.compile(check
-                , Pattern.CASE_INSENSITIVE);
-        Matcher matcher = patternEmailValidation.matcher(query);
-
-        return matcher.find() || query.isEmpty();
+        request.getRequestDispatcher("/views/pages/index.jsp").forward(request, response);
     }
 
 }
