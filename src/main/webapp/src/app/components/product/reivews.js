@@ -10,10 +10,9 @@
          * Executed on component initialization
          */
         init: function () {
-            this.content.find('.rating').rating({
-                initialRating: 3,
-                maxRating: 5
-            });
+            this.content.find('.rating')
+                .rating({initialRating: 2, maxRating: 5})
+                .rating('disable');
         }
 
     });

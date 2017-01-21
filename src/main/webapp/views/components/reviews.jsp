@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="ui text two column grid container main-content reviews jsReviewsComponent" style="margin-top: 1em">
     <div class="ui top attached menu">
         <div class="item">
@@ -6,67 +7,34 @@
         <a class="item">Reviews</a>
     </div>
     <div class="ui bottom attached active segment">
+<c:forEach var="review" items="${requestScope.reviews}">
         <div class="ui grid">
             <div class="three wide column">
-                <img src="http://semantic-ui.com/images/wireframe/image.png" alt="avatar" class="ui image small">
+                <img src="${review.getUserAvatarLink()}" alt="avatar" class="ui image small">
             </div>
             <div class="eleven wide column">
                 <div class="ui grid four column">
                     <div class="column">
-                        <h4>John Doe</h4>
+                        <h4>${review.getUserName()}</h4>
                     </div>
                     <div class="column">
-                        <span class="datePrint">22.10.2016</span>
-                    </div>
-                </div>
-                <div class="ui grid one column">
-                    <div class="column">
-                        <div class="ui star rating" data-rating="4" data-max-rating="5"></div>
+                        <span class="datePrint">${review.getReviewDate()}</span>
                     </div>
                 </div>
                 <div class="ui grid one column">
                     <div class="column">
-                        <p>The Spectre is HP's finest laptop yet, and it's clear it was engineered from the ground up
-                            from the piston hinges and specially layered batteries to the tactile keyboard. That said,
-                            we wish it could last a bit longer – even if it meant a few more millimeters of
-                            thickness.</p>
+                        <div class="ui eleven wide column large rating disabled" data-rating="${review.getRating()}" data-max-rating="5"></div>
+                    </div>
+                </div>
+                <div class="ui grid one column">
+                    <div class="column">
+                        <p>${review.getDescription()}</p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="ui divider"></div>
-        <div class="ui grid">
-            <div class="three wide column">
-                <img src="http://semantic-ui.com/images/wireframe/image.png" alt="avatar" class="ui image small">
-            </div>
-            <div class="eleven wide column">
-                <div class="ui grid four column">
-                    <div class="column">
-                        <h4>Selena Morales</h4>
-                    </div>
-                    <div class="column">
-                        <span class="datePrint">19.10.2016</span>
-                    </div>
-                </div>
-                <div class="ui grid one column">
-                    <div class="column">
-                        <div class="ui star rating" data-rating="4" data-max-rating="5"></div>
-                    </div>
-                </div>
-                <div class="ui grid one column">
-                    <div class="column">
-                        <p>The HP Spectre 13 is desperate to appear a laptop of the future, and that comes with
-                            substantial pros and cons. Its supreme portability is quite wonderful, and while its design
-                            may polarise, it certainly is fancy. There's substance too, with a surprisingly powerful CPU
-                            for a laptop this thin and solid build in the keyboard and trackpad. Its message is a little
-                            confused, though. The processor courts enthusiasts, but that's exactly who's likely to be
-                            most annoyed by the lack of memory card slot and a traditional USB port. There's an audience
-                            for the Spectre 13, but if you've not signed-up to a wireless way of working yet you may
-                            want to think twice.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+</c:forEach>
     </div>
 </div>
 
