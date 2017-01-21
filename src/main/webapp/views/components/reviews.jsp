@@ -7,34 +7,37 @@
         <a class="item">Reviews</a>
     </div>
     <div class="ui bottom attached active segment">
-<c:forEach var="review" items="${requestScope.reviews}">
-        <div class="ui grid">
-            <div class="three wide column">
-                <img src="${review.getUserAvatarLink()}" alt="avatar" class="ui image small">
+        <c:forEach var="review" items="${requestScope.reviews}">
+            <div class="ui grid">
+                <div class="three wide column">
+                    <img src="${review.getUserAvatarLink()}" alt="avatar" class="ui image small">
+                </div>
+                <div class="eleven wide column">
+                    <div class="ui grid four column">
+                        <div class="column">
+                            <a href="${pageContext.request.contextPath}/profile?user_id=${review.getUserId()}">
+                                <h4>${review.getUserName()}</h4>
+                            </a>
+                        </div>
+                        <div class=" column">
+                            <span class="datePrint">${review.getReviewDate()}</span>
+                        </div>
+                    </div>
+                    <div class="ui grid one column">
+                        <div class="column">
+                            <div class="ui eleven wide column large rating disabled" data-rating="${review.getRating()}"
+                                 data-max-rating="5"></div>
+                        </div>
+                    </div>
+                    <div class="ui grid one column">
+                        <div class="column">
+                            <p>${review.getDescription()}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="eleven wide column">
-                <div class="ui grid four column">
-                    <div class="column">
-                        <h4>${review.getUserName()}</h4>
-                    </div>
-                    <div class="column">
-                        <span class="datePrint">${review.getReviewDate()}</span>
-                    </div>
-                </div>
-                <div class="ui grid one column">
-                    <div class="column">
-                        <div class="ui eleven wide column large rating disabled" data-rating="${review.getRating()}" data-max-rating="5"></div>
-                    </div>
-                </div>
-                <div class="ui grid one column">
-                    <div class="column">
-                        <p>${review.getDescription()}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="ui divider"></div>
-</c:forEach>
+            <div class="ui divider"></div>
+        </c:forEach>
     </div>
 </div>
 
