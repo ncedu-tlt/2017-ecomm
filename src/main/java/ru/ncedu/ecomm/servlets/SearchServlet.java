@@ -36,5 +36,4 @@ public class SearchServlet extends HttpServlet {
         request.setAttribute("categoriesForView", categoryViewModels);
         request.getRequestDispatcher("/views/pages/index.jsp").forward(request, response);
     }
-
 }
