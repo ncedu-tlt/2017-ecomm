@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div class="ui text two column grid container main-content reviews jsReviewsComponent" style="margin-top: 1em">
+<div class="ui text two column grid container main-content reviews jsReviewsComponent" style="margin-top: 2em">
     <div class="ui top attached menu">
         <div class="item">
             <i class="comments icon large"></i>

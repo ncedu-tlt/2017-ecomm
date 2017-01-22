@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReviewService {
-    private static final String UNKNOWN_USER_AVATAR = "/images/useravatars/unknownuser/unknownuser.png";
 
     private ReviewService() {
     }
@@ -53,10 +52,9 @@ public class ReviewService {
         return getUserAvatarLink(user);
     }
 
-    //   TODO: Нужно исправить метод послу добавления автара пользователя в таблицу.
-
     private String getUserAvatarLink(User user) {
-        return UNKNOWN_USER_AVATAR;
+
+        return user.getUserAvatar();
     }
 
     private String getUserNameByUserId(long userId) {
