@@ -15,7 +15,6 @@
 
         }
 
-
     });
 
     frm.components.register('SearchComponent', SearchComponent);
