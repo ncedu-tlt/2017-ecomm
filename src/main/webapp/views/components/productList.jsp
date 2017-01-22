@@ -4,7 +4,7 @@
     <div class="ui container jsProductListComponent main-content" style="margin: 1.5em 0;">
     <h2 class="ui center aligned header horizontal divider">
         <c:if test="${category.getId() == HIDDEN_ID}">
-            ${category.getName()}
+            <span style="color: #4183C4;">${category.getName()}</span>
         </c:if>
         <c:if test="${category.getId() >= 0}">
             <a href="\category?category_id=${category.getId()}">
