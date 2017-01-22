@@ -7,6 +7,7 @@ import ru.ncedu.ecomm.servlets.models.builders.CharacteristicGroupModelBuilder;
 import ru.ncedu.ecomm.servlets.models.builders.CharacteristicModelBuilder;
 import ru.ncedu.ecomm.servlets.models.builders.ProductDetailsModelBuilder;
 import ru.ncedu.ecomm.servlets.services.DiscountService;
+import ru.ncedu.ecomm.servlets.services.ReviewService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,7 +44,12 @@ public class ProductServlet extends HttpServlet {
 
         ProductDetailsModel browseProduct = getProductToView(productId);
 
+        List<ReviewViewModel> reviews = ReviewService
+                .getInstance()
+                .getReview(productId);
+
         request.setAttribute("browseProduct", browseProduct);
+        request.setAttribute("reviews", reviews);
         request.getRequestDispatcher("/views/pages/product.jsp").forward(request, response);
     }
 
@@ -189,8 +195,8 @@ public class ProductServlet extends HttpServlet {
         for (CharacteristicValue characteristicValue : characteristicValues) {
             if (characteristic.getCharacteristicId() == characteristicValue.getCharacteristicId()) {
                 characteristicModel = new CharacteristicModelBuilder()
-                        .setCharacteristicName(characteristic.getCharacteristicName())
-                        .setCahracteristicValue(characteristicValue.getCharacteristicValue())
+                        .setName(characteristic.getCharacteristicName())
+                        .setValue(characteristicValue.getCharacteristicValue())
                         .build();
 
             }

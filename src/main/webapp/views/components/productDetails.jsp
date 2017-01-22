@@ -52,17 +52,17 @@
     </div>
 <c:forEach var="characteristicGroup" items="${browseProduct.getCharacteristicGroupModels()}">
     <div class="ui top attached menu">
-        <a class="item">${characteristicGroup.getCharacteristicGroupName()}</a>
+        <a class="item">${characteristicGroup.getName()}</a>
     </div>
     <div class="ui attached segment">
     <c:forEach var="characteristics" items="${characteristicGroup.getCharacteristics()}">
         <div class="ui computer reversed equal width grid">
             <div class="row">
                 <div class="column" id="brandValue">
-                    <p>${characteristics.getCharacteristicValue()}</p>
+                    <p>${characteristics.getValue()}</p>
                 </div>
                 <div class="column" id="brand">
-                    <p>${characteristics.getCharacteristicName()}</p>
+                    <p>${characteristics.getName()}</p>
                 </div>
             </div>
         </div>

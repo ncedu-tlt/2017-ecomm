@@ -12,6 +12,7 @@ public class User {
     private String email;
     private Date registrationDate;
     private String recoveryHash;
+    private String userAvatar;
 
     public User() {
     }
@@ -24,7 +25,8 @@ public class User {
                 String phone,
                 String email,
                 Date registrationDate,
-                String recoveryHash) {
+                String recoveryHash,
+                String userAvatar) {
 
         this.id = id;
         this.roleId = roleId;
@@ -35,6 +37,15 @@ public class User {
         this.email = email;
         this.registrationDate = registrationDate;
         this.recoveryHash = recoveryHash;
+        this.userAvatar = userAvatar;
+    }
+
+    public String getUserAvatar() {
+        return userAvatar;
+    }
+
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
     }
 
     public long getId() {

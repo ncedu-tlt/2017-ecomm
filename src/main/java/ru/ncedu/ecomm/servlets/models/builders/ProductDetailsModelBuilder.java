@@ -1,8 +1,6 @@
 package ru.ncedu.ecomm.servlets.models.builders;
 
-import ru.ncedu.ecomm.data.models.Review;
 import ru.ncedu.ecomm.servlets.models.CharacteristicGroupModel;
-import ru.ncedu.ecomm.servlets.models.Images;
 import ru.ncedu.ecomm.servlets.models.ProductDetailsModel;
 
 import java.util.List;

@@ -14,9 +14,16 @@ public class UserBuilder {
     private String email;
     private Date registrationDate;
     private String recoveryHash;
+    private String userAvatar;
 
     public UserBuilder() {
 
+    }
+
+    public UserBuilder setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
+
+        return this;
     }
 
     public UserBuilder setUserId(long userId) {
@@ -83,7 +90,8 @@ public class UserBuilder {
                 phone,
                 email,
                 registrationDate,
-                recoveryHash);
+                recoveryHash,
+                userAvatar);
     }
 }
 
