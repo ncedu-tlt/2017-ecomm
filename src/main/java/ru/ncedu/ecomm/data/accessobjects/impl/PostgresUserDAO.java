@@ -27,6 +27,7 @@ public class PostgresUserDAO implements UserDAO {
                             "  phone,\n" +
                             "  email,\n" +
                             "  registration_date," +
+                            "  recovery_hash," +
                             "  user_avatar\n" +
                             "FROM users");
             while (resultSet.next()) {
@@ -38,6 +39,7 @@ public class PostgresUserDAO implements UserDAO {
                         .setPassword(resultSet.getString("password"))
                         .setPhone(resultSet.getString("phone"))
                         .setEmail(resultSet.getString("email"))
+                        .setRecoveryHash(resultSet.getString("recovery_hash"))
                         .setRegistrationDate(resultSet.getDate("registration_date"))
                         .setUserAvatar(resultSet.getString("user_avatar"))
                         .build();
@@ -64,6 +66,7 @@ public class PostgresUserDAO implements UserDAO {
                              "  phone,\n" +
                              "  email,\n" +
                              "  registration_date,\n" +
+                             "  recovery_hash,\n" +
                              "  user_avatar\n" +
                              "FROM users\n" +
                              "WHERE user_id = ?")) {
@@ -80,6 +83,7 @@ public class PostgresUserDAO implements UserDAO {
                         .setPhone(resultSet.getString("phone"))
                         .setEmail(resultSet.getString("email"))
                         .setRegistrationDate(resultSet.getDate("registration_date"))
+                        .setRecoveryHash(resultSet.getString("recovery_hash"))
                         .setUserAvatar(resultSet.getString("user_avatar"))
                         .build();
             }
@@ -102,7 +106,7 @@ public class PostgresUserDAO implements UserDAO {
                              "  phone,\n" +
                              "  email,\n" +
                              "  registration_date,\n" +
-                             "  registration_date,\n" +
+                             "  recovery_hash,\n" +
                              "  user_avatar\n" +
                              "FROM users\n" +
                              "WHERE email = ?")) {
@@ -145,6 +149,7 @@ public class PostgresUserDAO implements UserDAO {
                              "  phone,\n" +
                              "  email,\n" +
                              "  registration_date,\n" +
+                             "  recovery_hash,\n" +
                              "  user_avatar\n" +
                              "FROM users\n" +
                              "WHERE role_id = ?")) {
@@ -161,6 +166,7 @@ public class PostgresUserDAO implements UserDAO {
                         .setPassword(resultSet.getString("password"))
                         .setPhone(resultSet.getString("phone"))
                         .setEmail(resultSet.getString("email"))
+                        .setRecoveryHash(resultSet.getString("recovery_hash"))
                         .setRegistrationDate(resultSet.getDate("registration_date"))
                         .setUserAvatar(resultSet.getString("user_avatar"))
                         .build();
@@ -185,7 +191,7 @@ public class PostgresUserDAO implements UserDAO {
                              "  password,\n" +
                              "  phone,\n" +
                              "  email,\n" +
-                             "  registration_date,\n" +
+                             "  recovery_hash,\n" +
                              "  registration_date,\n" +
                              "  user_avatar\n" +
                              "FROM users\n" +
@@ -203,6 +209,7 @@ public class PostgresUserDAO implements UserDAO {
                         .setPassword(resultSet.getString("password"))
                         .setPhone(resultSet.getString("phone"))
                         .setEmail(resultSet.getString("email"))
+                        .setRecoveryHash(resultSet.getString("recovery_hash"))
                         .setRegistrationDate(resultSet.getDate("registration_date"))
                         .setUserAvatar(resultSet.getString("user_avatar"))
                         .build();
