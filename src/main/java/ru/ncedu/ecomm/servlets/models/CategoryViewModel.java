@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 public class CategoryViewModel {
-    private long id;
+    private Long id;
     private String name;
     private String description;
     private List<ProductViewModel> products;
@@ -12,7 +12,7 @@ public class CategoryViewModel {
     public CategoryViewModel() {
     }
 
-    public CategoryViewModel(long id,
+    public CategoryViewModel(Long id,
                              String name,
                              List<ProductViewModel> products,
                              String description) {
@@ -31,11 +31,11 @@ public class CategoryViewModel {
         this.description = description;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long categoryId) {
+    public void setId(Long categoryId) {
         this.id = categoryId;
     }
 

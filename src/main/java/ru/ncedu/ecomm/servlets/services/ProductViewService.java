@@ -20,7 +20,7 @@ public class ProductViewService {
     public static final long CHARACTERISTIC_ID_FOR_IMAGE_URL = 28;
 
     private static final String NAME_FOR_BEST_OFFERS_CATEGORY = "Best Offers";
-    private static final int CATEGORY_ID_FOR_BEST_OFFERS = 0;
+    private static final Long CATEGORY_ID_FOR_BEST_OFFERS = new Long(0);
 
     private ProductViewService() {
     }
