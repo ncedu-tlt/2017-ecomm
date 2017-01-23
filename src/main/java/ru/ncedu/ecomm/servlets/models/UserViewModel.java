@@ -15,6 +15,7 @@ public class UserViewModel {
 
 
     public UserViewModel(long id, String fio, String role, String email, Date registrationDate) {
+        this.id = id;
         this.fio = fio;
         this.role = role;
         this.email = email;
