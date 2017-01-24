@@ -26,7 +26,7 @@ public class ReviewService {
     public List<ReviewViewModel> getReview(long productId) {
         ReviewViewModel userReview;
 
-        List<ReviewViewModel> reviewsViewModel = new ArrayList<>();
+        List<ReviewViewModel> reviewsViewModels = new ArrayList<>();
         List<Review> reviews = getReviewByDAO(productId);
 
         for (Review review : reviews) {
@@ -39,10 +39,10 @@ public class ReviewService {
                     .setDescription(review.getDescription())
                     .build();
 
-            reviewsViewModel.add(userReview);
+            reviewsViewModels.add(userReview);
         }
 
-        return reviewsViewModel;
+        return reviewsViewModels;
     }
 
     private String getUserAvatarLinkByUserId(long userId) {
@@ -59,7 +59,7 @@ public class ReviewService {
     private String getUserNameByUserId(long userId) {
         User user = getUserById(userId);
 
-        return UserNameService
+        return UserService
                 .getInstance()
                 .getUserName(user);
     }
