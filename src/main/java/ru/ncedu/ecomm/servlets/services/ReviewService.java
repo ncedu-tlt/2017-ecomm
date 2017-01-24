@@ -59,7 +59,9 @@ public class ReviewService {
     private String getUserNameByUserId(long userId) {
         User user = getUserById(userId);
 
-        return getUserName(user);
+        return UserNameService
+                .getInstance()
+                .getUserName(user);
     }
 
     private User getUserById(long userId) {
@@ -67,24 +69,6 @@ public class ReviewService {
                 .getDAOFactory()
                 .getUserDAO()
                 .getUserById(userId);
-    }
-
-    private String getUserName(User user) {
-        String userName;
-
-        if (user.getFirstName().isEmpty() && user.getLastName().isEmpty()) {
-            userName = user.getEmail();
-
-        } else if (user.getFirstName().isEmpty()) {
-            userName = user.getLastName();
-
-        } else if (user.getLastName().isEmpty()) {
-            userName = user.getFirstName();
-
-        } else {
-            userName = user.getFirstName() + " " + user.getLastName();
-        }
-        return userName;
     }
 
     private List<Review> getReviewByDAO(long productId) {
