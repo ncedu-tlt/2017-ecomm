@@ -4,6 +4,8 @@ import ru.ncedu.ecomm.data.models.User;
 
 public class UserNameService {
 
+    private static final String DEFAULT_USER_NAME = "Anonymous";
+
     private static UserNameService instance;
 
     public static synchronized UserNameService getInstance(){
@@ -18,7 +20,7 @@ public class UserNameService {
         String userName;
 
         if (user.getFirstName().isEmpty() && user.getLastName().isEmpty()) {
-            userName = user.getEmail();
+            userName = DEFAULT_USER_NAME;
 
         } else if (user.getFirstName().isEmpty()) {
             userName = user.getLastName();
