@@ -15,6 +15,7 @@
             <c:import url="../components/search.jsp"/>
             <c:import url="../components/profileIcon.jsp"/>
             <c:import url="../components/shoppingCartIcon.jsp"/>
+            <c:import url="../components/logoutIcon.jsp"/>
         </div>
     </div>
 </div>
