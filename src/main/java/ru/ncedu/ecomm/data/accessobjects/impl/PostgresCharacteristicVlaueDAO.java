@@ -202,4 +202,36 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public List<CharacteristicValue> getCharacteristicValueByCharacteristicId(long id) {
+        List<CharacteristicValue> characteristics = new ArrayList<>();
+
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT DISTINCT ON (value)\n" +
+                             "  characteristic_id,\n" +
+                             "  product_id,\n" +
+                             "  value\n" +
+                             "FROM public.characteristic_values\n" +
+                             "WHERE characteristic_id = ?")) {
+            statement.setLong(1, id);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+               characteristics.add(new CharacteristicValueBuilder()
+                        .setCharacteristicId(resultSet.getLong("characteristic_id"))
+                        .setCharacteristicValue(resultSet.getString("value"))
+                        .setProductId(resultSet.getLong("product_id"))
+                        .build());
+
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return characteristics;
+    }
+
 }

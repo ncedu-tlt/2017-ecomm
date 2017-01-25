@@ -19,4 +19,6 @@ public interface CharacteristicDAO {
 
     void deleteCharacteristic(Characteristic characteristic);
 
+    List<Characteristic> getFilterableCharacteristicsByCategoryId(long categoryId);
+
 }

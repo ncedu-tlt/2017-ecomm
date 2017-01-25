@@ -243,6 +243,13 @@ public class RestService {
         return getDAOFactory().getCharacteristicValueDAO().getCharacteristicValueByProductId(productid);
     }
 
+    @GET
+    @Path("/characteristicvalue/bycharacteristicid/{characteristicid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<CharacteristicValue> getCharacteristicValueByCharacteristicId(@PathParam("characteristicid") long characteristicid) {
+        return getDAOFactory().getCharacteristicValueDAO().getCharacteristicValueByCharacteristicId(characteristicid);
+    }
+
     @POST
     @Path("/characteristicvalue")
     @Produces(MediaType.APPLICATION_JSON)

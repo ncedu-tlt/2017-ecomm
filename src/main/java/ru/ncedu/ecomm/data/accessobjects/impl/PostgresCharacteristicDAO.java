@@ -222,4 +222,34 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public List<Characteristic> getFilterableCharacteristicsByCategoryId(long categoryId) {
+        List<Characteristic> characteristics = new ArrayList<>();
+
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT\n" +
+                     "  characteristic_id,\n" +
+                     "  category_id,\n" +
+                     "  name,\n" +
+                     "  characteristic_group_id\n" +
+                     "FROM public.characteristics " +
+                     "where filterable = TRUE and category_id = ?")) {
+            statement.setLong(1, categoryId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                characteristics.add(new CharacteristicBuilder()
+                        .setCharacteristicGroupId(resultSet.getLong("characteristic_group_id"))
+                        .setCharacteristicId(resultSet.getLong("characteristic_id"))
+                        .setCharacteristicName(resultSet.getString("name"))
+                        .setCategoryId(resultSet.getLong("category_id"))
+                        .build());
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return characteristics;
+    }
 }
