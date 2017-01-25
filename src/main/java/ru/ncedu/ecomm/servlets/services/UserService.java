@@ -34,13 +34,13 @@ public class UserService {
     public String getUserName(User user) {
         String userName;
 
-        if (user.getFirstName().isEmpty() && user.getLastName().isEmpty()) {
+        if (user.getFirstName() == null && user.getLastName() == null) {
             userName = DEFAULT_USER_NAME;
 
-        } else if (user.getFirstName().isEmpty()) {
+        } else if (user.getFirstName() == null) {
             userName = user.getLastName();
 
-        } else if (user.getLastName().isEmpty()) {
+        } else if (user.getLastName() == null) {
             userName = user.getFirstName();
 
         } else {
