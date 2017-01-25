@@ -5,6 +5,7 @@ import ru.ncedu.ecomm.data.models.Role;
 import ru.ncedu.ecomm.data.models.User;
 import ru.ncedu.ecomm.servlets.models.UserViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.UserViewModelBuilder;
+import ru.ncedu.ecomm.servlets.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -47,7 +48,7 @@ public class UserServlet extends HttpServlet {
 
             userViewModel = new UserViewModelBuilder()
                     .setId(user.getId())
-                    .setFio(user.getFirstName() + " " + user.getLastName())
+                    .setFio(UserService.getInstance().getUserName(user))
                     .setRole(getRolesbyId(user.getRoleId()))
                     .setEmail(user.getEmail())
                     .setRegistrationDate(user.getRegistrationDate())
@@ -61,5 +62,4 @@ public class UserServlet extends HttpServlet {
         Role role = DAOFactory.getDAOFactory().getRoleDAO().getRoleById(id);
         return role.getName();
     }
-
 }

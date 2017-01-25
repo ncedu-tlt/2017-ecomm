@@ -18,4 +18,6 @@ public interface CharacteristicValueDAO {
     CharacteristicValue updateCharacteristicValue(CharacteristicValue characteristicValue);
 
     void deleteCharacteristicValue(CharacteristicValue characteristicValue);
+
+    List<CharacteristicValue> getCharacteristicValueByCharacteristicId(long id);
 }
