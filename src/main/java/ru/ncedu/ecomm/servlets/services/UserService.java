@@ -34,16 +34,13 @@ public class UserService {
     public String getUserName(User user) {
         String userName;
 
-        if (user.getFirstName() == null && user.getLastName() == null ||
-                user.getLastName().isEmpty() && user.getFirstName().isEmpty()) {
+        if (nameIsEmpty(user.getFirstName()) && nameIsEmpty(user.getLastName())) {
             userName = DEFAULT_USER_NAME;
 
-        } else if (user.getFirstName() == null ||
-                user.getFirstName().isEmpty()) {
+        } else if (nameIsEmpty(user.getFirstName())){
             userName = user.getLastName();
 
-        } else if (user.getLastName() == null ||
-                user.getLastName().isEmpty()) {
+        } else if (nameIsEmpty(user.getLastName())){
             userName = user.getFirstName();
 
         } else {
@@ -51,4 +48,9 @@ public class UserService {
         }
         return userName;
     }
+
+    private boolean nameIsEmpty(String name) {
+        return name == null || name.isEmpty();
+    }
 }
+
