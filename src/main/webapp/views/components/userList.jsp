@@ -13,21 +13,9 @@
         <c:forEach var="user" items="${requestScope.users}">
             <tr>
                 <td>
-                    <c:if test="${user.getFio()== 'null null'}">
-                        <a href="${pageContext.request.contextPath}/profile?user_id=${user.getId()}">
-                            unknown
-                        </a>
-                    </c:if>
-                    <c:if test="${user.getFio()== ' '}">
-                        <a href="${pageContext.request.contextPath}/profile?user_id=${user.getId()}">
-                            unknown
-                        </a>
-                    </c:if>
-                    <c:if test="${user.getFio()!= 'null null'}">
-                        <a href="${pageContext.request.contextPath}/profile?user_id=${user.getId()}">
-                            ${user.getFio()}
-                        </a>
-                    </c:if>
+                   <a href="${pageContext.request.contextPath}/profile?user_id=${user.getId()}">
+                      ${user.getFio()}
+                   </a>
                 </td>
                 <td>${user.getRole()}</td>
                 <td>${user.getEmail()}</td>
