@@ -27,7 +27,7 @@
 
 
     <c:import url="../components/breadcrumbs.jsp"/>
-    <c:if test="${!param.category_id == 0}">
+    <c:if test="${!(param.category_id == 0)}">
         <c:import url="../components/filtering.jsp"/>
     </c:if>
     <c:import url="../components/productList.jsp"/>
