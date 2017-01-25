@@ -7,6 +7,7 @@
     - shoppingCartIcon
 --%>
 
+
 <div class="ui menu main-content">
     <div class="ui container">
         <a class="header item" href="<c:url value="/home"/>">Shop</a>

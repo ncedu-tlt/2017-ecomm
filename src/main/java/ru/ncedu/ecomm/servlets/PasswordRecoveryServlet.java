@@ -47,7 +47,7 @@ public class PasswordRecoveryServlet extends HttpServlet {
             req.setAttribute("answer", sender.sendMail());
             req.getRequestDispatcher("/views/pages/passwordRecovery.jsp").forward(req, resp);
         } else if (!sender.checkEmail()) {
-            req.setAttribute("answer", "Uncorrect email! Please try enter other email");
+            req.setAttribute("answer", "Incorrect email! Please try enter other email");
             req.getRequestDispatcher("/views/pages/passwordRecovery.jsp").forward(req, resp);
         }
     }
@@ -56,14 +56,15 @@ public class PasswordRecoveryServlet extends HttpServlet {
     private String generateRecoveryHash() {
         List<Integer> uniqueHash = new ArrayList<Integer>();
         Random random = new Random();
-
-        while (uniqueHash.size() < 10) {
-            uniqueHash.add(random.nextInt(9));
+        final int MAX_HASH = 10;
+        final int MAX_NUMBER = 9;
+        while (uniqueHash.size() < MAX_HASH) {
+            uniqueHash.add(random.nextInt(MAX_NUMBER));
         }
 
         String recoveryHash = "";
         for (Integer hash : uniqueHash) {
-            recoveryHash += hash.toString();
+            recoveryHash += hash;
         }
 
         return recoveryHash;

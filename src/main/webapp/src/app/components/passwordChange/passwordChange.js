@@ -18,7 +18,7 @@
                             identifier: 'password',
                             rules: [
                                 {
-                                    type: 'length[' + 4 + ']',
+                                    type: 'length[4]',
                                     prompt: 'Password must be at least 4 characters in length'
                                 }
                             ]

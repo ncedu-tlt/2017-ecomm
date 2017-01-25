@@ -57,12 +57,7 @@ public class PasswordChangeServlet extends HttpServlet {
 
     private boolean checkEmailAndRecoveryHash(String email, String recoveryHash) {
         User userByEmail = getDAOFactory().getUserDAO().getUserByEmail(email);
-        if(recoveryHash.equals(userByEmail.getRecoveryHash())){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return recoveryHash.equals(userByEmail.getRecoveryHash());
     }
 
     private void updatePassword(String email, String newPassword){

@@ -34,7 +34,6 @@
                 <td>${user.getRegistrationDate()}</td>
             </tr>
         </c:forEach>
-
         </tbody>
     </table>
 </div>
