@@ -11,7 +11,7 @@
          * Executed on component initialization
          */
         init: function () {
-            this.content.find('.ui.form')
+            this.content.find('.jsPasswordRecoveryForm')
                 .form({
                     fields: {
                         email: {

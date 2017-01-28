@@ -12,28 +12,27 @@ import java.util.regex.Pattern;
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 public class SendMail {
-    private String toEmail;
-    private String fromEmail;
-    private String subjectLetter;
-    private String messageLetter;
-    private final Properties SERVER_PROPERETIES;
-    private final String recoveryHash;
+    private final String toEmail;
+    private final String fromEmail;
+    private final String subjectLetter;
+    private final Properties SERVER_PROPERTIES;
+    private final String textHTML;
 
-    public SendMail(String toMail, String fromMail, String subject, String recoveryHash) {
+    public SendMail(String toMail, String fromMail, String subject, String textHTML) {
         this.toEmail = toMail;
         this.fromEmail = fromMail;
         this.subjectLetter = subject;
-        this.recoveryHash = recoveryHash;
-        SERVER_PROPERETIES = configServerForSend();
+        this.textHTML = textHTML;
+        this.SERVER_PROPERTIES = configServerForSend();
     }
 
     private Properties configServerForSend() {
-        Properties serverProperties = new Properties();
+        Properties serverProperties = System.getProperties();
         serverProperties.put("mail.smtp.auth", "true");
         serverProperties.put("mail.smtp.starttls.enable", "true");
         serverProperties.put("mail.smtp.host", "smtp.gmail.com");
         serverProperties.put("mail.smtp.port", "587");
-
+        serverProperties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         return serverProperties;
     }
 
@@ -51,15 +50,15 @@ public class SendMail {
         String regPattern = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
         Pattern patternEmailValidation = Pattern.compile(regPattern, Pattern.CASE_INSENSITIVE);
         Matcher matcher = patternEmailValidation.matcher(toEmail);
-        if(matcher.find() && searchMailInDatabase()){
+        if (matcher.find() && searchMailInDatabase()) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
     User userByEmail;
+
     private boolean searchMailInDatabase() {
         userByEmail = getDAOFactory().getUserDAO().getUserByEmail(toEmail);
         if (userByEmail != null) {
@@ -72,31 +71,48 @@ public class SendMail {
     private boolean sendLetterToUser() {
         String username = "netcracker.ecomm@gmail.com";//тут надо указать свой логин от gmail
         String password = "Sx8jfJnbmd";//тут надо указать свой пароль от gmail
-        userByEmail = getDAOFactory().getUserDAO().getUserByEmail(toEmail);
 
-        Session session = Session.getInstance(SERVER_PROPERETIES, new Authenticator() {
+        Session session = Session.getDefaultInstance(SERVER_PROPERTIES, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(username, password);
             }
         });
         MimeMessage message = new MimeMessage(session);
-        try {
-            sendMessageWithMimeMessage(message);
-        } catch (MessagingException e) {
-            return false;
-        }
-        return true;
+        return sendMessageWithMimeMessage(message);
     }
 
-    private void sendMessageWithMimeMessage(MimeMessage message) throws MessagingException {
-        String textHtml = ("<p>Please change your password in here:</p>" +
-                "<a href='http://localhost:8050/passwordChange?email="+toEmail+"&recoveryHash="+recoveryHash+"'>Change Password</a>");
+    private boolean sendMessageWithMimeMessage(MimeMessage message) {
+        try {
+            message.setFrom(new InternetAddress(this.fromEmail));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(this.toEmail));
+            message.setSubject(this.subjectLetter);
+            message.setContent(this.textHTML, "text/html; charset=utf-8");
+            Transport.send(message);
+            return true;
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
 
-        message.setFrom(new InternetAddress(this.fromEmail));
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(this.toEmail));
-        message.setSubject(this.subjectLetter);
-        message.setContent(textHtml, "text/html; charset=utf-8");
-        Transport.send(message);
+    public static SendMail buildSenderByPasswordRecovery(PasswordRecoveryService recoveryService){
+        String toEmail = recoveryService.getToEmail();
+        String fromEmail = recoveryService.getFromEmail();
+        String textHTML = recoveryService.getTextHTML();
+        String subjectRecovery = "Password recovery";
+
+        //for test
+        System.out.println(recoveryService.getFromEmail());
+        System.out.println(recoveryService.getToEmail());
+        System.out.println(recoveryService.getTextHTML());
+        System.out.println(recoveryService.getRecoveryHash());
+
+        return new SendMail(
+                toEmail,
+                fromEmail,
+                textHTML,
+                subjectRecovery
+        );
     }
 }

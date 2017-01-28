@@ -13,7 +13,7 @@
             </div>
             <div class="ui three column centered grid">
                 <div class="column">
-                    <form class="ui form" style="margin: 5em 0" method="post"
+                    <form class="ui form jsPasswordRecoveryForm" method="post"
                           action="${pageContext.request.contextPath}/recovery">
                         <div class="field">
                             <input type="text" name="email" placeholder="Email">
