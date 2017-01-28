@@ -111,8 +111,8 @@ public class SendMail {
         return new SendMail(
                 toEmail,
                 fromEmail,
-                textHTML,
-                subjectRecovery
+                subjectRecovery,
+                textHTML
         );
     }
 }
