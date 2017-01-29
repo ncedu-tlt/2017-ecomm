@@ -2,6 +2,7 @@ package ru.ncedu.ecomm.servlets;
 
 
 import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.servlets.services.ProfileService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,8 +13,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
@@ -66,69 +65,10 @@ public class ProfileServlet extends HttpServlet {
     private void changeProfile(long userId, HttpServletRequest req) {
         User user = getDAOFactory().getUserDAO().getUserById(userId);
 
-        String firstName = getFirstName(req.getParameter("firstName"), userId);
-        String lastName = getLastName(req.getParameter("lastName"), userId);
-        String email = getEmail(req.getParameter("email"), userId);
-        String password = getPassword(req.getParameter("password"), userId);
+        ProfileService profile = new ProfileService(req, userId);
 
-        user = changeUser(user, firstName, lastName, email, password);
+        user = profile.changeProfile(user);
 
         getDAOFactory().getUserDAO().updateUser(user);
-    }
-
-    private User changeUser(User user, String firstName, String lastName, String email, String password) {
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setPassword(password);
-
-        return user;
-    }
-
-    private String getFirstName(String firstName, long userId) {
-        User userById = getDAOFactory().getUserDAO().getUserById(userId);
-        if (!firstName.trim().isEmpty()) {
-            return userById.getFirstName() != firstName ?
-                    firstName :
-                    userById.getFirstName();
-        } else {
-            return userById.getFirstName();
-        }
-    }
-
-    private String getLastName(String lastName, long userId) {
-        User userById = getDAOFactory().getUserDAO().getUserById(userId);
-        if (!lastName.trim().isEmpty()) {
-            return userById.getLastName() != lastName ?
-                    lastName :
-                    userById.getLastName();
-        } else {
-            return userById.getLastName();
-        }
-    }
-
-    private String getEmail(String email, long userId) {
-        User userById = getDAOFactory().getUserDAO().getUserById(userId);
-        String regPattern = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
-        Pattern patternEmailValidation = Pattern.compile(regPattern, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = patternEmailValidation.matcher(email);
-        if (matcher.find()) {
-            return userById.getEmail() != email ?
-                    email :
-                    userById.getEmail();
-        } else {
-            return userById.getEmail();
-        }
-    }
-
-    private String getPassword(String password, long userId) {
-        User userById = getDAOFactory().getUserDAO().getUserById(userId);
-        if (!password.trim().isEmpty()) {
-            return userById.getPassword() != password ?
-                    password :
-                    userById.getPassword();
-        } else {
-            return userById.getPassword();
-        }
     }
 }

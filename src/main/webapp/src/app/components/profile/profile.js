@@ -11,7 +11,17 @@
          * Executed on component initialization
          */
         init: function () {
-            this.content.find('.ui.form')
+
+            $("input[type='password']").click(function () {
+                $(".jsPasswordConfirm").css({"display": "block"});
+            });
+            $("input[type='text']").click(function () {
+                if ($("input[name='passwordConfirm']").val() === "") {
+                    $(".jsPasswordConfirm").css({"display": "none"});
+                }
+            });
+
+            this.content.find('.jsProfileForm')
                 .form({
                     fields: {
 
@@ -30,7 +40,7 @@
                             optional: true,
                             rules: [
                                 {
-                                    type: 'length[' + 4 + ']',
+                                    type: 'length[4]',
                                     prompt: 'Password must be at least 4 characters in length'
                                 }
                             ]

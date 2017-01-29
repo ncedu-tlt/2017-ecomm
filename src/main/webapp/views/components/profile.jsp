@@ -1,20 +1,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="ui center aligned text container segment jsProfileComponent" id="profileBlock" data-tab="profile">
-    <form class="ui form" method="post"
+    <form class="ui form jsProfileForm" method="post"
           action="#">
         <div class="field">
-            <input type="text" name="firstName" placeholder="First Name">
+            <input type="text" name="firstName" placeholder="First Name" value="${requestScope.firstName}">
         </div>
         <div class="field">
-            <input type="text" name="lastName" placeholder="Last Name">
+            <input type="text" name="lastName" placeholder="Last Name" value="${requestScope.lastName}">
         </div>
         <div class="field">
-            <input type="text" name="email" placeholder="Email">
+            <input type="text" name="email" placeholder="Email" value="${requestScope.email}">
         </div>
         <div class="field">
-            <input type="password" name="password" placeholder="Password">
+            <input type="password" name="password" placeholder="Password" value="${requestScope.password}">
         </div>
-        <div class="field">
+        <div class="field jsPasswordConfirm">
             <input type="password" name="passwordConfirm" placeholder="Current Password">
         </div>
         <button class="ui animated primary button">

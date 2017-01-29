@@ -42,7 +42,7 @@ public class AddToShoppingCartServlet extends HttpServlet {
     }
 
     private void addToShoppingCart(long userId, long productId) {
-        BigDecimal limit = new BigDecimal("2000.00");
+        BigDecimal limit = new BigDecimal("50000.00");
         Date creationDate = new Date(System.currentTimeMillis());
         long orderStatusId = 1;
 

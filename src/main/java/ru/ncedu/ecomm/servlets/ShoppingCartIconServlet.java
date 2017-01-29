@@ -17,18 +17,16 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 public class ShoppingCartIconServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        process(req, resp);
+        process(req);
     }
 
-    private void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void process(HttpServletRequest req) throws ServletException, IOException {
         final int EMPTY_QUANTITY = 0;
         long userId = getUserIdFromSession(req);
-        System.out.println(userId);
         if (userId == 0) {
             req.setAttribute("quantityProducts", EMPTY_QUANTITY);
         } else {
             int quantityProducts = getQuantityProducts(userId);
-            System.out.println(quantityProducts);
             req.setAttribute("quantityProducts", quantityProducts);
         }
     }
@@ -47,27 +45,4 @@ public class ShoppingCartIconServlet extends HttpServlet {
         long userIdFromSession = Long.parseLong(authorization.getAttribute("userId").toString());
         return userIdFromSession;
     }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        showQuantityProducts(req, resp);
-    }
-
-//    private void showQuantityProducts(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        long userId = getUserIdFromSession(req, resp);
-//        String quantityProducts = String.valueOf(getQuantityProducts(userId));
-//        req.setAttribute("quantityProducts", quantityProducts);
-//    }
-//
-//    private long getUserIdFromSession(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        HttpSession authorization = req.getSession();
-//        if(authorization.getAttribute("userId") == null){
-//            req.getRequestDispatcher("/views/pages/login.jsp").forward(req, resp);
-//        }
-//        long userIdFromSession = Long.parseLong(authorization.getAttribute("userId").toString());
-//        return userIdFromSession;
-//    }
-//
-
-
 }

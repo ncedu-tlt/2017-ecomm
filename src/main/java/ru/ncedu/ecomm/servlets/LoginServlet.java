@@ -35,7 +35,7 @@ public class LoginServlet extends HttpServlet {
             if (user != null && user.getPassword().equals(password)) {
                 session.setAttribute("userId", user.getId());
                 req.setAttribute("answer", "User was found");
-                req.getRequestDispatcher("/home").forward(req, resp);
+                resp.sendRedirect("/home");
             }else{
                 req.setAttribute("answer", "Uncorrect user! Check email and password");
                 req.getRequestDispatcher("/views/pages/login.jsp").forward(req, resp);
