@@ -13,13 +13,16 @@ public class ProfileService {
     private final String lastName;
     private final String email;
     private final String password;
+    private final User userProfile;
 
     public ProfileService(HttpServletRequest req, long userId) {
         this.firstName = getFirstName(req.getParameter("firstName"), userId);
         this.lastName = getLastName(req.getParameter("lastName"), userId);
         this.email = getEmail(req.getParameter("email"), userId);
         this.password = getPassword(req.getParameter("password"), userId);
+        this.userProfile = getUserProfile(userId);
     }
+
 
     private String getFirstName(String firstName, long userId) {
         User userById = getDAOFactory().getUserDAO().getUserById(userId);
@@ -66,6 +69,11 @@ public class ProfileService {
         } else {
             return userById.getPassword();
         }
+    }
+
+    public User getUserProfile(long userId) {
+        User userProfile = getDAOFactory().getUserDAO().getUserById(userId);
+        return userProfile;
     }
 
     public User changeProfile(User user){
