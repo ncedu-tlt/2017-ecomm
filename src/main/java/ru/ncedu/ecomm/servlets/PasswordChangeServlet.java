@@ -11,9 +11,6 @@ import java.io.IOException;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
-/**
- * Created by Alexander on 26.12.2016.
- */
 @WebServlet(name = "PasswordChangeServlet", urlPatterns = {"/passwordChange"})
 public class PasswordChangeServlet extends HttpServlet {
     @Override

@@ -16,64 +16,60 @@ public class ProfileService {
     private final User userProfile;
 
     public ProfileService(HttpServletRequest req, long userId) {
-        this.firstName = getFirstName(req.getParameter("firstName"), userId);
-        this.lastName = getLastName(req.getParameter("lastName"), userId);
-        this.email = getEmail(req.getParameter("email"), userId);
-        this.password = getPassword(req.getParameter("password"), userId);
-        this.userProfile = getUserProfile(userId);
+        this.firstName = getFirstName(req.getParameter("firstName"));
+        this.lastName = getLastName(req.getParameter("lastName"));
+        this.email = getEmail(req.getParameter("email"));
+        this.password = getPassword(req.getParameter("password"));
+        this.userProfile = getDAOFactory().getUserDAO().getUserById(userId);
+        System.out.println(userProfile.getEmail());
     }
 
 
-    private String getFirstName(String firstName, long userId) {
-        User userById = getDAOFactory().getUserDAO().getUserById(userId);
+    private String getFirstName(String firstName) {
         if (!firstName.trim().isEmpty()) {
-            return userById.getFirstName() != firstName ?
+            return userProfile.getFirstName() != firstName ?
                     firstName :
-                    userById.getFirstName();
+                    userProfile.getFirstName();
         } else {
-            return userById.getFirstName();
+            return userProfile.getFirstName();
         }
     }
 
-    private String getLastName(String lastName, long userId) {
-        User userById = getDAOFactory().getUserDAO().getUserById(userId);
+    private String getLastName(String lastName) {
         if (!lastName.trim().isEmpty()) {
-            return userById.getLastName() != lastName ?
+            return userProfile.getLastName() != lastName ?
                     lastName :
-                    userById.getLastName();
+                    userProfile.getLastName();
         } else {
-            return userById.getLastName();
+            return userProfile.getLastName();
         }
     }
 
-    private String getEmail(String email, long userId) {
-        User userById = getDAOFactory().getUserDAO().getUserById(userId);
+    private String getEmail(String email) {
         String regPattern = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
         Pattern patternEmailValidation = Pattern.compile(regPattern, Pattern.CASE_INSENSITIVE);
         Matcher matcher = patternEmailValidation.matcher(email);
         if (matcher.find()) {
-            return userById.getEmail() != email ?
+            return userProfile.getEmail() != email ?
                     email :
-                    userById.getEmail();
+                    userProfile.getEmail();
         } else {
-            return userById.getEmail();
+            return userProfile.getEmail();
         }
     }
 
-    private String getPassword(String password, long userId) {
-        User userById = getDAOFactory().getUserDAO().getUserById(userId);
+    private String getPassword(String password) {
         if (!password.trim().isEmpty()) {
-            return userById.getPassword() != password ?
+            return userProfile.getPassword() != password ?
                     password :
-                    userById.getPassword();
+                    userProfile.getPassword();
         } else {
-            return userById.getPassword();
+            return userProfile.getPassword();
         }
     }
 
-    public User getUserProfile(long userId) {
-        User userProfile = getDAOFactory().getUserDAO().getUserById(userId);
-        return userProfile;
+    public User getUserProfile() {
+        return this.userProfile;
     }
 
     public User changeProfile(User user){

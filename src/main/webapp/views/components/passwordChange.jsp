@@ -14,7 +14,7 @@
             <div class="ui three column centered grid">
                 <div class="column">
                     <form class="ui form jsPasswordRecoveryForm" method="post"
-                          action="#">
+                          action="${pageContext.request.contextPath}/passwordChange">
                         <div class="field">
                             <input type="password" name="password" placeholder="Password">
                         </div>

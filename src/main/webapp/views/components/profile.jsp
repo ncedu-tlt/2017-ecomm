@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<jsp:include page="/profile"/>
 <div class="ui center aligned text container segment jsProfileComponent" id="profileBlock" data-tab="profile">
-    <form class="ui form jsProfileForm" method="post"
-          action="#">
+    <form class="ui form jsProfileForm" method="post" action="${pageContext.request.contextPath}/profileChange">
         <div class="field">
             <input type="text" name="firstName" placeholder="First Name" value="${requestScope.firstName}">
         </div>
@@ -12,7 +12,7 @@
             <input type="text" name="email" placeholder="Email" value="${requestScope.email}">
         </div>
         <div class="field">
-            <input type="password" name="password" placeholder="Password" value="${requestScope.password}">
+            <input type="password" name="password" placeholder="Password">
         </div>
         <div class="field jsPasswordConfirm">
             <input type="password" name="passwordConfirm" placeholder="Current Password">

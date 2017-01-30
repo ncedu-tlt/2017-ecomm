@@ -17,7 +17,7 @@ import java.util.List;
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 
-@WebServlet(name = "ProfileChangeServlet", urlPatterns = {"/profile"})
+@WebServlet(name = "ProfileChangeServlet", urlPatterns = {"/profileChange"})
 public class ProfileChangeServlet extends HttpServlet {
 
     @Override
@@ -65,7 +65,7 @@ public class ProfileChangeServlet extends HttpServlet {
     private void changeProfile(long userId, HttpServletRequest req) {
         ProfileService profile = new ProfileService(req, userId);
 
-        User userProfile = profile.getUserProfile(userId);
+        User userProfile = profile.getUserProfile();
 
         userProfile = profile.changeProfile(userProfile);
 
