@@ -1,17 +1,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/profile"/>
-<div class="ui center aligned text container segment jsProfileComponent" id="profileBlock" data-tab="profile">
+<div class="ui aligned text container segment jsProfileComponent" id="profileBlock" data-tab="profile">
     <form class="ui form jsProfileForm" method="post" action="${pageContext.request.contextPath}/profileChange">
         <div class="field">
-            <input type="text" name="firstName" placeholder="First Name" value="${requestScope.v}">
+            <label>First Name:</label>
+            <input type="text" name="firstName" placeholder="First Name" value="${requestScope.firstName}">
         </div>
         <div class="field">
+            <label>Last Name:</label>
             <input type="text" name="lastName" placeholder="Last Name" value="${requestScope.lastName}">
         </div>
         <div class="field">
+            <label>Email:</label>
             <input type="text" name="email" placeholder="Email" value="${requestScope.email}">
         </div>
         <div class="field">
+            <label>Password:</label>
             <input type="password" name="password" placeholder="Password">
         </div>
         <div class="field jsPasswordConfirm">
