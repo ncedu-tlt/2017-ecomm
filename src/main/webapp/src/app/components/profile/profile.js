@@ -1,6 +1,3 @@
-/**
- * Created by Alexander on 26.12.2016.
- */
 (function ($, window) {
 
     var frm = window.frm;
@@ -11,7 +8,6 @@
          * Executed on component initialization
          */
         init: function () {
-
             $("input[type='password']").click(function () {
                 $(".jsPasswordConfirm").css({"display": "block"});
             });
@@ -20,16 +16,29 @@
                     $(".jsPasswordConfirm").css({"display": "none"});
                 }
             });
-
-            v
-
             this.content.find('.jsProfileForm')
                 .form({
                     fields: {
-
+                        firstName:{
+                            identifier: 'firstName',
+                            rules:[
+                                {
+                                    type: 'empty',
+                                    prompt: 'Please enter first name'
+                                }
+                            ]
+                        },
+                        lastName:{
+                            identifier: 'lastName',
+                            rules:[
+                                {
+                                    type: 'empty',
+                                    prompt: 'Please enter last name'
+                                }
+                            ]
+                        },
                         email: {
                             identifier: 'email',
-                            optional: true,
                             rules: [
                                 {
                                     type: 'email',
@@ -39,11 +48,19 @@
                         },
                         password: {
                             identifier: 'password',
-                            optional: true,
                             rules: [
                                 {
                                     type: 'length[4]',
                                     prompt: 'Password must be at least 4 characters in length'
+                                }
+                            ]
+                        },
+                        password: {
+                            identifier: 'password',
+                            rules: [
+                                {
+                                    type: 'empty',
+                                    prompt: 'Please enter password'
                                 }
                             ]
                         },
@@ -61,7 +78,6 @@
             ;
         }
     });
-
     frm.components.register('profileComponent', profileComponent);
 
 })(jQuery, window);

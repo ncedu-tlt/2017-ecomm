@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/profile"/>
-<div class="ui aligned text container segment jsProfileComponent" id="profileBlock" data-tab="profile">
+<div class="ui aligned center text container segment jsProfileComponent" id="profileBlock" data-tab="profile">
     <form class="ui form jsProfileForm" method="post" action="${pageContext.request.contextPath}/profileChange">
         <div class="field">
             <label>First Name:</label>
