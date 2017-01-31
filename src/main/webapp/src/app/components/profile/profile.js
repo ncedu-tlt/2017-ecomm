@@ -21,6 +21,8 @@
                 }
             });
 
+            v
+
             this.content.find('.jsProfileForm')
                 .form({
                     fields: {

@@ -29,7 +29,7 @@ public class AddToShoppingCartServlet extends HttpServlet {
         long userId = getUserIdFromSession(req, resp);
         long productId = Long.parseLong(req.getParameter("productId"));
         addToShoppingCart(userId, productId);
-        resp.sendRedirect("/views/pages/cart.jsp");
+        req.getRequestDispatcher("/views/pages/cart.jsp").forward(req, resp);
     }
 
     private long getUserIdFromSession(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

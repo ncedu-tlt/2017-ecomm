@@ -13,8 +13,3 @@
         </c:if>
     </button>
 </div>
-
-<%-- JS controller initilization --%>
-<script type="text/javascript">
-    window.frm.components.init('ShoppingCartIconComponent', '.jsShoppingCartIcon');
-</script>
