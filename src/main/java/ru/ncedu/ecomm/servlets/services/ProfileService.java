@@ -2,28 +2,34 @@ package ru.ncedu.ecomm.servlets.services;
 
 import ru.ncedu.ecomm.data.models.User;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 public class ProfileService {
-    private final String firstName;
-    private final String lastName;
-    private final String email;
-    private final String password;
-    private final User userProfile;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+    private User userProfile;
 
-    public ProfileService(HttpServletRequest req, long userId) {
-        this.firstName = getFirstName(req.getParameter("firstName"));
-        this.lastName = getLastName(req.getParameter("lastName"));
-        this.email = getEmail(req.getParameter("email"));
-        this.password = getPassword(req.getParameter("password"));
+    public ProfileService(String firstName, String lastName, String email, String password,
+                          long userId) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
         this.userProfile = getDAOFactory().getUserDAO().getUserById(userId);
-        System.out.println(userProfile.getEmail());
     }
 
+    public ProfileService(long userId){
+        this.userProfile = getUserProfileById(userId);
+        this.firstName = userProfile.getFirstName();
+        this.lastName = userProfile.getLastName();
+        this.email = userProfile.getEmail();
+        this.password = userProfile.getPassword();
+    }
 
     private String getFirstName(String firstName) {
         if (!firstName.trim().isEmpty()) {
@@ -70,6 +76,11 @@ public class ProfileService {
 
     public User getUserProfile() {
         return this.userProfile;
+    }
+
+    private User getUserProfileById(long userId){
+        User user = getDAOFactory().getUserDAO().getUserById(userId);
+        return user;
     }
 
     public User changeProfile(User user){

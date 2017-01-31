@@ -3,7 +3,7 @@
 <div class="ui center aligned text container segment jsProfileComponent" id="profileBlock" data-tab="profile">
     <form class="ui form jsProfileForm" method="post" action="${pageContext.request.contextPath}/profileChange">
         <div class="field">
-            <input type="text" name="firstName" placeholder="First Name" value="${requestScope.firstName}">
+            <input type="text" name="firstName" placeholder="First Name" value="${requestScope.v}">
         </div>
         <div class="field">
             <input type="text" name="lastName" placeholder="Last Name" value="${requestScope.lastName}">

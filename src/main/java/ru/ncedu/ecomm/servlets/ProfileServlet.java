@@ -26,9 +26,11 @@ public class ProfileServlet extends HttpServlet {
 
     private void showProfile(HttpServletRequest req) {
         long userId = getUserIdFromSession(req);
-        ProfileService profileService = new ProfileService(req, userId);
-        User userProfile = profileService.getUserProfile();
-        initAttributesProfile(userProfile, req);
+        if (userId != 0) {
+            ProfileService profileService = new ProfileService(userId);
+            User userProfile = profileService.getUserProfile();
+            initAttributesProfile(userProfile, req);
+        }
     }
 
     private long getUserIdFromSession(HttpServletRequest req) {
@@ -41,7 +43,6 @@ public class ProfileServlet extends HttpServlet {
     }
 
     private void initAttributesProfile(User userProfile, HttpServletRequest req) {
-        System.out.println(userProfile.getEmail());
         req.setAttribute("firstName", userProfile.getFirstName());
         req.setAttribute("lastName", userProfile.getLastName());
         req.setAttribute("email", userProfile.getEmail());

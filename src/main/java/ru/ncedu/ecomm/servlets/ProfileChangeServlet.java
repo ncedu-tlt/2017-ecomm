@@ -27,15 +27,14 @@ public class ProfileChangeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession authorization = req.getSession();
-        if (authorization.getAttribute("user_id") == null) {
+        long userId = getUserIdFromSession(req);
+        if (userId == 0) {
             req.setAttribute("answer", "You are not logged in!");
             req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
         } else if (checkOnEmpty(req)) {
-            long userId = getUserIdFromSession(authorization);
             changeProfile(userId, req);
             req.setAttribute("answer", "Profile was changed.");
-            req.getRequestDispatcher("/views/pages/profile.jsp?user_id=" + userId).forward(req, resp);
+            req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
         } else {
             req.setAttribute("answer", "Nothing to change.");
             req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
@@ -56,14 +55,21 @@ public class ProfileChangeServlet extends HttpServlet {
         return false;
     }
 
-    private long getUserIdFromSession(HttpSession authorization) {
-        String parametersFromSession = authorization.getAttribute("user_id").toString();
-        long userId = Long.parseLong(parametersFromSession);
-        return userId;
+    private long getUserIdFromSession(HttpServletRequest req) {
+        HttpSession authorization = req.getSession();
+        if (authorization.getAttribute("userId") == null) {
+            return 0;
+        }
+        long userIdFromSession = Long.parseLong(authorization.getAttribute("userId").toString());
+        return userIdFromSession;
     }
 
     private void changeProfile(long userId, HttpServletRequest req) {
-        ProfileService profile = new ProfileService(req, userId);
+        String firstName = req.getParameter("firstName");
+        String lastName = req.getParameter("lastName");
+        String email = req.getParameter("email");
+        String password = req.getParameter("password");
+        ProfileService profile = new ProfileService(firstName, lastName, email, password, userId);
 
         User userProfile = profile.getUserProfile();
 
@@ -72,3 +78,4 @@ public class ProfileChangeServlet extends HttpServlet {
         getDAOFactory().getUserDAO().updateUser(userProfile);
     }
 }
+
