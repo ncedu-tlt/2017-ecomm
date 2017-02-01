@@ -31,6 +31,14 @@ public class UserService {
         }
     }
 
+    public void redirectIfNotAllowed(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        long userRoleId = Long.parseLong(session.getAttribute("userRoleId").toString());
+        if (userRoleId != 1){
+            request.getRequestDispatcher("/home").include(request, response);
+        }
+    }
+
     public String getUserName(User user) {
         String userName;
 
