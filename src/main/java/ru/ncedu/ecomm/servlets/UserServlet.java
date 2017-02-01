@@ -30,7 +30,8 @@ public class UserServlet extends HttpServlet {
     }
 
     private void browseUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        UserService.getInstance().redirectToLoginIfNeeded(req,resp);
+        UserService.getInstance().redirectIfNotAllowed(req, resp);
         List<UserViewModel> users = getUserToView();
 
         req.setAttribute("users", users);
