@@ -23,7 +23,6 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // handle login parameters
         login(req, resp);
     }
 
@@ -34,6 +33,7 @@ public class LoginServlet extends HttpServlet {
             User user = getDAOFactory().getUserDAO().getUserByEmail(email);
             if (user != null && user.getPassword().equals(password)) {
                 session.setAttribute("userId", user.getId());
+                session.setAttribute("userRoleId", user.getRoleId());
                 req.setAttribute("answer", "User was found");
                 resp.sendRedirect("/home");
             }else{
