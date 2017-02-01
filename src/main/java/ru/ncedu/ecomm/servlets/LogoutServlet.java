@@ -24,6 +24,6 @@ public class LogoutServlet extends HttpServlet {
     private void logoutIcon(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         session.invalidate();
-        req.getRequestDispatcher("/home").forward(req, resp);
+        resp.sendRedirect("/home");
     }
 }
