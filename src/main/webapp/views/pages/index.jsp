@@ -30,7 +30,7 @@
             <a class="item" href="<c:url value="/orders"/>">ordersHistory</a>
             <a class="item" href="<c:url value="/recovery"/>">passwordRecovery</a>
             <a class="item" href="<c:url value="/product?product_id=5"/>">product</a>
-            <a class="item" href="<c:url value="/profile"/>">profile</a>
+            <a class="item" href="<c:url value="/showProfile"/>">profile</a>
             <a class="item" href="<c:url value="/registration"/>">registration</a>
             <a class="item" href="<c:url value="/users"/>">users</a>
         </div>
