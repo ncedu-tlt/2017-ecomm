@@ -42,6 +42,7 @@ public class FilteringServlet extends HttpServlet {
                 .setName("Filtered")
                 .setProducts(productsView)
                 .build());
+        request.getSession().setAttribute("priceRange", getPriceRange(request));
         request.setAttribute("categoriesForView", categoryViewModels);
         request.getRequestDispatcher("/views/pages/category.jsp").forward(request, response);
 

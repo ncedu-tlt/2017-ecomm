@@ -10,11 +10,11 @@
                 <h2 class="ui header small">Price</h2>
                 <div class="tow fields ">
                     <div class="field">
-                        <input class="jsOnlyNumber" type="text" name="min" placeholder="min" value="${requestScope.price.getMin()}"
+                        <input class="jsOnlyNumber" type="text" name="min" placeholder="min" value="${sessionScope.priceRange.getMin()}"
                                style="width:80px;"/>
                     </div>
                     <div class="field">
-                        <input class="jsOnlyNumber" type="text" name="max" placeholder="max" value="${requestScope.price.getMax()}"
+                        <input class="jsOnlyNumber" type="text" name="max" placeholder="max" value="${sessionScope.priceRange.getMax()}"
                                style="width:80px;"/>
                     </div>
                 </div>
@@ -34,8 +34,8 @@
                                         <div class="field">
                                             <div class="ui checkbox">
                                                 <input type="checkbox" name="${filter.getName()}"
-                                                       value="${value.getName()}"/>
-                                                <label>${value.getName()}</label>
+                                                       value="${value}"/>
+                                                <label>${value}</label>
                                             </div>
                                         </div>
                                     </c:forEach>

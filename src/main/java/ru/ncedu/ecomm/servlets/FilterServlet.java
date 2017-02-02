@@ -2,9 +2,8 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.models.Characteristic;
 import ru.ncedu.ecomm.data.models.CharacteristicValue;
-import ru.ncedu.ecomm.servlets.models.FilterElementViewModel;
-import ru.ncedu.ecomm.servlets.models.FilterViewModel;
 import ru.ncedu.ecomm.data.models.PriceRangeModel;
+import ru.ncedu.ecomm.servlets.models.FilterViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.FilterViewModelBuilder;
 
 import javax.servlet.ServletException;
@@ -42,16 +41,20 @@ public class FilterServlet extends HttpServlet {
                      .setValues(getValuesByCharacteristicId(characteristic.getCharacteristicId()))
                      .build());
         }
+
         request.setAttribute("filters", filters);
-        request.setAttribute("price", getPriceRange(categoryId));
+        if(request.getSession().getAttribute("priceRange") == null) {
+            request.getSession().setAttribute("priceRange", getPriceRange(categoryId));
+        }
     }
 
-    private List<FilterElementViewModel> getValuesByCharacteristicId(long id){
-        List<CharacteristicValue> characteristicValues = getDAOFactory().getCharacteristicValueDAO().getCharacteristicValueByCharacteristicId(id);
-        List<FilterElementViewModel> values = new ArrayList<>();
+    private List<String> getValuesByCharacteristicId(long id){
+        List<CharacteristicValue> characteristicValues =
+                getDAOFactory().getCharacteristicValueDAO().getCharacteristicValueByCharacteristicId(id);
+        List<String> values = new ArrayList<>();
 
         for (CharacteristicValue characteristicValue : characteristicValues){
-            values.add(new FilterElementViewModel(characteristicValue.getCharacteristicValue()));
+            values.add(characteristicValue.getCharacteristicValue());
         }
         return values;
     }

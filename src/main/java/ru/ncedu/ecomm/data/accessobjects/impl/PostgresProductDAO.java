@@ -346,7 +346,8 @@ public class PostgresProductDAO implements ProductDAO {
                              "INNER JOIN recquery\n" +
                              "ON (recquery.category_id = categories.parent_id))\n" +
                              "SELECT category_id\n" +
-                             "FROM recquery) AND (price - (price * (SELECT value FROM discount WHERE discount_id = products.discount_id) / 100 )) BETWEEN ? AND ?")) {
+                             "FROM recquery) AND (price - (price * (SELECT value " +
+                             "FROM discount WHERE discount_id = products.discount_id) / 100 )) BETWEEN ? AND ?")) {
 
             statement.setLong(1, categoryId);
             statement.setDouble(2, priceRange.getMin());
@@ -407,6 +408,8 @@ public class PostgresProductDAO implements ProductDAO {
         }
         return null;
     }
+
+
 }
 
 

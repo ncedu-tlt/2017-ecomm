@@ -4,12 +4,12 @@ import java.util.List;
 
 public class FilterViewModel {
     private String name;
-    private List<FilterElementViewModel> values;
+    private List<String> values;
 
     public FilterViewModel() {
     }
 
-    public FilterViewModel(String name, List<FilterElementViewModel> values) {
+    public FilterViewModel(String name, List<String> values) {
 
         this.name = name;
         this.values = values;
@@ -19,7 +19,7 @@ public class FilterViewModel {
         return name;
     }
 
-    public List<FilterElementViewModel> getValues() {
+    public List<String> getValues() {
         return values;
     }
 
