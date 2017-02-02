@@ -1,22 +1,23 @@
 package ru.ncedu.ecomm.data.models;
 
 public class PriceRangeModel {
-    private Long min;
-    private Long max;
+    private double min;
+    private double max;
 
     public PriceRangeModel() {
     }
 
-    public PriceRangeModel(Long min, Long max) {
+    public PriceRangeModel(double min, double max) {
         this.min = min;
         this.max = max;
     }
 
-    public Long getMin() {
+    public double getMin() {
+
         return min;
     }
 
-    public Long getMax() {
+    public double getMax() {
         return max;
     }
 }

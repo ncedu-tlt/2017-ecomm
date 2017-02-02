@@ -29,9 +29,9 @@ public class FilterServlet extends HttpServlet {
     }
 
     private void process(HttpServletRequest request) {
+        long categoryId = getCategoryParentId(request);
 
         List<FilterViewModel> filters = new ArrayList<>();
-        long categoryId = getCategoryParentId(request);
         List<Characteristic> filterableCharacteristics = getDAOFactory()
                 .getChracteristicDAO()
                 .getFilterableCharacteristicsByCategoryId(categoryId);

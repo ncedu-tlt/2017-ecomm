@@ -331,7 +331,8 @@ public class PostgresProductDAO implements ProductDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT * FROM products WHERE category_id IN (\n" +
+                     "SELECT product_id, category_id, name, description, discount_id, price FROM products\n" +
+                             " WHERE category_id IN (\n" +
                              "  WITH RECURSIVE recquery\n" +
                              "(category_id, parent_id) AS\n" +
                              "(SELECT category_id, parent_id\n" +
@@ -345,11 +346,11 @@ public class PostgresProductDAO implements ProductDAO {
                              "INNER JOIN recquery\n" +
                              "ON (recquery.category_id = categories.parent_id))\n" +
                              "SELECT category_id\n" +
-                             "FROM recquery) AND price BETWEEN ? AND ?")) {
+                             "FROM recquery) AND (price - (price * (SELECT value FROM discount WHERE discount_id = products.discount_id) / 100 )) BETWEEN ? AND ?")) {
 
             statement.setLong(1, categoryId);
-            statement.setLong(2, priceRange.getMin());
-            statement.setLong(3, priceRange.getMax());
+            statement.setDouble(2, priceRange.getMin());
+            statement.setDouble(3, priceRange.getMax());
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -372,7 +373,10 @@ public class PostgresProductDAO implements ProductDAO {
     public PriceRangeModel getProductsPriceRangeByCategoryId(long categoryId) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT min(price) AS min, max(price) AS max FROM products\n" +
+                     "SELECT min(price) AS min, max(price) AS max FROM " +
+                             "(SELECT product_id, category_id, name, description, discount_id,\n" +
+                             "(price - (price * (SELECT value FROM discount " +
+                             "WHERE discount_id = products.discount_id) / 100 )) AS price FROM products) AS products\n" +
                              "WHERE category_id IN(SELECT id FROM (WITH RECURSIVE categoriesRec ( id,parent_id) AS (\n" +
                              "SELECT category_id,parent_id\n" +
                              "FROM categories WHERE category_id = (SELECT * FROM(WITH RECURSIVE rec (category_id, parent_id) AS\n" +
@@ -394,8 +398,8 @@ public class PostgresProductDAO implements ProductDAO {
 
             if (resultSet.next()) {
                 return new PriceRangeModelBuilder()
-                        .setMin(resultSet.getLong("min"))
-                        .setMax(resultSet.getLong("max"))
+                        .setMin(resultSet.getDouble("min"))
+                        .setMax(resultSet.getDouble("max"))
                         .build();
             }
         } catch (SQLException e) {

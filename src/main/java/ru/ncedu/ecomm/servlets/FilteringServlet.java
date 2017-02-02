@@ -57,12 +57,12 @@ public class FilteringServlet extends HttpServlet {
         long categoryId = getCategoryParentId(request);
 
         if (!request.getParameter("min").isEmpty()) {
-            priceRange.setMin(Long.parseLong(request.getParameter("min")));
+            priceRange.setMin(Double.parseDouble(request.getParameter("min")));
         } else
             priceRange.setMin(getDAOFactory().getProductDAO().getProductsPriceRangeByCategoryId(categoryId).getMin());
 
         if (!request.getParameter("max").isEmpty()) {
-            priceRange.setMax(Long.parseLong(request.getParameter("max")));
+            priceRange.setMax(Double.parseDouble(request.getParameter("max")));
         } else
             priceRange.setMax(getDAOFactory().getProductDAO().getProductsPriceRangeByCategoryId(categoryId).getMax());
 

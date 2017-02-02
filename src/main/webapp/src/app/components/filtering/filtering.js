@@ -25,5 +25,4 @@
     });
     frm.components.register('FilteringComponent', FilteringComponent);
 
-})
-(jQuery, window);
+})(jQuery, window);

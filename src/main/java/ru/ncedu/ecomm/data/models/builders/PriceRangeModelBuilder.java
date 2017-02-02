@@ -3,8 +3,8 @@ package ru.ncedu.ecomm.data.models.builders;
 import ru.ncedu.ecomm.data.models.PriceRangeModel;
 
 public class PriceRangeModelBuilder {
-    private Long min;
-    private Long max;
+    private double min;
+    private double max;
 
     public PriceRangeModelBuilder() {
     }
@@ -13,12 +13,12 @@ public class PriceRangeModelBuilder {
         return new PriceRangeModelBuilder();
     }
 
-    public PriceRangeModelBuilder setMin(Long min) {
+    public PriceRangeModelBuilder setMin(double min) {
         this.min = min;
         return this;
     }
 
-    public PriceRangeModelBuilder setMax(Long max) {
+    public PriceRangeModelBuilder setMax(double max) {
         this.max = max;
         return this;
     }
