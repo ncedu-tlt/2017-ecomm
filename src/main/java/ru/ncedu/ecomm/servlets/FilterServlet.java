@@ -2,7 +2,9 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.models.Characteristic;
 import ru.ncedu.ecomm.data.models.CharacteristicValue;
+import ru.ncedu.ecomm.servlets.models.FilterElementViewModel;
 import ru.ncedu.ecomm.servlets.models.FilterViewModel;
+import ru.ncedu.ecomm.data.models.PriceRangeModel;
 import ru.ncedu.ecomm.servlets.models.builders.FilterViewModelBuilder;
 
 import javax.servlet.ServletException;
@@ -29,9 +31,10 @@ public class FilterServlet extends HttpServlet {
     private void process(HttpServletRequest request) {
 
         List<FilterViewModel> filters = new ArrayList<>();
+        long categoryId = getCategoryParentId(request);
         List<Characteristic> filterableCharacteristics = getDAOFactory()
                 .getChracteristicDAO()
-                .getFilterableCharacteristicsByCategoryId(getCategoryParentId(request));
+                .getFilterableCharacteristicsByCategoryId(categoryId);
 
         for (Characteristic characteristic : filterableCharacteristics){
              filters.add(new FilterViewModelBuilder()
@@ -40,17 +43,21 @@ public class FilterServlet extends HttpServlet {
                      .build());
         }
         request.setAttribute("filters", filters);
+        request.setAttribute("price", getPriceRange(categoryId));
     }
 
-    private List<String> getValuesByCharacteristicId(long id){
+    private List<FilterElementViewModel> getValuesByCharacteristicId(long id){
         List<CharacteristicValue> characteristicValues = getDAOFactory().getCharacteristicValueDAO().getCharacteristicValueByCharacteristicId(id);
-        List<String> values = new ArrayList<>();
+        List<FilterElementViewModel> values = new ArrayList<>();
 
         for (CharacteristicValue characteristicValue : characteristicValues){
-            values.add(characteristicValue.getCharacteristicValue());
+            values.add(new FilterElementViewModel(characteristicValue.getCharacteristicValue()));
         }
-
         return values;
+    }
+
+    private PriceRangeModel getPriceRange(long categoryId){
+        return getDAOFactory().getProductDAO().getProductsPriceRangeByCategoryId(categoryId);
     }
 
     private long getCategoryParentId(HttpServletRequest request){

@@ -2,3 +2,7 @@
     float: left;
     padding: .2em 0;
 }
+.ui.segment.input{
+    float: left;
+    width: 80px;
+}

@@ -3,6 +3,8 @@ package ru.ncedu.ecomm.data.accessobjects.impl;
 import ru.ncedu.ecomm.data.accessobjects.ProductDAO;
 import ru.ncedu.ecomm.data.models.Product;
 import ru.ncedu.ecomm.data.models.builders.ProductBuilder;
+import ru.ncedu.ecomm.data.models.PriceRangeModel;
+import ru.ncedu.ecomm.data.models.builders.PriceRangeModelBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -207,7 +209,7 @@ public class PostgresProductDAO implements ProductDAO {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
 
-                             "WITH RECURSIVE req AS (\n" +
+                     "WITH RECURSIVE req AS (\n" +
                              "  SELECT\n" +
                              "    category_id,\n" +
                              "    parent_id\n" +
@@ -321,6 +323,85 @@ public class PostgresProductDAO implements ProductDAO {
             throw new RuntimeException(e);
         }
         return products;
+    }
+
+    @Override
+    public List<Product> getProductsFromPriceRangeByCategoryId(PriceRangeModel priceRange, long categoryId) {
+        List<Product> products = new ArrayList<>();
+
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT * FROM products WHERE category_id IN (\n" +
+                             "  WITH RECURSIVE recquery\n" +
+                             "(category_id, parent_id) AS\n" +
+                             "(SELECT category_id, parent_id\n" +
+                             "FROM categories\n" +
+                             "WHERE category_id = ?\n" +
+                             "UNION\n" +
+                             "SELECT\n" +
+                             "categories.category_id,\n" +
+                             "categories.parent_id\n" +
+                             "FROM categories\n" +
+                             "INNER JOIN recquery\n" +
+                             "ON (recquery.category_id = categories.parent_id))\n" +
+                             "SELECT category_id\n" +
+                             "FROM recquery) AND price BETWEEN ? AND ?")) {
+
+            statement.setLong(1, categoryId);
+            statement.setLong(2, priceRange.getMin());
+            statement.setLong(3, priceRange.getMax());
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                products.add(new ProductBuilder()
+                        .setProductId(resultSet.getLong("product_id"))
+                        .setCategoryId(resultSet.getLong("category_id"))
+                        .setName(resultSet.getString("name"))
+                        .setDescription(resultSet.getString("description"))
+                        .setDiscountId(resultSet.getLong("discount_id"))
+                        .setPrice(resultSet.getLong("price"))
+                        .build());
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return products;
+    }
+
+    public PriceRangeModel getProductsPriceRangeByCategoryId(long categoryId) {
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT min(price) AS min, max(price) AS max FROM products\n" +
+                             "WHERE category_id IN(SELECT id FROM (WITH RECURSIVE categoriesRec ( id,parent_id) AS (\n" +
+                             "SELECT category_id,parent_id\n" +
+                             "FROM categories WHERE category_id = (SELECT * FROM(WITH RECURSIVE rec (category_id, parent_id) AS\n" +
+                             "(SELECT category_id, parent_id FROM categories\n" +
+                             "  WHERE category_id = ?\n" +
+                             " UNION\n" +
+                             " SELECT ct.category_id, ct.parent_id\n" +
+                             " FROM categories ct INNER JOIN rec\n" +
+                             "     ON (rec.parent_id = ct.category_id))\n" +
+                             "SELECT category_id FROM rec ORDER BY category_id) AS category_id LIMIT 1)\n" +
+                             "UNION\n" +
+                             "SELECT T.category_id, T.parent_id\n" +
+                             "FROM categories T INNER JOIN categoriesRec ON(categoriesRec.id= T.parent_id))\n" +
+                             "SELECT * FROM categoriesRec) AS id)")) {
+
+            statement.setLong(1, categoryId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return new PriceRangeModelBuilder()
+                        .setMin(resultSet.getLong("min"))
+                        .setMax(resultSet.getLong("max"))
+                        .build();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 }
 

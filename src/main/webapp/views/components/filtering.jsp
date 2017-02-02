@@ -4,30 +4,48 @@
 <div class="container jsFilteringComponent">
     <div class="ui left filter vertical sidebar labeled icon menu">
         <h2 class="ui header">Filter</h2>
-        <div class="ui vertical accordion menu" style="width:200px;">
-            <c:forEach var="filter" items="${requestScope.filters}">
-                <div class="item">
-                    <a class="ui active title medium header">
-                        <i class="dropdown icon"></i>
-                            ${filter.getName()}
-                    </a>
-                    <div class="active">
-                        <div class="ui form">
-                            <div class="grouped fields">
-                                <c:forEach var="value" items="${filter.getValues()}">
-                                    <div class="field">
-                                        <div class="ui checkbox">
-                                            <input type="checkbox" name="small">
-                                            <label>${value}</label>
+        <form class="ui equal dividing width form" action="/filtering" method="get">
+            <input type="hidden" name="category_id" value="${param.category_id}"/>
+            <div class="ui segment">
+                <h2 class="ui header small">Price</h2>
+                <div class="tow fields ">
+                    <div class="field">
+                        <input class="jsOnlyNumber" type="text" name="min" placeholder="min" value="${requestScope.price.getMin()}"
+                               style="width:80px;"/>
+                    </div>
+                    <div class="field">
+                        <input class="jsOnlyNumber" type="text" name="max" placeholder="max" value="${requestScope.price.getMax()}"
+                               style="width:80px;"/>
+                    </div>
+                </div>
+                <button class="ui primary button" type="submit">Filter</button>
+            </div>
+            <div class="ui vertical accordion menu" style="width:200px;">
+                <c:forEach var="filter" items="${requestScope.filters}">
+                    <div class="item">
+                        <a class="ui active title medium header">
+                            <i class="dropdown icon"></i>
+                                ${filter.getName()}
+                        </a>
+                        <div class="active">
+                            <div class="ui form">
+                                <div class="grouped fields">
+                                    <c:forEach var="value" items="${filter.getValues()}">
+                                        <div class="field">
+                                            <div class="ui checkbox">
+                                                <input type="checkbox" name="${filter.getName()}"
+                                                       value="${value.getName()}"/>
+                                                <label>${value.getName()}</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                </c:forEach>
+                                    </c:forEach>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </c:forEach>
-        </div>
+                </c:forEach>
+            </div>
+        </form>
     </div>
     <div class="ui icon blue right attached big jsShowFiltering button" style="position: fixed;">
         <i class="filter icon"></i>
