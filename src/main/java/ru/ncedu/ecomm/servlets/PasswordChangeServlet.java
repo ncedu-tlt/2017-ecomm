@@ -27,8 +27,6 @@ public class PasswordChangeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String newPassword = req.getParameter("password");
-        System.out.println(email);
-        System.out.println(recoveryHash);
         if(checkEmailAndRecoveryHash(this.email, this.recoveryHash) ){
             updatePassword(this.email, newPassword);
             req.setAttribute("answer", "Your password was change.");
