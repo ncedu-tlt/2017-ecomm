@@ -102,12 +102,6 @@ public class SendMail {
         String textHTML = recoveryService.getTextHTML();
         String subjectRecovery = "Password recovery";
 
-        //for test
-        System.out.println(recoveryService.getFromEmail());
-        System.out.println(recoveryService.getToEmail());
-        System.out.println(recoveryService.getTextHTML());
-        System.out.println(recoveryService.getRecoveryHash());
-
         return new SendMail(
                 toEmail,
                 fromEmail,

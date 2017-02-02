@@ -13,18 +13,24 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 @WebServlet(name = "PasswordChangeServlet", urlPatterns = {"/passwordChange"})
 public class PasswordChangeServlet extends HttpServlet {
+
+    private String email;
+    private String recoveryHash;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/views/pages/passwordChange.jsp").forward(req, resp);
+        email = req.getParameter("email");
+        recoveryHash = req.getParameter("recoveryHash");
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String email = getEmailFromURL(req);
-        String recoveryHash = getRecoveryHashFromURL(req);
         String newPassword = req.getParameter("password");
-        if(checkEmailAndRecoveryHash(email, recoveryHash) ){
-            updatePassword(email, newPassword);
+        System.out.println(email);
+        System.out.println(recoveryHash);
+        if(checkEmailAndRecoveryHash(this.email, this.recoveryHash) ){
+            updatePassword(this.email, newPassword);
             req.setAttribute("answer", "Your password was change.");
             req.getRequestDispatcher("/views/pages/passwordChange.jsp").forward(req, resp);
         }
@@ -32,24 +38,6 @@ public class PasswordChangeServlet extends HttpServlet {
             req.setAttribute("answer", "Error. Try again to recovery your password");
             req.getRequestDispatcher("/views/pages/passwordChange.jsp").forward(req, resp);
         }
-    }
-
-    private String getEmailFromURL(HttpServletRequest req){
-        String pattern = req.getQueryString();
-        String[] parametersFromUrl = pattern.split("&");
-        String[] parameters = parametersFromUrl[0].split("=");
-        String email = parameters[1];
-
-        return email;
-    }
-
-    private String getRecoveryHashFromURL(HttpServletRequest req){
-        String pattern = req.getQueryString();
-        String[] parametersFromUrl = pattern.split("&");
-        String[] parameters = parametersFromUrl[1].split("=");
-        String recoveryHash = parameters[1];
-
-        return recoveryHash;
     }
 
     private boolean checkEmailAndRecoveryHash(String email, String recoveryHash) {
