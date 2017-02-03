@@ -8,14 +8,8 @@
          * Executed on component initialization
          */
         init: function () {
-            $("input[type='password']").click(function () {
-                $(".jsPasswordConfirm").css({"display": "block"});
-            });
-            $("input[type='text']").click(function () {
-                if ($("input[name='passwordConfirm']").val() === "") {
-                    $(".jsPasswordConfirm").css({"display": "none"});
-                }
-            });
+            showPasswordConfirm();
+            showApplyButton();
             this.content.find('.jsProfileForm')
                 .form({
                     fields: {
@@ -78,6 +72,27 @@
             ;
         }
     });
+
+    function showPasswordConfirm(){
+        $('input[type="password"]').click(function () {
+            $('.jsPasswordConfirm').css({'display': 'block'});
+        });
+        $('input[type="text"]').click(function () {
+            if ($('input[name="passwordConfirm"]').val() === "") {
+                $('.jsPasswordConfirm').css({'display': 'none'});
+            }
+        });
+    }
+
+    function showApplyButton(){
+        if(! $('#jsSendFormProfileBtn').is(':visible')){
+            var input = $('input[type="text"]');
+            input.keyup(function(){
+                $('#jsSendFormProfileBtn').css({'display' : 'block'});
+            });
+        }
+    }
+
     frm.components.register('profileComponent', profileComponent);
 
 })(jQuery, window);

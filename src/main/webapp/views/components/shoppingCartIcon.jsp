@@ -2,7 +2,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/shoppingCartIcon"/>
-<div class="ui item jsShoppingCartIcon" id="shoppingCartTopPanel">
+<div class="ui item jsShoppingCartIcon jsShoppingCartComponent" id="shoppingCartTopPanel">
     <button onclick="window.location.href = '/cart'" class="circular ui icon button"
             id="shoppingCartIcon">
         <i class="icon shop"></i>
@@ -13,3 +13,8 @@
         </c:if>
     </button>
 </div>
+<script type="text/javascript">
+    window.frm.components.init('ShoppingCartComponent', '.jsShoppingCartComponent');
+</script>
+
+

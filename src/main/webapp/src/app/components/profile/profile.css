@@ -1,3 +1,7 @@
 .jsPasswordConfirm{
     display:none;
 }
+
+#jsSendFormProfileBtn{
+    display:none;
+}

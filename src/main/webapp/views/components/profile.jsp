@@ -21,7 +21,7 @@
         <div class="field jsPasswordConfirm">
             <input type="password" name="passwordConfirm" placeholder="Current Password">
         </div>
-        <button class="ui animated primary button">
+        <button class="ui animated primary button" id="jsSendFormProfileBtn">
             <div class="visible content">Apply Changes</div>
             <div class="hidden content">
                 <i class="repeat icon outline"></i>
