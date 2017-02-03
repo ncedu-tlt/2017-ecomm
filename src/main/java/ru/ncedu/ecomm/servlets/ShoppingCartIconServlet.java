@@ -22,10 +22,11 @@ public class ShoppingCartIconServlet extends HttpServlet {
 
     private void process(HttpServletRequest req) throws ServletException, IOException {
         final int EMPTY_QUANTITY = 0;
-        long userId = getUserIdFromSession(req);
-        if (userId == 0) {
+        HttpSession authorization = req.getSession();
+        if (authorization.getAttribute("userId") == null) {
             req.setAttribute("quantityProducts", EMPTY_QUANTITY);
         } else {
+            long userId = getUserId(authorization);
             int quantityProducts = getQuantityProducts(userId);
             req.setAttribute("quantityProducts", quantityProducts);
         }
@@ -36,11 +37,8 @@ public class ShoppingCartIconServlet extends HttpServlet {
         return salesOrderByUserId.size();
     }
 
-    private long getUserIdFromSession(HttpServletRequest req) throws ServletException, IOException {
-        HttpSession authorization = req.getSession();
-        if (authorization.getAttribute("userId") == null) {
-            return 0;
-        }
-        return (long) authorization.getAttribute("userId");
+    private long getUserId(HttpSession authorization) {
+        String userIdFromSession =  authorization.getAttribute("userId").toString();
+        return Long.parseLong(userIdFromSession);
     }
 }

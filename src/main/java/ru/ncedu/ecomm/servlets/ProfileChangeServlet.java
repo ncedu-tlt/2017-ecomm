@@ -27,11 +27,12 @@ public class ProfileChangeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        long userId = getUserIdFromSession(req);
-        if (userId == 0) {
+        HttpSession authorization = req.getSession();
+        if (authorization.getAttribute("userId") == null) {
             req.setAttribute("answer", "You are not logged in!");
             req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
         } else if (checkOnEmpty(req)) {
+            long userId = getUserId(authorization);
             changeProfile(userId, req);
             req.setAttribute("answer", "Profile was changed.");
             req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
@@ -55,13 +56,10 @@ public class ProfileChangeServlet extends HttpServlet {
         return false;
     }
 
-    private long getUserIdFromSession(HttpServletRequest req) {
-        HttpSession authorization = req.getSession();
-        if (authorization.getAttribute("userId") == null) {
-            return 0;
-        }
-        long userIdFromSession = Long.parseLong(authorization.getAttribute("userId").toString());
-        return userIdFromSession;
+
+    private long getUserId(HttpSession authorization) {
+        String userIdFromSession =  authorization.getAttribute("userId").toString();
+        return Long.parseLong(userIdFromSession);
     }
 
     private void changeProfile(long userId, HttpServletRequest req) {
