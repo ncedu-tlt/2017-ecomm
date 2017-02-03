@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,18 +40,41 @@ public class ProductServlet extends HttpServlet {
     }
 
     private void browseProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession httpSession = request.getSession();
 
         long productId = changeProductId(request, response);
+        long userIdBySession = getUserIdBySession(httpSession.getAttribute("userId"));
+
+        boolean hasReview = userBySessionReviewInspection(userIdBySession, productId);
+
 
         ProductDetailsModel browseProduct = getProductToView(productId);
-
         List<ReviewViewModel> reviews = ReviewService
                 .getInstance()
                 .getReview(productId);
 
+        request.setAttribute("hasReview", hasReview);
+        request.setAttribute("userIdBySession", userIdBySession);
         request.setAttribute("browseProduct", browseProduct);
         request.setAttribute("reviews", reviews);
         request.getRequestDispatcher("/views/pages/product.jsp").forward(request, response);
+    }
+
+    private long getUserIdBySession(Object userId) {
+        long userIdBySession = 0;
+
+        if (userId != null) {
+            userIdBySession = (long) userId;
+        }
+        return userIdBySession;
+    }
+
+    private boolean userBySessionReviewInspection(long userIdBySession, long productId) {
+        Review reviewBySession = DAOFactory.getDAOFactory()
+                .getReviewDAO()
+                .userReviewByUserIdAndProductId(productId, userIdBySession);
+
+        return reviewBySession == null && userIdBySession > 0;
     }
 
     private ProductDetailsModel getProductToView(long productId) {
@@ -109,6 +133,7 @@ public class ProductServlet extends HttpServlet {
                 .getProductDAO()
                 .getProductById(productId);
     }
+
     private List<CharacteristicGroupModel> getCharacteristicGroupModel(long productId) {
 
         CharacteristicGroupModel characteristicGroupModel;
@@ -153,13 +178,13 @@ public class ProductServlet extends HttpServlet {
                         CHARACTERISTIC_ID_FOR_IMAGE_URL
                 );
 
-        if (characteristicValue != null ) {
+        if (characteristicValue != null) {
             String imageLink = characteristicValue.getCharacteristicValue();
             String links[] = imageLink.trim().split(",");
 
             Collections.addAll(imagesList, links);
 
-        }else {
+        } else {
             imagesList.add(DEFAULT_IMAGE_URL);
         }
         return imagesList;
@@ -224,8 +249,6 @@ public class ProductServlet extends HttpServlet {
                 .getInstance()
                 .getDiscountPrice(discountId, price);
     }
-
-
 
 
 }

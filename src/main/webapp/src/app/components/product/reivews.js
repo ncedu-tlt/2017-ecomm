@@ -1,6 +1,3 @@
-/**
- * Created by Alexander on 22.12.2016.
- */
 (function ($, window) {
 
     var frm = window.frm;
@@ -10,9 +7,18 @@
          * Executed on component initialization
          */
         init: function () {
-            this.content.find('.rating')
+            this.content.find('.column .rating')
                 .rating({initialRating: 2, maxRating: 5})
                 .rating('disable');
+
+            this.content.find('.field .rating')
+                .rating({initialRating: 2, maxRating: 5});
+
+            var
+                rating = this.content.find('.field .rating').val();
+            if (rating < 0) {
+                this.content.find('.field .productRating').attr('value', rating);
+            }
         }
 
     });

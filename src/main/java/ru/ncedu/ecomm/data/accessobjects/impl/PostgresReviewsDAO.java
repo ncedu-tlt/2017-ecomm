@@ -101,6 +101,35 @@ public class PostgresReviewsDAO implements ReviewsDAO {
     }
 
     @Override
+    public Review userReviewByUserIdAndProductId(long productId, long userId) {
+
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT\n" +
+                             "  product_id\n" +
+                             "FROM public.reviews\n" +
+                             "WHERE product_id = ?\n" +
+                             "AND user_id = ?"
+             )) {
+
+            statement.setLong(1, productId);
+            statement.setLong(2, userId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+
+                return new ReviewBuilder()
+                        .setProductId(resultSet.getLong("product_id"))
+                        .build();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    @Override
     public void deleteReviews(Review review) {
 
         try (Connection connection = DBUtils.getConnection();
