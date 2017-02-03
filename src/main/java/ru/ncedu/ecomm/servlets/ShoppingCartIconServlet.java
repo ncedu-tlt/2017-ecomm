@@ -33,8 +33,7 @@ public class ShoppingCartIconServlet extends HttpServlet {
 
     private int getQuantityProducts(long userId) {
         List<SalesOrder> salesOrderByUserId = getDAOFactory().getSalesOrderDAO().getSalesOrderByUserId(userId);
-        int quantityProducts = salesOrderByUserId.size();
-        return quantityProducts;
+        return salesOrderByUserId.size();
     }
 
     private long getUserIdFromSession(HttpServletRequest req) throws ServletException, IOException {
@@ -42,7 +41,6 @@ public class ShoppingCartIconServlet extends HttpServlet {
         if (authorization.getAttribute("userId") == null) {
             return 0;
         }
-        long userIdFromSession = Long.parseLong(authorization.getAttribute("userId").toString());
-        return userIdFromSession;
+        return (long) authorization.getAttribute("userId");
     }
 }
