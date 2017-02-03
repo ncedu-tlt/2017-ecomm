@@ -8,9 +8,10 @@
          * Executed on component initialization
          */
         init: function () {
-            alert("Hello");
-        }
+            this.content.find("#addToCart").click(function(){
 
+            });
+        }
     });
 
     frm.components.register('ShoppingCartComponent', ShoppingCartComponent);
