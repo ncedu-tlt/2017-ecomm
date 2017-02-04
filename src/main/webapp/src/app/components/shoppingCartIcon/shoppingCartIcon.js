@@ -8,7 +8,7 @@
          * Executed on component initialization
          */
         init: function () {
-            
+            console.log('Im working');
         }
     });
 

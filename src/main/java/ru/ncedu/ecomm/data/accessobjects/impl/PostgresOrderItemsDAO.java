@@ -99,4 +99,28 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public long getProductsBySalesOrderId(long salesOrderId) {
+        long quantityProducts = 0;
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT \n" +
+                             "count(sales_order_id) \n" +
+                             "FROM order_items \n" +
+                             "WHERE sales_order_id = ?"
+
+             )) {
+            statement.setLong(1, salesOrderId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                quantityProducts = resultSet.getLong("count");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return quantityProducts;
+    }
 }

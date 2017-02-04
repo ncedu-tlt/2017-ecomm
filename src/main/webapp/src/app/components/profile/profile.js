@@ -69,7 +69,7 @@
             $('.jsPasswordConfirm').css({'display': 'block'});
         });
         $('input[type="text"]').click(function () {
-            if ($('input[name="passwordConfirm"]').val() === "") {
+            if ($('input[name="passwordConfirm"]').val().empty()) {
                 $('.jsPasswordConfirm').css({'display': 'none'});
             }
         });

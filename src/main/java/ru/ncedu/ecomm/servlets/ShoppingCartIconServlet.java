@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets;
 
-import ru.ncedu.ecomm.data.models.SalesOrder;
+import ru.ncedu.ecomm.servlets.services.ShoppingCartIconService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
@@ -27,14 +26,15 @@ public class ShoppingCartIconServlet extends HttpServlet {
             req.setAttribute("quantityProducts", EMPTY_QUANTITY);
         } else {
             long userId = getUserId(authorization);
-            int quantityProducts = getQuantityProducts(userId);
+            long quantityProducts = getQuantityProducts(userId);
             req.setAttribute("quantityProducts", quantityProducts);
         }
     }
 
-    private int getQuantityProducts(long userId) {
-        List<SalesOrder> salesOrderByUserId = getDAOFactory().getSalesOrderDAO().getSalesOrderByUserId(userId);
-        return salesOrderByUserId.size();
+    private long getQuantityProducts(long userId) {
+        ShoppingCartIconService cartIconService = new ShoppingCartIconService(userId);
+        long salesOrderId = cartIconService.getSalesOrderId(userId);
+        return getDAOFactory().getOrderItemsDAO().getProductsBySalesOrderId(salesOrderId);
     }
 
     private long getUserId(HttpSession authorization) {

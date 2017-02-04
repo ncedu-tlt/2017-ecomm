@@ -12,4 +12,6 @@ public interface OrderItemsDAO {
     OrderItem updateOrderItem(OrderItem orderItem);
 
     void deleteOrderItem(OrderItem orderItem);
+
+    long getProductsBySalesOrderId(long salesOrderId);
 }

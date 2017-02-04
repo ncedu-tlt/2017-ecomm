@@ -9,7 +9,7 @@ public interface SalesOrdersDAO {
 
     SalesOrder getSalesOrderById(long id);
 
-    List<SalesOrder> getSalesOrderByUserId(long userId);
+    SalesOrder getSalesOrderByUserId(long userId);
 
     SalesOrder addSalesOrder(SalesOrder salesOrder);
 
