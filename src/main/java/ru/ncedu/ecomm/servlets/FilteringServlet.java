@@ -1,11 +1,14 @@
 package ru.ncedu.ecomm.servlets;
 
+import ru.ncedu.ecomm.data.models.Characteristic;
 import ru.ncedu.ecomm.data.models.PriceRangeModel;
 import ru.ncedu.ecomm.data.models.Product;
 import ru.ncedu.ecomm.data.models.builders.PriceRangeModelBuilder;
 import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
+import ru.ncedu.ecomm.servlets.models.FilterViewModel;
 import ru.ncedu.ecomm.servlets.models.ProductViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.CategoryViewBuilder;
+import ru.ncedu.ecomm.servlets.models.builders.FilterViewModelBuilder;
 import ru.ncedu.ecomm.servlets.services.ProductViewService;
 
 import javax.servlet.ServletException;
@@ -14,8 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
@@ -33,19 +35,16 @@ public class FilteringServlet extends HttpServlet {
 
         long categoryId = getCategoryParentId(request);
 
-        List<Product> products = getDAOFactory().getProductDAO().getProductsFromPriceRangeByCategoryId(getPriceRange(request), categoryId);
-        List<ProductViewModel> productsView = ProductViewService.getInstance().getProductsToView(products);
         List<CategoryViewModel> categoryViewModels = new ArrayList<>();
-
+        List<ProductViewModel> products = getProducts(request);
         categoryViewModels.add(new CategoryViewBuilder()
-                .setId(categoryId)
-                .setName("Filtered")
-                .setProducts(productsView)
+                .setId(products.isEmpty() ? null : categoryId)
+                .setName(products.isEmpty() ? "No products that meet the selected criteria" : "Filtered")
+                .setProducts(products)
                 .build());
-        request.getSession().setAttribute("priceRange", getPriceRange(request));
+        request.getSession().setAttribute("price", getPriceRange(request));
         request.setAttribute("categoriesForView", categoryViewModels);
         request.getRequestDispatcher("/views/pages/category.jsp").forward(request, response);
-
     }
 
     private long getCategoryParentId(HttpServletRequest request) {
@@ -54,6 +53,7 @@ public class FilteringServlet extends HttpServlet {
     }
 
     private PriceRangeModel getPriceRange(HttpServletRequest request) {
+
         PriceRangeModelBuilder priceRange = new PriceRangeModelBuilder();
         long categoryId = getCategoryParentId(request);
 
@@ -70,5 +70,29 @@ public class FilteringServlet extends HttpServlet {
         return priceRange.build();
     }
 
+    private List<ProductViewModel> getProducts(HttpServletRequest request) {
 
+        List<Characteristic> characteristics = getDAOFactory()
+                .getChracteristicDAO()
+                .getFilterableCharacteristicsByCategoryId(getCategoryParentId(request));
+        List<FilterViewModel> filters = new ArrayList<>();
+
+        for (Characteristic characteristic : characteristics) {
+            String name = characteristic.getCharacteristicName();
+            String[] params = request.getParameterValues(name);
+            if (params != null) {
+                filters.add(new FilterViewModelBuilder()
+                        .setId(characteristic.getCharacteristicId())
+                        .setName(name)
+                        .setValues(Arrays.asList(params))
+                        .build());
+            }
+        }
+
+        List<Product> products = getDAOFactory()
+                .getProductDAO()
+                .getFilteredProducts(filters, getPriceRange(request), getCategoryParentId(request));
+
+        return ProductViewService.getInstance().getProductsToView(products);
+    }
 }
