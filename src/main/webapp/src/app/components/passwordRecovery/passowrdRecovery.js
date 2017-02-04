@@ -1,6 +1,3 @@
-/**
- * Created by Alexander on 25.12.2016.
- */
 (function ($, window) {
 
     var frm = window.frm;

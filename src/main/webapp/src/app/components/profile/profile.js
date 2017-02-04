@@ -45,16 +45,7 @@
                             rules: [
                                 {
                                     type: 'length[4]',
-                                    prompt: 'Password must be at least 4 characters in length'
-                                }
-                            ]
-                        },
-                        password: {
-                            identifier: 'password',
-                            rules: [
-                                {
-                                    type: 'empty',
-                                    prompt: 'Please enter password'
+                                    prompt: 'Please enter password(Must be at least 4 characters in length)'
                                 }
                             ]
                         },
