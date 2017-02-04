@@ -31,7 +31,7 @@
                     </button>
                 </div>
 
-                <p>Already a member? <a href='<c:url value="/login"/>'> Login </a></p>
+                <p>Already a member? <a href="${pageContext.request.contextPath}/login"> Login </a></p>
             </form>
             <div class="ui hidden divider"></div>
         </div>

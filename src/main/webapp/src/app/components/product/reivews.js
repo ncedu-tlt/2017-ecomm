@@ -12,14 +12,15 @@
                 .rating('disable');
 
             this.content.find('.field .rating')
-                .rating({initialRating: 2, maxRating: 5});
+                .rating({initialRating: 2, maxRating: 5})
+                .rating('setting', 'onRate', this.onRatingChange.bind(this));
 
-            var
-                rating = this.content.find('.field .rating').val();
-            if (rating < 0) {
-                this.content.find('.field .productRating').attr('value', rating);
-            }
+        },
+        onRatingChange: function (value) {
+            this.content.find('.jsRating').val(value);
+
         }
+
 
     });
 

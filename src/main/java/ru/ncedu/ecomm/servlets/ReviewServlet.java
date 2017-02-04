@@ -34,14 +34,14 @@ public class ReviewServlet extends HttpServlet {
         Review review = new ReviewBuilder()
                 .setUserId((Long) httpSession.getAttribute("userId"))
                 .setProductId(Long.parseLong(productId))
-                .setDescription(String.valueOf(req.getAttribute("review")))
+                .setDescription(String.valueOf(req.getParameter("review")))
                 .build();
+
 
 
         if (review.getUserId() > NOT_AUTHORIZED_USER_ID) {
             addReviewToBase(review);
         }
-        req.getRequestDispatcher("/views/pages/product.jsp?product_id=" + review.getProductId()).forward(req, resp);
 
     }
 

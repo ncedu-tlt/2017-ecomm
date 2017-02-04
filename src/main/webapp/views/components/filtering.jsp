@@ -4,7 +4,7 @@
 <div class="container jsFilteringComponent">
     <div class="ui left filter vertical sidebar labeled icon menu">
         <h2 class="ui header">Filter</h2>
-        <form class="ui equal dividing width form" action="/filtering" method="get">
+        <form class="ui equal dividing width form" action="${pageContext.request.contextPath}/filtering" method="get">
             <input type="hidden" name="category_id" value="${param.category_id}"/>
             <div class="ui segment">
                 <h2 class="ui header small">Price</h2>

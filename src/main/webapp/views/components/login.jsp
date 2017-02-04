@@ -9,7 +9,7 @@
             <div>
                 ${requestScope.registration}
             </div>
-            <form class="ui equal dividing width form" action="/login" method="post">
+            <form class="ui equal dividing width form" action="${pageContext.request.contextPath}/login" method="post">
                 <div class="field">
                     <label> Your E-mail: </label>
                     <input type="text" name="email" placeholder="E-mail">
@@ -27,7 +27,7 @@
                     </div>
                     <div class="field">
                         <div class="ui item right">
-                            <p><a class="item" href="<c:url value="/recovery"/>">Forgot your password?</a></p>
+                            <p><a class="item" href="${pageContext.request.contextPath}/recovery">Forgot your password?</a></p>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         </button>
                     </div>
                     <div class="ui two column centered row grid">
-                            <p>Not a member yet?<a class="item" href="<c:url value="/registration"/>">Register</a></p>
+                            <p>Not a member yet?<a class="item" href="${pageContext.request.contextPath}/registration">Register</a></p>
                     </div>
                 </div>
             </form>

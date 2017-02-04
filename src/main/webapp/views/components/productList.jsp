@@ -6,7 +6,7 @@
             <span class="withoutUrl">${category.getName()}</span>
         </c:if>
         <c:if test="${category.getId() >= 0}">
-            <a href="\category?category_id=${category.getId()}">
+            <a href="${pageContext.request.contextPath}/category?category_id=${category.getId()}">
                     ${category.getName()}
             </a>
         </c:if>
@@ -14,9 +14,9 @@
     <div class="ui grid centered container">
         <c:forEach var="product" items="${category.getProducts()}">
             <form action="${pageContext.request.contextPath}/addToShoppingCart" method="post" class="five wide column">
-                <img class="ui fluid image" src="${product.getImageUrl()}">
+                <img class="ui fluid image" src="${pageContext.request.contextPath}${product.getImageUrl()}">
                 <h3 class="ui center aligned header horizontal divider">
-                    <a href="\product?product_id=${product.getId()}">
+                    <a href="${pageContext.request.contextPath}/product?product_id=${product.getId()}">
                             ${product.getName()}
                     </a>
                 </h3>
@@ -29,7 +29,7 @@
                 <h3 class="ui center aligned grey header">
                     <c:if test="${product.getDiscount() != 0}">
                         <b style="text-decoration: line-through;">$${product.getPrice()}</b>
-                        <a style="margin-left: .2em" href="\product?product_id=${product.getId()}"
+                        <a style="margin-left: .2em" href="${pageContext.request.contextPath}/product?product_id=${product.getId()}"
                            class="ui red large label">
                             $${product.getDiscount()}
                         </a>

@@ -1,5 +1,5 @@
 <div class="ui item jsSearchComponent">
-    <form class="ui icon input jsSearchForm" method="get" action="/search">
+    <form class="ui icon input jsSearchForm" method="get" action="${pageContext.request.contextPath}/search">
         <input class="jsSearchText" type="text" name="search" placeholder="Search...">
         <i class="search icon"></i>
     </form>

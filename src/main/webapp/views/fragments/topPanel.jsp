@@ -10,7 +10,7 @@
 
 <div class="ui menu main-content">
     <div class="ui container">
-        <a class="header item" href="<c:url value="/home"/>">Shop</a>
+        <a class="header item" href="${pageContext.request.contextPath}/home">Shop</a>
         <c:import url="../components/categories.jsp"/>
         <div class="ui item right">
             <c:import url="../components/search.jsp"/>

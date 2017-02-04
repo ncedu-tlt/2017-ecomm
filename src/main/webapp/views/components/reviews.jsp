@@ -10,7 +10,7 @@
         <c:forEach var="review" items="${requestScope.reviews}">
             <div class="ui grid">
                 <div class="three wide column">
-                    <img src="${review.getUserAvatarLink()}" alt="avatar" class="ui image small">
+                    <img src="${pageContext.request.contextPath}${review.getUserAvatarLink()}" alt="avatar" class="ui image small">
                 </div>
                 <div class="eleven wide column">
                     <div class="ui grid four column">
@@ -39,9 +39,10 @@
             <div class="ui divider"></div>
         </c:forEach>
         <c:if test="${requestScope.hasReview}">
-            <form class="ui form" method="post" action="/review">
+            <form class="ui form" method="post" action="${pageContext.request.contextPath}/review">
                     <input name="userId" type="hidden" value="${sessionScope.userId}">
                     <input name="productId" type="hidden" value="${product.getId()}">
+                    <input class="jsRating" name="rating" type="hidden" value="">
                 <div class="field">
                     <label>Write your review:</label>
                     <span class="ui huge rating"></span>

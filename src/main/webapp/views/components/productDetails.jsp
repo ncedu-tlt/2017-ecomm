@@ -6,7 +6,7 @@
         <div class="ui one column grid ">
             <div class="column showDisplay">
                 <a href="#">
-                    <img class="ui large image" src="${browseProduct.getImagesList().get(0)}" alt="">
+                    <img class="ui large image" src="${pageContext.request.contextPath}${browseProduct.getImagesList().get(0)}" alt="">
                 </a>
             </div>
         </div>
@@ -14,7 +14,7 @@
             <c:forEach var="image" items="${browseProduct.getImagesList()}">
                 <div class="column slideShowItem">
                     <a class="slideShowPic" href="#">
-                        <img class="ui large image" src="${image}" alt="">
+                        <img class="ui large image" src="${pageContext.request.contextPath}${image}" alt="">
                     </a>
                 </div>
             </c:forEach>
