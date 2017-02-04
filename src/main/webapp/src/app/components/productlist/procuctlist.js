@@ -9,11 +9,7 @@
          */
         init: function () {
             this.content.find('.rating').rating({initialRating: 2, maxRating: 5}).rating('disable');
-            $('#addToCart').click(function(){
-                console.log('add');
-            });
         }
-
     });
 
     frm.components.register('ProductListComponent', ProductListComponent);

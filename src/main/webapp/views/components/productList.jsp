@@ -52,4 +52,5 @@
 </div>
 <script>
     window.frm.components.init('ProductListComponent', '.jsProductListComponent');
+    window.frm.components.init('AddToCartComponent', '.jsProductListComponent');
 </script>
