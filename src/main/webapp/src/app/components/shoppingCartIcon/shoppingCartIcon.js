@@ -8,9 +8,7 @@
          * Executed on component initialization
          */
         init: function () {
-            this.content.find("#addToCart").click(function(){
-
-            });
+            
         }
     });
 
