@@ -39,12 +39,12 @@
             <div class="ui divider"></div>
         </c:forEach>
         <c:if test="${requestScope.hasReview}">
-            <form class="ui form">
+            <form class="ui form" method="post" action="/review">
+                    <input name="userId" type="hidden" value="${sessionScope.userId}">
+                    <input name="productId" type="hidden" value="${product.getId()}">
                 <div class="field">
                     <label>Write your review:</label>
-                    <input name="userId" type="hidden" value="${sessionScope.userId}">
-                    <input class="productRating" name="productRating" type="hidden" value="0">
-                    <span name="rating" class="ui huge rating"></span>
+                    <span class="ui huge rating"></span>
                     <textarea name="review" style="margin-top: 0px; margin-bottom: 0px; height: 168px;"></textarea>
                 </div>
                 <button class="positive ui button">Add review</button>

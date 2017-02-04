@@ -27,6 +27,7 @@ import static ru.ncedu.ecomm.servlets.services.ProductViewService.DEFAULT_IMAGE_
 public class ProductServlet extends HttpServlet {
 
     private static final long DEFAULT_CATEGORY_ID = 0;
+    static final long NOT_AUTHORIZED_USER_ID = 0;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -74,7 +75,7 @@ public class ProductServlet extends HttpServlet {
                 .getReviewDAO()
                 .userReviewByUserIdAndProductId(productId, userIdBySession);
 
-        return reviewBySession == null && userIdBySession > 0;
+        return reviewBySession == null && userIdBySession > NOT_AUTHORIZED_USER_ID;
     }
 
     private ProductDetailsModel getProductToView(long productId) {
