@@ -42,7 +42,7 @@ public class FilteringServlet extends HttpServlet {
                 .setName(products.isEmpty() ? "No products that meet the selected criteria" : "Filtered")
                 .setProducts(products)
                 .build());
-        request.getSession().setAttribute("price", getPriceRange(request));
+        request.setAttribute("price", getPriceRange(request));
         request.setAttribute("categoriesForView", categoryViewModels);
         request.getRequestDispatcher("/views/pages/category.jsp").forward(request, response);
     }
