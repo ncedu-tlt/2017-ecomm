@@ -12,12 +12,12 @@
                 <div class="tow fields ">
                     <div class="field">
                         <input class="jsOnlyNumber" type="text" name="min" placeholder="min"
-                               value="${sessionScope.priceRange.getMin()}"
+                               value="${requestScope.priceRange.getMin()}"
                                style="width:80px;"/>
                     </div>
                     <div class="field">
                         <input class="jsOnlyNumber" type="text" name="max" placeholder="max"
-                               value="${sessionScope.priceRange.getMax()}"
+                               value="${requestScope.priceRange.getMax()}"
                                style="width:80px;"/>
                     </div>
                 </div>
