@@ -56,12 +56,7 @@ public class ProfileChangeServlet extends HttpServlet {
     }
 
     private boolean checkOnEmpty(HttpServletRequest req) {
-        List<String> userParameters = new ArrayList<>();
-        userParameters.add(req.getParameter("firstName"));
-        userParameters.add(req.getParameter("lastName"));
-        userParameters.add(req.getParameter("email"));
-        userParameters.add(req.getParameter("password"));
-
+        List<String> userParameters = getUserParameters(req);
         for (String parameter : userParameters) {
             if (!parameter.trim().isEmpty())
                 return true;
@@ -69,18 +64,33 @@ public class ProfileChangeServlet extends HttpServlet {
         return false;
     }
 
+    private List<String> getUserParameters(HttpServletRequest req) {
+        List<String> userParameters = new ArrayList<>();
+        userParameters.add(req.getParameter("firstName"));
+        userParameters.add(req.getParameter("lastName"));
+        userParameters.add(req.getParameter("email"));
+        userParameters.add(req.getParameter("password"));
+
+        return userParameters;
+    }
+
     private void changeProfile(long userId, HttpServletRequest req) {
-        String firstName = req.getParameter("firstName");
-        String lastName = req.getParameter("lastName");
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
-        ProfileService profile = new ProfileService(firstName, lastName, email, password, userId);
+        ProfileService profile = getProfileForChange(req, userId);
 
         User userProfile = profile.getUserProfile();
 
         userProfile = profile.changeProfile(userProfile);
 
         getDAOFactory().getUserDAO().updateUser(userProfile);
+    }
+
+    private ProfileService getProfileForChange(HttpServletRequest req, long userId) {
+        String firstName = req.getParameter("firstName");
+        String lastName = req.getParameter("lastName");
+        String email = req.getParameter("email");
+        String password = req.getParameter("password");
+
+        return new ProfileService(firstName, lastName, email, password, userId);
     }
 }
 
