@@ -28,13 +28,17 @@ public class ProfileServlet extends HttpServlet {
     private void showProfile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession authorization = req.getSession();
         if (authorization.getAttribute("userId") != null) {
-            long userId = UserService.getInstance().getCurrentUserId(req, resp);
-            ProfileService profileService = new ProfileService(userId);
-            User userProfile = profileService.getUserProfile();
-            initAttributesProfile(userProfile, req);
-        }else {
+            createAttributeProfile(req, resp);
+        } else {
             UserService.getInstance().redirectToLoginIfNeeded(req, resp);
         }
+    }
+
+    private void createAttributeProfile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        long userId = UserService.getInstance().getCurrentUserId(req, resp);
+        ProfileService profileService = new ProfileService(userId);
+        User userProfile = profileService.getUserProfile();
+        initAttributesProfile(userProfile, req);
     }
 
     private void initAttributesProfile(User userProfile, HttpServletRequest req) {

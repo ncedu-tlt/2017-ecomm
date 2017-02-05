@@ -30,17 +30,29 @@ public class ProfileChangeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession authorization = req.getSession();
         if (authorization.getAttribute("userId") == null) {
-            req.setAttribute("answer", "You are not logged in!");
-            req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
+            initAttributesNotLogin(req, resp);
         } else if (checkOnEmpty(req)) {
-            long userId = UserService.getInstance().getCurrentUserId(req, resp);
-            changeProfile(userId, req);
-            req.setAttribute("answer", "Profile was changed.");
-            req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
+            initAttributesSuccessChange(req, resp);
         } else {
-            req.setAttribute("answer", "Nothing to change.");
-            req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
+            initAttributesNothingChange(req, resp);
         }
+    }
+
+    private void initAttributesNothingChange(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("answer", "Nothing to change.");
+        req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
+    }
+
+    private void initAttributesSuccessChange(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        long userId = UserService.getInstance().getCurrentUserId(req, resp);
+        changeProfile(userId, req);
+        req.setAttribute("answer", "Profile was changed.");
+        req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
+    }
+
+    private void initAttributesNotLogin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("answer", "You are not logged in!");
+        req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
     }
 
     private boolean checkOnEmpty(HttpServletRequest req) {
