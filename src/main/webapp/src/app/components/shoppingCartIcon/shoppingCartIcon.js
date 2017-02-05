@@ -8,9 +8,7 @@
          * Executed on component initialization
          */
         init: function () {
-            $('#addToCart').click(function(){
-
-            });
+            
         }
     });
 

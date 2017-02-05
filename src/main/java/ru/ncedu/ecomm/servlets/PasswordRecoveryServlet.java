@@ -34,9 +34,7 @@ public class PasswordRecoveryServlet extends HttpServlet {
         SendMail sender = SendMail.buildSenderByPasswordRecovery(recoveryService);
 
         if (sender.checkEmail()) {
-            User userByEmail = getDAOFactory().getUserDAO().getUserByEmail(recoveryService.getToEmail());
-            userByEmail.setRecoveryHash(recoveryService.getRecoveryHash());
-            getDAOFactory().getUserDAO().updateUser(userByEmail);
+            updateUserByEmail(recoveryService);
             req.setAttribute("answer", sender.sendMail());
             req.getRequestDispatcher("/views/pages/passwordRecovery.jsp").forward(req, resp);
         } else if (!sender.checkEmail()) {
@@ -45,6 +43,11 @@ public class PasswordRecoveryServlet extends HttpServlet {
         }
     }
 
+    private void updateUserByEmail(PasswordRecoveryService recoveryService) {
+        User userByEmail = getDAOFactory().getUserDAO().getUserByEmail(recoveryService.getToEmail());
+        userByEmail.setRecoveryHash(recoveryService.getRecoveryHash());
+        getDAOFactory().getUserDAO().updateUser(userByEmail);
+    }
 
 
 }

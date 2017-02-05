@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets;
 
-import ru.ncedu.ecomm.servlets.services.ShoppingCartIconService;
+import ru.ncedu.ecomm.servlets.services.shoppingCart.ShoppingCartIconService;
 import ru.ncedu.ecomm.servlets.services.UserService;
 
 import javax.servlet.ServletException;

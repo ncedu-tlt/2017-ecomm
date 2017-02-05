@@ -1,4 +1,4 @@
-package ru.ncedu.ecomm.servlets.services;
+package ru.ncedu.ecomm.servlets.services.shoppingCart;
 
 import ru.ncedu.ecomm.data.models.OrderItem;
 import ru.ncedu.ecomm.data.models.SalesOrder;
@@ -8,12 +8,11 @@ import java.sql.Date;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
-public class ShoppingCartIconService {
+public class ShoppingCartIconService implements ShoppingCartControl{
     private long userId;
     private long productId;
     private BigDecimal limit;
     private Date creationDate;
-
 
     public ShoppingCartIconService(long userId, long productId) {
         this.userId = userId;
@@ -37,7 +36,8 @@ public class ShoppingCartIconService {
         }
     }
 
-    private boolean searchSalesOrderByUserId(long userId) {
+    @Override
+    public boolean searchSalesOrderByUserId(long userId) {
         SalesOrder salesOrder = getDAOFactory().getSalesOrderDAO().getSalesOrderByUserId(userId);
         return salesOrder != null;
     }
@@ -54,7 +54,7 @@ public class ShoppingCartIconService {
         saleOrder.setUserId(this.userId);
         saleOrder.setCreationDate(this.creationDate);
         saleOrder.setLimit(this.limit);
-        saleOrder.setOrderStatusId(this.getOrderStatusEntering());
+        saleOrder.setOrderStatusId(this.getOrderStatus());
 
         return saleOrder;
     }
@@ -70,36 +70,27 @@ public class ShoppingCartIconService {
         return orderItem;
     }
 
+    @Override
     public long getSalesOrderId(long userId) {
         SalesOrder salesOrder = getDAOFactory().getSalesOrderDAO().getSalesOrderByUserId(userId);
         return salesOrder.getSalesOrderId();
     }
 
+    @Override
     public long getUserId() {
         return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
     }
 
     public long getProductId() {
         return productId;
     }
 
-    public void setProductId(long productId) {
-        this.productId = productId;
-    }
-
     public BigDecimal getLimit() {
         return limit;
     }
 
-    public void setLimit(BigDecimal limit) {
-        this.limit = limit;
-    }
-
-    private int getOrderStatusEntering() {
+    @Override
+    public int getOrderStatus() {
         return 1;
     }
 }
