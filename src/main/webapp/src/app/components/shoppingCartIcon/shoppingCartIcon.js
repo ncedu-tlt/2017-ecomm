@@ -8,7 +8,10 @@
          * Executed on component initialization
          */
         init: function () {
-            
+            $('#addToCart').click(function(){
+                console.log('click');
+            });
+            console.log('function was called');
         }
     });
 

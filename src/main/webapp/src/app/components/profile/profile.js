@@ -13,18 +13,18 @@
             this.content.find('.jsProfileForm')
                 .form({
                     fields: {
-                        firstName:{
+                        firstName: {
                             identifier: 'firstName',
-                            rules:[
+                            rules: [
                                 {
                                     type: 'empty',
                                     prompt: 'Please enter first name'
                                 }
                             ]
                         },
-                        lastName:{
+                        lastName: {
                             identifier: 'lastName',
-                            rules:[
+                            rules: [
                                 {
                                     type: 'empty',
                                     prompt: 'Please enter last name'
@@ -64,7 +64,7 @@
         }
     });
 
-    function showPasswordConfirm(){
+    function showPasswordConfirm() {
         $('input[type="password"]').click(function () {
             $('.jsPasswordConfirm').css({'display': 'block'});
         });
@@ -75,11 +75,11 @@
         });
     }
 
-    function showApplyButton(){
-        if(! $('#jsSendFormProfileBtn').is(':visible')){
-            var input = $('input[type="text"]');
-            input.keyup(function(){
-                $('#jsSendFormProfileBtn').css({'display' : 'block'});
+    function showApplyButton() {
+        if (!$('#jsSendFormProfileBtn').is(':visible')) {
+            var inputs = $('input');
+            inputs.keyup(function () {
+                $('#jsSendFormProfileBtn').css({'display': 'block'});
             });
         }
     }
