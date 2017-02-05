@@ -2,6 +2,7 @@ package ru.ncedu.ecomm.data.accessobjects;
 
 import ru.ncedu.ecomm.data.models.Product;
 import ru.ncedu.ecomm.data.models.PriceRangeModel;
+import ru.ncedu.ecomm.servlets.models.FilterViewModel;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public interface ProductDAO {
 
     List<Product> searchProductsByName(String name);
 
-    List<Product> getProductsFromPriceRangeByCategoryId(PriceRangeModel priceRange, long categoryId);
-
     PriceRangeModel getProductsPriceRangeByCategoryId(long categoryId);
+
+    List<Product> getFilteredProducts(List<FilterViewModel> filters, PriceRangeModel priceRange, long categoryId);
 }

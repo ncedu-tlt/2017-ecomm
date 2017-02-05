@@ -9,8 +9,8 @@
          */
         init: function () {
             this.content.find('.jsOnlyNumber').on('keypress', this.keypress.bind(this));
-            this.content.find('.accordion')
-                .accordion();
+            this.content.find('.ui.accordion').accordion({exclusive: false});
+            this.content.find('.ui.checkbox').checkbox({indeterminate: true});
             this.content.find('.filter.sidebar').first()
                 .sidebar('setting', 'dimPage', false)
                 .sidebar('attach events', '.jsShowFiltering');

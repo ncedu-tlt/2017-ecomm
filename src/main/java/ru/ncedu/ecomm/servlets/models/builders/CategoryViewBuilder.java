@@ -4,7 +4,6 @@ import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
 import ru.ncedu.ecomm.servlets.models.ProductViewModel;
 
 import java.util.List;
-import java.util.Set;
 
 public class CategoryViewBuilder {
     private Long id;

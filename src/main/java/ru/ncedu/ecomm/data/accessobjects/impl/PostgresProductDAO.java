@@ -1,10 +1,11 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import ru.ncedu.ecomm.data.accessobjects.ProductDAO;
-import ru.ncedu.ecomm.data.models.Product;
-import ru.ncedu.ecomm.data.models.builders.ProductBuilder;
 import ru.ncedu.ecomm.data.models.PriceRangeModel;
+import ru.ncedu.ecomm.data.models.Product;
 import ru.ncedu.ecomm.data.models.builders.PriceRangeModelBuilder;
+import ru.ncedu.ecomm.data.models.builders.ProductBuilder;
+import ru.ncedu.ecomm.servlets.models.FilterViewModel;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -325,52 +326,6 @@ public class PostgresProductDAO implements ProductDAO {
         return products;
     }
 
-    @Override
-    public List<Product> getProductsFromPriceRangeByCategoryId(PriceRangeModel priceRange, long categoryId) {
-        List<Product> products = new ArrayList<>();
-
-        try (Connection connection = DBUtils.getConnection();
-             PreparedStatement statement = connection.prepareStatement(
-                     "SELECT product_id, category_id, name, description, discount_id, price FROM products\n" +
-                             " WHERE category_id IN (\n" +
-                             "  WITH RECURSIVE recquery\n" +
-                             "(category_id, parent_id) AS\n" +
-                             "(SELECT category_id, parent_id\n" +
-                             "FROM categories\n" +
-                             "WHERE category_id = ?\n" +
-                             "UNION\n" +
-                             "SELECT\n" +
-                             "categories.category_id,\n" +
-                             "categories.parent_id\n" +
-                             "FROM categories\n" +
-                             "INNER JOIN recquery\n" +
-                             "ON (recquery.category_id = categories.parent_id))\n" +
-                             "SELECT category_id\n" +
-                             "FROM recquery) AND (price - (price * (SELECT value " +
-                             "FROM discount WHERE discount_id = products.discount_id) / 100 )) BETWEEN ? AND ?")) {
-
-            statement.setLong(1, categoryId);
-            statement.setDouble(2, priceRange.getMin());
-            statement.setDouble(3, priceRange.getMax());
-
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                products.add(new ProductBuilder()
-                        .setProductId(resultSet.getLong("product_id"))
-                        .setCategoryId(resultSet.getLong("category_id"))
-                        .setName(resultSet.getString("name"))
-                        .setDescription(resultSet.getString("description"))
-                        .setDiscountId(resultSet.getLong("discount_id"))
-                        .setPrice(resultSet.getLong("price"))
-                        .build());
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return products;
-    }
-
     public PriceRangeModel getProductsPriceRangeByCategoryId(long categoryId) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -409,6 +364,63 @@ public class PostgresProductDAO implements ProductDAO {
         return null;
     }
 
+    public List<Product> getFilteredProducts(List<FilterViewModel> filters, PriceRangeModel priceRange, long categoryId) {
+        List<Product> products = new ArrayList<>();
+        String query = "SELECT * FROM products\n" +
+                "WHERE product_id IN (SELECT t.product_id FROM characteristic_values t ";
+        String subQuery = "";
+        if (!filters.isEmpty()) {
+            for (FilterViewModel filter : filters) {
+                subQuery += "INTERSECT\n" +
+                        " SELECT product_id FROM characteristic_values\n" +
+                        "   WHERE characteristic_id = " + filter.getId() + " AND value IN (";
+                for (String value : filter.getValues()) {
+                    subQuery = subQuery + "'" + value + "',";
+                }
+                subQuery = subQuery.substring(0, subQuery.length() - 1) + ") ";
+            }
+        }
+        query += subQuery +") AND category_id IN (" +
+                "SELECT id FROM (" +
+                "   WITH RECURSIVE recCategoriesId (id, parent_id) AS " +
+                "(SELECT category_id, parent_id FROM categories " +
+                "   WHERE category_id = (SELECT * FROM (WITH RECURSIVE recParentId (category_id, parent_id) AS" +
+                "                       (SELECT category_id, parent_id FROM categories\n" +
+                "                           WHERE category_id = " + categoryId + "\n" +
+                "                            UNION\n" +
+                "                         SELECT ct.category_id, ct.parent_id\n" +
+                "                               FROM categories ct INNER JOIN recParentId\n" +
+                "                                   ON (recParentId.parent_id = ct.category_id))\n" +
+                "                              SELECT category_id FROM recParentId\n" +
+                "                              ORDER BY category_id) AS parentId\n" +
+                "                              LIMIT 1)\n" +
+                "                            UNION\n" +
+                "                            SELECT CT.category_id, CT.parent_id\n" +
+                "                            FROM categories CT INNER JOIN recCategoriesId ON (recCategoriesId.id = CT.parent_id))\n" +
+                "                          SELECT * FROM recCategoriesId) AS id)\n" +
+                "      AND price BETWEEN " + priceRange.getMin() + " AND " + priceRange.getMax() + "\n" +
+                "\n" +
+                "    GROUP BY products.product_id\n";
+
+        try (Connection connection = DBUtils.getConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                products.add(new ProductBuilder()
+                        .setProductId(resultSet.getLong("product_id"))
+                        .setCategoryId(resultSet.getLong("category_id"))
+                        .setName(resultSet.getString("name"))
+                        .setDescription(resultSet.getString("description"))
+                        .setDiscountId(resultSet.getLong("discount_id"))
+                        .setPrice(resultSet.getLong("price"))
+                        .build());
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return products;
+    }
 
 }
 

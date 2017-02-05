@@ -3,6 +3,7 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.models.User;
 import ru.ncedu.ecomm.servlets.services.ProfileService;
+import ru.ncedu.ecomm.servlets.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,7 +33,7 @@ public class ProfileChangeServlet extends HttpServlet {
             req.setAttribute("answer", "You are not logged in!");
             req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
         } else if (checkOnEmpty(req)) {
-            long userId = getUserId(authorization);
+            long userId = UserService.getInstance().getCurrentUserId(req, resp);
             changeProfile(userId, req);
             req.setAttribute("answer", "Profile was changed.");
             req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
@@ -54,12 +55,6 @@ public class ProfileChangeServlet extends HttpServlet {
                 return true;
         }
         return false;
-    }
-
-
-    private long getUserId(HttpSession authorization) {
-        String userIdFromSession =  authorization.getAttribute("userId").toString();
-        return Long.parseLong(userIdFromSession);
     }
 
     private void changeProfile(long userId, HttpServletRequest req) {

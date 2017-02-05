@@ -43,9 +43,7 @@ public class FilterServlet extends HttpServlet {
         }
 
         request.setAttribute("filters", filters);
-        if(request.getSession().getAttribute("priceRange") == null) {
-            request.getSession().setAttribute("priceRange", getPriceRange(categoryId));
-        }
+        request.setAttribute("priceRange", getPriceRange(categoryId));
     }
 
     private List<String> getValuesByCharacteristicId(long id){

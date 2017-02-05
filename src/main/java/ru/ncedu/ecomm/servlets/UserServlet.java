@@ -41,9 +41,9 @@ public class UserServlet extends HttpServlet {
 
     private List<UserViewModel> getUserToView() {
 
-        List<UserViewModel> userViewModels = new ArrayList();
+        List<UserViewModel> userViewModels = new ArrayList<>();
         List<User> users = DAOFactory.getDAOFactory().getUserDAO().getUsers();
-        UserViewModel userViewModel = null;
+        UserViewModel userViewModel;
 
         for (User user : users) {
 

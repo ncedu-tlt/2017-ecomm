@@ -39,6 +39,12 @@ public class UserService {
         }
     }
 
+    public long getCurrentUserId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        redirectToLoginIfNeeded(request, response);
+        HttpSession session = request.getSession();
+        return Long.parseLong(session.getAttribute("userId").toString());
+    }
+
     public String getUserName(User user) {
         String userName;
 
