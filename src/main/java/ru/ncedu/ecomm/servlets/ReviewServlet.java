@@ -1,5 +1,6 @@
 package ru.ncedu.ecomm.servlets;
 
+import ru.ncedu.ecomm.data.DAOFactory;
 import ru.ncedu.ecomm.data.models.Review;
 import ru.ncedu.ecomm.data.models.builders.ReviewBuilder;
 
@@ -10,8 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-
-import static ru.ncedu.ecomm.servlets.ProductServlet.NOT_AUTHORIZED_USER_ID;
+import java.sql.Date;
 
 @WebServlet(name = "ReviewServlet", urlPatterns = {"/review"})
 public class ReviewServlet extends HttpServlet {
@@ -29,23 +29,26 @@ public class ReviewServlet extends HttpServlet {
     private void addReview(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession();
 
-        String  productId = req.getParameter("productId");
+        String productId = req.getParameter("productId");
 
-        Review review = new ReviewBuilder()
-                .setUserId((Long) httpSession.getAttribute("userId"))
-                .setProductId(Long.parseLong(productId))
-                .setDescription(String.valueOf(req.getParameter("review")))
-                .build();
+        if (httpSession.getAttribute("userId") != null) {
 
+            Review review = new ReviewBuilder()
+                    .setUserId((Long) httpSession.getAttribute("userId"))
+                    .setProductId(Long.parseLong(productId))
+                    .setRating(Integer.parseInt(req.getParameter("rating")))
+                    .setCreationDate(new Date(System.currentTimeMillis()))
+                    .setDescription(req.getParameter("review"))
+                    .build();
 
-
-        if (review.getUserId() > NOT_AUTHORIZED_USER_ID) {
             addReviewToBase(review);
         }
-
+            resp.sendRedirect("/product?product_id=" + productId);
     }
 
     private void addReviewToBase(Review review) {
-
+        DAOFactory.getDAOFactory()
+                .getReviewDAO()
+                .addReviews(review);
     }
 }

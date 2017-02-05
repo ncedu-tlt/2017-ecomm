@@ -10,7 +10,8 @@
         <c:forEach var="review" items="${requestScope.reviews}">
             <div class="ui grid">
                 <div class="three wide column">
-                    <img src="${pageContext.request.contextPath}${review.getUserAvatarLink()}" alt="avatar" class="ui image small">
+                    <img src="${pageContext.request.contextPath}${review.getUserAvatarLink()}" alt="avatar"
+                         class="ui image small">
                 </div>
                 <div class="eleven wide column">
                     <div class="ui grid four column">
@@ -19,19 +20,46 @@
                                 <h4>${review.getUserName()}</h4>
                             </a>
                         </div>
-                        <div class=" column">
+                        <div class="column">
                             <span class="datePrint">${review.getReviewDate()}</span>
+                        </div>
+                        <div class="right floated column">
+                            <c:if test="${requestScope.userIdBySession == review.getUserId()}">
+                                <span class="mini ui black label">This is your review</span>
+                            </c:if>
                         </div>
                     </div>
                     <div class="ui grid one column">
                         <div class="column">
-                            <div class="ui eleven wide column large rating disabled" data-rating="${review.getRating()}"
-                                 data-max-rating="5"></div>
+                            <span class="ui blue label">
+                                Rating from user:
+                            </span>
+                            <span class="ui eleven wide column large rating disabled"
+                                  data-rating="${review.getRating()}"
+                                  data-max-rating="5">
+                            </span>
                         </div>
                     </div>
                     <div class="ui grid one column">
                         <div class="column">
                             <p>${review.getDescription()}</p>
+                        </div>
+                    </div>
+                    <div class="ui grid one column">
+                        <div class="column">
+                            <c:if test="${requestScope.userIdBySession == review.getUserId()}">
+                                <div class="ui mini buttons right floated">
+                                    <button class="ui button">
+                                        <i class="trash outline icon"></i>
+                                        Remove
+                                    </button>
+                                    <div class="or"></div>
+                                    <button class="ui button">
+                                        <i class="icon write"></i>
+                                        Edit
+                                    </button>
+                                </div>
+                            </c:if>
                         </div>
                     </div>
                 </div>
@@ -40,13 +68,13 @@
         </c:forEach>
         <c:if test="${requestScope.hasReview}">
             <form class="ui form" method="post" action="${pageContext.request.contextPath}/review">
-                    <input name="userId" type="hidden" value="${sessionScope.userId}">
-                    <input name="productId" type="hidden" value="${product.getId()}">
-                    <input class="jsRating" name="rating" type="hidden" value="">
+                <input name="userId" type="hidden" value="${sessionScope.userId}">
+                <input name="productId" type="hidden" value="${product.getId()}">
+                <input class="jsRating" name="rating" type="hidden" value="2">
                 <div class="field">
                     <label>Write your review:</label>
                     <span class="ui huge rating"></span>
-                    <textarea name="review" style="margin-top: 0px; margin-bottom: 0px; height: 168px;"></textarea>
+                    <textarea name="review" style="margin-top: 0; margin-bottom: 0; height: 168px;" title="review"></textarea>
                 </div>
                 <button class="positive ui button">Add review</button>
             </form>

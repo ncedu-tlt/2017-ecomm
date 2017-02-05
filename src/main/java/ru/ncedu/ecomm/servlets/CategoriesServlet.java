@@ -20,12 +20,12 @@ public class CategoriesServlet extends HttpServlet {
 
     private List<CategoriesViewModel> getSubcategoriesViewByParentID(long id){
         List<Category> categories = getDAOFactory().getCategoryDAO().getCategoriesByParentId(id);
-        List<CategoriesViewModel> subcategories = new ArrayList<CategoriesViewModel>();
+        List<CategoriesViewModel> subcategories = new ArrayList<>();
         for (Category category : categories) {
             subcategories.add(new CategoriesViewBuilder()
                     .setId(category.getCategoryId())
                     .setName(category.getName())
-                    .setSubcategories(new ArrayList<CategoriesViewModel>())
+                    .setSubcategories(new ArrayList<>())
                     .build());
         }
         return subcategories;
@@ -33,7 +33,7 @@ public class CategoriesServlet extends HttpServlet {
 
     private void process(HttpServletRequest request) {
         List<Category> categories = getDAOFactory().getCategoryDAO().getCategories();
-        List<CategoriesViewModel> heads = new ArrayList<CategoriesViewModel>();
+        List<CategoriesViewModel> heads = new ArrayList<>();
 
         for (Category category : categories) {
             if (category.getParentId() == 0) {

@@ -1,7 +1,6 @@
 package ru.ncedu.ecomm.servlets.models;
 
 import java.util.List;
-import java.util.Set;
 
 public class CategoryViewModel {
     private Long id;
