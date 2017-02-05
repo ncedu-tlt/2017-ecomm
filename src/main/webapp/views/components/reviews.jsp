@@ -49,12 +49,12 @@
                         <div class="column">
                             <c:if test="${requestScope.userIdBySession == review.getUserId()}">
                                 <div class="ui mini buttons right floated">
-                                    <button class="ui button">
+                                    <button class="ui remove button">
                                         <i class="trash outline icon"></i>
                                         Remove
                                     </button>
                                     <div class="or"></div>
-                                    <button class="ui button">
+                                    <button class="ui edit button">
                                         <i class="icon write"></i>
                                         Edit
                                     </button>
