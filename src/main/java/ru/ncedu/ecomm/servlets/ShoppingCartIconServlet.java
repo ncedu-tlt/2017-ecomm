@@ -1,6 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.servlets.services.ShoppingCartIconService;
+import ru.ncedu.ecomm.servlets.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,16 +17,16 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 public class ShoppingCartIconServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        process(req);
+        process(req, resp);
     }
 
-    private void process(HttpServletRequest req) throws ServletException, IOException {
+    private void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final int EMPTY_QUANTITY = 0;
         HttpSession authorization = req.getSession();
         if (authorization.getAttribute("userId") == null) {
             req.setAttribute("quantityProducts", EMPTY_QUANTITY);
         } else {
-            long userId = getUserId(authorization);
+            long userId = UserService.getInstance().getCurrentUserId(req, resp);
             long quantityProducts = getQuantityProducts(userId);
             req.setAttribute("quantityProducts", quantityProducts);
         }
@@ -35,10 +36,5 @@ public class ShoppingCartIconServlet extends HttpServlet {
         ShoppingCartIconService cartIconService = new ShoppingCartIconService(userId);
         long salesOrderId = cartIconService.getSalesOrderId(userId);
         return getDAOFactory().getOrderItemsDAO().getProductsBySalesOrderId(salesOrderId);
-    }
-
-    private long getUserId(HttpSession authorization) {
-        String userIdFromSession =  authorization.getAttribute("userId").toString();
-        return Long.parseLong(userIdFromSession);
     }
 }
