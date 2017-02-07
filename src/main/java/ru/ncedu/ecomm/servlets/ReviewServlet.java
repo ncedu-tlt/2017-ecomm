@@ -31,7 +31,8 @@ public class ReviewServlet extends HttpServlet {
 
         String productId = req.getParameter("productId");
 
-        if (httpSession.getAttribute("userId") != null) {
+        if (httpSession.getAttribute("userId") != null &&
+                req.getParameter("reviewActions").equals("add")) {
 
             Review review = new ReviewBuilder()
                     .setUserId((Long) httpSession.getAttribute("userId"))
@@ -42,8 +43,23 @@ public class ReviewServlet extends HttpServlet {
                     .build();
 
             addReviewToBase(review);
+
+        } else if (httpSession.getAttribute("userId") != null &&
+                req.getParameter("reviewActions").equals("remove")){
+            Review review = new ReviewBuilder()
+                    .setProductId(Long.parseLong(req.getParameter("productId")))
+                    .setUserId(Long.parseLong(req.getParameter("userId")))
+                    .build();
+
+            removeRebiewByBase(review);
         }
             resp.sendRedirect("/product?product_id=" + productId);
+    }
+
+    private void removeRebiewByBase(Review review) {
+        DAOFactory.getDAOFactory()
+                .getReviewDAO()
+                .deleteReviews(review);
     }
 
     private void addReviewToBase(Review review) {
