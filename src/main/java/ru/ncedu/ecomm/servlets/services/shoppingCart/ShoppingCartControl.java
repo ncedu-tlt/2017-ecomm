@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets.services.shoppingCart;
 
 interface ShoppingCartControl {
-    boolean searchSalesOrderByUserId(long userId);
+    boolean searchSalesOrderByUserId();
 
     long getSalesOrderId(long userId);
 

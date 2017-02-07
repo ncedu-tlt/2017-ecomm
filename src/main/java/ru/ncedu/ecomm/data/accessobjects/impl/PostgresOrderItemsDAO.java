@@ -84,6 +84,35 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
     }
 
     @Override
+    public OrderItem getOrderItemByUserConfig(long productId, long salesOrderId) throws SQLException {
+        OrderItem orderItem = new OrderItem();
+
+        try (Connection connection = DBUtils.getConnection();
+             Statement statement = connection.createStatement()) {
+
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT\n" +
+                            "  product_id,\n" +
+                            "  sales_order_id,\n" +
+                            "  quantity\n" +
+                            "FROM public.order_items \n" +
+                            "WHERE product_id = " + productId + "\n AND " +
+                            "sales_order_id = " + salesOrderId);
+
+            while (resultSet.next()) {
+                orderItem = new OrderItemBuilder()
+                        .setProductId(resultSet.getLong("product_id"))
+                        .setSalesOrederId(resultSet.getLong("sales_order_id"))
+                        .setQuantity(resultSet.getInt("quantity"))
+                        .build();
+            }
+            return orderItem;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void deleteOrderItem(OrderItem orderItem) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -122,5 +151,27 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
             throw new RuntimeException(e);
         }
         return quantityProducts;
+    }
+
+    @Override
+    public boolean isHaveProductId(long productId) {
+        boolean isProductId = false;
+        try (Connection connection = DBUtils.getConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT\n" +
+                            "  product_id,\n" +
+                            "  sales_order_id,\n" +
+                            "  quantity\n" +
+                            "FROM public.order_items \n" +
+                            "WHERE product_id = " + productId);
+
+            while (resultSet.next()) {
+                isProductId = true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return isProductId;
     }
 }

@@ -5,19 +5,21 @@ import ru.ncedu.ecomm.data.models.SalesOrder;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.SQLException;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
-public class ShoppingCartIconService implements ShoppingCartControl{
+public class ShoppingCartIconService implements ShoppingCartControl {
     private long userId;
     private long productId;
+    private long salesOrderId;
     private BigDecimal limit;
     private Date creationDate;
 
     public ShoppingCartIconService(long userId, long productId) {
         this.userId = userId;
         this.productId = productId;
-
+        this.salesOrderId = getSalesOrderId(this.userId);
         limit = new BigDecimal("50000.00"); //временно
         creationDate = new Date(System.currentTimeMillis());
     }
@@ -26,26 +28,42 @@ public class ShoppingCartIconService implements ShoppingCartControl{
         this.userId = userId;
     }
 
-    public void addToShoppingCart() {
-        if (searchSalesOrderByUserId(this.userId)) {
-            addProductToOrderItem(this.productId);
+    public void addToShoppingCart() throws SQLException {
+        if (searchSalesOrderByUserId()) {
+            addProductToOrderItem();
         } else {
-            SalesOrder salesOrder = addToSalesOrder();
-            getDAOFactory().getSalesOrderDAO().addSalesOrder(salesOrder);
-            addProductToOrderItem(this.productId);
+            createSalesOrder();
+            addProductToOrderItem();
         }
     }
 
+    private void createSalesOrder() {
+        SalesOrder salesOrder = addToSalesOrder();
+        getDAOFactory().getSalesOrderDAO().addSalesOrder(salesOrder);
+    }
+
     @Override
-    public boolean searchSalesOrderByUserId(long userId) {
+    public boolean searchSalesOrderByUserId() {
         SalesOrder salesOrder = getDAOFactory().getSalesOrderDAO().getSalesOrderByUserId(userId);
         return salesOrder != null;
     }
 
-    private void addProductToOrderItem(long productId) {
-        long salesOrderId = getSalesOrderId(this.userId);
-        OrderItem orderItem = addToOrderItem(productId, salesOrderId);
-        getDAOFactory().getOrderItemsDAO().addOrderItem(orderItem);
+    private void addProductToOrderItem() throws SQLException {
+        if (isProductAtOrderItem()) {
+            incrementQuantityAtOrderItem();
+        } else {
+            OrderItem orderItem = addToOrderItem();
+            getDAOFactory().getOrderItemsDAO().addOrderItem(orderItem);
+        }
+    }
+
+    private void incrementQuantityAtOrderItem() throws SQLException {
+        OrderItem orderItem = getDAOFactory().getOrderItemsDAO()
+                .getOrderItemByUserConfig(productId, salesOrderId);
+    }
+
+    private boolean isProductAtOrderItem() {
+        return getDAOFactory().getOrderItemsDAO().isHaveProductId(productId);
     }
 
     private SalesOrder addToSalesOrder() {
@@ -59,13 +77,13 @@ public class ShoppingCartIconService implements ShoppingCartControl{
         return saleOrder;
     }
 
-    private OrderItem addToOrderItem(long productId, long salesId) {
-        int defaultQuantity = 1;
+    private OrderItem addToOrderItem() {
+        int minQuantity = 1;
 
         OrderItem orderItem = new OrderItem();
         orderItem.setProductId(productId);
-        orderItem.setSalesOrderId(salesId);
-        orderItem.setQuantity(defaultQuantity);
+        orderItem.setSalesOrderId(salesOrderId);
+        orderItem.setQuantity(minQuantity);
 
         return orderItem;
     }
