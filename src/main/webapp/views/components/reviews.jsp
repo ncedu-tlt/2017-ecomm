@@ -49,10 +49,29 @@
                         <div class="column">
                             <c:if test="${requestScope.userIdBySession == review.getUserId()}">
                                 <div class="ui mini buttons right floated">
-                                    <button class="ui remove button">
+                                    <button class="ui removeButton button">
                                         <i class="trash outline icon"></i>
                                         Remove
                                     </button>
+                                    <form method="post" action="review" class="ui fluid removeForm popup top left transition hidden">
+                                        <input name="userId" type="hidden" value="${sessionScope.userId}">
+                                        <input name="productId" type="hidden" value="${product.getId()}">
+                                        <input name="reviewActions" type="hidden" value="remove">
+                                        <div class="ui column divided center aligned grid">
+                                            <div class="column">
+                                                <p>Remove a review?</p>
+                                                <div class="actions">
+                                                    <button type="button" class="ui negative button">
+                                                        No
+                                                    </button>
+                                                    <button class="ui positive right labeled icon button">
+                                                        Yes
+                                                        <i class="checkmark icon"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                     <div class="or"></div>
                                     <button class="ui edit button">
                                         <i class="icon write"></i>
@@ -71,10 +90,12 @@
                 <input name="userId" type="hidden" value="${sessionScope.userId}">
                 <input name="productId" type="hidden" value="${product.getId()}">
                 <input class="jsRating" name="rating" type="hidden" value="2">
+                <input name="reviewActions" type="hidden" value="add">
                 <div class="field">
                     <label>Write your review:</label>
                     <span class="ui huge rating"></span>
-                    <textarea name="review" style="margin-top: 0; margin-bottom: 0; height: 168px;" title="review"></textarea>
+                    <textarea name="review" style="margin-top: 0; margin-bottom: 0; height: 168px;"
+                              title="review"></textarea>
                 </div>
                 <button class="positive ui button">Add review</button>
             </form>
