@@ -135,7 +135,7 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT \n" +
-                             "count(sales_order_id) \n" +
+                             "SUM(quantity) \n" +
                              "FROM order_items \n" +
                              "WHERE sales_order_id = ?"
 
@@ -145,7 +145,7 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                quantityProducts = resultSet.getLong("count");
+                quantityProducts = resultSet.getLong("sum");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

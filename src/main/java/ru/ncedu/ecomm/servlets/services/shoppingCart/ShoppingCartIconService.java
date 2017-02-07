@@ -37,9 +37,10 @@ public class ShoppingCartIconService implements ShoppingCartControl {
         }
     }
 
-    private void createSalesOrder() {
-        SalesOrder salesOrder = addToSalesOrder();
-        getDAOFactory().getSalesOrderDAO().addSalesOrder(salesOrder);
+    @Override
+    public long getSalesOrderId(long userId) {
+        SalesOrder salesOrder = getDAOFactory().getSalesOrderDAO().getSalesOrderByUserId(userId);
+        return salesOrder.getSalesOrderId();
     }
 
     @Override
@@ -50,16 +51,28 @@ public class ShoppingCartIconService implements ShoppingCartControl {
 
     private void addProductToOrderItem() throws SQLException {
         if (isProductAtOrderItem()) {
-            incrementQuantityAtOrderItem();
+            incrementQuantityOrderItem();
         } else {
-            OrderItem orderItem = addToOrderItem();
-            getDAOFactory().getOrderItemsDAO().addOrderItem(orderItem);
+            addNewOrderItem();
         }
     }
 
-    private void incrementQuantityAtOrderItem() throws SQLException {
+    private void createSalesOrder() {
+        SalesOrder salesOrder = addToSalesOrder();
+        getDAOFactory().getSalesOrderDAO().addSalesOrder(salesOrder);
+    }
+
+    private void incrementQuantityOrderItem() throws SQLException {
         OrderItem orderItem = getDAOFactory().getOrderItemsDAO()
                 .getOrderItemByUserConfig(productId, salesOrderId);
+        int quantity = orderItem.getQuantity() + 1;
+        orderItem.setQuantity(quantity);
+        getDAOFactory().getOrderItemsDAO().updateOrderItem(orderItem);
+    }
+
+    private void addNewOrderItem() {
+        OrderItem orderItem = addToOrderItem();
+        getDAOFactory().getOrderItemsDAO().addOrderItem(orderItem);
     }
 
     private boolean isProductAtOrderItem() {
@@ -86,12 +99,6 @@ public class ShoppingCartIconService implements ShoppingCartControl {
         orderItem.setQuantity(minQuantity);
 
         return orderItem;
-    }
-
-    @Override
-    public long getSalesOrderId(long userId) {
-        SalesOrder salesOrder = getDAOFactory().getSalesOrderDAO().getSalesOrderByUserId(userId);
-        return salesOrder.getSalesOrderId();
     }
 
     @Override

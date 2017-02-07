@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet(name = "AddToShoppingCartServlet", urlPatterns = {"/addToShoppingCart"})
 public class AddToShoppingCartServlet extends HttpServlet {
@@ -21,8 +22,12 @@ public class AddToShoppingCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ShoppingCartIconService cartIconService = getCartIconService(req, resp);
-        cartIconService.addToShoppingCart();
-        resp.sendRedirect("/views/pages/cart.jsp");
+        try {
+            cartIconService.addToShoppingCart();
+            resp.sendRedirect("/views/pages/cart.jsp");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private ShoppingCartIconService getCartIconService(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
