@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
-import ru.ncedu.ecomm.servlets.services.shoppingCart.ShoppingCartIconService;
 import ru.ncedu.ecomm.servlets.services.UserService;
+import ru.ncedu.ecomm.servlets.services.shoppingCart.ShoppingCartService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,8 +33,7 @@ public class ShoppingCartIconServlet extends HttpServlet {
     }
 
     private long getQuantityProducts(long userId) {
-        ShoppingCartIconService cartIconService = new ShoppingCartIconService(userId);
-        long salesOrderId = cartIconService.getSalesOrderId(userId);
+        long salesOrderId = ShoppingCartService.getInstaince().getSalesOrderId(userId);
         return getDAOFactory().getOrderItemsDAO().getProductsBySalesOrderId(salesOrderId);
     }
 }

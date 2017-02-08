@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.servlets.services.UserService;
-import ru.ncedu.ecomm.servlets.services.shoppingCart.ShoppingCartIconService;
+import ru.ncedu.ecomm.servlets.services.shoppingCart.ShoppingCartService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,18 +21,13 @@ public class AddToShoppingCartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ShoppingCartIconService cartIconService = getCartIconService(req, resp);
+        long userId = UserService.getInstance().getCurrentUserId(req, resp);
+        long productId = Long.parseLong(req.getParameter("productId"));
         try {
-            cartIconService.addToShoppingCart();
+            ShoppingCartService.getInstaince().addToShoppingCart(userId, productId);
             resp.sendRedirect("/views/pages/cart.jsp");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private ShoppingCartIconService getCartIconService(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        long userId = UserService.getInstance().getCurrentUserId(req, resp);
-        long productId = Long.parseLong(req.getParameter("productId"));
-        return new ShoppingCartIconService(userId, productId);
     }
 }
