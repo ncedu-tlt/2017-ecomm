@@ -1,5 +1,6 @@
 package ru.ncedu.ecomm.servlets;
 
+import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.models.User;
 import ru.ncedu.ecomm.servlets.services.ProfileService;
 import ru.ncedu.ecomm.servlets.services.UserService;
@@ -29,7 +30,7 @@ public class ProfileServlet extends HttpServlet {
         HttpSession authorization = req.getSession();
         if (authorization.getAttribute("userId") != null) {
             createAttributeProfile(req, resp);
-            resp.sendRedirect("/views/pages/profile.jsp");
+            resp.sendRedirect(Configuration.getProperty("page.profile"));
         } else {
             UserService.getInstance().redirectToLoginIfNeeded(req, resp);
         }

@@ -8,7 +8,7 @@
          * Executed on component initialization
          */
         init: function () {
-            $('#addToCart').click(function(){
+            this.content.find('.addToCart').click(function(){
                 console.log('click');
             });
             console.log('function was called');

@@ -4,24 +4,24 @@
     <form class="ui form jsProfileForm" method="post" action="${pageContext.request.contextPath}/profileChange">
         <div class="field">
             <label>First Name:</label>
-            <input type="text" name="firstName" placeholder="First Name" value="${requestScope.firstName}">
+            <input type="text" name="firstName" placeholder="First Name" class="jsProfileUserParam" value="${requestScope.firstName}">
         </div>
         <div class="field">
             <label>Last Name:</label>
-            <input type="text" name="lastName" placeholder="Last Name" value="${requestScope.lastName}">
+            <input type="text" name="lastName" placeholder="Last Name" class="jsProfileUserParam" value="${requestScope.lastName}">
         </div>
         <div class="field">
             <label>Email:</label>
-            <input type="text" name="email" placeholder="Email" value="${requestScope.email}">
+            <input type="text" name="email" placeholder="Email" class="jsProfileTextParam" value="${requestScope.email}">
         </div>
         <div class="field">
             <label>Password:</label>
             <input type="password" name="password" placeholder="Password">
         </div>
-        <div class="field jsPasswordConfirm">
-            <input type="password" name="passwordConfirm" placeholder="Current Password">
+        <div class="field">
+            <input type="password" class="jsPasswordConfirm" name="passwordConfirm" placeholder="Current Password">
         </div>
-        <button class="ui animated primary button" id="jsSendFormProfileBtn">
+        <button class="ui animated primary button" class="jsSendFormProfileBtn">
             <div class="visible content">Apply Changes</div>
             <div class="hidden content">
                 <i class="repeat icon outline"></i>

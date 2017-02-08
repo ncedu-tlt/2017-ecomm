@@ -65,21 +65,21 @@
     });
 
     function showPasswordConfirm() {
-        $('input[type="password"]').click(function () {
-            $('.jsPasswordConfirm').css({'display': 'block'});
+        this.content.find('.jsPasswordConfirm').click(function () {
+            this.show();
         });
-        $('input[type="text"]').click(function () {
-            if ($('input[name="passwordConfirm"]').val().empty()) {
-                $('.jsPasswordConfirm').css({'display': 'none'});
+        this.content.find('.jsProfileTextParam').click(function () {
+            if (this.val().empty()) {
+                $('.jsPasswordConfirm').hide();
             }
         });
     }
 
     function showApplyButton() {
-        if (!$('#jsSendFormProfileBtn').is(':visible')) {
+        if (!this.content.find('.jsSendFormProfileBtn').is(':visible')) {
             var inputs = $('input');
             inputs.keyup(function () {
-                $('#jsSendFormProfileBtn').css({'display': 'block'});
+                this.content.find('.jsSendFormProfileBtn').show();
             });
         }
     }
