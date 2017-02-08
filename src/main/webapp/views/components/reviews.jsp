@@ -25,7 +25,7 @@
                         </div>
                         <div class="right floated column">
                             <c:if test="${requestScope.userIdBySession == review.getUserId()}">
-                                <span class="mini ui black label">This is your review</span>
+                                <span class="mini ui thisUserReview black label">This is your review</span>
                             </c:if>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                             <span class="ui blue label">
                                 Rating from user:
                             </span>
-                            <span class="ui eleven wide column large rating disabled"
+                            <span class="ui jsUsersRating eleven wide column large rating disabled"
                                   data-rating="${review.getRating()}"
                                   data-max-rating="5">
                             </span>
@@ -49,11 +49,11 @@
                         <div class="column">
                             <c:if test="${requestScope.userIdBySession == review.getUserId()}">
                                 <div class="ui mini buttons right floated">
-                                    <button class="ui removeButton button">
+                                    <button class="ui jsRemoveButton button">
                                         <i class="trash outline icon"></i>
                                         Remove
                                     </button>
-                                    <form method="post" action="review" class="ui fluid removeForm popup top left transition hidden">
+                                    <form method="post" action="review" class="ui fluid jsRemoveForm popup top left transition hidden">
                                         <input name="userId" type="hidden" value="${sessionScope.userId}">
                                         <input name="productId" type="hidden" value="${product.getId()}">
                                         <input name="reviewActions" type="hidden" value="remove">
@@ -61,7 +61,7 @@
                                             <div class="column">
                                                 <p>Remove a review?</p>
                                                 <div class="actions">
-                                                    <button type="button" class="ui negative button">
+                                                    <button type="button" class="ui jsNegative button">
                                                         No
                                                     </button>
                                                     <button class="ui positive right labeled icon button">
@@ -73,7 +73,7 @@
                                         </div>
                                     </form>
                                     <div class="or"></div>
-                                    <button class="ui edit button">
+                                    <button class="ui jsEdit button">
                                         <i class="icon write"></i>
                                         Edit
                                     </button>
@@ -93,7 +93,7 @@
                 <input name="reviewActions" type="hidden" value="add">
                 <div class="field">
                     <label>Write your review:</label>
-                    <span class="ui huge rating"></span>
+                    <span class="ui huge jsUserReviewRating rating"></span>
                     <textarea name="review" style="margin-top: 0; margin-bottom: 0; height: 168px;"
                               title="review"></textarea>
                 </div>
