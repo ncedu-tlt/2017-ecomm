@@ -281,6 +281,17 @@ public class RestService {
         return getDAOFactory().getProductDAO().getProductById(productid);
     }
 
+
+    @GET
+    @Path("/product/orderId/{orderId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Product> getProductByOrderId(
+            @PathParam("orderId") long orderId) {
+        return getDAOFactory().getProductDAO().getProductByOrderId(orderId);
+    }
+
+
+
     @GET
     @Path("/product/category/{categoryId}")
     @Produces(MediaType.APPLICATION_JSON)

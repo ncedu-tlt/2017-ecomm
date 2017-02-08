@@ -29,4 +29,6 @@ public interface ProductDAO {
     PriceRangeModel getProductsPriceRangeByCategoryId(long categoryId);
 
     List<Product> getFilteredProducts(List<FilterViewModel> filters, PriceRangeModel priceRange, long categoryId);
+
+    List<Product> getProductByOrderId(long orderId);
 }

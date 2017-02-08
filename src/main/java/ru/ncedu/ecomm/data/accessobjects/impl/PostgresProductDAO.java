@@ -422,6 +422,45 @@ public class PostgresProductDAO implements ProductDAO {
         return products;
     }
 
+    @Override
+    public List<Product> getProductByOrderId(long orderId) {
+        List<Product> products = new ArrayList<>();
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT\n" +
+                             "  products.product_id,\n" +
+                             "  products.product_id,\n" +
+                             "  products.category_id,\n" +
+                             "  products.name,\n" +
+                             "  products.description,\n" +
+                             "  products.discount_id,\n" +
+                             "  products.price\n" +
+                             "FROM sales_orders\n" +
+                             "  JOIN order_items ON sales_orders.sales_order_id = order_items.sales_order_id\n" +
+                             "  JOIN products ON order_items.product_id = products.product_id\n" +
+                             "WHERE order_items.sales_order_id = ?")) {
+
+            statement.setLong(1, orderId);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Product product = new ProductBuilder()
+                        .setProductId(resultSet.getLong("product_id"))
+                        .setCategoryId(resultSet.getLong("category_id"))
+                        .setName(resultSet.getString("name"))
+                        .setDescription(resultSet.getString("description"))
+                        .setDiscountId(resultSet.getLong("discount_id"))
+                        .setPrice(resultSet.getLong("price"))
+                        .build();
+
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return products;
+    }
+
 }
 
 

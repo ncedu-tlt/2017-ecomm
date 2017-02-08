@@ -7,21 +7,23 @@
          * Executed on component initialization
          */
         init: function () {
-            this.content.find('.column .rating')
+            this.content.find('.jsUsersRating')
                 .rating({initialRating: 2, maxRating: 5})
                 .rating('disable');
 
-            this.content.find('.field .rating')
+            this.content.find('.jsUserReviewRating')
                 .rating({initialRating: 2, maxRating: 5})
                 .rating('setting', 'onRate', this.onRatingChange.bind(this));
 
-            this.removePopup = this.content.find('.removeButton')
+            this.removePopup = this.content.find('.jsRemoveButton')
                 .popup({
-                    popup: this.content.find('.removeForm'),
+                    popup: this.content.find('.jsRemoveForm'),
                     on: 'click'
                 });
 
-            this.content.find('.negative').on('click', this.hidePopup.bind(this));
+            this.content.find('.jsNegative').on('click', this.hidePopup.bind(this));
+
+            this.content.find('.jsEdit').on('click', this.doRequestToServer);
         },
 
         onRatingChange: function (value) {
@@ -31,8 +33,6 @@
         hidePopup: function () {
             this.removePopup.popup('hide');
         }
-
-
     });
 
     frm.components.register('productReviews', ProductComponent);

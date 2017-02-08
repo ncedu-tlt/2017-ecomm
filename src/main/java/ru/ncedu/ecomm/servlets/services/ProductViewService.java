@@ -96,6 +96,14 @@ public class ProductViewService {
                         CHARACTERISTIC_ID_FOR_IMAGE_URL);
     }
 
+    List<ProductViewModel> getProductModelByOrderId(long orderId){
+       List<Product> productForBuild = DAOFactory.getDAOFactory()
+                .getProductDAO()
+                .getProductByOrderId(orderId);
+
+       return getProductsToView(productForBuild);
+    }
+
     private Rating getRating(long productId) {
         return getDAOFactory()
                 .getReviewDAO()
@@ -110,46 +118,46 @@ public class ProductViewService {
 
     public List<ProductViewModel> getProductsToView(List<Product> products) {
 
-        List<ProductViewModel> productsView = new ArrayList<>();
+            List<ProductViewModel> productsView = new ArrayList<>();
 
-        ProductViewModel itemForView;
-        Rating productAverageRating;
-        CharacteristicValue characteristicValue;
+            ProductViewModel itemForView;
+            Rating productAverageRating;
+            CharacteristicValue characteristicValue;
 
-        for (Product product : products) {
-            int productRating = 0;
+            for (Product product : products) {
+                int productRating = 0;
 
-            String imageUrl = DEFAULT_IMAGE_URL;
+                String imageUrl = DEFAULT_IMAGE_URL;
 
-            characteristicValue = getImageUrl(product.getId());
+                characteristicValue = getImageUrl(product.getId());
 
-            if (characteristicValue != null) {
+                if (characteristicValue != null) {
 
-                imageUrl = getImageUrlByCharacteristicList(characteristicValue);
+                    imageUrl = getImageUrlByCharacteristicList(characteristicValue);
+                }
+
+                productAverageRating = getRating(product.getId());
+
+                if (productAverageRating != null) {
+                    productRating = productAverageRating.getRaiting();
+                }
+
+
+                itemForView = new ProductItemsViewBuilder()
+                        .setProductId(product.getId())
+                        .setName(product.getName())
+                        .setPrice(product.getPrice())
+                        .setImageUrl(imageUrl)
+                        .setRating(productRating)
+                        .build();
+
+                if (product.getDiscountId() > 1) {
+                    itemForView.setDiscount(getDiscountPrice(product.getDiscountId(),
+                            product.getPrice()));
+                }
+
+                productsView.add(itemForView);
             }
-
-            productAverageRating = getRating(product.getId());
-
-            if (productAverageRating != null) {
-                productRating = productAverageRating.getRaiting();
-            }
-
-
-            itemForView = new ProductItemsViewBuilder()
-                    .setProductId(product.getId())
-                    .setName(product.getName())
-                    .setPrice(product.getPrice())
-                    .setImageUrl(imageUrl)
-                    .setRating(productRating)
-                    .build();
-
-            if (product.getDiscountId() > 1) {
-                itemForView.setDiscount(getDiscountPrice(product.getDiscountId(),
-                        product.getPrice()));
-            }
-
-            productsView.add(itemForView);
-        }
         return productsView;
     }
 
