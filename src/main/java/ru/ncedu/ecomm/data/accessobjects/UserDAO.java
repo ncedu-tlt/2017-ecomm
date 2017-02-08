@@ -8,6 +8,7 @@ public interface UserDAO {
     List<User> getUsers();
     User getUserById(long id);
     User getUserByEmail(String email);
+    boolean getBoolUserByEmail(String email);
     User getUserByPassword(String password);
     List<User> getUserByRoleId(long roleId);
     User addUser(User user);

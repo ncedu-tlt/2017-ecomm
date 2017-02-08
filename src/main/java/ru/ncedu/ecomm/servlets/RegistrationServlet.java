@@ -30,12 +30,17 @@ public class RegistrationServlet extends HttpServlet {
                 && !req.getParameter("ConfirmPassword").isEmpty()) {
             if (checkEmail(req.getParameter("email"))) {
                 if (req.getParameter("password").equals(req.getParameter("ConfirmPassword"))) {
-                    User user = new UserBuilder()
-                            .setEmail(req.getParameter("email"))
-                            .setPassword(req.getParameter("password"))
-                            .setRoleId(3)
-                            .build();
-                    getDAOFactory().getUserDAO().addUser(user);
+                    if (!getDAOFactory().getUserDAO().getBoolUserByEmail(req.getParameter("email"))) {
+                            User user = new UserBuilder()
+                                    .setEmail(req.getParameter("email"))
+                                    .setPassword(req.getParameter("password"))
+                                    .setRoleId(3)
+                                    .build();
+                            getDAOFactory().getUserDAO().addUser(user);
+                        } else {
+                            req.setAttribute("answer", "Email is already in use");
+                            req.getRequestDispatcher("/views/pages/registration.jsp").forward(req, resp);
+                    }
                 } else {
                     req.setAttribute("answer", "Passwords don't match");
                     req.getRequestDispatcher("/views/pages/registration.jsp").forward(req, resp);
