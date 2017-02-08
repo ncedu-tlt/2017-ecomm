@@ -29,6 +29,7 @@ public class ProfileServlet extends HttpServlet {
         HttpSession authorization = req.getSession();
         if (authorization.getAttribute("userId") != null) {
             createAttributeProfile(req, resp);
+            resp.sendRedirect("/views/pages/profile.jsp");
         } else {
             UserService.getInstance().redirectToLoginIfNeeded(req, resp);
         }

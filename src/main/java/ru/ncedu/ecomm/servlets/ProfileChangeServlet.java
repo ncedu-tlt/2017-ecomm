@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +27,7 @@ public class ProfileChangeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession authorization = req.getSession();
-        if (authorization.getAttribute("userId") == null) {
-            initAttributesNotLogin(req, resp);
-        } else if (checkOnEmpty(req)) {
+        if (checkOnEmpty(req)) {
             initAttributesSuccessChange(req, resp);
         } else {
             initAttributesNothingChange(req, resp);
@@ -47,11 +43,6 @@ public class ProfileChangeServlet extends HttpServlet {
         long userId = UserService.getInstance().getCurrentUserId(req, resp);
         changeProfile(userId, req);
         req.setAttribute("answer", "Profile was changed.");
-        req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
-    }
-
-    private void initAttributesNotLogin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("answer", "You are not logged in!");
         req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
     }
 
