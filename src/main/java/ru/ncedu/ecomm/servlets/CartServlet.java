@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet(name = "CartServlet", urlPatterns = {"/cart"})
 public class CartServlet extends HttpServlet {
@@ -30,7 +31,7 @@ public class CartServlet extends HttpServlet {
             UserService.getInstance().redirectToLoginIfNeeded(request, response);
             long userId = UserService.getInstance().getCurrentUserId(request, response);
             long orderStatusId = 1;
-            SalesOrderViewModel showSalesOrderList = ShoppingCartService.getInstaince().getSalesOrderModel(orderStatusId, userId);
+            List<SalesOrderViewModel> showSalesOrderList = ShoppingCartService.getInstance().getSalesOrderModel(orderStatusId, userId);
             request.setAttribute("showSalesOrderList", showSalesOrderList);
             request.getRequestDispatcher("/views/pages/cart.jsp").forward(request, response);
         } catch (SQLException e) {

@@ -76,8 +76,8 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
     }
 
     @Override
-    public SalesOrder getSalesOrderByOrderStatusId(long statusId, long userId) {
-        SalesOrder salesOrderByOrderStatusId = new SalesOrder();
+    public List<SalesOrder> getSalesOrderByOrderStatusId(long statusId, long userId) {
+        List<SalesOrder> salesOrders = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
         PreparedStatement statement = connection.prepareStatement(
@@ -93,16 +93,17 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
             statement.setLong(2, userId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
-                salesOrderByOrderStatusId = new SalesOrderBuilder()
+                SalesOrder salesOrder = new SalesOrderBuilder()
                         .setSalesOrderId(resultSet.getLong("sales_order_id"))
                         .setCreationDate(resultSet.getDate("creation_date"))
                         .setLimit(resultSet.getBigDecimal("limit"))
                         .build();
+                salesOrders.add(salesOrder);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return salesOrderByOrderStatusId;
+        return salesOrders;
     }
 
     @Override
