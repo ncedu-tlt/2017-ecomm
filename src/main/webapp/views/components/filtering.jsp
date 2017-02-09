@@ -2,7 +2,7 @@
 <jsp:include page="/filter?category_id=${param.category_id}"/>
 
 <div class="container jsFilteringComponent">
-    <div class="ui left filter vertical sidebar labeled icon menu">
+    <div class="ui left filter vertical sidebar labeled menu">
         <br>
         <h2 class="ui header">Filter</h2>
         <form class="ui equal dividing width form" action="${pageContext.request.contextPath}/filtering" method="get">
@@ -12,19 +12,16 @@
                 <div class="tow fields ">
                     <div class="field">
                         <input class="jsOnlyNumber" type="text" name="min" placeholder="min"
-                               value="${requestScope.priceRange.getMin()}"
-                               style="width:80px;"/>
+                               value="${requestScope.priceRange.getMin()}"/>
                     </div>
                     <div class="field">
                         <input class="jsOnlyNumber" type="text" name="max" placeholder="max"
-                               value="${requestScope.priceRange.getMax()}"
-                               style="width:80px;"/>
+                               value="${requestScope.priceRange.getMax()}"/>
                     </div>
                 </div>
                 <button class="ui primary button" type="submit">Filter</button>
             </div>
-
-            <div class="ui vertical accordion menu" style="width:220px;">
+            <div class="ui vertical accordion menu">
                 <c:set var="active" value="active"/>
                 <c:forEach var="filter" items="${requestScope.filters}">
                     <div class="item">
@@ -47,7 +44,6 @@
                                         </div>
                                     </c:forEach>
                                 </div>
-
                             </div>
                         </div>
                     </div>
