@@ -120,7 +120,7 @@ public class ShoppingCartService {
                 .build();
     }
 
-    private List<OrderItemViewModel> getOrderItemModel(long salesOrderId) throws SQLException {
+    public List<OrderItemViewModel> getOrderItemModel(long salesOrderId) throws SQLException {
         List<OrderItemViewModel> orderItemsView = new ArrayList<>();
         List<ProductViewModel> products = ProductViewService.getInstance().getProductModelByOrderId(salesOrderId);
         for (ProductViewModel product : products) {
