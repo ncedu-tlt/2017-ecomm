@@ -116,7 +116,7 @@ public class ShoppingCartService {
                 .setCreationDate(salesOrder.getCreationDate())
                 .setLimit(salesOrder.getLimit())
                 .setTotalAmount(totalAmount(salesOrder.getSalesOrderId()))
-                .setOrderItems(getOrderItemModel(salesOrder.getSalesOrderId()))
+                .setOrderItems(incrementAmountInOrderItem(salesOrder.getSalesOrderId()))
                 .build();
     }
 
@@ -137,10 +137,21 @@ public class ShoppingCartService {
         return orderItemsView;
     }
 
+    public List<OrderItemViewModel> incrementAmountInOrderItem(long salesOrderId) throws SQLException {
+        List<OrderItemViewModel> orderItemViewModels = ShoppingCartService.getInstaince().getOrderItemModel(salesOrderId);
+        for (OrderItemViewModel model : orderItemViewModels) {
+            long amount = model.getPrice();
+            long quantity = model.getQuantity();
+            amount *= quantity;
+            model.setPrice(amount);
+        }
+        return orderItemViewModels;
+    }
+
     private long totalAmount(long salesOrderId) throws SQLException {
         long sumAllPrice = 0;
         List<Long> priceList = new ArrayList<>();
-        List<OrderItemViewModel> orderItemViewModels = getOrderItemModel(salesOrderId);
+        List<OrderItemViewModel> orderItemViewModels = incrementAmountInOrderItem(salesOrderId);
         priceList.addAll(orderItemViewModels.stream().map(OrderItemViewModel::getPrice).collect(Collectors.toList()));
         for (Long sum : priceList) {
             sumAllPrice += sum;
