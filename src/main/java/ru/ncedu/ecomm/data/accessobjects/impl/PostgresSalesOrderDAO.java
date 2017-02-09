@@ -76,6 +76,36 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
     }
 
     @Override
+    public SalesOrder getSalesOrderByOrderStatusId(long statusId, long userId) {
+        SalesOrder salesOrderByOrderStatusId = new SalesOrder();
+
+        try (Connection connection = DBUtils.getConnection();
+        PreparedStatement statement = connection.prepareStatement(
+                "SELECT\n" +
+                        " sales_order_id, \n" +
+                        " creation_date," +
+                        " \"limit\"\n" +
+                        "FROM sales_orders\n" +
+                        "WHERE order_status_id = ?\n" +
+                        "AND user_id = ?\n" +
+                        "ORDER BY creation_date DESC")){
+            statement.setLong(1, statusId);
+            statement.setLong(2, userId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                salesOrderByOrderStatusId = new SalesOrderBuilder()
+                        .setSalesOrderId(resultSet.getLong("sales_order_id"))
+                        .setCreationDate(resultSet.getDate("creation_date"))
+                        .setLimit(resultSet.getBigDecimal("limit"))
+                        .build();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return salesOrderByOrderStatusId;
+    }
+
+    @Override
     public SalesOrder getSalesOrderByUserId(long userId) {
         SalesOrder salesOrdersByUserId = new SalesOrder();
 

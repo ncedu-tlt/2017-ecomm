@@ -11,6 +11,8 @@ public interface SalesOrdersDAO {
 
     SalesOrder getSalesOrderByUserId(long userId);
 
+    SalesOrder getSalesOrderByOrderStatusId(long statusId, long userId);
+
     SalesOrder addSalesOrder(SalesOrder salesOrder);
 
     SalesOrder updateSalesOrder(SalesOrder salesOrder);

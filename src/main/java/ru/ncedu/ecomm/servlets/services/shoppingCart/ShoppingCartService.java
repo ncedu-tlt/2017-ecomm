@@ -1,11 +1,15 @@
 package ru.ncedu.ecomm.servlets.services.shoppingCart;
 
+import ru.ncedu.ecomm.data.DAOFactory;
 import ru.ncedu.ecomm.data.models.OrderItem;
 import ru.ncedu.ecomm.data.models.SalesOrder;
+import ru.ncedu.ecomm.servlets.models.SalesOrderViewModel;
+import ru.ncedu.ecomm.servlets.models.builders.SalesOrderViewBuilder;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
@@ -99,4 +103,21 @@ public class ShoppingCartService {
 
         return saleOrder;
     }
+
+    private SalesOrderViewModel getSalesOrderModel(long orderStatusId, long userId, long orderId, List orderItemsModel) {
+        SalesOrder salesOrder = getSalesOrder(orderStatusId, userId);
+        return new SalesOrderViewBuilder()
+                .setSalesOrderId(salesOrder.getSalesOrderId())
+                .setCreationDate(salesOrder.getCreationDate())
+                .setLimit(salesOrder.getLimit())
+                .setTotalAmount(orderId) /*Времянные заглущки*/
+                .setOrderItems(orderItemsModel) /*Времянные заглущки*/
+                .build();
+    }
+
+    private SalesOrder getSalesOrder(long orderStatusId, long userId) {
+        return DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderByOrderStatusId(orderStatusId, userId);
+    }
+
+
 }
