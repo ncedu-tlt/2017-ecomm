@@ -8,6 +8,8 @@ import java.util.List;
 public interface OrderItemsDAO {
     List<OrderItem> getOrderItems();
 
+    List<OrderItem> getOrderItemsBySalesOrderId(long salesOrderId);
+
     OrderItem addOrderItem(OrderItem orderItem);
 
     OrderItem updateOrderItem(OrderItem orderItem);

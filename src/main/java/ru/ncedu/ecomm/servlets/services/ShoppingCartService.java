@@ -1,15 +1,20 @@
-package ru.ncedu.ecomm.servlets.services.shoppingCart;
+package ru.ncedu.ecomm.servlets.services;
 
 import ru.ncedu.ecomm.data.DAOFactory;
 import ru.ncedu.ecomm.data.models.OrderItem;
 import ru.ncedu.ecomm.data.models.SalesOrder;
+import ru.ncedu.ecomm.servlets.models.OrderItemViewModel;
+import ru.ncedu.ecomm.servlets.models.ProductViewModel;
 import ru.ncedu.ecomm.servlets.models.SalesOrderViewModel;
+import ru.ncedu.ecomm.servlets.models.builders.OrderItemViewBuilder;
 import ru.ncedu.ecomm.servlets.models.builders.SalesOrderViewBuilder;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
@@ -104,15 +109,54 @@ public class ShoppingCartService {
         return saleOrder;
     }
 
-    private SalesOrderViewModel getSalesOrderModel(long orderStatusId, long userId, long orderId, List orderItemsModel) {
+    public SalesOrderViewModel getSalesOrderModel(long orderStatusId, long userId) throws SQLException {
         SalesOrder salesOrder = getSalesOrder(orderStatusId, userId);
         return new SalesOrderViewBuilder()
                 .setSalesOrderId(salesOrder.getSalesOrderId())
                 .setCreationDate(salesOrder.getCreationDate())
                 .setLimit(salesOrder.getLimit())
-                .setTotalAmount(orderId) /*Времянные заглущки*/
-                .setOrderItems(orderItemsModel) /*Времянные заглущки*/
+                .setTotalAmount(totalAmount(salesOrder.getSalesOrderId()))
+                .setOrderItems(getOrderItemModel(salesOrder.getSalesOrderId()))
                 .build();
+    }
+
+    private List<OrderItemViewModel> getOrderItemModel(long salesOrderId) throws SQLException {
+        List<OrderItemViewModel> orderItemsView = new ArrayList<>();
+        List<ProductViewModel> products = ProductViewService.getInstance().getProductModelByOrderId(salesOrderId);
+        for (ProductViewModel product : products) {
+            OrderItemViewModel orderItemViewModel = new OrderItemViewBuilder()
+                    .setProductId(product.getId())
+                    .setQuantity(getQuantity(product.getId(), salesOrderId))
+                    .setName(product.getName())
+                    .setPrice(product.getPrice())
+                    .setImgUrl(product.getImageUrl())
+                    .build();
+            orderItemsView.add(orderItemViewModel);
+        }
+
+        return orderItemsView;
+    }
+
+    private long totalAmount(long salesOrderId) throws SQLException {
+        long sumAllPrice = 0;
+        List<Long> priceList = new ArrayList<>();
+        List<OrderItemViewModel> orderItemViewModels = getOrderItemModel(salesOrderId);
+        priceList.addAll(orderItemViewModels.stream().map(OrderItemViewModel::getPrice).collect(Collectors.toList()));
+        for (Long sum : priceList) {
+            sumAllPrice += sum;
+        }
+        return sumAllPrice;
+    }
+
+    private int getQuantity(long productId, long salesOrderId) throws SQLException {
+        int quantity;
+        OrderItem orderItem = getOrderItemByUserConfig(productId, salesOrderId);
+        quantity = orderItem.getQuantity();
+        return quantity;
+    }
+
+    private OrderItem getOrderItemByUserConfig(long productId, long salesOrderId) throws SQLException {
+        return DAOFactory.getDAOFactory().getOrderItemsDAO().getOrderItemByUserConfig(productId, salesOrderId);
     }
 
     private SalesOrder getSalesOrder(long orderStatusId, long userId) {
