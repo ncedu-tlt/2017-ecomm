@@ -20,7 +20,7 @@ public class ShoppingCartService {
 
     private static ShoppingCartService instance;
 
-    public static synchronized ShoppingCartService getInstaince(){
+    public static synchronized ShoppingCartService getInstance(){
         if(instance == null){
             instance = new ShoppingCartService();
         }

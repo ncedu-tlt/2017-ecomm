@@ -33,7 +33,7 @@ public class ShoppingCartIconServlet extends HttpServlet {
     }
 
     private long getQuantityProducts(long userId) {
-        long salesOrderId = ShoppingCartService.getInstaince().getSalesOrderId(userId);
+        long salesOrderId = ShoppingCartService.getInstance().getSalesOrderId(userId);
         return getDAOFactory().getOrderItemsDAO().getProductsBySalesOrderId(salesOrderId);
     }
 }

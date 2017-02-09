@@ -1,9 +1,8 @@
 package ru.ncedu.ecomm.servlets;
 
 
-import ru.ncedu.ecomm.data.models.User;
 import ru.ncedu.ecomm.servlets.services.passwordRecovery.PasswordRecoveryService;
-import ru.ncedu.ecomm.servlets.services.passwordRecovery.SendMail;
+import ru.ncedu.ecomm.servlets.services.passwordRecovery.SendMailService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,42 +11,37 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
-
 
 @WebServlet(name = "PasswordRecoveryServlet", urlPatterns = {"/recovery"})
 public class PasswordRecoveryServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/views/pages/passwordRecovery.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        SendLetterToEmail(req, resp);
+        sendLetterToEmail(req, resp);
     }
 
-    private void SendLetterToEmail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void sendLetterToEmail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        PasswordRecoveryService recoveryService = new PasswordRecoveryService(req);
-        SendMail sender = SendMail.buildSenderByPasswordRecovery(recoveryService);
-
-        if (sender.checkEmail()) {
-            updateUserByEmail(recoveryService);
-            req.setAttribute("answer", sender.sendMail());
+        String toEmail = req.getParameter("email");
+        String textHTML = getTextHtml(toEmail);
+        if (SendMailService.getInstance().checkEmail(toEmail)) {
+            req.setAttribute("answer", SendMailService.getInstance().sendMail(toEmail, textHTML));
             req.getRequestDispatcher("/views/pages/passwordRecovery.jsp").forward(req, resp);
-        } else if (!sender.checkEmail()) {
+        } else{
             req.setAttribute("answer", "Incorrect email! Please try enter other email");
             req.getRequestDispatcher("/views/pages/passwordRecovery.jsp").forward(req, resp);
         }
     }
 
-    private void updateUserByEmail(PasswordRecoveryService recoveryService) {
-        User userByEmail = getDAOFactory().getUserDAO().getUserByEmail(recoveryService.getToEmail());
-        userByEmail.setRecoveryHash(recoveryService.getRecoveryHash());
-        getDAOFactory().getUserDAO().updateUser(userByEmail);
+    private String getTextHtml(String toEmail) {
+        return "<p>Please change your password in here:</p>" +
+                "<a href='https://ncedu-ecomm-dev.herokuapp.com/passwordChange?email="
+                + toEmail + "&recoveryHash=" + PasswordRecoveryService.getInstance()
+                .getRecoveryHash() + "'>Change Password</a>";
     }
-
-
 }

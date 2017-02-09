@@ -24,7 +24,7 @@ public class AddToShoppingCartServlet extends HttpServlet {
         long userId = UserService.getInstance().getCurrentUserId(req, resp);
         long productId = Long.parseLong(req.getParameter("productId"));
         try {
-            ShoppingCartService.getInstaince().addToShoppingCart(userId, productId);
+            ShoppingCartService.getInstance().addToShoppingCart(userId, productId);
             resp.sendRedirect("/views/pages/cart.jsp");
         } catch (SQLException e) {
             throw new RuntimeException(e);
