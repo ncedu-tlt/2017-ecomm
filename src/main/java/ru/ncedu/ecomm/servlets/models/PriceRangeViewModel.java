@@ -1,13 +1,13 @@
-package ru.ncedu.ecomm.data.models;
+package ru.ncedu.ecomm.servlets.models;
 
-public class PriceRangeModel {
+public class PriceRangeViewModel {
     private double min;
     private double max;
 
-    public PriceRangeModel() {
+    public PriceRangeViewModel() {
     }
 
-    public PriceRangeModel(double min, double max) {
+    public PriceRangeViewModel(double min, double max) {
         this.min = min;
         this.max = max;
     }

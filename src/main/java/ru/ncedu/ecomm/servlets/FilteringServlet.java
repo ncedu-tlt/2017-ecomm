@@ -1,9 +1,9 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.models.Characteristic;
-import ru.ncedu.ecomm.data.models.PriceRangeModel;
+import ru.ncedu.ecomm.servlets.models.PriceRangeViewModel;
 import ru.ncedu.ecomm.data.models.Product;
-import ru.ncedu.ecomm.data.models.builders.PriceRangeModelBuilder;
+import ru.ncedu.ecomm.servlets.models.builders.PriceRangeViewModelBuilder;
 import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
 import ru.ncedu.ecomm.servlets.models.FilterViewModel;
 import ru.ncedu.ecomm.servlets.models.ProductViewModel;
@@ -33,7 +33,7 @@ public class FilteringServlet extends HttpServlet {
 
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        long categoryId = getCategoryParentId(request);
+        long categoryId = getCategoryId(request);
 
         List<CategoryViewModel> categoryViewModels = new ArrayList<>();
         List<ProductViewModel> products = getProducts(request);
@@ -51,10 +51,13 @@ public class FilteringServlet extends HttpServlet {
         long categoryId = Long.parseLong(request.getParameter("category_id"));
         return getDAOFactory().getCategoryDAO().getCategoriesByHierarchy(categoryId).get(0).getCategoryId();
     }
+    private long getCategoryId(HttpServletRequest request) {
+        return Long.parseLong(request.getParameter("category_id"));
+    }
 
-    private PriceRangeModel getPriceRange(HttpServletRequest request) {
+    private PriceRangeViewModel getPriceRange(HttpServletRequest request) {
 
-        PriceRangeModelBuilder priceRange = new PriceRangeModelBuilder();
+        PriceRangeViewModelBuilder priceRange = new PriceRangeViewModelBuilder();
         long categoryId = getCategoryParentId(request);
 
         if (!request.getParameter("min").isEmpty()) {
@@ -91,7 +94,7 @@ public class FilteringServlet extends HttpServlet {
 
         List<Product> products = getDAOFactory()
                 .getProductDAO()
-                .getFilteredProducts(filters, getPriceRange(request), getCategoryParentId(request));
+                .getFilteredProducts(filters, getPriceRange(request), getCategoryId(request));
 
         return ProductViewService.getInstance().getProductsToView(products);
     }

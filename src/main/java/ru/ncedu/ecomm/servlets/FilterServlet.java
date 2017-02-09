@@ -2,7 +2,7 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.models.Characteristic;
 import ru.ncedu.ecomm.data.models.CharacteristicValue;
-import ru.ncedu.ecomm.data.models.PriceRangeModel;
+import ru.ncedu.ecomm.servlets.models.PriceRangeViewModel;
 import ru.ncedu.ecomm.servlets.models.FilterViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.FilterViewModelBuilder;
 
@@ -57,7 +57,7 @@ public class FilterServlet extends HttpServlet {
         return values;
     }
 
-    private PriceRangeModel getPriceRange(long categoryId){
+    private PriceRangeViewModel getPriceRange(long categoryId){
         return getDAOFactory().getProductDAO().getProductsPriceRangeByCategoryId(categoryId);
     }
 

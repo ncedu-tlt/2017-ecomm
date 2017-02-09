@@ -1,9 +1,9 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import ru.ncedu.ecomm.data.accessobjects.ProductDAO;
-import ru.ncedu.ecomm.data.models.PriceRangeModel;
+import ru.ncedu.ecomm.servlets.models.PriceRangeViewModel;
 import ru.ncedu.ecomm.data.models.Product;
-import ru.ncedu.ecomm.data.models.builders.PriceRangeModelBuilder;
+import ru.ncedu.ecomm.servlets.models.builders.PriceRangeViewModelBuilder;
 import ru.ncedu.ecomm.data.models.builders.ProductBuilder;
 import ru.ncedu.ecomm.servlets.models.FilterViewModel;
 import ru.ncedu.ecomm.utils.DBUtils;
@@ -326,7 +326,7 @@ public class PostgresProductDAO implements ProductDAO {
         return products;
     }
 
-    public PriceRangeModel getProductsPriceRangeByCategoryId(long categoryId) {
+    public PriceRangeViewModel getProductsPriceRangeByCategoryId(long categoryId) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT min(price) AS min, max(price) AS max FROM " +
@@ -353,7 +353,7 @@ public class PostgresProductDAO implements ProductDAO {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                return new PriceRangeModelBuilder()
+                return new PriceRangeViewModelBuilder()
                         .setMin(resultSet.getDouble("min"))
                         .setMax(resultSet.getDouble("max"))
                         .build();
@@ -364,7 +364,11 @@ public class PostgresProductDAO implements ProductDAO {
         return null;
     }
 
-    public List<Product> getFilteredProducts(List<FilterViewModel> filters, PriceRangeModel priceRange, long categoryId) {
+    /**
+     * Return filtered products by category, subcategories and price range
+     */
+
+    public List<Product> getFilteredProducts(List<FilterViewModel> filters, PriceRangeViewModel priceRange, long categoryId) {
         List<Product> products = new ArrayList<>();
         String query = "SELECT * FROM products\n" +
                 "WHERE product_id IN (SELECT t.product_id FROM characteristic_values t ";
@@ -380,24 +384,15 @@ public class PostgresProductDAO implements ProductDAO {
                 subQuery = subQuery.substring(0, subQuery.length() - 1) + ") ";
             }
         }
-        query += subQuery +") AND category_id IN (" +
-                "SELECT id FROM (" +
-                "   WITH RECURSIVE recCategoriesId (id, parent_id) AS " +
-                "(SELECT category_id, parent_id FROM categories " +
-                "   WHERE category_id = (SELECT * FROM (WITH RECURSIVE recParentId (category_id, parent_id) AS" +
-                "                       (SELECT category_id, parent_id FROM categories\n" +
-                "                           WHERE category_id = " + categoryId + "\n" +
-                "                            UNION\n" +
-                "                         SELECT ct.category_id, ct.parent_id\n" +
-                "                               FROM categories ct INNER JOIN recParentId\n" +
-                "                                   ON (recParentId.parent_id = ct.category_id))\n" +
-                "                              SELECT category_id FROM recParentId\n" +
-                "                              ORDER BY category_id) AS parentId\n" +
-                "                              LIMIT 1)\n" +
-                "                            UNION\n" +
-                "                            SELECT CT.category_id, CT.parent_id\n" +
-                "                            FROM categories CT INNER JOIN recCategoriesId ON (recCategoriesId.id = CT.parent_id))\n" +
-                "                          SELECT * FROM recCategoriesId) AS id)\n" +
+        query += subQuery + ") AND category_id IN (" +
+                "SELECT id FROM (\n" +
+                "WITH RECURSIVE recCategoriesId (id, parent_id) AS\n" +
+                "(SELECT category_id, parent_id FROM categories\n" +
+                "WHERE category_id = " + categoryId + "\n" +
+                "UNION\n" +
+                "SELECT CT.category_id, CT.parent_id\n" +
+                "FROM categories CT INNER JOIN recCategoriesId ON (recCategoriesId.id = CT.parent_id))\n" +
+                "SELECT * FROM recCategoriesId) AS id)\n" +
                 "      AND price BETWEEN " + priceRange.getMin() + " AND " + priceRange.getMax() + "\n" +
                 "\n" +
                 "    GROUP BY products.product_id\n";
