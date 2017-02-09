@@ -1,14 +1,16 @@
 package ru.ncedu.ecomm.servlets.services;
 
 import ru.ncedu.ecomm.data.DAOFactory;
-import ru.ncedu.ecomm.data.models.*;
+import ru.ncedu.ecomm.data.models.Category;
+import ru.ncedu.ecomm.data.models.CharacteristicValue;
+import ru.ncedu.ecomm.data.models.Product;
+import ru.ncedu.ecomm.data.models.Rating;
 import ru.ncedu.ecomm.data.models.builders.CategoryBuilder;
 import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
 import ru.ncedu.ecomm.servlets.models.ProductViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.CategoryViewBuilder;
 import ru.ncedu.ecomm.servlets.models.builders.ProductItemsViewBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,7 +98,7 @@ public class ProductViewService {
                         CHARACTERISTIC_ID_FOR_IMAGE_URL);
     }
 
-    List<ProductViewModel> getProductModelByOrderId(long orderId){
+    public List<ProductViewModel> getProductModelByOrderId(long orderId){
        List<Product> productForBuild = DAOFactory.getDAOFactory()
                 .getProductDAO()
                 .getProductByOrderId(orderId);

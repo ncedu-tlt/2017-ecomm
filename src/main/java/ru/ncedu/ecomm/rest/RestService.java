@@ -205,6 +205,13 @@ public class RestService {
         return getDAOFactory().getSalesOrderDAO().getSalesOrderById(salesOrderId);
     }
 
+    @GET
+    @Path("/salesorder/orderstatus/{salesOrderStatusId}/{salesOrderUserId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public SalesOrder getSalesOrderByOrderStatusId(@PathParam("salesOrderStatusId") long salesOrderStatusId, @PathParam("salesOrderUserId") long salesOrderUserId){
+        return getDAOFactory().getSalesOrderDAO().getSalesOrderByOrderStatusId(salesOrderStatusId, salesOrderUserId);
+    }
+
     @DELETE
     @Path("/salesorder/{salesOrderId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -463,6 +470,13 @@ public class RestService {
     @Produces(MediaType.APPLICATION_JSON)
     public List<OrderItem> getOrderItems() {
         return getDAOFactory().getOrderItemsDAO().getOrderItems();
+    }
+
+    @GET
+    @Path("/orderitems/{salesOrderId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<OrderItem> getSalesOrderByUserId(@PathParam("salesOrderId") long salesOrderId){
+        return getDAOFactory().getOrderItemsDAO().getOrderItemsBySalesOrderId(salesOrderId);
     }
 
     @POST

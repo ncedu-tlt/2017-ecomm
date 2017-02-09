@@ -42,6 +42,33 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
     }
 
     @Override
+    public List<OrderItem> getOrderItemsBySalesOrderId(long salesOrderId) {
+        List <OrderItem> orderItemsBySalesOrderId = new ArrayList<>();
+        try(Connection connection = DBUtils.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(
+               "SELECT\n"+
+                       " product_id,\n" +
+                       " sales_order_id,\n" +
+                       " quantity\n" +
+                       "FROM order_items\n" +
+                       "WHERE sales_order_id = ?\n")) {
+            preparedStatement.setLong(1, salesOrderId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                OrderItem orderItem = new OrderItemBuilder()
+                        .setProductId(resultSet.getLong("product_id"))
+                        .setSalesOrederId(resultSet.getLong("sales_order_id"))
+                        .setQuantity(resultSet.getInt("quantity"))
+                        .build();
+                orderItemsBySalesOrderId.add(orderItem);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return orderItemsBySalesOrderId;
+    }
+
+    @Override
     public OrderItem addOrderItem(OrderItem orderItem) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(

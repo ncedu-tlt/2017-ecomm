@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
+import ru.ncedu.ecomm.servlets.services.ShoppingCartService;
 import ru.ncedu.ecomm.servlets.services.UserService;
-import ru.ncedu.ecomm.servlets.services.shoppingCart.ShoppingCartService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
