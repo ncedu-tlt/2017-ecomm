@@ -46,7 +46,7 @@
                         Limit:
                     </div>
                     <div class="ui left labeled button" tabindex="0">
-                        <input type="text" class="ui basic right pointing label" name="limitInput" value=""/>">
+                        <input type="text" class="ui basic right pointing label" name="limitInput" value=""/>
                         <button class="ui  button" name="limitButton">APPLY</button>
                     </div>
                 </div>
