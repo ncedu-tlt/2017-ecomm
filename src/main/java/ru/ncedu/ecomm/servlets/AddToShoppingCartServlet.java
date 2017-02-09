@@ -13,19 +13,13 @@ import java.sql.SQLException;
 
 @WebServlet(name = "AddToShoppingCartServlet", urlPatterns = {"/addToShoppingCart"})
 public class AddToShoppingCartServlet extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/views/pages/index.jsp").forward(req, resp);
-    }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long userId = UserService.getInstance().getCurrentUserId(req, resp);
         long productId = Long.parseLong(req.getParameter("productId"));
         try {
             ShoppingCartService.getInstance().addToShoppingCart(userId, productId);
-            resp.sendRedirect("/views/pages/cart.jsp");
+            resp.sendRedirect("/cart");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

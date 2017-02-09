@@ -98,12 +98,11 @@ public class ShoppingCartService {
         SalesOrder saleOrder = new SalesOrder();
         Date creationDate = new Date(System.currentTimeMillis());
         BigDecimal limit = new BigDecimal("50000.00");
-        int EnteringOrderStatus = 1;
 
         saleOrder.setUserId(userId);
         saleOrder.setCreationDate(creationDate);
         saleOrder.setLimit(limit);
-        saleOrder.setOrderStatusId(EnteringOrderStatus);
+        saleOrder.setOrderStatusId(OrderStatusId.ENTERING.getStatusId());
 
         return saleOrder;
     }

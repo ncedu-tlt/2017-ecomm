@@ -34,7 +34,6 @@ public class PasswordRecoveryService {
         for (Integer hash : uniqueHash) {
             recoveryHash += hash;
         }
-
         return recoveryHash;
     }
 
