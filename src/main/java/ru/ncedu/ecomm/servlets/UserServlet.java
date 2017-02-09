@@ -1,5 +1,6 @@
 package ru.ncedu.ecomm.servlets;
 
+import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.DAOFactory;
 import ru.ncedu.ecomm.data.models.Role;
 import ru.ncedu.ecomm.data.models.User;
@@ -35,7 +36,7 @@ public class UserServlet extends HttpServlet {
         List<UserViewModel> users = getUserToView();
 
         req.setAttribute("users", users);
-        req.getRequestDispatcher("/views/pages/users.jsp").forward(req, resp);
+        req.getRequestDispatcher(Configuration.getProperty("page.user")).forward(req, resp);
 
     }
 
