@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
+//TODO: слишком много запросов к БД, можно оптимизировать
 public class ShoppingCartService {
 
     private ShoppingCartService() {
@@ -41,6 +42,7 @@ public class ShoppingCartService {
         }
     }
 
+    //TODO: можно и весь Sales Order вернуть, метод будет более универсальным
     public long getSalesOrderId(long userId) {
         SalesOrder salesOrder = getDAOFactory().getSalesOrderDAO().getSalesOrderByUserId(userId);
         return salesOrder.getSalesOrderId();
@@ -53,7 +55,7 @@ public class ShoppingCartService {
 
     private void addProductToOrderItem(long productId, long userId) throws SQLException {
         long salesOrderId = getSalesOrderId(userId);
-        if (isProductAtOrderItem(productId)) {
+        if (isProductAtOrderItem(productId)) { //TODO: если хотя бы один пользователь когда-либо положил данный продукт в корзину
             incrementQuantityOrderItem(productId, salesOrderId);
         } else {
             addNewOrderItem(productId, salesOrderId);
@@ -79,7 +81,7 @@ public class ShoppingCartService {
     }
 
     private OrderItem addToOrderItem(long productId, long salesOrderId) {
-        int minQuantity = 1;
+        int minQuantity = 1; //TODO: в константу
 
         OrderItem orderItem = new OrderItem();
         orderItem.setProductId(productId);
@@ -96,8 +98,8 @@ public class ShoppingCartService {
 
     private SalesOrder addToSalesOrder(long userId) {
         SalesOrder saleOrder = new SalesOrder();
-        Date creationDate = new Date(System.currentTimeMillis());
-        BigDecimal limit = new BigDecimal("50000.00");
+        Date creationDate = new Date(System.currentTimeMillis()); //TODO: можно просто new Date()
+        BigDecimal limit = new BigDecimal("50000.00"); //TODO: зачем?
 
         saleOrder.setUserId(userId);
         saleOrder.setCreationDate(creationDate);
@@ -107,6 +109,7 @@ public class ShoppingCartService {
         return saleOrder;
     }
 
+    //TODO: по названию не ясно, что мы возвращаем список
     public List<SalesOrderViewModel> getSalesOrderModel(long orderStatusId, long userId) throws SQLException {
         List<SalesOrderViewModel> salesOrderViewModels = new ArrayList<>();
         List<SalesOrder> salesOrders = getSalesOrder(orderStatusId, userId);
@@ -123,6 +126,7 @@ public class ShoppingCartService {
         return salesOrderViewModels;
     }
 
+    //TODO: по названию не ясно, что мы возвращаем список
     private List<OrderItemViewModel> getOrderItemModel(long salesOrderId) throws SQLException {
         List<OrderItemViewModel> orderItemsView = new ArrayList<>();
         List<ProductViewModel> products = ProductViewService.getInstance().getProductModelByOrderId(salesOrderId);
@@ -140,9 +144,11 @@ public class ShoppingCartService {
         return orderItemsView;
     }
 
+    //TODO: incrementAmountInOrderItem(long salesOrderId) - вы видите только это. Что, в вашем понимании, делает этот метод?
     private List<OrderItemViewModel> incrementAmountInOrderItem(long salesOrderId) throws SQLException {
         List<OrderItemViewModel> orderItemViewModels = getOrderItemModel(salesOrderId);
         for (OrderItemViewModel model : orderItemViewModels) {
+            //TODO: зачем нам столько переменных?
             long amount = model.getPrice();
             long quantity = model.getQuantity();
             amount *= quantity;
@@ -151,6 +157,7 @@ public class ShoppingCartService {
         return orderItemViewModels;
     }
 
+    //TODO: название метода - действие
     private long totalAmount(long salesOrderId) throws SQLException {
         long sumAllPrice = 0;
         List<Long> priceList = new ArrayList<>();
@@ -163,7 +170,7 @@ public class ShoppingCartService {
     }
 
     private int getQuantity(long productId, long salesOrderId) throws SQLException {
-        int quantity;
+        int quantity; //TODO: inline
         OrderItem orderItem = getOrderItemByUserConfig(productId, salesOrderId);
         quantity = orderItem.getQuantity();
         return quantity;

@@ -11,21 +11,21 @@
          * Executed on component initialization
          */
         init: function () {
-            if($('.jsProfileComponent').length) {
-                $('#profile').addClass('active');
+            if($('.jsProfileComponent').length) { //TODO: глобальный селектор
+                $('#profile').addClass('active'); //TODO: идентификатор
             }
 
             if($('.jsOrdersHistoryComponent').length) {
                 $('#orderHistory').addClass('active');
             }
 
-            var href=$('.menuElement');
+            var href=$('.menuElement'); //TODO: класс должен начинаться с js
             href.click(function () {
                 changeActive($(this));
                 return false;
             });
 
-            function changeActive(current) {
+            function changeActive(current) { //TODO: не стоит использовать вложенные функции
                 console.log(href);
                 href.removeClass('active');
                 current.addClass('active');
@@ -35,7 +35,7 @@
                 changeStateDisplay($(this).attr('id'));
             });
 
-            function changeStateDisplay(block){
+            function changeStateDisplay(block){ //TODO: а почему сразу ссылки не проставить на элементы?
                 if(block === 'profile'){
                     window.location.replace('/views/pages/profile.jsp');
                 }

@@ -21,8 +21,8 @@ public class ProductViewService {
     public static final String DEFAULT_IMAGE_URL = "/images/defaultimage/image.png";
     public static final long CHARACTERISTIC_ID_FOR_IMAGE_URL = 28;
 
-    private static final String NAME_FOR_BEST_OFFERS_CATEGORY = "Best Offers";
-    private static final Long CATEGORY_ID_FOR_BEST_OFFERS = 0L;
+    private static final String NAME_FOR_BEST_OFFERS_CATEGORY = "Best Offers"; //TODO: в JSP
+    private static final Long CATEGORY_ID_FOR_BEST_OFFERS = 0L; //TODO: не нужно
 
     private ProductViewService() {
     }
@@ -44,7 +44,7 @@ public class ProductViewService {
                 .setId(CATEGORY_ID_FOR_BEST_OFFERS)
                 .setProducts(addProductToViewByCategoryId(
                         new CategoryBuilder()
-                                .setCategoryId(CATEGORY_ID_FOR_BEST_OFFERS)
+                                .setCategoryId(CATEGORY_ID_FOR_BEST_OFFERS) //TODO: а не проще было сделать так, чтобы метод принимал идентификатор?
                                 .build())
                 )
                 .build();
@@ -70,6 +70,8 @@ public class ProductViewService {
         return categoriesById;
     }
 
+    //TODO: почему называется add, если это получение?
+    //TODO: уточнения в духе byCategoryId нужны только тогда, когда может возникнуть недопонимание. В большинстве случаев, достаточно самих параметров
     private List<ProductViewModel> addProductToViewByCategoryId(Category category) {
 
         if (category.getParentId() == 0 && category.getCategoryId() != CATEGORY_ID_FOR_BEST_OFFERS) {

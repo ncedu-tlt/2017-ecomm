@@ -14,7 +14,7 @@ public interface OrderItemsDAO {
 
     OrderItem updateOrderItem(OrderItem orderItem);
 
-    OrderItem getOrderItemByUserConfig(long productId, long salesOrderId) throws SQLException;
+    OrderItem getOrderItemByUserConfig(long productId, long salesOrderId) throws SQLException; //TODO: by user config?
 
     void deleteOrderItem(OrderItem orderItem);
 

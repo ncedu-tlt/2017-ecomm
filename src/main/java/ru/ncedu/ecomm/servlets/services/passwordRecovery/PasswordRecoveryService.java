@@ -17,6 +17,7 @@ public class PasswordRecoveryService {
         return instance;
     }
 
+    //TODO: а нам действительно нужен такой каскад функций?
     public String getRecoveryHash() {
         return createRecoveryHash();
     }

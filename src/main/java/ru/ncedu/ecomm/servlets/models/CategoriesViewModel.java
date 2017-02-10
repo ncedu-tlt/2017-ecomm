@@ -2,6 +2,7 @@ package ru.ncedu.ecomm.servlets.models;
 
 import java.util.List;
 
+//TODO: это одна категория
 public class CategoriesViewModel {
     private long id;
     private String name;

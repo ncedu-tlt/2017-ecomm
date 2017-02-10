@@ -21,12 +21,12 @@ public class ShoppingCartIconServlet extends HttpServlet {
     }
 
     private void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        final int EMPTY_QUANTITY = 0;
+        final int EMPTY_QUANTITY = 0; //TODO: в константу
         HttpSession authorization = req.getSession();
         if (authorization.getAttribute("userId") == null) {
             req.setAttribute("quantityProducts", EMPTY_QUANTITY);
         } else {
-            long userId = UserService.getInstance().getCurrentUserId(req, resp);
+            long userId = UserService.getInstance().getCurrentUserId(req, resp); //TODO: мы его уже получали
             long quantityProducts = getQuantityProducts(userId);
             req.setAttribute("quantityProducts", quantityProducts);
         }

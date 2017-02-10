@@ -28,11 +28,11 @@ public class ProfileServlet extends HttpServlet {
 
     private void showProfile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession authorization = req.getSession();
-        if (authorization.getAttribute("userId") != null) {
+        if (authorization.getAttribute("userId") != null) { //TODO: проверка
             createAttributeProfile(req, resp);
             resp.sendRedirect(Configuration.getProperty("page.profile"));
         } else {
-            UserService.getInstance().redirectToLoginIfNeeded(req, resp);
+            UserService.getInstance().redirectToLoginIfNeeded(req, resp); //TODO: и еще одна проверка
         }
     }
 

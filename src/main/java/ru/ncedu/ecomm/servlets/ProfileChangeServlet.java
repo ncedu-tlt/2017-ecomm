@@ -35,14 +35,14 @@ public class ProfileChangeServlet extends HttpServlet {
     }
 
     private void initAttributesNothingChange(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("answer", "Nothing to change.");
+        req.setAttribute("answer", "Nothing to change."); //TODO: в JSP
         req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
     }
 
     private void initAttributesSuccessChange(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long userId = UserService.getInstance().getCurrentUserId(req, resp);
         changeProfile(userId, req);
-        req.setAttribute("answer", "Profile was changed.");
+        req.setAttribute("answer", "Profile was changed."); //TODO: в JSP
         req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
     }
 

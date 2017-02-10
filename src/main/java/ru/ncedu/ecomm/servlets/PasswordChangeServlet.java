@@ -31,11 +31,11 @@ public class PasswordChangeServlet extends HttpServlet {
         String newPassword = req.getParameter("password");
         if(checkEmailAndRecoveryHash(this.email, this.recoveryHash) ){
             updatePassword(this.email, newPassword);
-            req.setAttribute("answer", "Your password was change.");
+            req.setAttribute("answer", "Your password was change."); //TODO: в JSP
             req.getRequestDispatcher("/views/pages/passwordChange.jsp").forward(req, resp);
         }
         else{
-            req.setAttribute("answer", "Error. Try again to recovery your password");
+            req.setAttribute("answer", "Error. Try again to recovery your password"); //TODO: в JSP
             req.getRequestDispatcher("/views/pages/passwordChange.jsp").forward(req, resp);
         }
     }

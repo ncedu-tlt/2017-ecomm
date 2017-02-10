@@ -45,6 +45,7 @@ public class ReviewService {
         return reviewsViewModels;
     }
 
+    //TODO: нужно больше методов!! ;)
     private String getUserAvatarLinkByUserId(long userId) {
         User user = getUserById(userId);
 

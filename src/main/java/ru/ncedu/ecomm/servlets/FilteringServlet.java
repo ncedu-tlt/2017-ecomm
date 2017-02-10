@@ -1,14 +1,14 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.models.Characteristic;
-import ru.ncedu.ecomm.servlets.models.PriceRangeViewModel;
 import ru.ncedu.ecomm.data.models.Product;
-import ru.ncedu.ecomm.servlets.models.builders.PriceRangeViewModelBuilder;
 import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
 import ru.ncedu.ecomm.servlets.models.FilterViewModel;
+import ru.ncedu.ecomm.servlets.models.PriceRangeViewModel;
 import ru.ncedu.ecomm.servlets.models.ProductViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.CategoryViewBuilder;
 import ru.ncedu.ecomm.servlets.models.builders.FilterViewModelBuilder;
+import ru.ncedu.ecomm.servlets.models.builders.PriceRangeViewModelBuilder;
 import ru.ncedu.ecomm.servlets.services.ProductViewService;
 
 import javax.servlet.ServletException;
@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
@@ -39,7 +41,7 @@ public class FilteringServlet extends HttpServlet {
         List<ProductViewModel> products = getProducts(request);
         categoryViewModels.add(new CategoryViewBuilder()
                 .setId(products.isEmpty() ? null : categoryId)
-                .setName(products.isEmpty() ? "No products that meet the selected criteria" : "Filtered")
+                .setName(products.isEmpty() ? "No products that meet the selected criteria" : "Filtered") //TODO: текст в JSP
                 .setProducts(products)
                 .build());
         request.setAttribute("price", getPriceRange(request));

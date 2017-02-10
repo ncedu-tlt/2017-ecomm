@@ -1,11 +1,11 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import ru.ncedu.ecomm.data.accessobjects.ProductDAO;
-import ru.ncedu.ecomm.servlets.models.PriceRangeViewModel;
 import ru.ncedu.ecomm.data.models.Product;
-import ru.ncedu.ecomm.servlets.models.builders.PriceRangeViewModelBuilder;
 import ru.ncedu.ecomm.data.models.builders.ProductBuilder;
 import ru.ncedu.ecomm.servlets.models.FilterViewModel;
+import ru.ncedu.ecomm.servlets.models.PriceRangeViewModel;
+import ru.ncedu.ecomm.servlets.models.builders.PriceRangeViewModelBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -368,6 +368,7 @@ public class PostgresProductDAO implements ProductDAO {
      * Return filtered products by category, subcategories and price range
      */
 
+    //TODO: рай для SQL-инъекций
     public List<Product> getFilteredProducts(List<FilterViewModel> filters, PriceRangeViewModel priceRange, long categoryId) {
         List<Product> products = new ArrayList<>();
         String query = "SELECT * FROM products\n" +
