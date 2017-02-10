@@ -257,11 +257,11 @@ INSERT INTO characteristic_values(
 	(27, 15, 'Call of Duty: Infinite Warfare will take players on an unforgettable journey as they engage in battles from Earth to beyond our atmosphere against a relentless, enemy faction that threatens our very way of life.');
 	
 INSERT INTO users(
-	role_id, login, first_name, last_name, password, phone, email, registration_date)
-	VALUES (1, 'admin', 'andrew', 'andrew', 'admin', 111111, 'admin@admin.com', current_timestamp),
-	(2, 'manager', 'sergey', 'sergey', 'manager', 222222, 'manager@manager.com', current_timestamp),
-	(3, 'user', 'boris', 'boris', 'user', 333333, 'user@user.com', current_timestamp),
-	(3, 'user1', 'max', 'max', 'user1', 444444, 'user1@user1.com', current_timestamp);
+	role_id, first_name, last_name, password, phone, email, registration_date)
+	VALUES (1, 'andrew', 'andrew', 'admin', 111111, 'admin@admin.com', current_timestamp),
+	(2, 'sergey', 'sergey', 'manager', 222222, 'manager@manager.com', current_timestamp),
+	(3, 'boris', 'boris', 'user', 333333, 'user@user.com', current_timestamp),
+	(3, 'max', 'max', 'user1', 444444, 'user1@user1.com', current_timestamp);
 	
 INSERT INTO reviews(
 	product_id, user_id, description, creation_date, raiting)
