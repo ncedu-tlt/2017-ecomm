@@ -4,11 +4,11 @@
 <div class="container jsFilteringComponent">
     <div class="ui left filter vertical sidebar labeled menu">
         <br>
-        <h2 class="ui header">Filter</h2>
+        <h2 class="ui header center aligned">Filter</h2>
         <form class="ui equal dividing width form" action="${pageContext.request.contextPath}/filtering" method="get">
             <input type="hidden" name="category_id" value="${param.category_id}"/>
             <div class="ui item">
-                <h2 class="ui header small">Price</h2>
+                <h2 class="ui header small center aligned">Price</h2>
                 <div class="tow fields ">
                     <div class="field">
                         <input class="jsOnlyNumber" type="text" name="min" placeholder="min"
@@ -19,9 +19,10 @@
                                value="${requestScope.priceRange.getMax()}"/>
                     </div>
                 </div>
-                <button class="ui primary button" type="submit">Filter</button>
+                <button class="ui primary fluid button" type="submit">Filter</button>
             </div>
-            <div class="ui vertical accordion menu">
+            <div class="ui divider hidden"></div>
+            <div class="ui vertical fluid accordion menu">
                 <c:set var="active" value="active"/>
                 <c:forEach var="filter" items="${requestScope.filters}">
                     <div class="item">
