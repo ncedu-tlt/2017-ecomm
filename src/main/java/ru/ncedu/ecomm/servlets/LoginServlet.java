@@ -31,6 +31,7 @@ public class LoginServlet extends HttpServlet {
             String password = req.getParameter("password");
             HttpSession session = req.getSession();
             User user = getDAOFactory().getUserDAO().getUserByEmail(email);
+            // TODO: пароль должен хранится в зашифрованном виде, например, MD5
             if (user != null && user.getPassword().equals(password)) {
                 session.setAttribute("userId", user.getId());
                 session.setAttribute("userRoleId", user.getRoleId());

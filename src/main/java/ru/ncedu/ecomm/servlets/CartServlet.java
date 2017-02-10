@@ -30,7 +30,7 @@ public class CartServlet extends HttpServlet {
         try {
             UserService.getInstance().redirectToLoginIfNeeded(request, response);
             long userId = UserService.getInstance().getCurrentUserId(request, response);
-            long orderStatusId = 1;
+            long orderStatusId = 1; // TODO: магическое число
             List<SalesOrderViewModel> showSalesOrderList = ShoppingCartService.getInstance().getSalesOrderModel(orderStatusId, userId);
             request.setAttribute("showSalesOrderList", showSalesOrderList);
             request.getRequestDispatcher("/views/pages/cart.jsp").forward(request, response);
