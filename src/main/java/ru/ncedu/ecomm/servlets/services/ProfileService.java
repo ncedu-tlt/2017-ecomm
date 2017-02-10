@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
+//TODO: это не сервис
 public class ProfileService {
     private String firstName;
     private String lastName;
@@ -31,9 +32,10 @@ public class ProfileService {
         this.password = userProfile.getPassword();
     }
 
+    //TODO: не используется
     private String getFirstName(String firstName) {
         if (!firstName.trim().isEmpty()) {
-            return userProfile.getFirstName() != firstName ?
+            return userProfile.getFirstName() != firstName ? //TODO: строки - это объекты, их нельзя сравнивать через !=
                     firstName :
                     userProfile.getFirstName();
         } else {
@@ -41,9 +43,10 @@ public class ProfileService {
         }
     }
 
+    //TODO: не используется
     private String getLastName(String lastName) {
         if (!lastName.trim().isEmpty()) {
-            return userProfile.getLastName() != lastName ?
+            return userProfile.getLastName() != lastName ? //TODO: строки - это объекты, их нельзя сравнивать через !=
                     lastName :
                     userProfile.getLastName();
         } else {
@@ -51,12 +54,13 @@ public class ProfileService {
         }
     }
 
+    //TODO: не используется
     private String getEmail(String email) {
-        String regPattern = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
+        String regPattern = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$"; //TODO: в константу
         Pattern patternEmailValidation = Pattern.compile(regPattern, Pattern.CASE_INSENSITIVE);
         Matcher matcher = patternEmailValidation.matcher(email);
         if (matcher.find()) {
-            return userProfile.getEmail() != email ?
+            return userProfile.getEmail() != email ? //TODO: строки - это объекты, их нельзя сравнивать через !=
                     email :
                     userProfile.getEmail();
         } else {
@@ -66,7 +70,7 @@ public class ProfileService {
 
     private String getPassword(String password) {
         if (!password.trim().isEmpty()) {
-            return userProfile.getPassword() != password ?
+            return userProfile.getPassword() != password ? //TODO: строки - это объекты, их нельзя сравнивать через !=
                     password :
                     userProfile.getPassword();
         } else {
@@ -79,7 +83,7 @@ public class ProfileService {
     }
 
     private User getUserProfileById(long userId){
-        User user = getDAOFactory().getUserDAO().getUserById(userId);
+        User user = getDAOFactory().getUserDAO().getUserById(userId); //TODO: смотрим подсказки от IDEA
         return user;
     }
 

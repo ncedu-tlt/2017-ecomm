@@ -30,9 +30,9 @@ public class CartServlet extends HttpServlet {
         try {
             UserService.getInstance().redirectToLoginIfNeeded(request, response);
             long userId = UserService.getInstance().getCurrentUserId(request, response);
-            long orderStatusId = 1; // TODO: магическое число
+            long orderStatusId = 1; //TODO: в константу, magic number, лишняя переменная, использовать enum
             List<SalesOrderViewModel> showSalesOrderList = ShoppingCartService.getInstance().getSalesOrderModel(orderStatusId, userId);
-            request.setAttribute("showSalesOrderList", showSalesOrderList);
+            request.setAttribute("showSalesOrderList", showSalesOrderList); //TODO: почему show?
             request.getRequestDispatcher("/views/pages/cart.jsp").forward(request, response);
         } catch (SQLException e) {
             e.printStackTrace();

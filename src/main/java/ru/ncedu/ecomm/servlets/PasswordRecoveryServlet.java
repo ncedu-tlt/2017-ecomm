@@ -33,11 +33,12 @@ public class PasswordRecoveryServlet extends HttpServlet {
             req.setAttribute("answer", SendMailService.getInstance().sendMail(toEmail, textHTML));
             req.getRequestDispatcher("/views/pages/passwordRecovery.jsp").forward(req, resp);
         } else{
-            req.setAttribute("answer", "Incorrect email! Please try enter other email");
+            req.setAttribute("answer", "Incorrect email! Please try enter other email"); //TODO: в JSP
             req.getRequestDispatcher("/views/pages/passwordRecovery.jsp").forward(req, resp);
         }
     }
 
+    //TODO: по хорошему бы вынести это в отдельный файл
     private String getTextHtml(String toEmail) {
         return "<p>Please change your password in here:</p>" +
                 "<a href='https://ncedu-ecomm-dev.herokuapp.com/passwordChange?email="

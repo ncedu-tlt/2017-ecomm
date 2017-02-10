@@ -38,27 +38,28 @@ public class RegistrationServlet extends HttpServlet {
                                     .build();
                             getDAOFactory().getUserDAO().addUser(user);
                         } else {
-                            req.setAttribute("answer", "Email is already in use");
+                            req.setAttribute("answer", "Email is already in use"); //TODO: в JSP
                             req.getRequestDispatcher("/views/pages/registration.jsp").forward(req, resp);
                     }
                 } else {
-                    req.setAttribute("answer", "Passwords don't match");
+                    req.setAttribute("answer", "Passwords don't match"); //TODO: в JSP
                     req.getRequestDispatcher("/views/pages/registration.jsp").forward(req, resp);
                 }
             } else  {
-                req.setAttribute("answer", "Wrong email");
+                req.setAttribute("answer", "Wrong email"); //TODO: в JSP
                 req.getRequestDispatcher("/views/pages/registration.jsp").forward(req, resp);
             }
         } else  {
-            req.setAttribute("answer", "Fields must not be empty");
+            req.setAttribute("answer", "Fields must not be empty"); //TODO: в JSP
             req.getRequestDispatcher("/views/pages/registration.jsp").forward(req, resp);
         }
-        req.setAttribute("registration", "Registration success! Please sign in");
+        req.setAttribute("registration", "Registration success! Please sign in"); //TODO: в JSP
         req.getRequestDispatcher("/views/pages/login.jsp").forward(req, resp);
     }
 
+    //TODO: можно сделать приватным
     public static boolean checkEmail(String email){
-        final String check = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
+        final String check = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$"; //TODO: в константы
 
         Pattern patternEmailValidation = Pattern.compile(check
                                                          ,Pattern.CASE_INSENSITIVE);

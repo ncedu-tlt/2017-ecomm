@@ -34,13 +34,13 @@ public class UserService {
     public void redirectIfNotAllowed(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         long userRoleId = Long.parseLong(session.getAttribute("userRoleId").toString());
-        if (userRoleId != 1){
+        if (userRoleId != 1){ //TODO: что есть 1?
             request.getRequestDispatcher("/home").include(request, response);
         }
     }
 
     public long getCurrentUserId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        redirectToLoginIfNeeded(request, response);
+        redirectToLoginIfNeeded(request, response); //TODO: а это тут зачем?
         HttpSession session = request.getSession();
         return Long.parseLong(session.getAttribute("userId").toString());
     }
@@ -63,6 +63,7 @@ public class UserService {
         return userName;
     }
 
+    //TODO: не возникала ли мысль, что данный метод способен на большее?
     private boolean nameIsEmpty(String name) {
         return name == null || name.isEmpty();
     }

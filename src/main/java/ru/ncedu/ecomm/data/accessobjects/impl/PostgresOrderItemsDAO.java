@@ -180,6 +180,7 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
         return quantityProducts;
     }
 
+    //TODO: неудачное название
     @Override
     public boolean isHaveProductId(long productId) {
         boolean isProductId = false;
@@ -193,7 +194,7 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
                             "FROM public.order_items \n" +
                             "WHERE product_id = " + productId);
 
-            while (resultSet.next()) {
+            while (resultSet.next()) { //TODO: зачем нам цикл?
                 isProductId = true;
             }
         } catch (SQLException e) {

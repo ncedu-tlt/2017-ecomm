@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
-import ru.ncedu.ecomm.servlets.models.CategoriesViewModel;
 import ru.ncedu.ecomm.data.models.Category;
+import ru.ncedu.ecomm.servlets.models.CategoriesViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.CategoriesViewBuilder;
 
 import javax.servlet.ServletException;
@@ -51,7 +51,7 @@ public class CategoriesServlet extends HttpServlet {
             }
         }
 
-        request.setAttribute("heads", heads);
+        request.setAttribute("heads", heads); //TODO: а почему heads?
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

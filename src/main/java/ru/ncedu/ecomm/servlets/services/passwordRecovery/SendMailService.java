@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
+//TODO: не очень удачное название
 public class SendMailService {
     private final Properties SERVER_PROPERTIES = configServerForSend();
 
@@ -26,6 +27,7 @@ public class SendMailService {
         return instance;
     }
 
+    //TODO: вынести в properties файл
     private Properties configServerForSend() {
         Properties serverProperties = System.getProperties();
         serverProperties.put("mail.smtp.auth", "true");
@@ -36,6 +38,7 @@ public class SendMailService {
         return serverProperties;
     }
 
+    //TODO: текстовки, выводимые на странице, не должны располагаться в сервисах
     public String sendMail(String toEmail, String textHtml) {
         if (checkEmail(toEmail) && searchMailInDatabase(toEmail)) {
             return sendLetterToUser(toEmail, textHtml) ?
@@ -74,7 +77,7 @@ public class SendMailService {
 
     private boolean sendMessageWithMimeMessage(MimeMessage message, String toEmail, String textHtml) {
         String subjectLetter = "Password Recovery";
-        String fromEmail = "netcracker.ecomm@gmail.com";
+        String fromEmail = "netcracker.ecomm@gmail.com"; //TODO: в properties
         try{
             message.setFrom(new InternetAddress(fromEmail));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
