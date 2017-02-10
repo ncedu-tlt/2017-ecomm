@@ -305,7 +305,6 @@ ALTER SEQUENCE sales_orders_sales_order_id_seq OWNED BY sales_orders.sales_order
 CREATE TABLE users (
     user_id bigint NOT NULL PRIMARY KEY,
     role_id bigint NOT NULL,
-    login character varying(100) NOT NULL,
     first_name character varying(100) NOT NULL,
     last_name character varying(100) NOT NULL,
     password character varying(1000) NOT NULL,
