@@ -25,7 +25,8 @@ public class SearchServlet extends HttpServlet {
         List<CategoryViewModel> categoryViewModels = new ArrayList<>();
 
         categoryViewModels.add(new CategoryViewBuilder()
-                .setName(products.isEmpty() ? "Sorry, no products matched \"" + query + "\"" : "Search results") //TODO: в JSP
+                .setId(null)
+                .setName("Search")
                 .setProducts(ProductViewService.getInstance().getProductsToView(products))
                 .build());
         request.setAttribute("categoriesForView", categoryViewModels);

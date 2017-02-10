@@ -3,7 +3,21 @@
     <div class="ui container jsProductListComponent main-content" style="margin: 1.5em 0;">
     <h2 class="ui center aligned header horizontal divider">
         <c:if test="${category.getId() == null}">
-            <span class="withoutUrl">${category.getName()}</span>
+            <c:choose>
+                <c:when test="${category.getName() == 'Search'}">
+            <span class="withoutUrl">${category.getProducts().isEmpty() ?
+                    'Sorry, no products matched "'.concat(param.search).concat('"') :
+                    "Search results"}
+            </span>
+                </c:when>
+                <c:when test="${category.getName() == 'Filter'}">
+            <span class="withoutUrl">${category.getProducts().isEmpty() ?
+                    "No products that meet the selected criteria" :
+                    "Filtered"}
+            </span>
+                </c:when>
+                <c:otherwise> ${category.getName()}</c:otherwise>
+            </c:choose>
         </c:if>
         <c:if test="${category.getId() >= 0}">
             <a href="${pageContext.request.contextPath}/category?category_id=${category.getId()}">
@@ -29,7 +43,8 @@
                 <h3 class="ui center aligned grey header">
                     <c:if test="${product.getDiscount() != 0}">
                         <b style="text-decoration: line-through;">$${product.getPrice()}</b>
-                        <a style="margin-left: .2em" href="${pageContext.request.contextPath}/product?product_id=${product.getId()}"
+                        <a style="margin-left: .2em"
+                           href="${pageContext.request.contextPath}/product?product_id=${product.getId()}"
                            class="ui red large label">
                             $${product.getDiscount()}
                         </a>
