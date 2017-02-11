@@ -149,15 +149,14 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                      "INSERT INTO public.sales_orders\n" +
                              "(user_id,\n" +
                              " creation_date,\n" +
-                             " \"limit\",\n" +
                              " order_status_id)\n" +
-                             "VALUES (?, ?, ?, ?)\n" +
+                             "VALUES (?, ?, ?)\n" +
                              "RETURNING sales_order_id")) {
 
             statement.setLong(1, salesOrder.getUserId());
             statement.setDate(2, salesOrder.getCreationDate());
-            statement.setBigDecimal(3, salesOrder.getLimit());
-            statement.setLong(4, salesOrder.getOrderStatusId());
+//            statement.setBigDecimal(3, salesOrder.getLimit());
+            statement.setLong(3, salesOrder.getOrderStatusId());
             statement.execute();
 
             ResultSet resultSet = statement.getResultSet();

@@ -36,8 +36,7 @@ public class ShoppingCartService {
         long salesOrderId = getSalesOrderId(userId);
         if (salesOrderId == 0) {
             addNewSalesOrder(userId);
-
-//            addProductToOrderItem(productId, salesOrderId);
+            addProductToOrderItem(productId, salesOrderId);
         } else {
             addProductToOrderItem(productId, salesOrderId);
         }
@@ -55,27 +54,24 @@ public class ShoppingCartService {
     private void addProductToOrderItem(long productId, long salesOrderId) throws SQLException {
         List<OrderItemViewModel> orderItems = getOrderItemModelList(salesOrderId);
         OrderItemViewModel orderItemBySalesOrderId = getOrderItemBySalesOrderId(productId, salesOrderId, orderItems);
-//        if (orderItemBySalesOrderId == null) {
-//            addNewOrderItem(productId, salesOrderId);
-//        } else {
-//            try {
-//                incrementQuantityOrderItem(orderItemBySalesOrderId);
-//            } catch (NullPointerException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
+        if (orderItemBySalesOrderId == null) {
+            addNewOrderItem(productId, salesOrderId);
+        } else {
+            try {
+                incrementQuantityOrderItem(orderItemBySalesOrderId);
+            } catch (NullPointerException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private OrderItemViewModel getOrderItemBySalesOrderId(long productId, long salesOrderId, List<OrderItemViewModel> orderItems) {
-        System.out.println(productId);
-        System.out.println(salesOrderId);
-//        for (OrderItemViewModel orderItem : orderItems) {
-//            if (orderItem.getProductId() == productId
-//                    && orderItem.getSalesOrderId() == salesOrderId) {
-//                return orderItem;
-//            }
-//        }
-//        return null;
+        for (OrderItemViewModel orderItem : orderItems) {
+            if (orderItem.getProductId() == productId
+                    && orderItem.getSalesOrderId() == salesOrderId) {
+                return orderItem;
+            }
+        }
         return null;
     }
 
@@ -108,7 +104,8 @@ public class ShoppingCartService {
 
     private SalesOrder addToSalesOrder(long userId) {
         SalesOrder saleOrder = new SalesOrder();
-        Date creationDate = new Date(System.currentTimeMillis()); //TODO: можно просто new Date()
+        Date creationDate = new Date(System.currentTimeMillis());
+
 
         saleOrder.setUserId(userId);
         saleOrder.setCreationDate(creationDate);
@@ -138,6 +135,7 @@ public class ShoppingCartService {
         List<ProductViewModel> products = ProductViewService.getInstance().getProductModelByOrderId(salesOrderId);
         for (ProductViewModel product : products) {
             OrderItemViewModel orderItemViewModel = new OrderItemViewBuilder()
+                    .setSalesOrderId(salesOrderId)
                     .setProductId(product.getId())
                     .setQuantity(getQuantity(product.getId(), salesOrderId))
                     .setName(product.getName())
@@ -155,9 +153,9 @@ public class ShoppingCartService {
         List<OrderItemViewModel> orderItemViewModels = getOrderItemModelList(salesOrderId);
         for (OrderItemViewModel model : orderItemViewModels) {
             long amount = model.getPrice();
-            if (model.getDiscount() != 0){
+            if (model.getDiscount() != 0) {
                 amount = model.getDiscount() * model.getQuantity();
-            }else {
+            } else {
                 amount *= model.getQuantity();
             }
             model.setPrice(amount);
@@ -195,7 +193,7 @@ public class ShoppingCartService {
         }
     }
 
-    private void setTotalPriceInDatabase(long salesOrderId, long totalPrice) throws SQLException{
+    private void setTotalPriceInDatabase(long salesOrderId, long totalPrice) throws SQLException {
         SalesOrder salesOrder = getDAOFactory().getSalesOrderDAO().getSalesOrderById(salesOrderId);
         salesOrder.setTotalPrice(totalPrice);
         getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
