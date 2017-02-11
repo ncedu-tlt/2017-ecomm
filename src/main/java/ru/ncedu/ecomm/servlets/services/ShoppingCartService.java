@@ -9,7 +9,6 @@ import ru.ncedu.ecomm.servlets.models.SalesOrderViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.OrderItemViewBuilder;
 import ru.ncedu.ecomm.servlets.models.builders.SalesOrderViewBuilder;
 
-import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,45 +33,47 @@ public class ShoppingCartService {
     }
 
     public void addToShoppingCart(long userId, long productId) throws SQLException {
-        if (searchSalesOrderByUserId(userId)) {
-            addProductToOrderItem(productId, userId);
-        } else {
-            createSalesOrder(userId);
-            addProductToOrderItem(productId, userId);
-        }
-    }
-
-    //TODO: можно и весь Sales Order вернуть, метод будет более универсальным
-    public long getSalesOrderId(long userId) {
-        SalesOrder salesOrder = getDAOFactory().getSalesOrderDAO().getSalesOrderByUserId(userId);
-        return salesOrder.getSalesOrderId();
-    }
-
-    private boolean searchSalesOrderByUserId(long userId) {
-        SalesOrder salesOrder = getDAOFactory().getSalesOrderDAO().getSalesOrderByUserId(userId);
-        return salesOrder != null;
-    }
-
-    private void addProductToOrderItem(long productId, long userId) throws SQLException {
         long salesOrderId = getSalesOrderId(userId);
-        if (isProductAtOrderItem(productId)) { //TODO: если хотя бы один пользователь когда-либо положил данный продукт в корзину
-            incrementQuantityOrderItem(productId, salesOrderId);
+        if (salesOrderId == 0) {
+            addNewSalesOrder(userId);
+
+//            addProductToOrderItem(productId, salesOrderId);
         } else {
-            addNewOrderItem(productId, salesOrderId);
+            addProductToOrderItem(productId, salesOrderId);
         }
     }
 
-    private boolean isProductAtOrderItem(long productId) {
-        return getDAOFactory().getOrderItemsDAO().isHaveProductId(productId);
+    public long getSalesOrderId(long userId) throws SQLException {
+        List<SalesOrderViewModel> salesOrders = getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
+        long salesOrderId = 0;
+        for (SalesOrderViewModel salesOrder : salesOrders) {
+            salesOrderId = salesOrder.getSalesOrderId();
+        }
+        return salesOrderId;
     }
 
+    private void addProductToOrderItem(long productId, long salesOrderId) throws SQLException {
+        List<OrderItemViewModel> orderItems = getOrderItemModelList(salesOrderId);
+        OrderItemViewModel orderItemBySalesOrderId = getOrderItemBySalesOrderId(productId, salesOrderId, orderItems);
+        if (orderItemBySalesOrderId == null) {
+            addNewOrderItem(productId, salesOrderId);
+        } else {
+            try {
+                incrementQuantityOrderItem(orderItemBySalesOrderId);
+            } catch (NullPointerException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
-    private void incrementQuantityOrderItem(long productId, long salesOrderId) throws SQLException {
-        OrderItem orderItem = getDAOFactory().getOrderItemsDAO()
-                .getOrderItem(productId, salesOrderId);
-        int quantity = orderItem.getQuantity() + 1;
-        orderItem.setQuantity(quantity);
-        getDAOFactory().getOrderItemsDAO().updateOrderItem(orderItem);
+    private OrderItemViewModel getOrderItemBySalesOrderId(long productId, long salesOrderId, List<OrderItemViewModel> orderItems) {
+        for (OrderItemViewModel orderItem : orderItems) {
+            if (orderItem.getProductId() == productId
+                    && orderItem.getSalesOrderId() == salesOrderId) {
+                return orderItem;
+            }
+        }
+        return null;
     }
 
     private void addNewOrderItem(long productId, long salesOrderId) {
@@ -80,8 +81,14 @@ public class ShoppingCartService {
         getDAOFactory().getOrderItemsDAO().addOrderItem(orderItem);
     }
 
+    private OrderItemViewModel incrementQuantityOrderItem(OrderItemViewModel orderItemBySalesOrderId) throws SQLException {
+        int quantity = orderItemBySalesOrderId.getQuantity() + 1;
+        orderItemBySalesOrderId.setQuantity(quantity);
+        return orderItemBySalesOrderId;
+    }
+
     private OrderItem addToOrderItem(long productId, long salesOrderId) {
-        int minQuantity = 1; //TODO: в константу
+        final int minQuantity = 1;
 
         OrderItem orderItem = new OrderItem();
         orderItem.setProductId(productId);
@@ -91,7 +98,7 @@ public class ShoppingCartService {
         return orderItem;
     }
 
-    private void createSalesOrder(long userId) {
+    private void addNewSalesOrder(long userId) {
         SalesOrder salesOrder = addToSalesOrder(userId);
         getDAOFactory().getSalesOrderDAO().addSalesOrder(salesOrder);
     }
@@ -99,12 +106,10 @@ public class ShoppingCartService {
     private SalesOrder addToSalesOrder(long userId) {
         SalesOrder saleOrder = new SalesOrder();
         Date creationDate = new Date(System.currentTimeMillis()); //TODO: можно просто new Date()
-        BigDecimal limit = new BigDecimal("50000.00"); //TODO: зачем?
 
         saleOrder.setUserId(userId);
         saleOrder.setCreationDate(creationDate);
-        saleOrder.setLimit(limit);
-        saleOrder.setOrderStatusId(OrderStatusId.ENTERING.getStatusId());
+        saleOrder.setOrderStatusId(EnumOrderStatus.ENTERING.getStatus());
 
         return saleOrder;
     }
@@ -167,13 +172,6 @@ public class ShoppingCartService {
         }
         setTotalPriceInDatabase(salesOrderId, sumAllPrice);
         return sumAllPrice;
-    }
-
-    private void deletedProductInOrderItemDataBase(long productId, long userId) throws SQLException {
-        OrderItem orderItem = getOrderItemByUserConfig(productId, getSalesOrderId(userId));
-        orderItem.setProductId(productId);
-        orderItem.setSalesOrderId(getSalesOrderId(userId));
-        getDAOFactory().getOrderItemsDAO().deleteOrderItem(orderItem);
     }
 
     private void setTotalPriceInDatabase(long salesOrderId, long totalPrice) throws SQLException{

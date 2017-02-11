@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.servlets.models.SalesOrderViewModel;
-import ru.ncedu.ecomm.servlets.services.OrderStatusId;
+import ru.ncedu.ecomm.servlets.services.EnumOrderStatus;
 import ru.ncedu.ecomm.servlets.services.ShoppingCartService;
 import ru.ncedu.ecomm.servlets.services.UserService;
 
@@ -31,7 +31,7 @@ public class CartServlet extends HttpServlet {
         try {
             UserService.getInstance().redirectToLoginIfNeeded(request, response);
             long userId = UserService.getInstance().getCurrentUserId(request, response);
-            List<SalesOrderViewModel> salesOrderList = ShoppingCartService.getInstance().getSalesOrderModelList(OrderStatusId.ENTERING.getStatusId(), userId);
+            List<SalesOrderViewModel> salesOrderList = ShoppingCartService.getInstance().getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
             request.setAttribute("salesOrderList", salesOrderList);
             request.getRequestDispatcher("/views/pages/cart.jsp").forward(request, response);
         } catch (SQLException e) {
