@@ -12,8 +12,9 @@ public class SalesOrderBuilder {
     private Date creationDate;
     private BigDecimal limit;
     private long orderStatus;
-    public SalesOrderBuilder(){
+    private long totalPrice;
 
+    public SalesOrderBuilder(){
     }
 
     SalesOrderBuilder(long salesOrderId) {
@@ -51,6 +52,10 @@ public class SalesOrderBuilder {
         return this;
     }
 
+    public SalesOrderBuilder setTotalPrice(long totalPrice) {
+        this.totalPrice = totalPrice;
+        return this;
+    }
 
     public SalesOrder build() {
         return new SalesOrder(
@@ -58,7 +63,8 @@ public class SalesOrderBuilder {
                 userId,
                 creationDate,
                 limit,
-                orderStatus
+                orderStatus,
+                totalPrice
                 );
     }
 }

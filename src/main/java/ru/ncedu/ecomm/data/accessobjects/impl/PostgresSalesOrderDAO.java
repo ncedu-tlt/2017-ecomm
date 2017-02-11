@@ -180,7 +180,8 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                              "SET user_id       = ?,\n" +
                              "  creation_date   = ?,\n" +
                              "  \"limit\"         = ?,\n" +
-                             "  order_status_id = ?\n" +
+                             "  order_status_id = ?,\n" +
+                             " total_price = ?\n" +
                              "WHERE sales_order_id = ?"
              )) {
 
@@ -188,7 +189,8 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
             statement.setDate(2, salesOrder.getCreationDate());
             statement.setBigDecimal(3, salesOrder.getLimit());
             statement.setLong(4, salesOrder.getOrderStatusId());
-            statement.setLong(5, salesOrder.getSalesOrderId());
+            statement.setLong(5, salesOrder.getTotalPrice());
+            statement.setLong(6, salesOrder.getSalesOrderId());
             statement.execute();
 
             return salesOrder;

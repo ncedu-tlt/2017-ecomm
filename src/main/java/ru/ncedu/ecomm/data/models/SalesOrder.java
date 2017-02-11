@@ -11,6 +11,7 @@ public class SalesOrder {
     private Date creationDate;
     private BigDecimal limit;
     private long orderStatusId;
+    private long totalPrice;
 
     public SalesOrder() {
     }
@@ -19,13 +20,15 @@ public class SalesOrder {
                       long userId,
                       Date creationDate,
                       BigDecimal limit,
-                      long orderStatusId) {
+                      long orderStatusId,
+                      long sumPrice) {
 
         this.salesOrderId = salesOrderId;
         this.userId = userId;
         this.creationDate = creationDate;
         this.limit = limit;
         this.orderStatusId = orderStatusId;
+        this.totalPrice = sumPrice;
     }
 
     public long getSalesOrderId() {
@@ -66,5 +69,13 @@ public class SalesOrder {
 
     public void setOrderStatusId(long orderStatusId) {
         this.orderStatusId = orderStatusId;
+    }
+
+    public long getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(long totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }
