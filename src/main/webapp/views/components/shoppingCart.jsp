@@ -1,11 +1,11 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="showSalesOrderList" scope="page" value="${requestScope.showSalesOrderList}"/>
-<c:forEach var="salesOrder" items="${showSalesOrderList}">
-<div class="ui container jsShoppingCardComponent main-content">
-    <h3 class="ui center aligned header">
-        Your Cart
-    </h3>
-    <div class="ui divided items">
+<c:set var="salesOrderList" scope="page" value="${requestScope.salesOrderList}"/>
+<c:forEach var="salesOrder" items="${salesOrderList}">
+    <div class="ui container jsShoppingCardComponent main-content">
+        <h3 class="ui center aligned header">
+            Your Cart
+        </h3>
+        <div class="ui divided items">
             <div class="ui divided items">
                 <c:forEach var="itemOrder" items="${salesOrder.getOrderItems()}">
                     <div class="item">
@@ -30,7 +30,7 @@
                                     <i class="icon remove"></i>
                                 </button>
                                 <h2 class="ui header right floated center middle aligned">
-                                        $${itemOrder.getPrice()}
+                                    $${itemOrder.getPrice()}
                                 </h2>
                             </div>
                         </div>
@@ -38,8 +38,8 @@
                     </div>
                 </c:forEach>
             </div>
-    </div>
-    <div class="ui section divider"></div>
+        </div>
+        <div class="ui section divider"></div>
         <div class="ui grid">
             <div class="eight wide column">
                 <div class="inline field">
@@ -59,15 +59,15 @@
                 </h3>
             </div>
         </div>
-    <div class="ui grid">
-        <div class="eight wide column">
-            <button class="ui secondary basic button">PRINT</button>
-        </div>
-        <div class="eight wide column">
-            <button class="ui secondary basic right floated button">CHECKOUT</button>
+        <div class="ui grid">
+            <div class="eight wide column">
+                <button class="ui secondary basic button">PRINT</button>
+            </div>
+            <div class="eight wide column">
+                <button class="ui secondary basic right floated button">CHECKOUT</button>
+            </div>
         </div>
     </div>
-</div>
 </c:forEach>
 <script>
     window.frm.components.init('ShoppingCardComponent', '.jsShoppingCardComponent');

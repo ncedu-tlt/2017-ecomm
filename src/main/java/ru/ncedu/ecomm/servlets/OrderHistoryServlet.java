@@ -34,7 +34,7 @@ public class OrderHistoryServlet extends HttpServlet {
 
         List<SalesOrderViewModel> orderHistory = null;
         try {
-            orderHistory = ShoppingCartService.getInstance().getSalesOrderModel(1, userId); //TODO: что есть 1?
+            orderHistory = ShoppingCartService.getInstance().getSalesOrderModelList(1, userId); //TODO: что есть 1?
         } catch (SQLException e) {
             // TODO: что будет, если упадёт эксепшен?
             e.printStackTrace();
