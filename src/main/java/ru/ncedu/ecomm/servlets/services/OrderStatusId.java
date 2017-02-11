@@ -3,7 +3,7 @@ package ru.ncedu.ecomm.servlets.services;
 //TODO: public
 //TODO: почему используем пакет services под enum?
 //TODO: enum олицетворяет статус, а не идентификатор
-enum OrderStatusId {
+public enum OrderStatusId {
     ENTERING(1),
     SUBMITED(2), //TODO: IDEA подсвечивает и грамматические ошибки
     COMPLETED(3);
