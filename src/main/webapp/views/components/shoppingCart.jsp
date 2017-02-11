@@ -26,7 +26,7 @@
                                         <div class="item" data-value="3">Choice 3</div>
                                     </div>
                                 </div>
-                                <button class="circular right floated ui icon button middle aligned ">
+                                <button class="circular right floated ui icon button middle aligned" name="deleteButton">
                                     <i class="icon remove"></i>
                                 </button>
                                 <h2 class="ui header right floated center middle aligned">
