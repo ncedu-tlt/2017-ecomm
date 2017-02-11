@@ -109,8 +109,7 @@ public class ShoppingCartService {
         return saleOrder;
     }
 
-    //TODO: по названию не ясно, что мы возвращаем список
-    public List<SalesOrderViewModel> getSalesOrderModel(long orderStatusId, long userId) throws SQLException {
+    public List<SalesOrderViewModel> getSalesOrderModelList(long orderStatusId, long userId) throws SQLException {
         List<SalesOrderViewModel> salesOrderViewModels = new ArrayList<>();
         List<SalesOrder> salesOrders = getSalesOrder(orderStatusId, userId);
         for (SalesOrder salesOrder : salesOrders) {
@@ -118,16 +117,15 @@ public class ShoppingCartService {
                     .setSalesOrderId(salesOrder.getSalesOrderId())
                     .setCreationDate(salesOrder.getCreationDate())
                     .setLimit(salesOrder.getLimit())
-                    .setTotalAmount(totalAmount(salesOrder.getSalesOrderId()))
-                    .setOrderItems(incrementAmountInOrderItem(salesOrder.getSalesOrderId()))
+                    .setTotalAmount(totalAmountSumAllPriceInOrderItemViewModelList(salesOrder.getSalesOrderId()))
+                    .setOrderItems(relationPriceAndQuantityInOrderItemViewModelList(salesOrder.getSalesOrderId()))
                     .build();
             salesOrderViewModels.add(salesOrderViewModel);
         }
         return salesOrderViewModels;
     }
 
-    //TODO: по названию не ясно, что мы возвращаем список
-    private List<OrderItemViewModel> getOrderItemModel(long salesOrderId) throws SQLException {
+    private List<OrderItemViewModel> getOrderItemModelList(long salesOrderId) throws SQLException {
         List<OrderItemViewModel> orderItemsView = new ArrayList<>();
         List<ProductViewModel> products = ProductViewService.getInstance().getProductModelByOrderId(salesOrderId);
         for (ProductViewModel product : products) {
@@ -137,6 +135,7 @@ public class ShoppingCartService {
                     .setName(product.getName())
                     .setPrice(product.getPrice())
                     .setImgUrl(product.getImageUrl())
+                    .setDiscount(product.getDiscount())
                     .build();
             orderItemsView.add(orderItemViewModel);
         }
@@ -144,36 +143,42 @@ public class ShoppingCartService {
         return orderItemsView;
     }
 
-    //TODO: incrementAmountInOrderItem(long salesOrderId) - вы видите только это. Что, в вашем понимании, делает этот метод?
-    private List<OrderItemViewModel> incrementAmountInOrderItem(long salesOrderId) throws SQLException {
-        List<OrderItemViewModel> orderItemViewModels = getOrderItemModel(salesOrderId);
+    private List<OrderItemViewModel> relationPriceAndQuantityInOrderItemViewModelList(long salesOrderId) throws SQLException {
+        List<OrderItemViewModel> orderItemViewModels = getOrderItemModelList(salesOrderId);
         for (OrderItemViewModel model : orderItemViewModels) {
-            //TODO: зачем нам столько переменных?
             long amount = model.getPrice();
-            long quantity = model.getQuantity();
-            amount *= quantity;
+            if (model.getDiscount() != 0){
+                amount = model.getDiscount() * model.getQuantity();
+            }else {
+                amount *= model.getQuantity();
+            }
             model.setPrice(amount);
         }
         return orderItemViewModels;
     }
 
-    //TODO: название метода - действие
-    private long totalAmount(long salesOrderId) throws SQLException {
+    private long totalAmountSumAllPriceInOrderItemViewModelList(long salesOrderId) throws SQLException {
         long sumAllPrice = 0;
         List<Long> priceList = new ArrayList<>();
-        List<OrderItemViewModel> orderItemViewModels = incrementAmountInOrderItem(salesOrderId);
+        List<OrderItemViewModel> orderItemViewModels = relationPriceAndQuantityInOrderItemViewModelList(salesOrderId);
         priceList.addAll(orderItemViewModels.stream().map(OrderItemViewModel::getPrice).collect(Collectors.toList()));
         for (Long sum : priceList) {
             sumAllPrice += sum;
         }
+        setTotalPriceInDatabase(salesOrderId, sumAllPrice);
         return sumAllPrice;
     }
 
+    private void setTotalPriceInDatabase(long salesOrderId, long totalPrice) throws SQLException{
+        SalesOrder salesOrder = getDAOFactory().getSalesOrderDAO().getSalesOrderById(salesOrderId);
+        salesOrder.setTotalPrice(totalPrice);
+        getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
+    }
+
     private int getQuantity(long productId, long salesOrderId) throws SQLException {
-        int quantity; //TODO: inline
         OrderItem orderItem = getOrderItemByUserConfig(productId, salesOrderId);
-        quantity = orderItem.getQuantity();
-        return quantity;
+        return orderItem.getQuantity();
+
     }
 
     private OrderItem getOrderItemByUserConfig(long productId, long salesOrderId) throws SQLException {
