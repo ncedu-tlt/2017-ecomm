@@ -177,10 +177,11 @@ public class ShoppingCartService {
         return sumAllPrice;
     }
 
-    public void deletedProductInOrderItemDataBase(long productId, long userId) throws SQLException {
-        OrderItem orderItem = getOrderItem(productId, getSalesOrderId(userId));
+    public void deletedProductInOrderItemDataBase(long productId, long salesOrderId) throws SQLException {
+        OrderItem orderItem = getOrderItem(productId, salesOrderId);
         orderItem.setProductId(productId);
-        orderItem.setSalesOrderId(getSalesOrderId(userId));
+        orderItem.setSalesOrderId(salesOrderId);
+        System.out.println(orderItem.getProductId() + " " + orderItem.getSalesOrderId());
         getDAOFactory().getOrderItemsDAO().deleteOrderItem(orderItem);
     }
 
@@ -190,9 +191,8 @@ public class ShoppingCartService {
             OrderItem orderItem = getOrderItem(product.getId(), getSalesOrderId(userId));
             orderItem.setProductId(product.getId());
             orderItem.setSalesOrderId(getSalesOrderId(userId));
-            System.out.println(orderItem.getProductId() + " " + orderItem.getSalesOrderId());
+            getDAOFactory().getOrderItemsDAO().deleteOrderItem(orderItem);
         }
-    /*getDAOFactory().getOrderItemsDAO().deleteOrderItem(orderItem);*/
     }
 
     private void setTotalPriceInDatabase(long salesOrderId, long totalPrice) throws SQLException{

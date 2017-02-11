@@ -43,6 +43,10 @@
             </div>
         </div>
         <div class="ui section divider"></div>
+        <form form method="post" action="cart" class="ui grid seven column row">
+            <input name="emptyActions" type="hidden" value="emptyTrash">
+                <button class="ui secondary basic right floated button column">EMPTY TRASH</button>
+        </form>
         <div class="ui grid">
             <div class="eight wide column">
                 <div class="inline field">

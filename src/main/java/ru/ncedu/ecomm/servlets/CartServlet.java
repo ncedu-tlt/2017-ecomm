@@ -29,13 +29,15 @@ public class CartServlet extends HttpServlet {
 
     private void showSalesOrderList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            if (request.getParameter("cartActions") != null && request.getParameter("cartActions").equals("delete")){
+            UserService.getInstance().redirectToLoginIfNeeded(request, response);
+            long userId = UserService.getInstance().getCurrentUserId(request, response);
+            if (request.getParameter("cartActions") != null && request.getParameter("cartActions").equals("delete")) {
                 ShoppingCartService.getInstance().deletedProductInOrderItemDataBase(
                         Long.parseLong(request.getParameter("productId")),
                         Long.parseLong(request.getParameter("salesOrderId")));
+            }else if (request.getParameter("emptyActions") != null && request.getParameter("emptyActions").equals("emptyTrash")){
+                ShoppingCartService.getInstance().deletedAllProductsInOrderItemDataBase(userId);
             }
-            UserService.getInstance().redirectToLoginIfNeeded(request, response);
-            long userId = UserService.getInstance().getCurrentUserId(request, response);
             List<SalesOrderViewModel> salesOrderList = ShoppingCartService.getInstance().getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
             request.setAttribute("salesOrderList", salesOrderList);
             request.getRequestDispatcher("/views/pages/cart.jsp").forward(request, response);
