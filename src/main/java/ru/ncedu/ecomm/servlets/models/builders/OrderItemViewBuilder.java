@@ -10,6 +10,7 @@ public class OrderItemViewBuilder {
     private String name;
     private long price;
     private String imgUrl;
+    private long discount;
 
     public OrderItemViewBuilder() {
     }
@@ -44,7 +45,12 @@ public class OrderItemViewBuilder {
         return this;
     }
 
+    public OrderItemViewBuilder setDiscount(long discount) {
+        this.discount = discount;
+        return this;
+    }
+
     public OrderItemViewModel build(){
-        return new OrderItemViewModel(productId, salesOrderId, quantity, name, price, imgUrl);
+        return new OrderItemViewModel(productId, salesOrderId, quantity, name, price, imgUrl, discount);
     }
 }
