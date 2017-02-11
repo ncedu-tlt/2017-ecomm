@@ -55,24 +55,27 @@ public class ShoppingCartService {
     private void addProductToOrderItem(long productId, long salesOrderId) throws SQLException {
         List<OrderItemViewModel> orderItems = getOrderItemModelList(salesOrderId);
         OrderItemViewModel orderItemBySalesOrderId = getOrderItemBySalesOrderId(productId, salesOrderId, orderItems);
-        if (orderItemBySalesOrderId == null) {
-            addNewOrderItem(productId, salesOrderId);
-        } else {
-            try {
-                incrementQuantityOrderItem(orderItemBySalesOrderId);
-            } catch (NullPointerException e) {
-                throw new RuntimeException(e);
-            }
-        }
+//        if (orderItemBySalesOrderId == null) {
+//            addNewOrderItem(productId, salesOrderId);
+//        } else {
+//            try {
+//                incrementQuantityOrderItem(orderItemBySalesOrderId);
+//            } catch (NullPointerException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
     }
 
     private OrderItemViewModel getOrderItemBySalesOrderId(long productId, long salesOrderId, List<OrderItemViewModel> orderItems) {
-        for (OrderItemViewModel orderItem : orderItems) {
-            if (orderItem.getProductId() == productId
-                    && orderItem.getSalesOrderId() == salesOrderId) {
-                return orderItem;
-            }
-        }
+        System.out.println(productId);
+        System.out.println(salesOrderId);
+//        for (OrderItemViewModel orderItem : orderItems) {
+//            if (orderItem.getProductId() == productId
+//                    && orderItem.getSalesOrderId() == salesOrderId) {
+//                return orderItem;
+//            }
+//        }
+//        return null;
         return null;
     }
 
