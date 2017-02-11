@@ -14,11 +14,10 @@ public interface OrderItemsDAO {
 
     OrderItem updateOrderItem(OrderItem orderItem);
 
-    OrderItem getOrderItemByUserConfig(long productId, long salesOrderId) throws SQLException; //TODO: by user config?
+    OrderItem getOrderItem(long productId, long salesOrderId) throws SQLException; //TODO: by user config?
 
     void deleteOrderItem(OrderItem orderItem);
 
     long getProductsBySalesOrderId(long salesOrderId);
 
-    boolean isHaveProductId(long productId);
 }
