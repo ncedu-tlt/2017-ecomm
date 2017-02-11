@@ -8,7 +8,10 @@
         <div class="ui divided items">
             <div class="ui divided items">
                 <c:forEach var="itemOrder" items="${salesOrder.getOrderItems()}">
-                    <div class="item">
+                    <form method="post" action="cart" class="item">
+                        <input name="productId" type="hidden" value="${itemOrder.getProductId()}">
+                        <input name="salesOrderId" type="hidden" value="${salesOrder.getSalesOrderId()}">
+                        <input name="cartActions" type="hidden" value="delete">
                         <div class="ui small image">
                             <img src="${itemOrder.getImgUrl()}">
                         </div>
@@ -35,7 +38,7 @@
                             </div>
                         </div>
                         <div class="ui divider"></div>
-                    </div>
+                    </form>
                 </c:forEach>
             </div>
         </div>

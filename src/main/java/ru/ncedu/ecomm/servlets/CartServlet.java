@@ -29,6 +29,11 @@ public class CartServlet extends HttpServlet {
 
     private void showSalesOrderList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            if (request.getParameter("cartActions") != null && request.getParameter("cartActions").equals("delete")){
+                ShoppingCartService.getInstance().deletedProductInOrderItemDataBase(
+                        Long.parseLong(request.getParameter("productId")),
+                        Long.parseLong(request.getParameter("salesOrderId")));
+            }
             UserService.getInstance().redirectToLoginIfNeeded(request, response);
             long userId = UserService.getInstance().getCurrentUserId(request, response);
             List<SalesOrderViewModel> salesOrderList = ShoppingCartService.getInstance().getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
