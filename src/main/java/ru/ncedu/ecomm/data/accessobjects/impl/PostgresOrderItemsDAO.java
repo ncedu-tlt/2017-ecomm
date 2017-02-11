@@ -125,7 +125,6 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
                             "sales_order_id = ?")){
             preparedStatement.setLong(1, productId);
             preparedStatement.setLong(2, salesOrderId);
-
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 orderItem = new OrderItemBuilder()
