@@ -61,5 +61,4 @@ public class SalesOrderViewModel {
     public void setTotalAmount(long totalAmount) {
         this.totalAmount = totalAmount;
     }
-
 }
