@@ -43,7 +43,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
     }
 
     @Override
-    public List<Category> getAllNotEmptyCategory() {
+    public List<Category> getAllNotEmptyCategories() {
         List<Category> categories = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
@@ -196,8 +196,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
         return null;
     }
 
-    @Override
-    public List<Category> getParentCategory() {
+    public List<Category> getParentCategories() {
         List<Category> categories = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
@@ -230,7 +229,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
 
     @Override
-    public List<Category> getAllNotEmptyChildrenCategoryById(long categoryId) {
+    public List<Category> getAllNotEmptyChildrenCategoriesById(long categoryId) {
         List<Category> categories = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();

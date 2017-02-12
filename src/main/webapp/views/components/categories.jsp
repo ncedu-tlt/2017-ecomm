@@ -10,7 +10,7 @@
     </a>
     <div class="ui flowing basic admission popup">
         <div class="ui vertical menu">
-            <c:forEach var="head" items="${requestScope.heads}">
+            <c:forEach var="head" items="${requestScope.parentCategories}">
                 <div class="ui dropdown link item">
                     <a class="" href="${pageContext.request.contextPath}/category?category_id=${head.getId()}">
                         <div class="item categoriesHeader">

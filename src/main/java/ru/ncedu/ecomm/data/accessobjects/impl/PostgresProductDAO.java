@@ -3,14 +3,14 @@ package ru.ncedu.ecomm.data.accessobjects.impl;
 import ru.ncedu.ecomm.data.accessobjects.ProductDAO;
 import ru.ncedu.ecomm.data.models.Product;
 import ru.ncedu.ecomm.data.models.builders.ProductBuilder;
+import ru.ncedu.ecomm.servlets.models.FilterValueViewModel;
 import ru.ncedu.ecomm.servlets.models.FilterViewModel;
 import ru.ncedu.ecomm.servlets.models.PriceRangeViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.PriceRangeViewModelBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class PostgresProductDAO implements ProductDAO {
 
@@ -329,24 +329,32 @@ public class PostgresProductDAO implements ProductDAO {
     public PriceRangeViewModel getProductsPriceRangeByCategoryId(long categoryId) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT min(price) AS min, max(price) AS max FROM " +
-                             "(SELECT product_id, category_id, name, description, discount_id,\n" +
-                             "(price - (price * (SELECT value FROM discount " +
-                             "WHERE discount_id = products.discount_id) / 100 )) AS price FROM products) AS products\n" +
-                             "WHERE category_id IN(SELECT id FROM (WITH RECURSIVE categoriesRec ( id,parent_id) AS (\n" +
-                             "SELECT category_id,parent_id\n" +
-                             "FROM categories WHERE category_id = (SELECT * FROM(WITH RECURSIVE rec (category_id, parent_id) AS\n" +
-                             "(SELECT category_id, parent_id FROM categories\n" +
-                             "  WHERE category_id = ?\n" +
-                             " UNION\n" +
-                             " SELECT ct.category_id, ct.parent_id\n" +
-                             " FROM categories ct INNER JOIN rec\n" +
-                             "     ON (rec.parent_id = ct.category_id))\n" +
-                             "SELECT category_id FROM rec ORDER BY category_id) AS category_id LIMIT 1)\n" +
-                             "UNION\n" +
-                             "SELECT T.category_id, T.parent_id\n" +
-                             "FROM categories T INNER JOIN categoriesRec ON(categoriesRec.id= T.parent_id))\n" +
-                             "SELECT * FROM categoriesRec) AS id)")) {
+                     "SELECT min(price) AS min, max(price) AS max\n" +
+                             "FROM (SELECT product_id, category_id, name, description, discount_id,\n" +
+                             "        (price - (price * (SELECT value FROM discount\n" +
+                             "        WHERE discount_id = products.discount_id) / 100)) AS price\n" +
+                             "      FROM products) AS products\n" +
+                             "WHERE category_id IN (\n" +
+                             "  SELECT id FROM (WITH RECURSIVE recCategoriesId (id, parent_id) AS\n" +
+                             "  (SELECT category_id, parent_id\n" +
+                             "   FROM categories\n" +
+                             "   WHERE category_id = (\n" +
+                             "     SELECT * FROM (\n" +
+                             "      WITH RECURSIVE recParentId (category_id, parent_id) AS\n" +
+                             "      (SELECT category_id, parent_id\n" +
+                             "        FROM categories\n" +
+                             "        WHERE category_id = ?\n" +
+                             "        UNION\n" +
+                             "        SELECT ct.category_id, ct.parent_id\n" +
+                             "        FROM categories ct INNER JOIN recParentId\n" +
+                             "            ON (recParentId.parent_id = ct.category_id))\n" +
+                             "      SELECT category_id\n" +
+                             "      FROM recParentId ORDER BY category_id) AS parentId LIMIT 1)\n" +
+                             "   UNION\n" +
+                             "   SELECT CT.category_id, CT.parent_id\n" +
+                             "   FROM categories CT INNER JOIN recCategoriesId ON (recCategoriesId.id = CT.parent_id))\n" +
+                             "  SELECT *\n" +
+                             "  FROM recCategoriesId) AS id)")) {
 
             statement.setLong(1, categoryId);
 
@@ -368,39 +376,60 @@ public class PostgresProductDAO implements ProductDAO {
      * Return filtered products by category, subcategories and price range
      */
 
-    //TODO: рай для SQL-инъекций
     public List<Product> getFilteredProducts(List<FilterViewModel> filters, PriceRangeViewModel priceRange, long categoryId) {
         List<Product> products = new ArrayList<>();
+
         String query = "SELECT * FROM products\n" +
-                "WHERE product_id IN (SELECT t.product_id FROM characteristic_values t ";
-        String subQuery = "";
-        if (!filters.isEmpty()) {
-            for (FilterViewModel filter : filters) {
-                subQuery += "INTERSECT\n" +
-                        " SELECT product_id FROM characteristic_values\n" +
-                        "   WHERE characteristic_id = " + filter.getId() + " AND value IN (";
-                for (String value : filter.getValues()) {
-                    subQuery = subQuery + "'" + value + "',";
-                }
-                subQuery = subQuery.substring(0, subQuery.length() - 1) + ") ";
-            }
-        }
-        query += subQuery + ") AND category_id IN (" +
+                "WHERE category_id IN (\n" +
                 "SELECT id FROM (\n" +
                 "WITH RECURSIVE recCategoriesId (id, parent_id) AS\n" +
                 "(SELECT category_id, parent_id FROM categories\n" +
-                "WHERE category_id = " + categoryId + "\n" +
+                "WHERE category_id = ?\n" +
                 "UNION\n" +
                 "SELECT CT.category_id, CT.parent_id\n" +
                 "FROM categories CT INNER JOIN recCategoriesId ON (recCategoriesId.id = CT.parent_id))\n" +
                 "SELECT * FROM recCategoriesId) AS id)\n" +
-                "      AND price BETWEEN " + priceRange.getMin() + " AND " + priceRange.getMax() + "\n" +
-                "\n" +
-                "    GROUP BY products.product_id\n";
+                "      AND price BETWEEN ? AND ?\n" +
+                "AND product_id IN (SELECT t.product_id FROM characteristic_values t ";
+        String subQuery = "";
+
+        Map<Long, List<String>> filtersMap = new HashMap<>();
+
+        if (!filters.isEmpty()) {
+            for (FilterViewModel filter : filters) {
+                if (filter.isValuesHaveChecked()) {
+                    subQuery += "INTERSECT\n" +
+                            " SELECT product_id FROM characteristic_values\n" +
+                            "   WHERE characteristic_id = ? AND value IN (";
+                    filtersMap.put(filter.getId(), new ArrayList<>());
+                    for (FilterValueViewModel value : filter.getValues()) {
+                        if (value.isChecked()) {
+                            subQuery += "?,";
+                            filtersMap.get(filter.getId()).add(value.getName());
+                        }
+                    }
+                    subQuery = subQuery.substring(0, subQuery.length() - 1) + ") ";
+                }
+            }
+        }
+        query += subQuery + ") GROUP BY products.product_id";
 
         try (Connection connection = DBUtils.getConnection();
-             Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(query);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setLong(1, categoryId);
+            statement.setDouble(2, priceRange.getMin());
+            statement.setDouble(3, priceRange.getMax());
+
+            int index = 4;
+            for (Map.Entry<Long, List<String>> entry : filtersMap.entrySet()) {
+                statement.setLong(index++, entry.getKey());
+                for (String value : entry.getValue()) {
+                    statement.setString(index++, value);
+                }
+            }
+
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 products.add(new ProductBuilder()
                         .setProductId(resultSet.getLong("product_id"))

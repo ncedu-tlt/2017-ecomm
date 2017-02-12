@@ -1,5 +1,6 @@
 package ru.ncedu.ecomm.servlets.models.builders;
 
+import ru.ncedu.ecomm.servlets.models.FilterValueViewModel;
 import ru.ncedu.ecomm.servlets.models.FilterViewModel;
 
 import java.util.List;
@@ -7,10 +8,7 @@ import java.util.List;
 public class FilterViewModelBuilder {
     private long id;
     private String name;
-
-
-
-    private List<String> values;
+    private List<FilterValueViewModel> values;
 
     public FilterViewModelBuilder setId(long id){
         this.id = id;
@@ -21,7 +19,7 @@ public class FilterViewModelBuilder {
         return this;
     }
 
-    public FilterViewModelBuilder setValues(List<String> values){
+    public FilterViewModelBuilder setValues(List<FilterValueViewModel> values){
         this.values = values;
         return this;
     }

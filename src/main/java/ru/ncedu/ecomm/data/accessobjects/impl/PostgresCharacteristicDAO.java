@@ -229,12 +229,22 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT\n" +
-                     "  characteristic_id,\n" +
-                     "  category_id,\n" +
-                     "  name,\n" +
-                     "  characteristic_group_id\n" +
-                     "FROM public.characteristics " +
-                     "where filterable = TRUE and category_id = ?")) {
+                             "  characteristic_id,\n" +
+                             "  category_id,\n" +
+                             "  name,\n" +
+                             "  characteristic_group_id\n" +
+                             "FROM public.characteristics\n" +
+                             "where filterable = TRUE and category_id = " +
+                             "(WITH RECURSIVE recParentId (category_id, parent_id) AS\n" +
+                             "(SELECT category_id, parent_id\n" +
+                             " FROM categories\n" +
+                             " WHERE category_id = ?\n" +
+                             " UNION\n" +
+                             " SELECT ct.category_id, ct.parent_id\n" +
+                             " FROM categories ct INNER JOIN recParentId\n" +
+                             "     ON (recParentId.parent_id = ct.category_id))\n" +
+                             "SELECT category_id\n" +
+                             "FROM recParentId ORDER BY category_id LIMIT 1)")) {
             statement.setLong(1, categoryId);
             ResultSet resultSet = statement.executeQuery();
 

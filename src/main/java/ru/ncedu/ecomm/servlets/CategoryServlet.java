@@ -1,6 +1,10 @@
 package ru.ncedu.ecomm.servlets;
+
 import ru.ncedu.ecomm.data.models.Category;
 import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
+import ru.ncedu.ecomm.servlets.models.FilterViewModel;
+import ru.ncedu.ecomm.servlets.models.PriceRangeViewModel;
+import ru.ncedu.ecomm.servlets.services.FilterService;
 import ru.ncedu.ecomm.servlets.services.ProductViewService;
 
 import javax.servlet.ServletException;
@@ -9,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
@@ -34,6 +38,20 @@ public class CategoryServlet extends HttpServlet {
                 .getInstance()
                 .getCategoriesById(getCategoryListByRequest(request));
 
+        long categoryId = getCategoryId(request.getParameter(PARAMETER_NAME_FOR_CATEGORY_ID));
+
+        if(categoryId != 0) {
+            PriceRangeViewModel priceRange = getDAOFactory()
+                    .getProductDAO()
+                    .getProductsPriceRangeByCategoryId(categoryId);
+
+            List<FilterViewModel> filters = FilterService.getInstance()
+                    .getFilters(categoryId);
+
+            request.setAttribute("priceRange", priceRange);
+            request.setAttribute("filters", filters);
+        }
+
         request.setAttribute("categoriesForView", categoryViewModels);
         request.getRequestDispatcher("/views/pages/category.jsp").forward(request, response);
     }
@@ -55,13 +73,13 @@ public class CategoryServlet extends HttpServlet {
     private List<Category> getCategoriesById(long categoryId) {
         return getDAOFactory()
                 .getCategoryDAO()
-                .getAllNotEmptyChildrenCategoryById(categoryId);
+                .getAllNotEmptyChildrenCategoriesById(categoryId);
     }
 
     private List<Category> getParentCategory() {
         return getDAOFactory()
                 .getCategoryDAO()
-                .getParentCategory();
+                .getParentCategories();
     }
 
     private long getCategoryId(String categoryIdByRequest) {

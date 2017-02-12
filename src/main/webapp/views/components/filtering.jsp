@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:include page="/filter?category_id=${param.category_id}"/>
 
 <div class="container jsFilteringComponent">
     <div class="ui left filter vertical sidebar labeled menu">
@@ -23,24 +22,30 @@
             </div>
             <div class="ui divider hidden"></div>
             <div class="ui vertical fluid accordion menu">
-                <c:set var="active" value="active"/>
+                <c:set var="activeFirst" value="active"/>
                 <c:forEach var="filter" items="${requestScope.filters}">
                     <div class="item">
-                        <a class="ui ${active} title medium header">
+                        <c:if test="${filter.isValuesHaveChecked()}">
+                            <c:set var="active" value="active"/>
+                        </c:if>
+                        <c:if test="${!filter.isValuesHaveChecked()}">
+                            <c:set var="active" value=""/>
+                        </c:if>
+                        <a class="ui ${active} ${activeFirst} title medium header">
                             <i class="dropdown icon"></i>
                                 ${filter.getName()}
                         </a>
-                        <div class="${active} content">
-                            <c:set var="active" value=""/>
+                        <div class="${active} ${activeFirst} content">
+                            <c:set var="activeFirst" value=""/>
                             <div class="ui form">
                                 <div class="grouped fields">
                                     <c:forEach var="value" items="${filter.getValues()}">
                                         <div class="field">
                                             <div class="ui checkbox">
-                                                <input type="checkbox" tabindex="0" class="hidden"
+                                                <input type="checkbox" ${value.isChecked()?"checked":""}
                                                        name="${filter.getName()}"
-                                                       value="${value}">
-                                                <label>${value}</label>
+                                                       value="${value.getName()}"/>
+                                                <label>${value.getName()}</label>
                                             </div>
                                         </div>
                                     </c:forEach>

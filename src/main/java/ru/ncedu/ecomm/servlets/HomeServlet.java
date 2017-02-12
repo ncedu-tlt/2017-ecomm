@@ -60,13 +60,13 @@ public class HomeServlet extends HttpServlet {
     private List<Category> getCategoriesById(long categoryId) {
         return getDAOFactory()
                 .getCategoryDAO()
-                .getAllNotEmptyChildrenCategoryById(categoryId);
+                .getAllNotEmptyChildrenCategoriesById(categoryId);
     }
 
     private List<Category> getParentCategory() {
         return getDAOFactory()
                 .getCategoryDAO()
-                .getParentCategory();
+                .getParentCategories();
     }
 
     private long getCategoryId(String categoryIdByRequest) {
