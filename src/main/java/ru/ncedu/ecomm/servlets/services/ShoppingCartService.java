@@ -35,11 +35,22 @@ public class ShoppingCartService {
     public void addToShoppingCart(long userId, long productId) throws SQLException {
         long salesOrderId = getSalesOrderId(userId);
         if (salesOrderId < 0) {
-            addProductToOrderItem(productId, salesOrderId);
-        } else {
             addNewSalesOrder(userId);
             addProductToOrderItem(productId, salesOrderId);
+        } else {
+            addProductToOrderItem(productId, salesOrderId);
         }
+    }
+
+    public long getSalesOrderId(long userId) throws SQLException {
+        List<SalesOrderViewModel> salesOrders = getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
+        long salesOrderId = -1;
+        for (SalesOrderViewModel salesOrder : salesOrders) {
+            if(salesOrder.getUserId() == userId){
+                salesOrderId = salesOrder.getSalesOrderId();
+            }
+        }
+        return salesOrderId;
     }
 
     private void addProductToOrderItem(long productId, long salesOrderId) throws SQLException {
@@ -54,17 +65,6 @@ public class ShoppingCartService {
                 throw new RuntimeException(e);
             }
         }
-    }
-
-    public long getSalesOrderId(long userId) throws SQLException {
-        List<SalesOrderViewModel> salesOrders = getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
-        long salesOrderId = -1;
-        for (SalesOrderViewModel salesOrder : salesOrders) {
-            if(salesOrder.getUserId() == userId){
-                salesOrderId = salesOrder.getSalesOrderId();
-            }
-        }
-        return salesOrderId;
     }
 
     private OrderItemViewModel getOrderItemBySalesOrderId(long productId, long salesOrderId, List<OrderItemViewModel> orderItems) {
