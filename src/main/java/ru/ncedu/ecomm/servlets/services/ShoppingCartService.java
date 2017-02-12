@@ -191,7 +191,6 @@ public class ShoppingCartService {
         OrderItem orderItem = getOrderItem(productId, salesOrderId);
         orderItem.setProductId(productId);
         orderItem.setSalesOrderId(salesOrderId);
-        System.out.println(orderItem.getProductId() + " " + orderItem.getSalesOrderId());
         getDAOFactory().getOrderItemsDAO().deleteOrderItem(orderItem);
     }
 
