@@ -82,6 +82,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
         try (Connection connection = DBUtils.getConnection();
         PreparedStatement statement = connection.prepareStatement(
                 "SELECT\n" +
+                        "user_id, \n" +
                         " sales_order_id, \n" +
                         " creation_date," +
                         " \"limit\"\n" +
@@ -94,6 +95,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 SalesOrder salesOrder = new SalesOrderBuilder()
+                        .setUserId(resultSet.getLong("user_id"))
                         .setSalesOrderId(resultSet.getLong("sales_order_id"))
                         .setCreationDate(resultSet.getDate("creation_date"))
                         .setLimit(resultSet.getBigDecimal("limit"))
@@ -105,42 +107,6 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
         }
         return salesOrders;
     }
-
-    @Override
-    public SalesOrder getSalesOrderByUserId(long userId) {
-        SalesOrder salesOrdersByUserId = new SalesOrder();
-
-        try (Connection connection = DBUtils.getConnection();
-             PreparedStatement statement = connection.prepareStatement(
-                     "SELECT\n" +
-                             "  sales_order_id,\n" +
-                             "  user_id,\n" +
-                             "  creation_date,\n" +
-                             "  \"limit\",\n" +
-                             "  order_status_id\n" +
-                             "FROM public.sales_orders\n" +
-                             "WHERE user_id = ?")) {
-
-            statement.setLong(1, userId);
-
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                SalesOrder salesOrder = new SalesOrderBuilder()
-                        .setSalesOrderId(resultSet.getLong("sales_order_id"))
-                        .setUserId(resultSet.getLong("user_id"))
-                        .setCreationDate(resultSet.getDate("creation_date"))
-                        .setLimit(resultSet.getBigDecimal("limit"))
-                        .setOrderStatus(resultSet.getLong("order_status_id"))
-                        .build();
-                salesOrdersByUserId = salesOrder;
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return salesOrdersByUserId;
-    }
-
 
     @Override
     public SalesOrder addSalesOrder(SalesOrder salesOrder) {

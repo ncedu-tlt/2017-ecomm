@@ -9,6 +9,7 @@ import java.util.List;
 
 public class SalesOrderViewBuilder {
 
+    private long userId;
     private long salesOrderId;
     private Date creationDate;
     private BigDecimal limit;
@@ -16,6 +17,11 @@ public class SalesOrderViewBuilder {
     private long totalAmount;
 
     public SalesOrderViewBuilder(){}
+
+    public SalesOrderViewBuilder setUserId(long userId){
+        this.userId = userId;
+        return this;
+    }
 
     public SalesOrderViewBuilder setSalesOrderId(long salesOrderId) {
         this.salesOrderId = salesOrderId;
@@ -43,6 +49,6 @@ public class SalesOrderViewBuilder {
     }
 
     public SalesOrderViewModel build(){
-        return new SalesOrderViewModel(salesOrderId, creationDate, limit, orderItems, totalAmount);
+        return new SalesOrderViewModel(userId, salesOrderId, creationDate, limit, orderItems, totalAmount);
     }
 }

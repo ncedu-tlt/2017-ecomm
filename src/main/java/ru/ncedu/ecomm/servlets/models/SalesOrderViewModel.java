@@ -6,6 +6,7 @@ import java.util.List;
 
 public class SalesOrderViewModel {
 
+    private long userId;
     private long salesOrderId;
     private Date creationDate;
     private BigDecimal limit;
@@ -14,12 +15,21 @@ public class SalesOrderViewModel {
 
     public SalesOrderViewModel(){}
 
-    public SalesOrderViewModel(long salesOrderId, Date creationDate, BigDecimal limit, List<OrderItemViewModel> orderItems, long totalAmount) {
+    public SalesOrderViewModel(long userId, long salesOrderId, Date creationDate, BigDecimal limit, List<OrderItemViewModel> orderItems, long totalAmount) {
+        this.userId = userId;
         this.salesOrderId = salesOrderId;
         this.creationDate = creationDate;
         this.limit = limit;
         this.orderItems = orderItems;
         this.totalAmount = totalAmount;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public long getSalesOrderId() {

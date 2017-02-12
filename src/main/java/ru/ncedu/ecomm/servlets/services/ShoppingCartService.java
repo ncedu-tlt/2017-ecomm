@@ -34,21 +34,12 @@ public class ShoppingCartService {
 
     public void addToShoppingCart(long userId, long productId) throws SQLException {
         long salesOrderId = getSalesOrderId(userId);
-        if (salesOrderId == 0) {
-            addNewSalesOrder(userId);
+        if (salesOrderId < 0) {
             addProductToOrderItem(productId, salesOrderId);
         } else {
+            addNewSalesOrder(userId);
             addProductToOrderItem(productId, salesOrderId);
         }
-    }
-
-    public long getSalesOrderId(long userId) throws SQLException {
-        List<SalesOrderViewModel> salesOrders = getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
-        long salesOrderId = 0;
-        for (SalesOrderViewModel salesOrder : salesOrders) {
-            salesOrderId = salesOrder.getSalesOrderId();
-        }
-        return salesOrderId;
     }
 
     private void addProductToOrderItem(long productId, long salesOrderId) throws SQLException {
@@ -63,6 +54,17 @@ public class ShoppingCartService {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public long getSalesOrderId(long userId) throws SQLException {
+        List<SalesOrderViewModel> salesOrders = getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
+        long salesOrderId = -1;
+        for (SalesOrderViewModel salesOrder : salesOrders) {
+            if(salesOrder.getUserId() == userId){
+                salesOrderId = salesOrder.getSalesOrderId();
+            }
+        }
+        return salesOrderId;
     }
 
     private OrderItemViewModel getOrderItemBySalesOrderId(long productId, long salesOrderId, List<OrderItemViewModel> orderItems) {
@@ -82,8 +84,18 @@ public class ShoppingCartService {
 
     private OrderItemViewModel incrementQuantityOrderItem(OrderItemViewModel orderItemBySalesOrderId) throws SQLException {
         int quantity = orderItemBySalesOrderId.getQuantity() + 1;
-        orderItemBySalesOrderId.setQuantity(quantity);
+        OrderItem orderItem = getOrderItemByViewModel(orderItemBySalesOrderId);
+        orderItem.setQuantity(quantity);
+        getDAOFactory().getOrderItemsDAO().updateOrderItem(orderItem);
         return orderItemBySalesOrderId;
+    }
+
+    private OrderItem getOrderItemByViewModel(OrderItemViewModel orderItemBySalesOrderId) {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setProductId(orderItemBySalesOrderId.getProductId());
+        orderItem.setSalesOrderId(orderItemBySalesOrderId.getSalesOrderId());
+
+        return orderItem;
     }
 
     private OrderItem addToOrderItem(long productId, long salesOrderId) {
@@ -106,7 +118,6 @@ public class ShoppingCartService {
         SalesOrder saleOrder = new SalesOrder();
         Date creationDate = new Date(System.currentTimeMillis());
 
-
         saleOrder.setUserId(userId);
         saleOrder.setCreationDate(creationDate);
         saleOrder.setOrderStatusId(EnumOrderStatus.ENTERING.getStatus());
@@ -119,6 +130,7 @@ public class ShoppingCartService {
         List<SalesOrder> salesOrders = getSalesOrder(orderStatusId, userId);
         for (SalesOrder salesOrder : salesOrders) {
             SalesOrderViewModel salesOrderViewModel = new SalesOrderViewBuilder()
+                    .setUserId(salesOrder.getUserId())
                     .setSalesOrderId(salesOrder.getSalesOrderId())
                     .setCreationDate(salesOrder.getCreationDate())
                     .setLimit(salesOrder.getLimit())
