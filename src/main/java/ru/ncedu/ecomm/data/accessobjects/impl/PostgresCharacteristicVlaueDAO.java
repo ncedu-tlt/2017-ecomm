@@ -12,7 +12,7 @@ import java.util.List;
 public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
 
     @Override
-    public List<CharacteristicValue> getCharacteristicValue() {
+    public List<CharacteristicValue> getCharacteristicValues() {
         List<CharacteristicValue> characteristicValues = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
@@ -40,7 +40,7 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
     }
 
     @Override
-    public List<CharacteristicValue> getCharacteristicValueById(long id) {
+    public List<CharacteristicValue> getCharacteristicValuesById(long id) {
         List<CharacteristicValue> characteristicValuesById = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
@@ -72,7 +72,7 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
     }
 
     @Override
-    public List<CharacteristicValue> getCharacteristicValueByProductId(long id) {
+    public List<CharacteristicValue> getCharacteristicValuesByProductId(long id) {
         List<CharacteristicValue> characteristicValuesByProductId = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
@@ -121,7 +121,7 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
 
-                       return new CharacteristicValueBuilder()
+                return new CharacteristicValueBuilder()
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
                         .setCharacteristicValue(resultSet.getString("value"))
                         .setProductId(resultSet.getLong("product_id"))
@@ -203,23 +203,34 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
         }
     }
 
-    @Override
-    public List<CharacteristicValue> getCharacteristicValueByCharacteristicId(long id) {
+    public List<CharacteristicValue> getCharacteristicValuesByIdAndProductsCategoryId(long characteristicId, long categoryId) {
         List<CharacteristicValue> characteristics = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT DISTINCT ON (value)\n" +
-                             "  characteristic_id,\n" +
-                             "  product_id,\n" +
-                             "  value\n" +
-                             "FROM public.characteristic_values\n" +
-                             "WHERE characteristic_id = ?")) {
-            statement.setLong(1, id);
+                             "    characteristic_id,\n" +
+                             "    product_id,\n" +
+                             "    value\n" +
+                             "    FROM public.characteristic_values\n" +
+                             "    WHERE characteristic_id = ?\n" +
+                             "    AND product_id IN (SELECT product_id FROM products\n" +
+                             "            WHERE category_id IN (\n" +
+                             "            SELECT id FROM (WITH RECURSIVE recCategoriesId (id, parent_id) AS\n" +
+                             "(SELECT category_id, parent_id\n" +
+                             "    FROM categories\n" +
+                             "    WHERE category_id = ?\n" +
+                             "    UNION\n" +
+                             "    SELECT CT.category_id, CT.parent_id\n" +
+                             "    FROM categories CT INNER JOIN recCategoriesId ON (recCategoriesId.id = CT.parent_id))\n" +
+                             "    SELECT *\n" +
+                             "    FROM recCategoriesId) AS id))")) {
+            statement.setLong(1, characteristicId);
+            statement.setLong(2, categoryId);
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-               characteristics.add(new CharacteristicValueBuilder()
+                characteristics.add(new CharacteristicValueBuilder()
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
                         .setCharacteristicValue(resultSet.getString("value"))
                         .setProductId(resultSet.getLong("product_id"))
@@ -235,3 +246,6 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
     }
 
 }
+
+
+

@@ -334,22 +334,10 @@ public class PostgresProductDAO implements ProductDAO {
                              "        (price - (price * (SELECT value FROM discount\n" +
                              "        WHERE discount_id = products.discount_id) / 100)) AS price\n" +
                              "      FROM products) AS products\n" +
-                             "WHERE category_id IN (\n" +
-                             "  SELECT id FROM (WITH RECURSIVE recCategoriesId (id, parent_id) AS\n" +
+                             "WHERE category_id IN (SELECT id FROM (WITH RECURSIVE recCategoriesId (id, parent_id) AS\n" +
                              "  (SELECT category_id, parent_id\n" +
                              "   FROM categories\n" +
-                             "   WHERE category_id = (\n" +
-                             "     SELECT * FROM (\n" +
-                             "      WITH RECURSIVE recParentId (category_id, parent_id) AS\n" +
-                             "      (SELECT category_id, parent_id\n" +
-                             "        FROM categories\n" +
-                             "        WHERE category_id = ?\n" +
-                             "        UNION\n" +
-                             "        SELECT ct.category_id, ct.parent_id\n" +
-                             "        FROM categories ct INNER JOIN recParentId\n" +
-                             "            ON (recParentId.parent_id = ct.category_id))\n" +
-                             "      SELECT category_id\n" +
-                             "      FROM recParentId ORDER BY category_id) AS parentId LIMIT 1)\n" +
+                             "   WHERE category_id = ?\n" +
                              "   UNION\n" +
                              "   SELECT CT.category_id, CT.parent_id\n" +
                              "   FROM categories CT INNER JOIN recCategoriesId ON (recCategoriesId.id = CT.parent_id))\n" +

@@ -5,11 +5,11 @@ import ru.ncedu.ecomm.data.models.CharacteristicValue;
 import java.util.List;
 
 public interface CharacteristicValueDAO {
-    List<CharacteristicValue> getCharacteristicValue();
+    List<CharacteristicValue> getCharacteristicValues();
 
-    List<CharacteristicValue> getCharacteristicValueById(long id);
+    List<CharacteristicValue> getCharacteristicValuesById(long id);
 
-    List<CharacteristicValue> getCharacteristicValueByProductId(long productId);
+    List<CharacteristicValue> getCharacteristicValuesByProductId(long productId);
 
     CharacteristicValue getCharacteristicValueByIdAndProductId(long productId, long characteristicId);
 
@@ -19,5 +19,6 @@ public interface CharacteristicValueDAO {
 
     void deleteCharacteristicValue(CharacteristicValue characteristicValue);
 
-    List<CharacteristicValue> getCharacteristicValueByCharacteristicId(long id);
-}
+    List<CharacteristicValue> getCharacteristicValuesByIdAndProductsCategoryId(long characteristicId, long categoryId);
+
+    }

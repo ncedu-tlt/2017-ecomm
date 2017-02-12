@@ -33,15 +33,16 @@ public class FilterService {
             filters.add(new FilterViewModelBuilder()
                     .setId(characteristic.getCharacteristicId())
                     .setName(characteristic.getCharacteristicName())
-                    .setValues(getValuesByCharacteristicId(characteristic.getCharacteristicId()))
+                    .setValues(getValues(characteristic.getCharacteristicId(), categoryId))
                     .build());
         }
         return filters;
     }
 
-    private List<FilterValueViewModel> getValuesByCharacteristicId(long id) {
+    private List<FilterValueViewModel> getValues(long characteristicId, long categoryId) {
         List<CharacteristicValue> characteristicValues =
-                getDAOFactory().getCharacteristicValueDAO().getCharacteristicValueByCharacteristicId(id);
+                getDAOFactory().getCharacteristicValueDAO()
+                        .getCharacteristicValuesByIdAndProductsCategoryId(characteristicId, categoryId);
         List<FilterValueViewModel> values = new ArrayList<>();
 
         for (CharacteristicValue characteristicValue : characteristicValues) {

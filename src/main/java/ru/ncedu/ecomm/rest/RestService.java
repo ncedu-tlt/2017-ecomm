@@ -232,7 +232,7 @@ public class RestService {
     @Path("/characteristicvalue")
     @Produces(MediaType.APPLICATION_JSON)
     public List<CharacteristicValue> getCharacteristicValue() {
-        return getDAOFactory().getCharacteristicValueDAO().getCharacteristicValue();
+        return getDAOFactory().getCharacteristicValueDAO().getCharacteristicValues();
     }
 
     @GET
@@ -240,21 +240,14 @@ public class RestService {
     @Produces(MediaType.APPLICATION_JSON)
     public List<CharacteristicValue> getCharacteristicValueById(
             @PathParam("characteristicvalue") long characteristicvalue) {
-        return getDAOFactory().getCharacteristicValueDAO().getCharacteristicValueById(characteristicvalue);
+        return getDAOFactory().getCharacteristicValueDAO().getCharacteristicValuesById(characteristicvalue);
     }
 
     @GET
     @Path("/characteristicvalue/byproduct/{productid}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<CharacteristicValue> getCharacteristicValueByProductId(@PathParam("productid") long productid) {
-        return getDAOFactory().getCharacteristicValueDAO().getCharacteristicValueByProductId(productid);
-    }
-
-    @GET
-    @Path("/characteristicvalue/bycharacteristicid/{characteristicid}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<CharacteristicValue> getCharacteristicValueByCharacteristicId(@PathParam("characteristicid") long characteristicid) {
-        return getDAOFactory().getCharacteristicValueDAO().getCharacteristicValueByCharacteristicId(characteristicid);
+        return getDAOFactory().getCharacteristicValueDAO().getCharacteristicValuesByProductId(productid);
     }
 
     @POST

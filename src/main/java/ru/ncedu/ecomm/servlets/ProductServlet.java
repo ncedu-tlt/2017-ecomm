@@ -242,7 +242,7 @@ public class ProductServlet extends HttpServlet {
         return DAOFactory
                 .getDAOFactory()
                 .getCharacteristicValueDAO()
-                .getCharacteristicValueByProductId(productId);
+                .getCharacteristicValuesByProductId(productId);
     }
 
     private long getDiscountValue(long discountId, long price) {

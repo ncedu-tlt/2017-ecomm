@@ -57,7 +57,7 @@ public class FilteringServlet extends HttpServlet {
     }
 
      private Long getCategoryId(String categoryIdByRequest) {
-        if (categoryIdByRequest != null) {
+        if (categoryIdByRequest != null && !categoryIdByRequest.isEmpty()) {
             return Long.parseLong(categoryIdByRequest);
         } else {
             return null;
@@ -65,7 +65,7 @@ public class FilteringServlet extends HttpServlet {
     }
 
     private Double getPrice(String priceByRequest){
-        if(priceByRequest != null)
+        if(priceByRequest != null && !priceByRequest.isEmpty())
             return Double.parseDouble(priceByRequest);
         else
             return null;
