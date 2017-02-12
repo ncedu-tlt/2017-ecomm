@@ -90,7 +90,8 @@ CREATE TABLE characteristics (
     characteristic_id bigint NOT NULL PRIMARY KEY,
     category_id bigint NOT NULL,
     name character varying(100) NOT NULL,
-    characteristic_group_id bigint NOT NULL
+    characteristic_group_id bigint NOT NULL,
+    filterable boolean NOT NULL
 ); 
 
 --
@@ -278,7 +279,8 @@ CREATE TABLE sales_orders (
     user_id bigint NOT NULL,
     creation_date date NOT NULL,
     "limit" money NOT NULL,
-    order_status_id bigint NOT NULL
+    order_status_id bigint NOT NULL,
+    total_price bigint NOT NULL
 );
 
 --
@@ -310,7 +312,9 @@ CREATE TABLE users (
     password character varying(1000) NOT NULL,
     phone character varying(100) NOT NULL,
     email character varying(100) NOT NULL,
-    registration_date date NOT NULL
+    registration_date date NOT NULL,
+    recovery_hash character varying(100) NOT NULL,
+    user_avatar character varying(100) NOT NULL
 );
 
 --

@@ -1,5 +1,5 @@
 INSERT INTO categories(
-	parent_id, name, description)
+  parent_id, name, description)
 	VALUES (NULL, 'Computers', 'Main Computers Category'),
     (1, 'Laptops', 'Portable power in your hands for on-the-go work and play.'),
     (1, 'Desktops', 'Shop sleek towers, complete packages, or compact all-in-one designs.'),
@@ -39,43 +39,43 @@ INSERT INTO roles(name)
 	('Users');
 	
 INSERT INTO order_statuses(name)
-	VALUES ('Active'),
-	('Complete'),
-	('Cancel'),
-	('Delete');
+	VALUES ('Entering'),
+	('Submited'),
+	('Completed');
 	
 INSERT INTO characteristics(
-	category_id, name, characteristic_group_id)
-	VALUES (1, 'Brand', 1),
-	(1, 'Hard Drive Capacity', 1),
-	(1, 'Processor Model', 1),
-	(1, 'Type of Memory (RAM)', 1),
-	(1, 'Operating System', 1),
-	(1, 'Graphics Cards', 1),
-	(1, 'Screen Resolution', 2),
-	(1, 'Screen Size', 2),
-	(1, 'Display Type', 2),
-	(1, 'Color', 3),
-	(1, 'Dimension', 3),
-	(1, 'Weight', 3),
-	(1, 'Model Number', 4),
-	(1, 'Battery Type', 4),
-	(1, 'Expandable Memory Compatibility', 4),
+	category_id, name, characteristic_group_id, filterable)
+	VALUES (1, 'Brand', 1, true),
+	(1, 'Hard Drive Capacity', 1, false),
+	(1, 'Processor Model', 1, true),
+	(1, 'Type of Memory (RAM)', 1, false),
+	(1, 'Operating System', 1, false),
+	(1, 'Graphics Cards', 1, false),
+	(1, 'Screen Resolution', 2, false),
+	(1, 'Screen Size', 2, false),
+	(1, 'Display Type', 2, false),
+	(1, 'Color', 3, false),
+	(1, 'Dimension', 3, true),
+	(1, 'Weight', 3, false),
+	(1, 'Model Number', 4, false),
+	(1, 'Battery Type', 4, false),
+	(1, 'Expandable Memory Compatibility', 4, false),
 	
 	
-	(5, 'Brand', 1),
-	(5, 'Hard Drive Capacity', 1),
-	(5, 'Number Of USB Port(s)', 1),
-	(5, 'Number Of HDMI Outputs', 1),
-	(5, 'Wireless Network Compatibility', 1),
+	(5, 'Brand', 1, true),
+	(5, 'Hard Drive Capacity', 1, true),
+	(5, 'Number Of USB Port(s)', 1, false),
+	(5, 'Number Of HDMI Outputs', 1, false),
+	(5, 'Wireless Network Compatibility', 1, false),
 	(5, 'Internal Hard Drive', 1),
-	(5, 'Additional Accessories Included', 3),
-	(5, 'Model Number', 4),
-	(5, 'Color', 3),
+	(5, 'Additional Accessories Included', 3, false),
+	(5, 'Model Number', 4, false),
+	(5, 'Color', 3, false),
 	
-	(5, 'Name', 5),
-	(5, 'Synopsis', 5),
-	(5, 'Product Features', 5);
+	(5, 'Name', 5, false),
+	(5, 'Synopsis', 5, false),
+	(5, 'Product Features', 5, false),
+	(1, 'Images', 1, false);
 	
 	
 INSERT INTO products(
@@ -254,14 +254,18 @@ INSERT INTO characteristic_values(
 	
 	(25, 15, 'Call of Duty: Infinite Warfare - Xbox One'),
 	(26, 15, 'Infinity Ward, the award-winning studio that helped create the blockbuster Call of Duty� franchise, reaches new heights with Call of Duty�: Infinite Warfare.'),
-	(27, 15, 'Call of Duty: Infinite Warfare will take players on an unforgettable journey as they engage in battles from Earth to beyond our atmosphere against a relentless, enemy faction that threatens our very way of life.');
+	(27, 15, 'Call of Duty: Infinite Warfare will take players on an unforgettable journey as they engage in battles from Earth to beyond our atmosphere against a relentless, enemy faction that threatens our very way of life.'),
+
+	(28, 1, '\images\cat_id1\cat_id2\prod_id1\HP_ENVY_x360.png, \images\cat_id1\cat_id2\prod_id1\HP_ENVY_x360.png'),
+	(28, 2, '\images\cat_id1\cat_id2\prod_id2\macbookpro.png, \images\cat_id1\cat_id2\prod_id2\macbookpro.png,\images\cat_id1\cat_id2\prod_id2\macbookpro.png'),
+	(28, 5, '\images\cat_id1\cat_id3\prod_id5\imac.png');
 	
 INSERT INTO users(
-	role_id, first_name, last_name, password, phone, email, registration_date)
-	VALUES (1, 'andrew', 'andrew', 'admin', 111111, 'admin@admin.com', current_timestamp),
-	(2, 'sergey', 'sergey', 'manager', 222222, 'manager@manager.com', current_timestamp),
-	(3, 'boris', 'boris', 'user', 333333, 'user@user.com', current_timestamp),
-	(3, 'max', 'max', 'user1', 444444, 'user1@user1.com', current_timestamp);
+	role_id, first_name, last_name, password, phone, email, registration_date, recovery_hash, user_avatar)
+	VALUES (1, 'andrew', 'andrew', 111111, 78965443, 'admin@admin.com', current_timestamp, NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+	(2, 'sergey', 'sergey', 'manager', 222222, 78965443, 'manager@manager.com', current_timestamp, NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+	(3, 'boris', 'boris', 'user', 333333, 78965443, 'user@user.com', current_timestamp, NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+	(3, 'max', 'max', 'user1', 444444, 78965443, 'user1@user1.com', current_timestamp, NULL, '/images/useravatars/unknownuser/unknownuser.png');
 	
 INSERT INTO reviews(
 	product_id, user_id, description, creation_date, raiting)
@@ -311,11 +315,11 @@ INSERT INTO reviews(
 	(15, 4, 'Bad game, I didnt have console', current_timestamp, 2);
 	
 INSERT INTO sales_orders(
-	user_id, creation_date, "limit", order_status_id)
-	VALUES (3, current_timestamp, 5000, 1),
-	(3, current_timestamp, 10000, 2),
-	(4, current_timestamp, 500000, 3),
-	(4, current_timestamp, 1000000, 4);
+	user_id, creation_date, "limit", order_status_id, total_price)
+	VALUES (3, current_timestamp, 5000, 1, 0),
+	(3, current_timestamp, 10000, 2, 0),
+	(4, current_timestamp, 500000, 3, 0),
+	(4, current_timestamp, 1000000, 4, 0);
 	
 INSERT INTO order_items(
 	product_id, sales_order_id, quantity)
