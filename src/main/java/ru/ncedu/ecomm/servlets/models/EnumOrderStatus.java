@@ -1,7 +1,5 @@
-package ru.ncedu.ecomm.servlets.services;
+package ru.ncedu.ecomm.servlets.models;
 
-//TODO: public
-//TODO: почему используем пакет services под enum?
 public enum EnumOrderStatus {
     ENTERING(1),
     SUBMITTED(2),
@@ -10,11 +8,6 @@ public enum EnumOrderStatus {
     private int orderStatus;
 
     EnumOrderStatus(int orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-
-    public void setOrderStatus(int orderStatus) {
         this.orderStatus = orderStatus;
     }
 
