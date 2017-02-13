@@ -57,6 +57,12 @@ public class ProfileChangeServlet extends HttpServlet {
 
     private List<String> getUserParameters(HttpServletRequest req) {
         List<String> userParameters = new ArrayList<>();
+        userParameters = addNewUserParameters(userParameters, req);
+        return userParameters;
+
+    }
+
+    private List<String> addNewUserParameters(List<String> userParameters, HttpServletRequest req) {
         userParameters.add(req.getParameter("firstName"));
         userParameters.add(req.getParameter("lastName"));
         userParameters.add(req.getParameter("email"));
