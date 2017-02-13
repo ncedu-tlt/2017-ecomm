@@ -13,7 +13,6 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
@@ -34,25 +33,27 @@ public class ShoppingCartService {
     }
 
     public void addToShoppingCart(long userId, long productId) throws SQLException {
-        Long salesOrderId = getSalesOrderId(userId);
-        if (Objects.isNull(salesOrderId)) {
+        long salesOrderId = getSalesOrderId(userId);
+        if (salesOrderId < 0) {
             addNewSalesOrder(userId);
-            salesOrderId = getSalesOrderId(userId);
+            addProductToOrderItem(productId, salesOrderId);
+        } else {
+            addProductToOrderItem(productId, salesOrderId);
         }
-        addProductToOrderItem(productId, salesOrderId);
     }
 
-    public Long getSalesOrderId(long userId) throws SQLException {
+    public long getSalesOrderId(long userId) throws SQLException {
         List<SalesOrderViewModel> salesOrders = getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
+        long salesOrderId = -1;
         for (SalesOrderViewModel salesOrder : salesOrders) {
             if (salesOrder.getUserId() == userId) {
-                return salesOrder.getSalesOrderId();
+                salesOrderId = salesOrder.getSalesOrderId();
             }
         }
-        return null;
+        return salesOrderId;
     }
 
-    private void addProductToOrderItem(long productId, Long salesOrderId) throws SQLException {
+    private void addProductToOrderItem(long productId, long salesOrderId) throws SQLException {
         List<OrderItemViewModel> orderItems = getOrderItemModelList(salesOrderId);
         OrderItemViewModel orderItemBySalesOrderId = getOrderItemBySalesOrderId(productId, salesOrderId, orderItems);
         if (orderItemBySalesOrderId == null) {
@@ -160,6 +161,24 @@ public class ShoppingCartService {
         return orderItemsView;
     }
 
+    private long totalAmountSumAllPriceInOrderItemViewModelList(long salesOrderId) throws SQLException {
+        long sumAllPrice = 0;
+        List<Long> priceList = new ArrayList<>();
+        List<OrderItemViewModel> orderItemViewModels = relationPriceAndQuantityInOrderItemViewModelList(salesOrderId);
+        priceList.addAll(orderItemViewModels.stream().map(OrderItemViewModel::getPrice).collect(Collectors.toList()));
+        for (Long sum : priceList) {
+            sumAllPrice += sum;
+        }
+        setTotalPriceInDatabase(salesOrderId, sumAllPrice);
+        return sumAllPrice;
+    }
+
+    private void setTotalPriceInDatabase(long salesOrderId, long totalPrice) throws SQLException {
+        SalesOrder salesOrder = getDAOFactory().getSalesOrderDAO().getSalesOrderById(salesOrderId);
+        salesOrder.setTotalPrice(totalPrice);
+        getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
+    }
+
     private List<OrderItemViewModel> relationPriceAndQuantityInOrderItemViewModelList(long salesOrderId) throws SQLException {
         List<OrderItemViewModel> orderItemViewModels = getOrderItemModelList(salesOrderId);
         for (OrderItemViewModel model : orderItemViewModels) {
@@ -172,18 +191,6 @@ public class ShoppingCartService {
             model.setPrice(amount);
         }
         return orderItemViewModels;
-    }
-
-    private long totalAmountSumAllPriceInOrderItemViewModelList(long salesOrderId) throws SQLException {
-        long sumAllPrice = 0;
-        List<Long> priceList = new ArrayList<>();
-        List<OrderItemViewModel> orderItemViewModels = relationPriceAndQuantityInOrderItemViewModelList(salesOrderId);
-        priceList.addAll(orderItemViewModels.stream().map(OrderItemViewModel::getPrice).collect(Collectors.toList()));
-        for (Long sum : priceList) {
-            sumAllPrice += sum;
-        }
-        setTotalPriceInDatabase(salesOrderId, sumAllPrice);
-        return sumAllPrice;
     }
 
     public void deletedProductInOrderItemDataBase(long productId, long salesOrderId) throws SQLException {
@@ -201,12 +208,6 @@ public class ShoppingCartService {
             orderItem.setSalesOrderId(getSalesOrderId(userId));
             getDAOFactory().getOrderItemsDAO().deleteOrderItem(orderItem);
         }
-    }
-
-    private void setTotalPriceInDatabase(long salesOrderId, long totalPrice) throws SQLException {
-        SalesOrder salesOrder = getDAOFactory().getSalesOrderDAO().getSalesOrderById(salesOrderId);
-        salesOrder.setTotalPrice(totalPrice);
-        getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
     }
 
     private int getQuantity(long productId, long salesOrderId) throws SQLException {
