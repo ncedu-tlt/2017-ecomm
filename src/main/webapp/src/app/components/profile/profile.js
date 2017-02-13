@@ -63,7 +63,7 @@
             ;
         },
         showPasswordConfirm: function () {
-            this.content.find('.jsPasswordConfirm').click(function () {
+            this.content.find('.jsPassword').click(function () {
                 this.show();
             });
             this.content.find('.jsProfileTextParam').click(function () {

@@ -16,7 +16,7 @@
         </div>
         <div class="field">
             <label>Password:</label>
-            <input type="password" name="password" placeholder="Password">
+            <input type="password" class="jsPassword" name="password" placeholder="Password">
         </div>
         <div class="field">
             <input type="password" class="jsPasswordConfirm" name="passwordConfirm" placeholder="Current Password">
