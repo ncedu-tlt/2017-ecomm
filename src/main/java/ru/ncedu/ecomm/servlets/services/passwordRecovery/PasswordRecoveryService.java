@@ -26,7 +26,6 @@ public class PasswordRecoveryService {
         List<Integer> uniqueHash = new ArrayList<>();
         Random random = new Random();
         addHashToCollection(uniqueHash, random);
-
         return createNewRecoveryHash(uniqueHash);
     }
 

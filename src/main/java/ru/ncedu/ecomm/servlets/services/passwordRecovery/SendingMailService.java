@@ -12,17 +12,16 @@ import java.util.regex.Pattern;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
-//TODO: не очень удачное название
-public class SendMailService {
+public class SendingMailService {
     private final Properties SERVER_PROPERTIES = configServerForSend();
 
-    private SendMailService(){
+    private SendingMailService(){
     }
 
-    private static SendMailService instance;
-    public static synchronized SendMailService getInstance(){
+    private static SendingMailService instance;
+    public static synchronized SendingMailService getInstance(){
         if(instance == null){
-            instance = new SendMailService();
+            instance = new SendingMailService();
         }
         return instance;
     }
@@ -39,14 +38,8 @@ public class SendMailService {
     }
 
     //TODO: текстовки, выводимые на странице, не должны располагаться в сервисах
-    public String sendMail(String toEmail, String textHtml) {
-        if (checkEmail(toEmail) && searchMailInDatabase(toEmail)) {
-            return sendLetterToUser(toEmail, textHtml) ?
-                    "Letter with instructions was sent in your email. Please check your post." :
-                    "Error. Letter wasn't sent in your email. Please try again";
-        } else {
-            return "Email address not registrated in the databse.";
-        }
+    public boolean sendMail(String toEmail, String textHtml) {
+        return checkEmail(toEmail) && searchMailInDatabase(toEmail) && sendLetterToUser(toEmail, textHtml);
     }
 
     public boolean checkEmail(String toEmail) {

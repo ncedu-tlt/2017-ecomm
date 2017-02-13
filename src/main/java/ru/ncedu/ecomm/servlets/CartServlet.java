@@ -3,7 +3,7 @@ package ru.ncedu.ecomm.servlets;
 import ru.ncedu.ecomm.data.DAOFactory;
 import ru.ncedu.ecomm.data.models.SalesOrder;
 import ru.ncedu.ecomm.servlets.models.SalesOrderViewModel;
-import ru.ncedu.ecomm.servlets.services.EnumOrderStatus;
+import ru.ncedu.ecomm.servlets.models.EnumOrderStatus;
 import ru.ncedu.ecomm.servlets.services.ShoppingCartService;
 import ru.ncedu.ecomm.servlets.services.UserService;
 

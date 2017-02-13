@@ -9,7 +9,6 @@ public class ProductViewModel {
     private String imageUrl;
 
     public ProductViewModel() {
-
     }
 
     public ProductViewModel(long productId,

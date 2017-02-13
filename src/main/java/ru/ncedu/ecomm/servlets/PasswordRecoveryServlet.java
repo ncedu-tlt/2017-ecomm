@@ -1,8 +1,9 @@
 package ru.ncedu.ecomm.servlets;
 
 
+import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.servlets.services.passwordRecovery.PasswordRecoveryService;
-import ru.ncedu.ecomm.servlets.services.passwordRecovery.SendMailService;
+import ru.ncedu.ecomm.servlets.services.passwordRecovery.SendingMailService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,17 +27,19 @@ public class PasswordRecoveryServlet extends HttpServlet {
     }
 
     private void sendLetterToEmail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String toEmail = req.getParameter("email");
         String textHTML = getTextHtml(toEmail);
-        if (SendMailService.getInstance().checkEmail(toEmail)) {
-            req.setAttribute("answer", SendMailService.getInstance().sendMail(toEmail, textHTML));
-            req.getRequestDispatcher("/views/pages/passwordRecovery.jsp").forward(req, resp);
-        } else{
-            req.setAttribute("answer", "Incorrect email! Please try enter other email"); //TODO: в JSP
-            req.getRequestDispatcher("/views/pages/passwordRecovery.jsp").forward(req, resp);
+        String answerFromMailService = getAnswerFromMailService(toEmail, textHTML);
+        if (SendingMailService.getInstance().checkEmail(toEmail)) {
+            req.setAttribute("answer", answerFromMailService);
+            req.getRequestDispatcher(Configuration.getProperty("page.passwordRecovery")).forward(req, resp);
+        } else {
+            String answerError = "Incorrect email! Please try enter other email";
+            req.setAttribute("answer", answerError); //TODO: в JSP
+            req.getRequestDispatcher(Configuration.getProperty("page.passwordRecovery")).forward(req, resp);
         }
     }
+
 
     //TODO: по хорошему бы вынести это в отдельный файл
     private String getTextHtml(String toEmail) {
@@ -44,5 +47,11 @@ public class PasswordRecoveryServlet extends HttpServlet {
                 "<a href='https://ncedu-ecomm-dev.herokuapp.com/passwordChange?email="
                 + toEmail + "&recoveryHash=" + PasswordRecoveryService.getInstance()
                 .getRecoveryHash() + "'>Change Password</a>";
+    }
+
+    private String getAnswerFromMailService(String toEmail, String textHTML) {
+        return SendingMailService.getInstance().sendMail(toEmail, textHTML) ?
+                "Letter with instructions was sent in your email. Please check your post."
+                : "Email address not registered in the database.";
     }
 }
