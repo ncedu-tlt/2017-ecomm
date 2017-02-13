@@ -46,7 +46,7 @@ public class ShoppingCartService {
         List<SalesOrderViewModel> salesOrders = getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
         long salesOrderId = -1;
         for (SalesOrderViewModel salesOrder : salesOrders) {
-            if(salesOrder.getUserId() == userId){
+            if (salesOrder.getUserId() == userId) {
                 salesOrderId = salesOrder.getSalesOrderId();
             }
         }
@@ -161,6 +161,24 @@ public class ShoppingCartService {
         return orderItemsView;
     }
 
+    private long totalAmountSumAllPriceInOrderItemViewModelList(long salesOrderId) throws SQLException {
+        long sumAllPrice = 0;
+        List<Long> priceList = new ArrayList<>();
+        List<OrderItemViewModel> orderItemViewModels = relationPriceAndQuantityInOrderItemViewModelList(salesOrderId);
+        priceList.addAll(orderItemViewModels.stream().map(OrderItemViewModel::getPrice).collect(Collectors.toList()));
+        for (Long sum : priceList) {
+            sumAllPrice += sum;
+        }
+        setTotalPriceInDatabase(salesOrderId, sumAllPrice);
+        return sumAllPrice;
+    }
+
+    private void setTotalPriceInDatabase(long salesOrderId, long totalPrice) throws SQLException {
+        SalesOrder salesOrder = getDAOFactory().getSalesOrderDAO().getSalesOrderById(salesOrderId);
+        salesOrder.setTotalPrice(totalPrice);
+        getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
+    }
+
     private List<OrderItemViewModel> relationPriceAndQuantityInOrderItemViewModelList(long salesOrderId) throws SQLException {
         List<OrderItemViewModel> orderItemViewModels = getOrderItemModelList(salesOrderId);
         for (OrderItemViewModel model : orderItemViewModels) {
@@ -173,18 +191,6 @@ public class ShoppingCartService {
             model.setPrice(amount);
         }
         return orderItemViewModels;
-    }
-
-    private long totalAmountSumAllPriceInOrderItemViewModelList(long salesOrderId) throws SQLException {
-        long sumAllPrice = 0;
-        List<Long> priceList = new ArrayList<>();
-        List<OrderItemViewModel> orderItemViewModels = relationPriceAndQuantityInOrderItemViewModelList(salesOrderId);
-        priceList.addAll(orderItemViewModels.stream().map(OrderItemViewModel::getPrice).collect(Collectors.toList()));
-        for (Long sum : priceList) {
-            sumAllPrice += sum;
-        }
-        setTotalPriceInDatabase(salesOrderId, sumAllPrice);
-        return sumAllPrice;
     }
 
     public void deletedProductInOrderItemDataBase(long productId, long salesOrderId) throws SQLException {
@@ -202,12 +208,6 @@ public class ShoppingCartService {
             orderItem.setSalesOrderId(getSalesOrderId(userId));
             getDAOFactory().getOrderItemsDAO().deleteOrderItem(orderItem);
         }
-    }
-
-    private void setTotalPriceInDatabase(long salesOrderId, long totalPrice) throws SQLException {
-        SalesOrder salesOrder = getDAOFactory().getSalesOrderDAO().getSalesOrderById(salesOrderId);
-        salesOrder.setTotalPrice(totalPrice);
-        getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
     }
 
     private int getQuantity(long productId, long salesOrderId) throws SQLException {

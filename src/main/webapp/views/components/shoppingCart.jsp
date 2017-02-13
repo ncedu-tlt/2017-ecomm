@@ -1,6 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="salesOrderList" scope="page" value="${requestScope.salesOrderList}"/>
-<c:set var="request" scope="session" value="${requestScope.answer}"/>
 <c:forEach var="salesOrder" items="${salesOrderList}">
     <div class="ui container jsShoppingCardComponent main-content">
         <h3 class="ui center aligned header">
@@ -9,8 +8,14 @@
         <div class="ui divided items">
             <c:choose>
                 <c:when test="${salesOrder.getOrderItems().isEmpty()}">
-                    <div class="ui message warning">
-                        <p>${requestScope.answer}</p>
+                    <div class="ui icon message">
+                        <i class="trash icon"></i>
+                        <div class="content">
+                            <div class="header">
+                                Trash is Empty
+                            </div>
+                            <p>You needs, add to cart any product</p>
+                        </div>
                     </div>
                 </c:when>
                 <c:when test="${salesOrder.getOrderItems() != null}">
@@ -52,22 +57,33 @@
                     </div>
 
                     <div class="ui section divider"></div>
-                    <form form method="post" action="cart" class="ui grid seven column row">
+                    <form method="post" action="cart" class="ui grid seven column row">
                         <input name="emptyActions" type="hidden" value="emptyTrash">
                         <button class="ui secondary basic right floated button column">EMPTY TRASH</button>
                     </form>
                     <div class="ui grid">
                         <div class="eight wide column">
-                            <div class="inline field">
-                                <div class="ui right pointing label big">
-                                    Limit:
+                            <form method="post" action="cart" class="item">
+                                <input name="salesOrderId" type="hidden" value="${salesOrder.getSalesOrderId()}">
+                                <div class="inline field">
+                                    <div class="ui right pointing label big">
+                                        Limit:
+                                    </div>
+                                    <div class="ui left labeled button" tabindex="0">
+                                        <input type="text" class="ui basic right pointing label" name="limitInput"
+                                               value="${salesOrder.getLimit()}"/>
+                                        <button class="ui  button" name="limitButton">APPLY</button>
+                                    </div>
                                 </div>
-                                <div class="ui left labeled button" tabindex="0">
-                                    <input type="text" class="ui basic right pointing label" name="limitInput"
-                                           value=""/>
-                                    <button class="ui  button" name="limitButton">APPLY</button>
+                            </form>
+                            <c:if test="${salesOrder.getLimit() < salesOrder.getTotalAmount()}">
+                                <div class="ui message warning">
+                                    <i class="close icon"></i>
+                                    <div class="header">
+                                        <p>Total price, exceeds limit value!</p>
+                                    </div>
                                 </div>
-                            </div>
+                            </c:if>
                         </div>
                         <div class="eight wide column">
                             <h3 class="ui grey header right floated bottom">$${salesOrder.getTotalAmount()}</h3>
