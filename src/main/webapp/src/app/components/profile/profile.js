@@ -8,8 +8,8 @@
          * Executed on component initialization
          */
         init: function () {
-            showPasswordConfirm();
-            showApplyButton();
+            this.showPasswordConfirm();
+            this.showApplyButton();
             this.content.find('.jsProfileForm')
                 .form({
                     fields: {
@@ -61,28 +61,27 @@
                     }
                 })
             ;
+        },
+        showPasswordConfirm: function () {
+            this.content.find('.jsPasswordConfirm').click(function () {
+                this.show();
+            });
+            this.content.find('.jsProfileTextParam').click(function () {
+                if (this.val().empty()) {
+                    $('.jsPasswordConfirm').hide();
+                }
+            });
+        },
+        showApplyButton: function () {
+            if (!this.content.find('.jsSendFormProfileBtn').is(':visible')) {
+                var inputs = $('input');
+                inputs.keyup(function () {
+                    $('#jsSendFormProfileBtn').show();
+                });
+            }
         }
     });
 
-    function showPasswordConfirm() {
-        this.content.find('.jsPasswordConfirm').click(function () {
-            this.show();
-        });
-        this.content.find('.jsProfileTextParam').click(function () {
-            if (this.val().empty()) {
-                $('.jsPasswordConfirm').hide();
-            }
-        });
-    }
-
-    function showApplyButton() {
-        if (!this.content.find('.jsSendFormProfileBtn').is(':visible')) {
-            var inputs = $('input');
-            inputs.keyup(function () {
-                this.content.find('.jsSendFormProfileBtn').show();
-            });
-        }
-    }
 
     frm.components.register('profileComponent', profileComponent);
 

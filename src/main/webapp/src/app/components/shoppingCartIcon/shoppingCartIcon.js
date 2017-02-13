@@ -8,7 +8,9 @@
          * Executed on component initialization
          */
         init: function () {
-            $.ajax
+            $.get('shoppingCartIcon', function(responseText){
+                console.log(responseText);
+            });
         }
     });
 
