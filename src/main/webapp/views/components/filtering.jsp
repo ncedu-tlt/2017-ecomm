@@ -24,6 +24,7 @@
             <div class="ui vertical fluid accordion menu">
                 <c:set var="activeFirst" value="active"/>
                 <c:forEach var="filter" items="${requestScope.filters}">
+                    <c:if test="${!filter.getValues().isEmpty()}">
                     <div class="item">
                         <c:if test="${filter.isValuesHaveChecked()}">
                             <c:set var="active" value="active"/>
@@ -53,6 +54,7 @@
                             </div>
                         </div>
                     </div>
+                    </c:if>
                 </c:forEach>
             </div>
         </form>
