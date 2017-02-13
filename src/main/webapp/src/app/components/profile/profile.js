@@ -67,7 +67,7 @@
                 this.show();
             });
             this.content.find('.jsProfileTextParam').click(function () {
-                if (this.val().empty()) {
+                if (this.empty()) {
                     $('.jsPasswordConfirm').hide();
                 }
             });
