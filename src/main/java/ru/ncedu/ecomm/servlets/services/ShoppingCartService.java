@@ -3,6 +3,7 @@ package ru.ncedu.ecomm.servlets.services;
 import ru.ncedu.ecomm.data.DAOFactory;
 import ru.ncedu.ecomm.data.models.OrderItem;
 import ru.ncedu.ecomm.data.models.SalesOrder;
+import ru.ncedu.ecomm.servlets.models.EnumOrderStatus;
 import ru.ncedu.ecomm.servlets.models.OrderItemViewModel;
 import ru.ncedu.ecomm.servlets.models.ProductViewModel;
 import ru.ncedu.ecomm.servlets.models.SalesOrderViewModel;
@@ -83,11 +84,16 @@ public class ShoppingCartService {
     }
 
     private OrderItemViewModel incrementQuantityOrderItem(OrderItemViewModel orderItemBySalesOrderId) throws SQLException {
-        int quantity = orderItemBySalesOrderId.getQuantity() + 1;
-        OrderItem orderItem = getOrderItemByViewModel(orderItemBySalesOrderId);
-        orderItem.setQuantity(quantity);
-        getDAOFactory().getOrderItemsDAO().updateOrderItem(orderItem);
+        OrderItem orderItemWithIncreaseQuantity = getOrderItemWithIncreaseQuantity(orderItemBySalesOrderId);
+        getDAOFactory().getOrderItemsDAO().updateOrderItem(orderItemWithIncreaseQuantity);
         return orderItemBySalesOrderId;
+    }
+
+    private OrderItem getOrderItemWithIncreaseQuantity(OrderItemViewModel orderItemBySalesOrderId){
+        int quantity = orderItemBySalesOrderId.getQuantity() + 1;
+        OrderItem orderItemWithIncreaseQuantity = getOrderItemByViewModel(orderItemBySalesOrderId);
+        orderItemWithIncreaseQuantity.setQuantity(quantity);
+        return orderItemWithIncreaseQuantity;
     }
 
     private OrderItem getOrderItemByViewModel(OrderItemViewModel orderItemBySalesOrderId) {
@@ -100,6 +106,7 @@ public class ShoppingCartService {
 
     private OrderItem addToOrderItem(long productId, long salesOrderId) {
         final int minQuantity = 1;
+
 
         OrderItem orderItem = new OrderItem();
         orderItem.setProductId(productId);

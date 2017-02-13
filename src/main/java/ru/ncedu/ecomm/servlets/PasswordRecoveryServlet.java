@@ -35,7 +35,7 @@ public class PasswordRecoveryServlet extends HttpServlet {
             req.getRequestDispatcher(Configuration.getProperty("page.passwordRecovery")).forward(req, resp);
         } else {
             String answerError = "Incorrect email! Please try enter other email";
-            req.setAttribute("answer", answerError); //TODO: в JSP
+            req.setAttribute("answer", answerError);
             req.getRequestDispatcher(Configuration.getProperty("page.passwordRecovery")).forward(req, resp);
         }
     }

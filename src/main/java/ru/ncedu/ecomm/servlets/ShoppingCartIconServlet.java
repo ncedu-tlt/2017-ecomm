@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Objects;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
@@ -39,10 +38,6 @@ public class ShoppingCartIconServlet extends HttpServlet {
 
     private long getQuantityProducts(long userId) throws SQLException {
         Long salesOrderId = ShoppingCartService.getInstance().getSalesOrderId(userId);
-        if (Objects.isNull(salesOrderId)) {
-            return 0;
-        } else {
-            return getDAOFactory().getOrderItemsDAO().getProductsBySalesOrderId(salesOrderId);
-        }
+        return getDAOFactory().getOrderItemsDAO().getProductsBySalesOrderId(salesOrderId);
     }
 }
