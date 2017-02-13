@@ -13,6 +13,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
@@ -33,27 +34,25 @@ public class ShoppingCartService {
     }
 
     public void addToShoppingCart(long userId, long productId) throws SQLException {
-        long salesOrderId = getSalesOrderId(userId);
-        if (salesOrderId < 0) {
+        Long salesOrderId = getSalesOrderId(userId);
+        if (Objects.isNull(salesOrderId)) {
             addNewSalesOrder(userId);
-            addProductToOrderItem(productId, salesOrderId);
-        } else {
-            addProductToOrderItem(productId, salesOrderId);
+            salesOrderId = getSalesOrderId(userId);
         }
+        addProductToOrderItem(productId, salesOrderId);
     }
 
-    public long getSalesOrderId(long userId) throws SQLException {
+    public Long getSalesOrderId(long userId) throws SQLException {
         List<SalesOrderViewModel> salesOrders = getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
-        long salesOrderId = -1;
         for (SalesOrderViewModel salesOrder : salesOrders) {
-            if(salesOrder.getUserId() == userId){
-                salesOrderId = salesOrder.getSalesOrderId();
+            if (salesOrder.getUserId() == userId) {
+                return salesOrder.getSalesOrderId();
             }
         }
-        return salesOrderId;
+        return null;
     }
 
-    private void addProductToOrderItem(long productId, long salesOrderId) throws SQLException {
+    private void addProductToOrderItem(long productId, Long salesOrderId) throws SQLException {
         List<OrderItemViewModel> orderItems = getOrderItemModelList(salesOrderId);
         OrderItemViewModel orderItemBySalesOrderId = getOrderItemBySalesOrderId(productId, salesOrderId, orderItems);
         if (orderItemBySalesOrderId == null) {

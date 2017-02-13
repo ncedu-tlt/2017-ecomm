@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Objects;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
@@ -27,7 +28,7 @@ public class ShoppingCartIconServlet extends HttpServlet {
     private void process(HttpServletRequest req) throws ServletException, IOException, SQLException {
         final int EMPTY_QUANTITY = 0;
         HttpSession authorization = req.getSession();
-        Object userId =  authorization.getAttribute("userId");
+        Object userId = authorization.getAttribute("userId");
         if (userId == null) {
             req.setAttribute("quantityProducts", EMPTY_QUANTITY);
         } else {
@@ -37,7 +38,11 @@ public class ShoppingCartIconServlet extends HttpServlet {
     }
 
     private long getQuantityProducts(long userId) throws SQLException {
-        long salesOrderId = ShoppingCartService.getInstance().getSalesOrderId(userId);
-        return getDAOFactory().getOrderItemsDAO().getProductsBySalesOrderId(salesOrderId);
+        Long salesOrderId = ShoppingCartService.getInstance().getSalesOrderId(userId);
+        if (Objects.isNull(salesOrderId)) {
+            return 0;
+        } else {
+            return getDAOFactory().getOrderItemsDAO().getProductsBySalesOrderId(salesOrderId);
+        }
     }
 }

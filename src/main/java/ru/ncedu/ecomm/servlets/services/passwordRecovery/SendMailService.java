@@ -77,9 +77,8 @@ public class SendMailService {
 
     private boolean sendMessageWithMimeMessage(MimeMessage message, String toEmail, String textHtml) {
         String subjectLetter = "Password Recovery";
-        String fromEmail = "netcracker.ecomm@gmail.com"; //TODO: в properties
         try{
-            message.setFrom(new InternetAddress(fromEmail));
+            message.setFrom(new InternetAddress(Configuration.getProperty("mail.username")));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
             message.setSubject(subjectLetter);
             message.setContent(textHtml, "text/html; charset=utf-8");
