@@ -16,52 +16,59 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 @WebServlet(name = "RegistrationServlet", urlPatterns = {"/registration"})
 public class RegistrationServlet extends HttpServlet {
+    private static final String CHECK = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
+    private static final String REGISTRATION = "/views/pages/registration.jsp";
+    private static final String LOGIN = "/views/pages/login.jsp";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/views/pages/registration.jsp").forward(req, resp);
+        req.getRequestDispatcher(REGISTRATION).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        if(!req.getParameter("email").isEmpty()
-                && !req.getParameter("password").isEmpty()
-                && !req.getParameter("ConfirmPassword").isEmpty()) {
-            if (checkEmail(req.getParameter("email"))) {
-                if (req.getParameter("password").equals(req.getParameter("ConfirmPassword"))) {
-                    if (!getDAOFactory().getUserDAO().getBoolUserByEmail(req.getParameter("email"))) {
-                            User user = new UserBuilder()
-                                    .setEmail(req.getParameter("email"))
-                                    .setPassword(req.getParameter("password"))
-                                    .setRoleId(3)
-                                    .build();
-                            getDAOFactory().getUserDAO().addUser(user);
-                        } else {
-                            req.setAttribute("answer", "Email is already in use"); //TODO: в JSP
-                            req.getRequestDispatcher("/views/pages/registration.jsp").forward(req, resp);
-                    }
-                } else {
-                    req.setAttribute("answer", "Passwords don't match"); //TODO: в JSP
-                    req.getRequestDispatcher("/views/pages/registration.jsp").forward(req, resp);
-                }
-            } else  {
-                req.setAttribute("answer", "Wrong email"); //TODO: в JSP
-                req.getRequestDispatcher("/views/pages/registration.jsp").forward(req, resp);
-            }
-        } else  {
-            req.setAttribute("answer", "Fields must not be empty"); //TODO: в JSP
-            req.getRequestDispatcher("/views/pages/registration.jsp").forward(req, resp);
+        if(req.getParameter("email").isEmpty()
+           && req.getParameter("password").isEmpty()
+           && req.getParameter("checkPassword").isEmpty()) {
+
+            req.getRequestDispatcher(REGISTRATION).forward(req, resp);
+            return;
         }
-        req.setAttribute("registration", "Registration success! Please sign in"); //TODO: в JSP
-        req.getRequestDispatcher("/views/pages/login.jsp").forward(req, resp);
+
+        if (!checkEmail(req.getParameter("email"))) {
+
+            req.getRequestDispatcher(REGISTRATION).forward(req, resp);
+            return;
+        }
+
+        if (!req.getParameter("password").equals(req.getParameter("checkPassword"))) {
+
+            req.getRequestDispatcher(REGISTRATION).forward(req, resp);
+            return;
+        }
+
+        if (getDAOFactory().getUserDAO().getBoolUserByEmail(req.getParameter("email"))) {
+
+            req.setAttribute("answer", "Email is already in use");
+            req.getRequestDispatcher(REGISTRATION).forward(req, resp);
+            return;
+        }
+
+        User user = new UserBuilder()
+                .setEmail(req.getParameter("email"))
+                .setPassword(req.getParameter("password"))
+                .setRoleId(3)
+                .build();
+        getDAOFactory().getUserDAO().addUser(user);
+
+        req.setAttribute("registration", "Registration success! Please sign in");
+        req.getRequestDispatcher(LOGIN).forward(req, resp);
     }
 
-    //TODO: можно сделать приватным
-    public static boolean checkEmail(String email){
-        final String check = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$"; //TODO: в константы
+    private static boolean checkEmail(String email){
 
-        Pattern patternEmailValidation = Pattern.compile(check
+        Pattern patternEmailValidation = Pattern.compile(CHECK
                                                          ,Pattern.CASE_INSENSITIVE);
         Matcher matcher = patternEmailValidation.matcher(email);
 
