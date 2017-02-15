@@ -2,6 +2,7 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.models.User;
 import ru.ncedu.ecomm.data.models.builders.UserBuilder;
+import ru.ncedu.ecomm.servlets.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,19 +32,19 @@ public class RegistrationServlet extends HttpServlet {
         if(req.getParameter("email").isEmpty()
            && req.getParameter("password").isEmpty()
            && req.getParameter("checkPassword").isEmpty()) {
-
+            req.setAttribute("answer", "Fields must not be empty");
             req.getRequestDispatcher(REGISTRATION).forward(req, resp);
             return;
         }
 
         if (!checkEmail(req.getParameter("email"))) {
-
+            req.setAttribute("answer", "Email is incorrect");
             req.getRequestDispatcher(REGISTRATION).forward(req, resp);
             return;
         }
 
         if (!req.getParameter("password").equals(req.getParameter("checkPassword"))) {
-
+            req.setAttribute("answer", "Passwords dont match");
             req.getRequestDispatcher(REGISTRATION).forward(req, resp);
             return;
         }
@@ -55,9 +56,10 @@ public class RegistrationServlet extends HttpServlet {
             return;
         }
 
+        String hashPassword = UserService.getInstance().md5DigestPassword(req.getParameter("password"));
         User user = new UserBuilder()
                 .setEmail(req.getParameter("email"))
-                .setPassword(req.getParameter("password"))
+                .setPassword(hashPassword)
                 .setRoleId(3)
                 .build();
         getDAOFactory().getUserDAO().addUser(user);
