@@ -42,8 +42,7 @@ public class UserService {
         }
     }
 
-    public long getCurrentUserId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        redirectToLoginIfNeeded(request, response); //TODO: а это тут зачем?
+    public long getCurrentUserId(HttpServletRequest request) throws ServletException, IOException {
         HttpSession session = request.getSession();
         return Long.parseLong(session.getAttribute("userId").toString());
     }

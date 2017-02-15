@@ -40,7 +40,7 @@ public class ProfileChangeServlet extends HttpServlet {
     }
 
     private void initAttributesSuccessChange(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        long userId = UserService.getInstance().getCurrentUserId(req, resp);
+        long userId = UserService.getInstance().getCurrentUserId(req);
         changeProfile(userId, req);
         req.setAttribute("answer", "Profile was changed."); //TODO: в JSP
         req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);

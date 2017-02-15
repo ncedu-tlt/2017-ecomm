@@ -37,7 +37,7 @@ public class ProfileServlet extends HttpServlet {
     }
 
     private void createAttributeProfile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        long userId = UserService.getInstance().getCurrentUserId(req, resp);
+        long userId = UserService.getInstance().getCurrentUserId(req);
         ProfileService profileService = new ProfileService(userId);
         User userProfile = profileService.getUserProfile();
         initAttributesProfile(userProfile, req);

@@ -2,8 +2,8 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.DAOFactory;
 import ru.ncedu.ecomm.data.models.SalesOrder;
-import ru.ncedu.ecomm.servlets.models.SalesOrderViewModel;
 import ru.ncedu.ecomm.servlets.models.EnumOrderStatus;
+import ru.ncedu.ecomm.servlets.models.SalesOrderViewModel;
 import ru.ncedu.ecomm.servlets.services.ShoppingCartService;
 import ru.ncedu.ecomm.servlets.services.UserService;
 
@@ -33,7 +33,7 @@ public class CartServlet extends HttpServlet {
     private void showSalesOrderList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             UserService.getInstance().redirectToLoginIfNeeded(request, response);
-            long userId = UserService.getInstance().getCurrentUserId(request, response);
+            long userId = UserService.getInstance().getCurrentUserId(request);
             formActionOnShoppingCart(request, userId);
             setLimitInDataBase(request);
             List<SalesOrderViewModel> salesOrderList = ShoppingCartService.getInstance()

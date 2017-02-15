@@ -30,7 +30,7 @@ public class OrderHistoryServlet extends HttpServlet {
     private void browseOrdersHistory(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         UserService.getInstance().redirectToLoginIfNeeded(req, resp);
-        long userId = UserService.getInstance().getCurrentUserId(req, resp);
+        long userId = UserService.getInstance().getCurrentUserId(req);
 
         List<SalesOrderViewModel> orderHistory = null;
         try {
