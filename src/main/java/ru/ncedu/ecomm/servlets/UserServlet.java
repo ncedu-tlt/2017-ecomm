@@ -36,7 +36,7 @@ public class UserServlet extends HttpServlet {
         List<UserViewModel> users = getUserToView();
 
         req.setAttribute("users", users);
-        req.getRequestDispatcher(Configuration.getProperty("page.user")).forward(req, resp);
+        req.getRequestDispatcher("/views/pages/users.jsp").forward(req, resp);
 
     }
 

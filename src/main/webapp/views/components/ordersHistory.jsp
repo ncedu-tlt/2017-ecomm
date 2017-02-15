@@ -24,7 +24,7 @@
                                     </div>
                                     <div class="extra">
                                         <div class="ui right floated header">
-                                                ${orderItems.getPrice()}
+                                                $${orderItems.getPrice()}
                                         </div>
                                     </div>
                                     <div class="left floated description">
@@ -40,7 +40,7 @@
                     <h2 class="ui horizontal divider blue header">
                         <i class="bar chart icon"></i>
 
-                        Total: ${orders.getTotalAmount()}
+                        Total: $${orders.getTotalAmount()}
                     </h2>
                 </div>
             </div>
