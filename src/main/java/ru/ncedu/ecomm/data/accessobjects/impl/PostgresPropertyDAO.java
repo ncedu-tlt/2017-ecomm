@@ -120,4 +120,43 @@ public class PostgresPropertyDAO implements PropertyDAO {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public List<Property> getSocials() {
+        List<Property> properties = new ArrayList<>();
+
+        try (Connection connection = DBUtils.getConnection();
+             Statement statement = connection.createStatement()) {
+
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT id, value\n" +
+                            "FROM (SELECT\n" +
+                            "        lower(VALUE) || 'Url' AS concatid,\n" +
+                            "        value AS id\n" +
+                            "      FROM properties\n" +
+                            "      WHERE property_id ~ '(social\\d)') AS id\n" +
+                            "  INNER JOIN (SELECT\n" +
+                            "                value,\n" +
+                            "                property_id AS concatId\n" +
+                            "              FROM\n" +
+                            "                properties\n" +
+                            "              WHERE property_id IN (SELECT lower(VALUE) || 'Url' AS id\n" +
+                            "                                    FROM properties\n" +
+                            "                                    WHERE property_id ~ '(social\\d)')) AS values\n" +
+                            "    ON id.concatid = values.concatId");
+            while (resultSet.next()) {
+                Property property = new PropertyBuilder()
+                        .setPropertyId(resultSet.getString("id"))
+                        .setValue(resultSet.getString("value"))
+                        .build();
+
+                properties.add(property);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return properties;
+    }
+
+
 }

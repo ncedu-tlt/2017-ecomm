@@ -15,6 +15,8 @@ public interface PropertyDAO {
 
     Property updateProperty(Property property);
 
+    List<Property> getSocials();
+
 
 
 }
