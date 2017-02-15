@@ -1,6 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.servlets.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,19 +28,19 @@ public class LoginServlet extends HttpServlet {
     }
 
     private void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-            String email = req.getParameter("email");
-            String password = req.getParameter("password");
-            HttpSession session = req.getSession();
-            User user = getDAOFactory().getUserDAO().getUserByEmail(email);
-            // TODO: пароль должен хранится в зашифрованном виде, например, MD5
-            if (user != null && user.getPassword().equals(password)) {
-                session.setAttribute("userId", user.getId());
-                session.setAttribute("userRoleId", user.getRoleId());
-                req.setAttribute("answer", "User was found");
-                resp.sendRedirect("/home");
-            }else{
-                req.setAttribute("answer", "Uncorrect user! Check email and password");
-                req.getRequestDispatcher("/views/pages/login.jsp").forward(req, resp);
-            }
+        String email = req.getParameter("email");
+        String password = req.getParameter("password");
+        HttpSession session = req.getSession();
+        String passwordDigest = UserService.getInstance().md5DigestPassword(password);
+        User user = getDAOFactory().getUserDAO().getUserByEmail(email);
+        if (user != null && user.getPassword().equals(passwordDigest)) {
+            session.setAttribute("userId", user.getId());
+            session.setAttribute("userRoleId", user.getRoleId());
+            req.setAttribute("answer", "User was found");
+            resp.sendRedirect("/home");
+        } else {
+            req.setAttribute("answer", "Uncorrect user! Check email and password");
+            req.getRequestDispatcher("/views/pages/login.jsp").forward(req, resp);
+        }
     }
 }
