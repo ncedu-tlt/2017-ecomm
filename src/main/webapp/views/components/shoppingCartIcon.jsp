@@ -13,8 +13,6 @@
         </c:if>
     </button>
 </div>
-<script type="text/javascript">
-    window.frm.components.init('ShoppingCartComponent', '.jsShoppingCartComponent');
-</script>
+
 
 

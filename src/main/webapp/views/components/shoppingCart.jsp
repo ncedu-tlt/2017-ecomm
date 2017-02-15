@@ -31,7 +31,7 @@
 </style>
 <c:set var="salesOrderList" scope="page" value="${requestScope.salesOrderList}"/>
 <c:forEach var="salesOrder" items="${salesOrderList}">
-    <div class="ui container jsShoppingCardComponent main-content">
+    <div class="ui container jsShoppingCartComponent main-content">
         <span class="noPrint">
             <h3 class="ui center aligned header">
                 Your Cart
