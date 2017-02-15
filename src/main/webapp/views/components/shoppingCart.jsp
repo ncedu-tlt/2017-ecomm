@@ -1,10 +1,33 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <style media='print' type='text/css'>
-    .menu {display: none; height: 0px; visibility: hidden;}
-    .message {display: none; height: 0px; visibility: hidden;}
-    .ui.secondary.basic.right.floated.button.column {display: none; height: 0px; visibility: hidden;}
-    .inline.field {display: none; height: 0px; visibility: hidden;}
-    .noPrint {display: none; width: auto;}
+    .menu {
+        display: none;
+        height: 0px;
+        visibility: hidden;
+    }
+
+    .message {
+        display: none;
+        height: 0px;
+        visibility: hidden;
+    }
+
+    .ui.secondary.basic.right.floated.button.column {
+        display: none;
+        height: 0px;
+        visibility: hidden;
+    }
+
+    .inline.field {
+        display: none;
+        height: 0px;
+        visibility: hidden;
+    }
+
+    .noPrint {
+        display: none;
+        width: auto;
+    }
 </style>
 <c:set var="salesOrderList" scope="page" value="${requestScope.salesOrderList}"/>
 <c:forEach var="salesOrder" items="${salesOrderList}">
@@ -41,16 +64,15 @@
                                     <div class="header">
                                             ${itemOrder.getName()}
                                     </div>
+                                    <div class="ui container">
+                                        <p>Quantity:</p>
+                                    </div>
                                     <div class="description">
-                                        <div class="ui dropdown jsComponentDropdown">
-                                            Quantity: ${itemOrder.getQuantity()}
-                                            <i class="dropdown icon"></i>
-                                            <div class="menu">
-                                                <div class="item" data-value="1">Choice 1</div>
-                                                <div class="item" data-value="2">Choice 2</div>
-                                                <div class="item" data-value="3">Choice 3</div>
+                                            <div class="ui input">
+                                                <button class="ui left attached button jsLeft" type="button">-</button>
+                                                <input type="text" class="jsInput" value="${itemOrder.getQuantity()}">
+                                                <button class="ui right attached button jsRight" type="button">+</button>
                                             </div>
-                                        </div>
                                         <button class="circular right floated ui icon button middle aligned"
                                                 name="deleteButton">
                                             <i class="icon remove"></i>
@@ -65,10 +87,10 @@
                         </c:forEach>
                     </div>
                     <div class="ui section divider"></div>
-                        <form method="post" action="cart" class="ui grid seven column row">
-                            <input name="emptyActions" type="hidden" value="emptyTrash">
-                            <button class="ui secondary basic right floated button column">EMPTY TRASH</button>
-                        </form>
+                    <form method="post" action="cart" class="ui grid seven column row">
+                        <input name="emptyActions" type="hidden" value="emptyTrash">
+                        <button class="ui secondary basic right floated button column">EMPTY TRASH</button>
+                    </form>
                     <div class="ui grid">
                         <div class="eight wide column">
                             <form method="post" action="cart" class="item">
@@ -85,12 +107,12 @@
                                 </div>
                             </form>
                             <c:if test="${salesOrder.getLimit() < salesOrder.getTotalAmount()}">
-                                    <div class="ui message warning">
-                                        <i class="close icon"></i>
-                                        <div class="header">
-                                            <p>Total price, exceeds limit value!</p>
-                                        </div>
+                                <div class="ui message warning">
+                                    <i class="close icon"></i>
+                                    <div class="header">
+                                        <p>Total price, exceeds limit value!</p>
                                     </div>
+                                </div>
                             </c:if>
                         </div>
                         <div class="eight wide column">
