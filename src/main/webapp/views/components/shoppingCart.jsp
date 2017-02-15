@@ -1,7 +1,10 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <style media='print' type='text/css'>
     .menu {display: none; height: 0px; visibility: hidden;}
-    .noPrint {display: none;}
+    .message {display: none; height: 0px; visibility: hidden;}
+    .ui.secondary.basic.right.floated.button.column {display: none; height: 0px; visibility: hidden;}
+    .inline.field {display: none; height: 0px; visibility: hidden;}
+    .noPrint {display: none; width: auto;}
 </style>
 <c:set var="salesOrderList" scope="page" value="${requestScope.salesOrderList}"/>
 <c:forEach var="salesOrder" items="${salesOrderList}">
@@ -61,14 +64,11 @@
                             </form>
                         </c:forEach>
                     </div>
-
                     <div class="ui section divider"></div>
-                    <span class="noPrint">
                         <form method="post" action="cart" class="ui grid seven column row">
                             <input name="emptyActions" type="hidden" value="emptyTrash">
                             <button class="ui secondary basic right floated button column">EMPTY TRASH</button>
                         </form>
-                    </span>
                     <div class="ui grid">
                         <div class="eight wide column">
                             <form method="post" action="cart" class="item">
@@ -80,19 +80,17 @@
                                     <div class="ui left labeled button" tabindex="0">
                                         <input type="text" class="ui basic right pointing label" name="limitInput"
                                                value="${salesOrder.getLimit()}"/>
-                                        <button class="ui  button" name="limitButton">APPLY</button>
+                                        <button class="ui button" name="limitButton">APPLY</button>
                                     </div>
                                 </div>
                             </form>
                             <c:if test="${salesOrder.getLimit() < salesOrder.getTotalAmount()}">
-                                <span class="noPrint">
                                     <div class="ui message warning">
                                         <i class="close icon"></i>
                                         <div class="header">
                                             <p>Total price, exceeds limit value!</p>
                                         </div>
                                     </div>
-                                </span>
                             </c:if>
                         </div>
                         <div class="eight wide column">
