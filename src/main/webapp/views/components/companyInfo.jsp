@@ -5,9 +5,9 @@
 <div class="ui grid one column center aligned container footerCompanyInfo">
     <div class="column">
         <p>
-            <c:forEach var="item" items="${requestScope.companyInfo.getSocials()}">
+            <c:forEach var="item" items="${requestScope.companyInfo.getSocials()}" varStatus="loop">
             <a href="${item.getValue()}" class="text-border-right">${item.getId()}</a>
-            <span> | </span>
+                <c:if test="${!loop.last}"><span> | </span></c:if>
             </c:forEach>
         </p>
         <p>
