@@ -1,10 +1,16 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<style media='print' type='text/css'>
+    .menu {display: none; height: 0px; visibility: hidden;}
+    .noPrint {display: none;}
+</style>
 <c:set var="salesOrderList" scope="page" value="${requestScope.salesOrderList}"/>
 <c:forEach var="salesOrder" items="${salesOrderList}">
     <div class="ui container jsShoppingCardComponent main-content">
-        <h3 class="ui center aligned header">
-            Your Cart
-        </h3>
+        <span class="noPrint">
+            <h3 class="ui center aligned header">
+                Your Cart
+            </h3>
+        </span>
         <div class="ui divided items">
             <c:choose>
                 <c:when test="${salesOrder.getOrderItems().isEmpty()}">
@@ -57,10 +63,12 @@
                     </div>
 
                     <div class="ui section divider"></div>
-                    <form method="post" action="cart" class="ui grid seven column row">
-                        <input name="emptyActions" type="hidden" value="emptyTrash">
-                        <button class="ui secondary basic right floated button column">EMPTY TRASH</button>
-                    </form>
+                    <span class="noPrint">
+                        <form method="post" action="cart" class="ui grid seven column row">
+                            <input name="emptyActions" type="hidden" value="emptyTrash">
+                            <button class="ui secondary basic right floated button column">EMPTY TRASH</button>
+                        </form>
+                    </span>
                     <div class="ui grid">
                         <div class="eight wide column">
                             <form method="post" action="cart" class="item">
@@ -77,12 +85,14 @@
                                 </div>
                             </form>
                             <c:if test="${salesOrder.getLimit() < salesOrder.getTotalAmount()}">
-                                <div class="ui message warning">
-                                    <i class="close icon"></i>
-                                    <div class="header">
-                                        <p>Total price, exceeds limit value!</p>
+                                <span class="noPrint">
+                                    <div class="ui message warning">
+                                        <i class="close icon"></i>
+                                        <div class="header">
+                                            <p>Total price, exceeds limit value!</p>
+                                        </div>
                                     </div>
-                                </div>
+                                </span>
                             </c:if>
                         </div>
                         <div class="eight wide column">
@@ -92,16 +102,18 @@
                             </h3>
                         </div>
                     </div>
-                    <div class="ui grid">
-                        <div class="eight wide column">
-                            <a href='javascript:window.print(); void 0;'>
-                            <button class="ui secondary basic button">PRINT</button>
-                            </a>
+                    <span class="noPrint">
+                        <div class="ui grid">
+                            <div class="eight wide column">
+                                <a href='javascript:window.print(); void 0;'>
+                                    <button class="ui secondary basic button">PRINT</button>
+                                </a>
+                            </div>
+                            <div class="eight wide column">
+                                <button class="ui secondary basic right floated button">CHECKOUT</button>
+                            </div>
                         </div>
-                        <div class="eight wide column">
-                            <button class="ui secondary basic right floated button">CHECKOUT</button>
-                        </div>
-                    </div>
+                    </span>
                 </c:when>
             </c:choose>
         </div>
