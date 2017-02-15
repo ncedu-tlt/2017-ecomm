@@ -100,7 +100,7 @@ public class ProductViewService {
                         CHARACTERISTIC_ID_FOR_IMAGE_URL);
     }
 
-    public List<ProductViewModel> getProductModelByOrderId(long orderId){
+    List<ProductViewModel> getProductModelByOrderId(long orderId){
        List<Product> productForBuild = DAOFactory.getDAOFactory()
                 .getProductDAO()
                 .getProductByOrderId(orderId);

@@ -68,7 +68,7 @@
                                         <p>Quantity:</p>
                                     </div>
                                     <div class="description">
-                                            <div class="ui input">
+                                            <div class="ui input jsInputButtons">
                                                 <button class="ui left attached button jsLeft" type="button">-</button>
                                                 <input type="text" class="jsInput" value="${itemOrder.getQuantity()}">
                                                 <button class="ui right attached button jsRight" type="button">+</button>
@@ -78,7 +78,7 @@
                                             <i class="icon remove"></i>
                                         </button>
                                         <h2 class="ui header right floated center middle aligned">
-                                            $${itemOrder.getPrice()}
+                                            $<span class="jsPrice">${itemOrder.getPrice()}</span>
                                         </h2>
                                     </div>
                                 </div>
