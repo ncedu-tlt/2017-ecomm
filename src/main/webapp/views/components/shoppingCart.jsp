@@ -140,5 +140,5 @@
     </div>
 </c:forEach>
 <script>
-    window.frm.components.init('ShoppingCardComponent', '.jsShoppingCardComponent');
+    window.frm.components.init('ShoppingCartComponent', '.jsShoppingCartComponent');
 </script>

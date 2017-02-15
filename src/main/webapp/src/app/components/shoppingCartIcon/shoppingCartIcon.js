@@ -2,7 +2,7 @@
 
     var frm = window.frm;
 
-    var ShoppingCartComponent = frm.inheritance.inherits(frm.components.Component, {
+    var ShoppingCartIconComponent = frm.inheritance.inherits(frm.components.Component, {
 
         /**
          * Executed on component initialization
@@ -14,6 +14,7 @@
         }
     });
 
-    frm.components.register('ShoppingCartComponent', ShoppingCartComponent);
+
+    frm.components.register('ShoppingCartIconComponent', ShoppingCartIconComponent);
 
 })(jQuery, window);
