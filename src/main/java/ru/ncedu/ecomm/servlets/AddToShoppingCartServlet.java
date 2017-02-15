@@ -15,6 +15,7 @@ import java.sql.SQLException;
 public class AddToShoppingCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        UserService.getInstance().redirectToLoginIfNeeded(req, resp);
         long userId = UserService.getInstance().getCurrentUserId(req);
         long productId = Long.parseLong(req.getParameter("productId"));
         try {
