@@ -94,7 +94,9 @@
                     </div>
                     <div class="ui grid">
                         <div class="eight wide column">
+                            <a href='javascript:window.print(); void 0;'>
                             <button class="ui secondary basic button">PRINT</button>
+                            </a>
                         </div>
                         <div class="eight wide column">
                             <button class="ui secondary basic right floated button">CHECKOUT</button>
