@@ -33,11 +33,9 @@
 <c:set var="request" scope="session" value="${requestScope.exception}"/>
 <c:forEach var="salesOrder" items="${salesOrderList}">
     <div class="ui container jsShoppingCartComponent main-content">
-        <span class="noPrint">
             <h3 class="ui center aligned header">
                 Your Cart
             </h3>
-        </span>
         <form method="post" action="cart" class="ui divided items">
             <input name="salesOrderId" type="hidden" value="${salesOrder.getSalesOrderId()}">
             <c:choose>
@@ -136,7 +134,7 @@
                         <div class="ui grid">
                             <div class="eight wide column">
                                 <a href='javascript:window.print(); void 0;'>
-                                    <button class="ui secondary basic button">PRINT</button>
+                                    <button class="ui secondary basic button" type="button">PRINT</button>
                                 </a>
                             </div>
                             <div class="eight wide column">
