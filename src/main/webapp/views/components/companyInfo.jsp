@@ -1,20 +1,21 @@
-<div class="ui divider"></div>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<jsp:include page="/companyInfo"/>
 <div class="ui grid one column center aligned container footerCompanyInfo">
     <div class="column">
         <p>
-            <a href="#" class="text-border-right">Facebook</a>
-            <span> | </span>
-            <a href="#" class="text-border-right">Twitter</a>
-            <span> | </span>
-            <a href="#">Google+</a>
-            <span> | </span>
+            <c:forEach var="item" items="${requestScope.companyInfo.getSocials()}" varStatus="loop">
+            <a href="${item.getValue()}" class="text-border-right">${item.getId()}</a>
+                <c:if test="${!loop.last}"><span> | </span></c:if>
+            </c:forEach>
         </p>
         <p>
-            <a href="#" class="text-border-right">inbox@shop.com</a>
-            <a href="#">+1 888-222-1010</a>
+            ${requestScope.companyInfo.getEmail()}
+            ${requestScope.companyInfo.getPhone()}
         </p>
         <p>
-            &copy; 2005-2017, Shop, LLC. All rights reserved.
+            ${requestScope.companyInfo.getRights()}
         </p>
     </div>
 </div>
