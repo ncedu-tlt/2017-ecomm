@@ -68,5 +68,4 @@
 </div>
 <script>
     window.frm.components.init('ProductListComponent', '.jsProductListComponent');
-    window.frm.components.init('ShoppingCartComponent', '.jsProductListComponent');
 </script>
