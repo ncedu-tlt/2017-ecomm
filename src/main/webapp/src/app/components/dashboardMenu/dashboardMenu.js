@@ -40,7 +40,7 @@
                     window.location.replace('/views/pages/profile.jsp');
                 }
                 if(block === 'orderHistory'){
-                    window.location.replace('/views/pages/ordersHistory.jsp');
+                    window.location.replace('/orders');
                 }
             }
         }

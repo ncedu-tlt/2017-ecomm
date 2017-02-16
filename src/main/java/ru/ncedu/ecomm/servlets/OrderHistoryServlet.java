@@ -1,6 +1,11 @@
+
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
+import ru.ncedu.ecomm.data.DAOFactory;
+import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.servlets.models.EnumOrderStatus;
+import ru.ncedu.ecomm.servlets.models.EnumRoles;
 import ru.ncedu.ecomm.servlets.models.SalesOrderViewModel;
 import ru.ncedu.ecomm.servlets.services.ShoppingCartService;
 import ru.ncedu.ecomm.servlets.services.UserService;
@@ -30,11 +35,18 @@ public class OrderHistoryServlet extends HttpServlet {
     private void browseOrdersHistory(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         UserService.getInstance().redirectToLoginIfNeeded(req, resp);
+
         long userId = UserService.getInstance().getCurrentUserId(req);
+        User user = DAOFactory.getDAOFactory().getUserDAO().getUserById(userId);
+        long roleId = user.getRoleId();
 
         List<SalesOrderViewModel> orderHistory = null;
         try {
-            orderHistory = ShoppingCartService.getInstance().getSalesOrderModelList(1, userId); //TODO: что есть 1?
+            if (roleId == EnumRoles.ADMINISTRATOR.getRole())
+                orderHistory = ShoppingCartService.getInstance().getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus());
+            else
+                orderHistory = ShoppingCartService.getInstance().getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
+
         } catch (SQLException e) {
             // TODO: что будет, если упадёт эксепшен?
             e.printStackTrace();
@@ -44,3 +56,4 @@ public class OrderHistoryServlet extends HttpServlet {
         req.getRequestDispatcher(Configuration.getProperty("page.ordersHistory")).forward(req, resp);
     }
 }
+
