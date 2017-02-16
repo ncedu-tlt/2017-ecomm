@@ -30,6 +30,7 @@
     }
 </style>
 <c:set var="salesOrderList" scope="page" value="${requestScope.salesOrderList}"/>
+<c:set var="request" scope="session" value="${requestScope.exception}"/>
 <c:forEach var="salesOrder" items="${salesOrderList}">
     <div class="ui container jsShoppingCartComponent main-content">
         <span class="noPrint">
@@ -37,7 +38,8 @@
                 Your Cart
             </h3>
         </span>
-        <div class="ui divided items">
+        <form method="post" action="cart" class="ui divided items">
+            <input name="salesOrderId" type="hidden" value="${salesOrder.getSalesOrderId()}">
             <c:choose>
                 <c:when test="${salesOrder.getOrderItems().isEmpty()}">
                     <div class="ui icon message">
@@ -51,12 +53,10 @@
                     </div>
                 </c:when>
                 <c:when test="${salesOrder.getOrderItems() != null}">
-                    <div class="ui divided items">
+                    <div class="ui divided items jsItemOrder">
                         <c:forEach var="itemOrder" items="${salesOrder.getOrderItems()}">
-                            <form method="post" action="cart" class="item">
+                            <div class="item">
                                 <input name="productId" type="hidden" value="${itemOrder.getProductId()}">
-                                <input name="salesOrderId" type="hidden" value="${salesOrder.getSalesOrderId()}">
-                                <input name="cartActions" type="hidden" value="delete">
                                 <div class="ui small image">
                                     <img src="${itemOrder.getImgUrl()}">
                                 </div>
@@ -68,33 +68,37 @@
                                         <p>Quantity:</p>
                                     </div>
                                     <div class="description">
-                                            <div class="ui input jsInputButtons">
-                                                <button class="ui left attached button jsLeft" type="button">-</button>
-                                                <input type="text" class="jsInput" value="${itemOrder.getQuantity()}">
-                                                <button class="ui right attached button jsRight" type="button">+</button>
-                                            </div>
+                                        <div class="ui input">
+                                            <button class="ui left attached button jsLeft" type="button">-</button>
+                                            <input type="text" name="quantityValue" class="jsInput"
+                                                   value="${itemOrder.getQuantity()}">
+                                            <button class="ui right attached button jsRight" type="button">+</button>
+                                            <button class="ui secondary button" name="quantityButton" value="quantity">
+                                                Save
+                                            </button>
+                                        </div>
                                         <button class="circular right floated ui icon button middle aligned"
-                                                name="deleteButton">
+                                                name="deleteButton" value="delete">
                                             <i class="icon remove"></i>
                                         </button>
                                         <h2 class="ui header right floated center middle aligned">
-                                            $<span class="jsPrice">${itemOrder.getPrice()}</span>
+                                            $${itemOrder.getPrice()}
                                         </h2>
                                     </div>
                                 </div>
                                 <div class="ui divider"></div>
-                            </form>
+                            </div>
                         </c:forEach>
                     </div>
                     <div class="ui section divider"></div>
-                    <form method="post" action="cart" class="ui grid seven column row">
-                        <input name="emptyActions" type="hidden" value="emptyTrash">
-                        <button class="ui secondary basic right floated button column">EMPTY TRASH</button>
-                    </form>
+                    <div class="ui grid seven column row">
+                        <button class="ui secondary basic right floated button column" name="emptyActions"
+                                value="emptyTrash">EMPTY TRASH
+                        </button>
+                    </div>
                     <div class="ui grid">
                         <div class="eight wide column">
-                            <form method="post" action="cart" class="item">
-                                <input name="salesOrderId" type="hidden" value="${salesOrder.getSalesOrderId()}">
+                            <div class="item">
                                 <div class="inline field">
                                     <div class="ui right pointing label big">
                                         Limit:
@@ -102,11 +106,11 @@
                                     <div class="ui left labeled button" tabindex="0">
                                         <input type="text" class="ui basic right pointing label" name="limitInput"
                                                value="${salesOrder.getLimit()}"/>
-                                        <button class="ui button" name="limitButton">APPLY</button>
+                                        <button class="ui button" name="limitButton" value="apply">APPLY</button>
                                     </div>
                                 </div>
-                            </form>
-                            <c:if test="${salesOrder.getLimit() < salesOrder.getTotalAmount()}">
+                            </div>
+                            <c:if test="${salesOrder.getLimit() < salesOrder.getTotalAmount() && salesOrder.getLimit() > 0}">
                                 <div class="ui message warning">
                                     <i class="close icon"></i>
                                     <div class="header">
@@ -114,9 +118,15 @@
                                     </div>
                                 </div>
                             </c:if>
+                            <c:if test="${request != null}">
+                                <div class="ui message warning">
+                                    <p>${requestScope.exception}</p>
+                                </div>
+                            </c:if>
                         </div>
                         <div class="eight wide column">
-                            <h3 class="ui grey header right floated bottom">$${salesOrder.getTotalAmount()}</h3>
+                            <h3 class="ui grey header right floated bottom jsAmount">
+                                $${salesOrder.getTotalAmount()}</h3>
                             <h3 class="ui header right floated bottom">
                                 Total:
                             </h3>
@@ -136,7 +146,7 @@
                     </span>
                 </c:when>
             </c:choose>
-        </div>
+        </form>
     </div>
 </c:forEach>
 <script>
