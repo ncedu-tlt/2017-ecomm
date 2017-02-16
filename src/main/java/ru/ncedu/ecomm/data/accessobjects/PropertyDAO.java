@@ -17,6 +17,10 @@ public interface PropertyDAO {
 
     List<Property> getSocials();
 
+    Property addSocial(Property property);
 
+    void deleteSocial(Property property);
+
+    Property updateSocial(Property property);
 
 }

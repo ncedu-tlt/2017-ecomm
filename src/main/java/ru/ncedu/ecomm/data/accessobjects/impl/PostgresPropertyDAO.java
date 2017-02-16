@@ -158,5 +158,69 @@ public class PostgresPropertyDAO implements PropertyDAO {
         return properties;
     }
 
+    @Override
+    public Property addSocial(Property property) {
+
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "INSERT INTO properties (property_id, value)\n" +
+                             "VALUES (\n" +
+                             "  (SELECT 'social' || CAST(SUBSTRING(property_id FROM 7) AS BIGINT) + 1\n" +
+                             "   FROM properties\n" +
+                             "   WHERE property_id ~ '(social\\d)'\n" +
+                             "   ORDER BY property_id DESC\n" +
+                             "   LIMIT 1), ?), (lower(?)||'Url', ?)")) {
+
+            statement.setString(1, property.getId());
+            statement.setString(2, property.getId());
+            statement.setString(3, property.getValue());
+
+            statement.execute();
+
+            return property;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void deleteSocial(Property property) {
+
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "DELETE FROM properties\n" +
+                             "WHERE value = ?, value = ?")) {
+
+            statement.setString(1, property.getId());
+            statement.setString(2, property.getValue());
+            statement.execute();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @Override
+    public Property updateSocial(Property property) {
+
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "UPDATE properties\n" +
+                             "   SET value = ?\n" +
+                             "WHERE property_id = lower(?)||'Url'")) {
+            statement.setString(1, property.getValue());
+            statement.setString(2, property.getId());
+            statement.execute();
+
+            return property;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
 }
