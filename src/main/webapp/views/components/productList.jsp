@@ -28,7 +28,7 @@
     </h2>
     <div class="ui grid centered container">
         <c:forEach var="product" items="${category.getProducts()}">
-            <form action="${pageContext.request.contextPath}/addToShoppingCart" method="post" class="five wide column">
+            <div action="${pageContext.request.contextPath}/addToShoppingCart" method="post" class="five wide column">
                 <img class="ui fluid image" src="${pageContext.request.contextPath}${product.getImageUrl()}">
                 <h3 class="ui center aligned header horizontal divider">
                     <a href="${pageContext.request.contextPath}/product?product_id=${product.getId()}">
@@ -54,13 +54,13 @@
                         $${product.getPrice()}
                     </c:if>
                 </h3>
-                <button class="ui labeled icon fluid blue button" id="addToCart" type="submit"
+                <button class="ui labeled icon fluid blue button jsAddToCart"
                         name="productId" value="${product.getId()}">
                     <i class="add
                     to car icon"></i>
                     Add to cart
                 </button>
-            </form>
+            </div>
         </c:forEach>
     </div>
 </c:forEach>
