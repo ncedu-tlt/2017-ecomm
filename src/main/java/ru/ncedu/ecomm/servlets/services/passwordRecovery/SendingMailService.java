@@ -26,18 +26,16 @@ public class SendingMailService {
         return instance;
     }
 
-    //TODO: вынести в properties файл
     private Properties configServerForSend() {
         Properties serverProperties = System.getProperties();
-        serverProperties.put("mail.smtp.auth", "true");
-        serverProperties.put("mail.smtp.starttls.enable", "true");
-        serverProperties.put("mail.smtp.host", "smtp.gmail.com");
-        serverProperties.put("mail.smtp.port", "587");
-        serverProperties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        serverProperties.setProperty("mail.smtp.auth", "true");
+        serverProperties.setProperty("mail.smtp.starttls.enable", "true");
+        serverProperties.setProperty("mail.smtp.host", "smtp.gmail.com");
+        serverProperties.setProperty("mail.smtp.port", "587");
+        serverProperties.setProperty("mail.smtp.ssl.trust", "smtp.gmail.com");
         return serverProperties;
     }
 
-    //TODO: текстовки, выводимые на странице, не должны располагаться в сервисах
     public boolean sendMail(String toEmail, String textHtml) {
         return checkEmail(toEmail) && searchMailInDatabase(toEmail) && sendLetterToUser(toEmail, textHtml);
     }
@@ -56,29 +54,45 @@ public class SendingMailService {
     }
 
     private boolean sendLetterToUser(String toEmail, String textHtml) {
-        String username = Configuration.getProperty("mail.username");
-        String password = Configuration.getProperty("mail.password");
-        Session session = Session.getDefaultInstance(SERVER_PROPERTIES, new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
-            }
-        });
-        MimeMessage message = new MimeMessage(session);
-        return sendMessageWithMimeMessage(message, toEmail, textHtml);
+        return sendMessageWithMimeMessage(toEmail, textHtml);
     }
 
-    private boolean sendMessageWithMimeMessage(MimeMessage message, String toEmail, String textHtml) {
+    private boolean sendMessageWithMimeMessage( String toEmail, String textHtml) {
+        Session session = getSession();
+        MimeMessage message = new MimeMessage(session);
+        return setMimeMessage(message, toEmail, textHtml) && sendToTransport(message);
+    }
+
+    private boolean sendToTransport(MimeMessage message) {
+        try {
+            Transport.send(message);
+            return true;
+        } catch (MessagingException e) {
+            return false;
+        }
+    }
+
+    private boolean setMimeMessage(MimeMessage message, String toEmail, String textHtml) {
         String subjectLetter = "Password Recovery";
         try{
             message.setFrom(new InternetAddress(Configuration.getProperty("mail.username")));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
             message.setSubject(subjectLetter);
             message.setContent(textHtml, "text/html; charset=utf-8");
-            Transport.send(message);
             return true;
         } catch (MessagingException e) {
             return false;
         }
+    }
+
+    public Session getSession() {
+        String username = Configuration.getProperty("mail.username");
+        String password = Configuration.getProperty("mail.password");
+        return Session.getDefaultInstance(SERVER_PROPERTIES, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
     }
 }

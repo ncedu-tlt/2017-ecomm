@@ -17,19 +17,17 @@ public class PasswordRecoveryService {
         return instance;
     }
 
-    //TODO: а нам действительно нужен такой каскад функций?
     public String getRecoveryHash() {
         return createRecoveryHash();
     }
 
     private String createRecoveryHash() {
         List<Integer> uniqueHash = new ArrayList<>();
-        Random random = new Random();
-        addHashToCollection(uniqueHash, random);
-        return createNewRecoveryHash(uniqueHash);
+        addHashToCollection(uniqueHash);
+        return getHash(uniqueHash);
     }
 
-    private String createNewRecoveryHash(List<Integer> uniqueHash) {
+    private String getHash(List<Integer> uniqueHash) {
         String recoveryHash = "";
         for (Integer hash : uniqueHash) {
             recoveryHash += hash;
@@ -37,9 +35,10 @@ public class PasswordRecoveryService {
         return recoveryHash;
     }
 
-    private void addHashToCollection(List<Integer> uniqueHash, Random random) {
+    private void addHashToCollection(List<Integer> uniqueHash) {
         final int MAX_HASH = 10;
         final int MAX_NUMBER = 9;
+        Random random = new Random();
         while (uniqueHash.size() < MAX_HASH) {
             uniqueHash.add(random.nextInt(MAX_NUMBER));
         }
