@@ -63,15 +63,6 @@ public class SendingMailService {
         return setMimeMessage(message, toEmail, textHtml) && sendToTransport(message);
     }
 
-    private boolean sendToTransport(MimeMessage message) {
-        try {
-            Transport.send(message);
-            return true;
-        } catch (MessagingException e) {
-            return false;
-        }
-    }
-
     private boolean setMimeMessage(MimeMessage message, String toEmail, String textHtml) {
         String subjectLetter = "Password Recovery";
         try{
@@ -84,6 +75,17 @@ public class SendingMailService {
             return false;
         }
     }
+
+    private boolean sendToTransport(MimeMessage message) {
+        try {
+            Transport.send(message);
+            return true;
+        } catch (MessagingException e) {
+            return false;
+        }
+    }
+
+
 
     public Session getSession() {
         String username = Configuration.getProperty("mail.username");

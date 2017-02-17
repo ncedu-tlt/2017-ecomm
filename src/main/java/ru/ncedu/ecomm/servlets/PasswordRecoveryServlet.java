@@ -28,9 +28,11 @@ public class PasswordRecoveryServlet extends HttpServlet {
 
     private void sendLetterToEmail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String toEmail = req.getParameter("email");
-        String textHTML = getTextHtml(toEmail);
-        String answerFromMailService = getAnswerFromMailService(toEmail, textHTML);
         if (SendingMailService.getInstance().checkEmail(toEmail)) {
+            String recoveryHash = PasswordRecoveryService.getInstance().getRecoveryHashByEmail();
+            String textHTML = getTextHtml(toEmail, recoveryHash);
+            String answerFromMailService = getAnswerFromMailService(toEmail, textHTML);
+            PasswordRecoveryService.getInstance().addRecoveryHAshToUser(toEmail, recoveryHash);
             req.setAttribute("answer", answerFromMailService);
             req.getRequestDispatcher(Configuration.getProperty("page.passwordRecovery")).forward(req, resp);
         } else {
@@ -42,11 +44,10 @@ public class PasswordRecoveryServlet extends HttpServlet {
 
 
     //TODO: по хорошему бы вынести это в отдельный файл
-    private String getTextHtml(String toEmail) {
+    private String getTextHtml(String toEmail, String recoveryHash) {
         return "<p>Please change your password in here:</p>" +
                 "<a href='https://ncedu-ecomm-dev.herokuapp.com/passwordChange?email="
-                + toEmail + "&recoveryHash=" + PasswordRecoveryService.getInstance()
-                .getRecoveryHash() + "'>Change Password</a>";
+                + toEmail + "&recoveryHash=" + recoveryHash + "'>Change Password</a>";
     }
 
     private String getAnswerFromMailService(String toEmail, String textHTML) {

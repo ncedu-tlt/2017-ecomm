@@ -14,23 +14,18 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 @WebServlet(name = "PasswordChangeServlet", urlPatterns = {"/passwordChange"})
 public class PasswordChangeServlet extends HttpServlet {
 
-    // TODO: почему не сделать переменные локальными?
-    private String email;
-    private String recoveryHash;
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/views/pages/passwordChange.jsp").forward(req, resp);
-        // TODO: а зачем эти параметры берутся после forward?
-        email = req.getParameter("email");
-        recoveryHash = req.getParameter("recoveryHash");
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String newPassword = req.getParameter("password");
-        if(checkEmailAndRecoveryHash(this.email, this.recoveryHash) ){
-            updatePassword(this.email, newPassword);
+        String email = req.getParameter("email");
+        String recoveryHash = req.getParameter("recoveryHash");
+        if(checkEmailAndRecoveryHash(email, recoveryHash) ){
+            updatePassword(email, newPassword);
             req.setAttribute("answer", "Your password was change."); //TODO: в JSP
             req.getRequestDispatcher("/views/pages/passwordChange.jsp").forward(req, resp);
         }

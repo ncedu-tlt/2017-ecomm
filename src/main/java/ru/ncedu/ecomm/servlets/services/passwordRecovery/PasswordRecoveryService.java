@@ -1,8 +1,12 @@
 package ru.ncedu.ecomm.servlets.services.passwordRecovery;
 
+import ru.ncedu.ecomm.data.models.User;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 public class PasswordRecoveryService {
 
@@ -17,7 +21,7 @@ public class PasswordRecoveryService {
         return instance;
     }
 
-    public String getRecoveryHash() {
+    public String getRecoveryHashByEmail() {
         return createRecoveryHash();
     }
 
@@ -42,5 +46,11 @@ public class PasswordRecoveryService {
         while (uniqueHash.size() < MAX_HASH) {
             uniqueHash.add(random.nextInt(MAX_NUMBER));
         }
+    }
+
+    public void addRecoveryHAshToUser(String email, String recoveryHash) {
+        User user = getDAOFactory().getUserDAO().getUserByEmail(email);
+        user.setRecoveryHash(recoveryHash);
+        getDAOFactory().getUserDAO().updateUser(user);
     }
 }
