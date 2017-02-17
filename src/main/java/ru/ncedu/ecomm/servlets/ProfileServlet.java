@@ -10,8 +10,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 @WebServlet(name = "ProfileServlet", urlPatterns = {"/profile"})
 public class ProfileServlet extends HttpServlet {
@@ -23,29 +26,94 @@ public class ProfileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        showProfile(req, resp);
-    }
-
-    private void showProfile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession authorization = req.getSession();
-        if (authorization.getAttribute("userId") != null) { //TODO: проверка
-            createAttributeProfile(req, resp);
-            resp.sendRedirect(Configuration.getProperty("page.profile"));
+        if (checkOnEmpty(req)) {
+            initAttributesSuccessChange(req, resp);
         } else {
-            UserService.getInstance().redirectToLoginIfNeeded(req, resp); //TODO: и еще одна проверка
+            initAttributesNothingChange(req, resp);
         }
     }
 
-    private void createAttributeProfile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        long userId = UserService.getInstance().getCurrentUserId(req);
-        ProfileService profileService = new ProfileService(userId);
-        User userProfile = profileService.getUserProfile();
-        initAttributesProfile(userProfile, req);
+    //show profile
+
+    private void showProfile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        redirectIfUserNotAuthorized(req, resp);
+        createAttributeProfile(req);
+        resp.sendRedirect(Configuration.getProperty("page.profile"));
     }
 
-    private void initAttributesProfile(User userProfile, HttpServletRequest req) {
+    private void redirectIfUserNotAuthorized(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            UserService.getInstance().redirectToLoginIfNeeded(req, resp);
+        } catch (ServletException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void createAttributeProfile(HttpServletRequest req) throws ServletException, IOException {
+        long userId = UserService.getInstance().getCurrentUserId(req);
+        ProfileService profileService = ProfileService.getInstance();
+        User userProfile = profileService.getUserProfileById(userId);
+        initAttributesProfileForShow(userProfile, req);
+    }
+
+    private void initAttributesProfileForShow(User userProfile, HttpServletRequest req) {
         req.setAttribute("firstName", userProfile.getFirstName());
         req.setAttribute("lastName", userProfile.getLastName());
         req.setAttribute("email", userProfile.getEmail());
+    }
+
+    //profile change
+
+    private boolean checkOnEmpty(HttpServletRequest req) {
+        List<String> userParameters = getUserParameters(req);
+        for (String parameter : userParameters) {
+            if (!parameter.trim().isEmpty())
+                return true;
+        }
+        return false;
+    }
+
+    private void initAttributesSuccessChange(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        long userId = UserService.getInstance().getCurrentUserId(req);
+        changeProfile(userId, req);
+        req.setAttribute("answer", "Profile was changed."); //TODO: в JSP
+        resp.sendRedirect("/profile");
+    }
+
+    private void changeProfile(long userId, HttpServletRequest req) {
+        User userByChange = getDAOFactory().getUserDAO().getUserById(userId);
+        userByChange = setUserNewParameters(userByChange, req);
+        getDAOFactory().getUserDAO().updateUser(userByChange);
+    }
+
+    private User setUserNewParameters(User userByChange, HttpServletRequest req) {
+        userByChange.setFirstName(req.getParameter("firstName"));
+        userByChange.setLastName(req.getParameter("lastName"));
+        userByChange.setEmail(req.getParameter("email"));
+        String newPassword = UserService.getInstance().md5DigestPassword(req.getParameter("password"));
+        userByChange.setPassword(newPassword);
+
+        return userByChange;
+    }
+
+    private void initAttributesNothingChange(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("answer", "Nothing to change."); //TODO: в JSP
+        req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
+    }
+
+    private List<String> getUserParameters(HttpServletRequest req) {
+        List<String> userParameters = new ArrayList<>();
+        userParameters = addNewUserParameters(userParameters, req);
+        return userParameters;
+
+    }
+
+    private List<String> addNewUserParameters(List<String> userParameters, HttpServletRequest req) {
+        userParameters.add(req.getParameter("firstName"));
+        userParameters.add(req.getParameter("lastName"));
+        userParameters.add(req.getParameter("email"));
+        userParameters.add(req.getParameter("password"));
+
+        return userParameters;
     }
 }

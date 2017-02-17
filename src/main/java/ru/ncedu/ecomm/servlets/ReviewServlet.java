@@ -51,12 +51,12 @@ public class ReviewServlet extends HttpServlet {
                     .setUserId(Long.parseLong(req.getParameter("userId")))
                     .build();
 
-            removeRebiewByBase(review);
+            removeReviewByBase(review);
         }
             resp.sendRedirect("/product?product_id=" + productId);
     }
 
-    private void removeRebiewByBase(Review review) {
+    private void removeReviewByBase(Review review) {
         DAOFactory.getDAOFactory()
                 .getReviewDAO()
                 .deleteReviews(review);

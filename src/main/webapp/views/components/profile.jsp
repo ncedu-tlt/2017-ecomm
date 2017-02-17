@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/profile"/>
 <div class="ui aligned center text container segment jsProfileComponent" id="profileBlock" data-tab="profile">
-    <form class="ui form jsProfileForm" method="post" action="${pageContext.request.contextPath}/profileChange">
+    <form class="ui form jsProfileForm" method="post" action="${pageContext.request.contextPath}/profile">
         <div class="field">
             <label>First Name:</label>
             <input type="text" name="firstName" placeholder="First Name" class="jsProfileUserParam" value="${requestScope.firstName}">
