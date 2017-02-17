@@ -1,6 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.servlets.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,11 +22,9 @@ public class PasswordChangeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String newPassword = req.getParameter("password");
-        String email = req.getParameter("email");
-        String recoveryHash = req.getParameter("recoveryHash");
-        if(checkEmailAndRecoveryHash(email, recoveryHash) ){
-            updatePassword(email, newPassword);
+        User userByRecovery = getUserByRecovery(req);
+        if(checkEmailAndRecoveryHash(userByRecovery) ){
+            updatePassword(userByRecovery);
             req.setAttribute("answer", "Your password was change."); //TODO: в JSP
             req.getRequestDispatcher("/views/pages/passwordChange.jsp").forward(req, resp);
         }
@@ -35,15 +34,27 @@ public class PasswordChangeServlet extends HttpServlet {
         }
     }
 
-    private boolean checkEmailAndRecoveryHash(String email, String recoveryHash) {
-        User userByEmail = getDAOFactory().getUserDAO().getUserByEmail(email);
+    private boolean checkEmailAndRecoveryHash(User userByRecovery) {
+        String recoveryHash = userByRecovery.getRecoveryHash();
+        User userByEmail = getDAOFactory().getUserDAO().getUserByEmail(userByRecovery.getEmail());
         return recoveryHash.equals(userByEmail.getRecoveryHash());
     }
 
-    private void updatePassword(String email, String newPassword){
-        User userNewPassword = getDAOFactory().getUserDAO().getUserByEmail(email);
+    private void updatePassword(User userByRecovery){
+        User userNewPassword = getDAOFactory().getUserDAO().getUserByEmail(userByRecovery.getEmail());
+        String newPassword = UserService.getInstance().md5DigestPassword(userByRecovery.getPassword());
         userNewPassword.setPassword(newPassword);
         userNewPassword.setRecoveryHash(null);
         getDAOFactory().getUserDAO().updateUser(userNewPassword);
+    }
+
+    private User getUserByRecovery(HttpServletRequest req) {
+        User userByRecovery = new User();
+
+        userByRecovery.setPassword(req.getParameter("password"));
+        userByRecovery.setRecoveryHash(req.getParameter("recoveryHash"));
+        userByRecovery.setEmail(req.getParameter("email"));
+
+        return userByRecovery;
     }
 }
