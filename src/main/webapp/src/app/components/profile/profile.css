@@ -1,7 +1,3 @@
-.jsPasswordConfirm{
-    display:none;
-}
-
-#jsSendFormProfileBtn{
+#jsSendFormProfileBtn, .jsPasswordConfirm{
     display:none;
 }

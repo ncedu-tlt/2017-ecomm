@@ -1,18 +1,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/profile"/>
-<div class="ui aligned center text container segment jsProfileComponent" id="profileBlock" data-tab="profile">
+<div class="ui aligned center text container segment jsProfileComponent" data-tab="profile">
     <form class="ui form jsProfileForm" method="post" action="${pageContext.request.contextPath}/profile">
         <div class="field">
             <label>First Name:</label>
-            <input type="text" name="firstName" placeholder="First Name" class="jsProfileUserParam" value="${requestScope.firstName}">
+            <input type="text" name="firstName" placeholder="First Name" class="jsProfileTextParam"
+                   value="${requestScope.firstName}">
         </div>
         <div class="field">
             <label>Last Name:</label>
-            <input type="text" name="lastName" placeholder="Last Name" class="jsProfileUserParam" value="${requestScope.lastName}">
+            <input type="text" name="lastName" placeholder="Last Name" class="jsProfileTextParam"
+                   value="${requestScope.lastName}">
         </div>
         <div class="field">
             <label>Email:</label>
-            <input type="text" name="email" placeholder="Email" class="jsProfileTextParam" value="${requestScope.email}">
+            <input type="text" name="email" placeholder="Email" class="jsProfileTextParam"
+                   value="${requestScope.email}">
         </div>
         <div class="field">
             <label>Password:</label>
@@ -29,16 +32,11 @@
         </button>
         <div class="ui error message"></div>
     </form>
-    <c:set var="request" scope="session" value="${requestScope.answer}"/>
-    <c:if test="${request != null}">
-        <div class="ui message warning ">
-            <p>${requestScope.answer}</p>
-        </div>
-    </c:if>
+    <c:set var="answer" scope="session" value="${requestScope.answer}"/>
+    <div class="ui message warning ">
+        <p>${answer}</p>
+    </div>
 </div>
-
-<%-- JS controller initilization --%>
-<script type="text/javascript">
-    window.frm.components.init('DashboardComponent', '.jsDashboardComponent');
-    window.frm.components.init('profileComponent', '.jsProfileComponent');
+<script>
+    window.frm.components.init('ProfileComponent', '.jsProfileComponent');
 </script>

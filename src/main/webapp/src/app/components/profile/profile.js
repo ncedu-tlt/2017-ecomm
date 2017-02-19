@@ -2,11 +2,7 @@
 
     var frm = window.frm;
 
-    var profileComponent = frm.inheritance.inherits(frm.components.Component, {
-
-        /**
-         * Executed on component initialization
-         */
+    var ProfileComponent = frm.inheritance.inherits(frm.components.Component, {
         init: function () {
             this.showPasswordConfirm();
             this.showApplyButton();
@@ -64,11 +60,11 @@
         },
         showPasswordConfirm: function () {
             this.content.find('.jsPassword').click(function () {
-                this.show();
-            });
-            this.content.find('.jsProfileTextParam').click(function () {
-                if (this.empty()) {
+                if($('.jsPassword').val().length === 0){
                     $('.jsPasswordConfirm').hide();
+                }
+                else{
+                    $('.jsPasswordConfirm').show();
                 }
             });
         },
@@ -83,6 +79,6 @@
     });
 
 
-    frm.components.register('profileComponent', profileComponent);
+    frm.components.register('ProfileComponent', ProfileComponent);
 
 })(jQuery, window);
