@@ -1,0 +1,16 @@
+<table>
+    <thead>
+        <tr>
+            <th ng-repeat="column in $ctrl.model.columns">
+                {{column.name}}
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="row in $ctrl.model.data" ng-click="$ctrl.onSelect({$event: {row: row}})">
+            <td ng-repeat="column in $ctrl.model.columns">
+                {{$ctrl.getValue(row, column.key)}}
+            </td>
+        </tr>
+    </tbody>
+</table>

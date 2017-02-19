@@ -1,0 +1,32 @@
+{
+  "env": {
+    "browser": true
+  },
+  "extends": "angular",
+  "plugins": [
+    "angular"
+  ],
+  "rules": {
+    "indent": [
+      "error",
+      4,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "linebreak-style": [
+      "off"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "no-unused-vars": "warn",
+    "no-empty": "warn",
+    "no-console": "off"
+  }
+}
