@@ -43,13 +43,12 @@ public class OrderHistoryServlet extends HttpServlet {
         List<SalesOrderViewModel> orderHistory = null;
         try {
             if (roleId == EnumRoles.ADMINISTRATOR.getRole())
-                orderHistory = ShoppingCartService.getInstance().getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus());
+                orderHistory = ShoppingCartService.getInstance().getSalesOrderModelList();
             else
-                orderHistory = ShoppingCartService.getInstance().getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
+               orderHistory = ShoppingCartService.getInstance().getSalesOrderModelListByUserId(userId);
 
         } catch (SQLException e) {
-            // TODO: что будет, если упадёт эксепшен?
-            e.printStackTrace();
+            req.setAttribute("SQLException", "Error with database");
         }
 
         req.setAttribute("orderHistory", orderHistory);

@@ -2,6 +2,7 @@ package ru.ncedu.ecomm.servlets.services;
 
 import ru.ncedu.ecomm.data.DAOFactory;
 import ru.ncedu.ecomm.data.models.OrderItem;
+import ru.ncedu.ecomm.data.models.OrderStatus;
 import ru.ncedu.ecomm.data.models.SalesOrder;
 import ru.ncedu.ecomm.servlets.models.EnumOrderStatus;
 import ru.ncedu.ecomm.servlets.models.OrderItemViewModel;
@@ -149,7 +150,7 @@ public class ShoppingCartService {
         return salesOrderViewModels;
     }
 
-    public List<SalesOrderViewModel> getSalesOrderModelList(long orderStatusId) throws SQLException {
+    public List<SalesOrderViewModel> getSalesOrderModelListByStatusId(long orderStatusId) throws SQLException {
         List<SalesOrderViewModel> salesOrderViewModels = new ArrayList<>();
         List<SalesOrder> salesOrders = getSalesOrder(orderStatusId);
         for (SalesOrder salesOrder : salesOrders) {
@@ -160,6 +161,42 @@ public class ShoppingCartService {
                     .setLimit(salesOrder.getLimit())
                     .setTotalAmount(totalAmountSumAllPriceInOrderItemViewModelList(salesOrder.getSalesOrderId()))
                     .setOrderItems(relationPriceAndQuantityInOrderItemViewModelList(salesOrder.getSalesOrderId()))
+                    .build();
+            salesOrderViewModels.add(salesOrderViewModel);
+        }
+        return salesOrderViewModels;
+    }
+
+    public List<SalesOrderViewModel> getSalesOrderModelListByUserId(long userId) throws SQLException {
+       List<SalesOrderViewModel> salesOrderViewModels = new ArrayList<>();
+       List<SalesOrder> salesOrders = getSalesOrderByUserId(userId);
+       for (SalesOrder salesOrder : salesOrders) {
+           SalesOrderViewModel salesOrderViewModel = new SalesOrderViewBuilder()
+                   .setUserId(salesOrder.getUserId())
+                   .setSalesOrderId(salesOrder.getSalesOrderId())
+                   .setCreationDate(salesOrder.getCreationDate())
+                   .setLimit(salesOrder.getLimit())
+                   .setTotalAmount(totalAmountSumAllPriceInOrderItemViewModelList(salesOrder.getSalesOrderId()))
+                   .setOrderItems(relationPriceAndQuantityInOrderItemViewModelList(salesOrder.getSalesOrderId()))
+                   .setStatusName(getStatusName(salesOrder.getOrderStatusId()))
+                   .build();
+           salesOrderViewModels.add(salesOrderViewModel);
+       }
+       return salesOrderViewModels;
+    }
+
+    public List<SalesOrderViewModel> getSalesOrderModelList() throws SQLException {
+        List<SalesOrderViewModel> salesOrderViewModels = new ArrayList<>();
+        List<SalesOrder> salesOrders = DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrders();
+        for (SalesOrder salesOrder : salesOrders) {
+            SalesOrderViewModel salesOrderViewModel = new SalesOrderViewBuilder()
+                    .setUserId(salesOrder.getUserId())
+                    .setSalesOrderId(salesOrder.getSalesOrderId())
+                    .setCreationDate(salesOrder.getCreationDate())
+                    .setLimit(salesOrder.getLimit())
+                    .setTotalAmount(totalAmountSumAllPriceInOrderItemViewModelList(salesOrder.getSalesOrderId()))
+                    .setOrderItems(relationPriceAndQuantityInOrderItemViewModelList(salesOrder.getSalesOrderId()))
+                    .setStatusName(getStatusName(salesOrder.getOrderStatusId()))
                     .build();
             salesOrderViewModels.add(salesOrderViewModel);
         }
@@ -181,7 +218,6 @@ public class ShoppingCartService {
                     .build();
             orderItemsView.add(orderItemViewModel);
         }
-
         return orderItemsView;
     }
 
@@ -248,9 +284,16 @@ public class ShoppingCartService {
         return DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderByOrderStatusId(orderStatusId, userId);
     }
 
+    private List<SalesOrder> getSalesOrderByUserId(long userId) {
+        return DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderByOrderUserId(userId);
+    }
+
     private List<SalesOrder> getSalesOrder(long orderStatusId) {
         return DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderByOrderStatusId(orderStatusId);
     }
 
-
+    private String getStatusName(long orderStatusId){
+        OrderStatus orderStatus = DAOFactory.getDAOFactory().getOrderStatusDAO().getOrdersStatusById(orderStatusId);
+        return orderStatus.getName();
+    }
 }

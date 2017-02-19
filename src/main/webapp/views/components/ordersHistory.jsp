@@ -1,5 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="orderHistory" scope="page" value="${requestScope.orderHistory}"/>
+<c:set var="request" scope="session" value="${requestScope.SQLException}"/>
 <div class="ui center aligned text container segment active main-content jsOrdersHistoryComponent"
      id="orderHistoryBlock" data-tab="orderHistory">
     <div class="ui items orders">
@@ -29,6 +30,7 @@
                                             </div>
                                         </div>
                                         <div class="left floated description">
+                                            <p>Status: ${orders.getStatusName()}</p>
                                             <p>Quantity: ${orderItems.getQuantity()}</p>
                                         </div>
                                     </div>
@@ -43,6 +45,11 @@
                     </c:if>
                     <c:if test="${orders.getTotalAmount() == 0}">
                         No orders
+                    </c:if>
+                    <c:if test="${request != null}">
+                        <div class="ui message warning">
+                            <p>${requestScope.SQLException}</p>
+                        </div>
                     </c:if>
                 </div>
             </div>

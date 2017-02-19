@@ -15,6 +15,7 @@ public class SalesOrderViewBuilder {
     private BigDecimal limit;
     private List<OrderItemViewModel> orderItems;
     private long totalAmount;
+    private String statusName;
 
     public SalesOrderViewBuilder(){}
 
@@ -48,7 +49,12 @@ public class SalesOrderViewBuilder {
         return this;
     }
 
+    public SalesOrderViewBuilder setStatusName(String statusName) {
+        this.statusName = statusName;
+        return this;
+    }
+
     public SalesOrderViewModel build(){
-        return new SalesOrderViewModel(userId, salesOrderId, creationDate, limit, orderItems, totalAmount);
+        return new SalesOrderViewModel(userId, salesOrderId, creationDate, limit, orderItems, totalAmount, statusName);
     }
 }

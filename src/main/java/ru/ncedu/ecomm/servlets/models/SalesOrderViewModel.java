@@ -12,16 +12,18 @@ public class SalesOrderViewModel {
     private BigDecimal limit;
     private List<OrderItemViewModel> orderItems;
     private long totalAmount;
+    private String statusName;
 
     public SalesOrderViewModel(){}
 
-    public SalesOrderViewModel(long userId, long salesOrderId, Date creationDate, BigDecimal limit, List<OrderItemViewModel> orderItems, long totalAmount) {
+    public SalesOrderViewModel(long userId, long salesOrderId, Date creationDate, BigDecimal limit, List<OrderItemViewModel> orderItems, long totalAmount, String statusName) {
         this.userId = userId;
         this.salesOrderId = salesOrderId;
         this.creationDate = creationDate;
         this.limit = limit;
         this.orderItems = orderItems;
         this.totalAmount = totalAmount;
+        this.statusName = statusName;
     }
 
     public long getUserId() {
@@ -70,5 +72,12 @@ public class SalesOrderViewModel {
 
     public void setTotalAmount(long totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 }
