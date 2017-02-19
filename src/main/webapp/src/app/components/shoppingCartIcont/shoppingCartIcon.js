@@ -4,6 +4,7 @@
 
     var ShoppingCartIconComponent = frm.inheritance.inherits(frm.components.Component, {
         init: function () {
+
             frm.events.on('addToCart', function(param){
                 $('#quantityProducts').html(param);
             });

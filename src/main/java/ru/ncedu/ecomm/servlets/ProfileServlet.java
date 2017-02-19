@@ -29,7 +29,7 @@ public class ProfileServlet extends HttpServlet {
         if (checkOnEmpty(req)) {
             initAttributesSuccessChange(req, resp);
         } else {
-            initAttributesNothingChange(req, resp);
+            this.doGet(req, resp);
         }
     }
 
@@ -76,7 +76,6 @@ public class ProfileServlet extends HttpServlet {
     private void initAttributesSuccessChange(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long userId = UserService.getInstance().getCurrentUserId(req);
         changeProfile(userId, req);
-        req.setAttribute("answer", "Profile was changed."); //TODO: в JSP
         resp.sendRedirect("/profile");
     }
 
@@ -96,11 +95,6 @@ public class ProfileServlet extends HttpServlet {
         return userByChange;
     }
 
-    private void initAttributesNothingChange(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("answer", "Nothing to change."); //TODO: в JSP
-        req.getRequestDispatcher("/views/pages/profile.jsp").forward(req, resp);
-    }
-
     private List<String> getUserParameters(HttpServletRequest req) {
         List<String> userParameters = new ArrayList<>();
         userParameters = addNewUserParameters(userParameters, req);
@@ -116,4 +110,7 @@ public class ProfileServlet extends HttpServlet {
 
         return userParameters;
     }
+
+
+
 }

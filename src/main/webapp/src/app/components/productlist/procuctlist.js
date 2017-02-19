@@ -10,8 +10,8 @@
         init: function () {
             this.content.find('.rating').rating({initialRating: 2, maxRating: 5}).rating('disable');
             this.content.find('.jsAddToCart').on('click', function () {
-
-                frm.events.fire('addToCart', 123);
+                var productId = $(this).val();
+                frm.events.fire('addToCart', productId);
             });
         }
     });
