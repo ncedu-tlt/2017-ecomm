@@ -6,6 +6,7 @@ public class ReviewViewModel {
     private String userName;
     private long userId;
     private String userAvatarLink;
+    private long productId;
 
     private int rating;
     private Date reviewDate;
@@ -18,14 +19,17 @@ public class ReviewViewModel {
                            String userAvatarLink,
                            int rating,
                            Date reviewDate,
-                           String description) {
+                           String description,
+                           long productId) {
         this.userName = userName;
         this.userId = userId;
         this.userAvatarLink = userAvatarLink;
         this.rating = rating;
         this.reviewDate = reviewDate;
         this.description = description;
+        this.productId = productId;
     }
+
 
     public String getUserName() {
         return userName;
@@ -49,6 +53,14 @@ public class ReviewViewModel {
 
     public void setUserAvatarLink(String userAvatarLink) {
         this.userAvatarLink = userAvatarLink;
+    }
+
+    public long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(long productId) {
+        this.productId = productId;
     }
 
     public int getRating() {

@@ -100,8 +100,12 @@ public class PostgresReviewsDAO implements ReviewsDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "SELECT\n" +
-                             "  product_id\n" +
+                     "SELECT \n" +
+                             " product_id,\n" +
+                             " user_id,\n" +
+                             " description,\n" +
+                             " creation_date,\n" +
+                             " raiting\n" +
                              "FROM public.reviews\n" +
                              "WHERE product_id = ?\n" +
                              "AND user_id = ?"
@@ -115,7 +119,11 @@ public class PostgresReviewsDAO implements ReviewsDAO {
             if (resultSet.next()) {
 
                 return new ReviewBuilder()
+                        .setCreationDate(resultSet.getDate("creation_date"))
+                        .setDescription(resultSet.getString("description"))
                         .setProductId(resultSet.getLong("product_id"))
+                        .setUserId(resultSet.getLong("user_id"))
+                        .setRating(resultSet.getInt("raiting"))
                         .build();
             }
         } catch (SQLException e) {

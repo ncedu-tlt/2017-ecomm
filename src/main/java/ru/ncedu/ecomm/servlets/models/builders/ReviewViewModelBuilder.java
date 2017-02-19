@@ -8,6 +8,7 @@ public class ReviewViewModelBuilder {
     private String userName;
     private long userId;
     private String userAvatarLink;
+    private long productId;
 
     private int rating;
     private Date reviewDate;
@@ -52,6 +53,12 @@ public class ReviewViewModelBuilder {
         return this;
     }
 
+    public ReviewViewModelBuilder setProductId(long productId) {
+        this.productId = productId;
+
+        return this;
+    }
+
     public ReviewViewModel build(){
         return new ReviewViewModel(
                 userName,
@@ -59,7 +66,8 @@ public class ReviewViewModelBuilder {
                 userAvatarLink,
                 rating,
                 reviewDate,
-                description
+                description,
+                productId
         );
     }
 }

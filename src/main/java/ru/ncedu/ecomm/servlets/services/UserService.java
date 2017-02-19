@@ -14,6 +14,7 @@ import java.security.NoSuchAlgorithmException;
 public class UserService {
 
     private static final String DEFAULT_USER_NAME = "Anonymous";
+    private static final int ADMINISTRATOR_ROLE = 1;
 
     private UserService() {
     }
@@ -37,7 +38,7 @@ public class UserService {
     public void redirectIfNotAllowed(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         long userRoleId = Long.parseLong(session.getAttribute("userRoleId").toString());
-        if (userRoleId != 1){ //TODO: что есть 1?
+        if (userRoleId != ADMINISTRATOR_ROLE){
             request.getRequestDispatcher("/home").include(request, response);
         }
     }

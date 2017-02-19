@@ -8,7 +8,7 @@
     </div>
     <div class="ui bottom attached active segment">
         <c:forEach var="review" items="${requestScope.reviews}">
-            <div class="ui grid">
+            <div class="ui grid<c:if test="${requestScope.userIdBySession == review.getUserId()}"> jsThisUserReview" data-value="${review.getProductId()}</c:if>">
                 <div class="three wide column">
                     <img src="${pageContext.request.contextPath}${review.getUserAvatarLink()}" alt="avatar"
                          class="ui image small">
@@ -25,60 +25,63 @@
                         </div>
                         <div class="right floated column">
                             <c:if test="${requestScope.userIdBySession == review.getUserId()}">
-                                <span class="mini ui thisUserReview black label">This is your review</span>
+                                <span class="mini ui thisUserReview black label" data-value="review.getUserId()">This is your review</span>
                             </c:if>
                         </div>
                     </div>
-                    <div class="ui grid one column">
-                        <div class="column">
+                    <div class="ui grid one column jsReviewData">
+                        <div class="ui grid one column">
+                            <div class="column">
                             <span class="ui blue label">
                                 Rating from user:
                             </span>
-                            <span class="ui jsUsersRating eleven wide column large rating disabled"
-                                  data-rating="${review.getRating()}"
-                                  data-max-rating="5">
+                                <span class="ui jsUsersRating eleven wide column large rating disabled"
+                                      data-rating="${review.getRating()}"
+                                      data-max-rating="5">
                             </span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="ui grid one column">
-                        <div class="column">
-                            <p>${review.getDescription()}</p>
+                        <div class="ui grid one column">
+                            <div class="column jsReview">
+                                <p>${review.getDescription()}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="ui grid one column">
-                        <div class="column">
-                            <c:if test="${requestScope.userIdBySession == review.getUserId()}">
-                                <div class="ui mini buttons right floated">
-                                    <button class="ui jsRemoveButton button">
-                                        <i class="trash outline icon"></i>
-                                        Remove
-                                    </button>
-                                    <form method="post" action="review" class="ui fluid jsRemoveForm popup top left transition hidden">
-                                        <input name="userId" type="hidden" value="${sessionScope.userId}">
-                                        <input name="productId" type="hidden" value="${product.getId()}">
-                                        <input name="reviewActions" type="hidden" value="remove">
-                                        <div class="ui column divided center aligned grid">
-                                            <div class="column">
-                                                <p>Remove a review?</p>
-                                                <div class="actions">
-                                                    <button type="button" class="ui jsNegative button">
-                                                        No
-                                                    </button>
-                                                    <button class="ui positive right labeled icon button">
-                                                        Yes
-                                                        <i class="checkmark icon"></i>
-                                                    </button>
+                        <div class="ui grid one column">
+                            <div class="column">
+                                <c:if test="${requestScope.userIdBySession == review.getUserId()}">
+                                    <div class="ui mini buttons right floated">
+                                        <button class="ui jsRemoveButton button">
+                                            <i class="trash outline icon"></i>
+                                            Remove
+                                        </button>
+                                        <form method="post" action="review"
+                                              class="ui fluid jsRemoveForm popup top left transition hidden">
+                                            <input name="userId" type="hidden" value="${sessionScope.userId}">
+                                            <input name="productId" type="hidden" value="${product.getId()}">
+                                            <input name="reviewActions" type="hidden" value="remove">
+                                            <div class="ui column divided center aligned grid">
+                                                <div class="column">
+                                                    <p>Remove a review?</p>
+                                                    <div class="actions">
+                                                        <button type="button" class="ui jsNegative button">
+                                                            No
+                                                        </button>
+                                                        <button class="ui positive right labeled icon button">
+                                                            Yes
+                                                            <i class="checkmark icon"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </form>
-                                    <div class="or"></div>
-                                    <button class="ui jsEdit button">
-                                        <i class="icon write"></i>
-                                        Edit
-                                    </button>
-                                </div>
-                            </c:if>
+                                        </form>
+                                        <div class="or"></div>
+                                        <button class="ui jsEdit button">
+                                            <i class="icon write"></i>
+                                            Edit
+                                        </button>
+                                    </div>
+                                </c:if>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -97,7 +100,7 @@
                     <textarea name="review" style="margin-top: 0; margin-bottom: 0; height: 168px;"
                               title="review"></textarea>
                 </div>
-                <button class="positive ui button">Add review</button>
+                <button class="positive ui mini button">Add review</button>
             </form>
         </c:if>
     </div>

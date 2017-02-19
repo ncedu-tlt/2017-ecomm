@@ -6,8 +6,7 @@ import ru.ncedu.ecomm.data.models.User;
 import ru.ncedu.ecomm.servlets.models.ReviewViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.ReviewViewModelBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ReviewService {
 
@@ -23,46 +22,46 @@ public class ReviewService {
         return instance;
     }
 
-    public List<ReviewViewModel> getReview(long productId) {
-        ReviewViewModel userReview;
+    public LinkedList<ReviewViewModel> getReview(long productId) {
+        ReviewViewModel reviewViewModel;
 
-        List<ReviewViewModel> reviewsViewModels = new ArrayList<>();
+        LinkedList<ReviewViewModel> reviewsViewModels = new LinkedList<>();
         List<Review> reviews = getReviewByDAO(productId);
 
         for (Review review : reviews) {
-            userReview = new ReviewViewModelBuilder()
-                    .setUserId(review.getUserId())
-                    .setUserName(getUserNameByUserId(review.getUserId()))
-                    .setUserAvatarLink(getUserAvatarLinkByUserId(review.getUserId()))
-                    .setRating(review.getRating())
-                    .setReviewDate(review.getCreationDate())
-                    .setDescription(review.getDescription())
-                    .build();
 
-            reviewsViewModels.add(userReview);
+            reviewViewModel = getReviewModel(review, productId);
+            reviewsViewModels.add(reviewViewModel);
         }
 
         return reviewsViewModels;
     }
 
-    //TODO: нужно больше методов!! ;)
+    public ReviewViewModel getReviewModel(Review review, long productId) {
+        return new ReviewViewModelBuilder()
+                .setUserId(review.getUserId())
+                .setUserName(getUserNameByUserId(review.getUserId()))
+                .setUserAvatarLink(getUserAvatarLinkByUserId(review.getUserId()))
+                .setRating(review.getRating())
+                .setReviewDate(review.getCreationDate())
+                .setDescription(review.getDescription())
+                .setProductId(productId)
+                .build();
+    }
+
+
     private String getUserAvatarLinkByUserId(long userId) {
         User user = getUserById(userId);
 
-        return getUserAvatarLink(user);
-    }
-
-    private String getUserAvatarLink(User user) {
-
-        return user.getUserAvatar();
+        return user != null ? user.getUserAvatar() : null;
     }
 
     private String getUserNameByUserId(long userId) {
         User user = getUserById(userId);
 
-        return UserService
+        return user != null ? UserService
                 .getInstance()
-                .getUserName(user);
+                .getUserName(user) : null;
     }
 
     private User getUserById(long userId) {

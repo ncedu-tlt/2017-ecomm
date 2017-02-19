@@ -16,9 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.function.Predicate;
 
 import static ru.ncedu.ecomm.servlets.services.ProductViewService.CHARACTERISTIC_ID_FOR_IMAGE_URL;
 import static ru.ncedu.ecomm.servlets.services.ProductViewService.DEFAULT_IMAGE_URL;
@@ -27,7 +26,7 @@ import static ru.ncedu.ecomm.servlets.services.ProductViewService.DEFAULT_IMAGE_
 public class ProductServlet extends HttpServlet {
 
     private static final long DEFAULT_CATEGORY_ID = 0;
-    static final long NOT_AUTHORIZED_USER_ID = 0;
+    private static final long NOT_AUTHORIZED_USER_ID = 0;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -50,9 +49,32 @@ public class ProductServlet extends HttpServlet {
 
 
         ProductDetailsModel browseProduct = getProductToView(productId);
-        List<ReviewViewModel> reviews = ReviewService
+        LinkedList<ReviewViewModel> reviews = ReviewService
                 .getInstance()
                 .getReview(productId);
+
+        if (httpSession.getAttribute("userId") != null) {
+
+            Review thisUserReview = DAOFactory.getDAOFactory()
+                    .getReviewDAO()
+                    .userReviewByUserIdAndProductId(productId, userIdBySession);
+
+            ReviewViewModel thisUserReviewViewModel = ReviewService
+                    .getInstance()
+                    .getReviewModel(thisUserReview, productId);
+
+            List<ReviewViewModel> listToRemove = new ArrayList<>();
+
+            for (ReviewViewModel reviewViewModel : reviews){
+                if (reviewViewModel.getUserId() == userIdBySession){
+                    listToRemove.add(reviewViewModel);
+                }
+            }
+            reviews.removeAll(listToRemove);
+
+            reviews.addFirst(thisUserReviewViewModel);
+        }
+
 
         request.setAttribute("hasReview", hasReview);
         request.setAttribute("userIdBySession", userIdBySession);

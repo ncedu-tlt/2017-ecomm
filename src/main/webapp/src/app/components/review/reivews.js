@@ -21,6 +21,23 @@
                     on: 'click'
                 });
 
+            var
+                reviewBody = this.content.find('.jsThisUserReview'),
+                reviewData = reviewBody.find('.jsReviewData'),
+                thisUserRating = reviewBody.find('.jsUsersRating').attr('data-rating'),
+                reviewText = reviewBody.find('.jsReview p').text(),
+                productId = reviewBody.attr('data-value');
+
+            reviewBody.find('.jsEdit').on('click', function () {
+                $.post( '/review', { reviewActions: 'edit' }, function( data ) {
+                    reviewData.html(data);
+                    frm.events.fire('addEditDataToReview', {
+                        userRating : thisUserRating,
+                        reviewText : reviewText,
+                        productId : productId});
+                });
+            });
+
             this.content.find('.jsNegative').on('click', this.hidePopup.bind(this));
 
             this.content.find('.jsEdit').on('click', this.doRequestToServer);
