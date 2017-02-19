@@ -30,8 +30,10 @@ public class ReviewService {
 
         for (Review review : reviews) {
 
-            reviewViewModel = getReviewModel(review, productId);
-            reviewsViewModels.add(reviewViewModel);
+            if (review != null) {
+                reviewViewModel = getReviewModel(review, productId);
+                reviewsViewModels.add(reviewViewModel);
+            }
         }
 
         return reviewsViewModels;

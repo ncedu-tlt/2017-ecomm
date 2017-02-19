@@ -53,7 +53,7 @@ public class ProductServlet extends HttpServlet {
                 .getInstance()
                 .getReview(productId);
 
-        if (httpSession.getAttribute("userId") != null) {
+        if (httpSession.getAttribute("userId") != null && !hasReview) {
 
             Review thisUserReview = DAOFactory.getDAOFactory()
                     .getReviewDAO()
