@@ -29,10 +29,7 @@ public class PasswordRecoveryServlet extends HttpServlet {
     private void sendLetterToEmail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String toEmail = req.getParameter("email");
         if (SendingMailService.getInstance().checkEmail(toEmail)) {
-            String recoveryHash = PasswordRecoveryService.getInstance().getRecoveryHashByEmail();
-            String textHTML = getTextHtml(toEmail, recoveryHash);
-            String answerFromMailService = getAnswerFromMailService(toEmail, textHTML);
-            PasswordRecoveryService.getInstance().addRecoveryHAshToUser(toEmail, recoveryHash);
+            String answerFromMailService = getAnswerAndUpdateRecoveryHash(toEmail);
             req.setAttribute("answer", answerFromMailService);
             req.getRequestDispatcher(Configuration.getProperty("page.passwordRecovery")).forward(req, resp);
         } else {
@@ -50,7 +47,10 @@ public class PasswordRecoveryServlet extends HttpServlet {
                 + toEmail + "&recoveryHash=" + recoveryHash + "'>Change Password</a>";
     }
 
-    private String getAnswerFromMailService(String toEmail, String textHTML) {
+    private String getAnswerAndUpdateRecoveryHash(String toEmail) {
+        String recoveryHash = PasswordRecoveryService.getInstance().getRecoveryHashByEmail();
+        String textHTML = getTextHtml(toEmail, recoveryHash);
+        PasswordRecoveryService.getInstance().addRecoveryHashToUser(toEmail, recoveryHash);
         return SendingMailService.getInstance().sendMail(toEmail, textHTML) ?
                 "Letter with instructions was sent in your email. Please check your post."
                 : "Email address not registered in the database.";

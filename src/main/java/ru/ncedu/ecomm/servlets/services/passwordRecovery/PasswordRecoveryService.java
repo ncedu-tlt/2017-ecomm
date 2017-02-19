@@ -48,7 +48,7 @@ public class PasswordRecoveryService {
         }
     }
 
-    public void addRecoveryHAshToUser(String email, String recoveryHash) {
+    public void addRecoveryHashToUser(String email, String recoveryHash) {
         User user = getDAOFactory().getUserDAO().getUserByEmail(email);
         user.setRecoveryHash(recoveryHash);
         getDAOFactory().getUserDAO().updateUser(user);
