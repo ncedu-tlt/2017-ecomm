@@ -36,6 +36,10 @@
     "space-in-parens": [
       "error",
       "never"
+    ],
+    "one-var": [
+      "error",
+      "never"
     ]
   }
 }
