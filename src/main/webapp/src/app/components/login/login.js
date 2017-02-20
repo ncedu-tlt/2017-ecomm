@@ -10,17 +10,17 @@
         init: function () {
             this.content.find('.ui.equal.dividing.width.form')
                 .form({
-                    fields:{
+                    fields: {
                         email: {
-                            rules:[
+                            rules: [
                                 {
                                     type: 'empty',
                                     prompt: ''
                                 }
                             ]
                         },
-                        password:{
-                            rules:[
+                        password: {
+                            rules: [
                                 {
                                     type: 'empty',
                                     prompt: ''

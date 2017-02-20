@@ -29,12 +29,12 @@
                 productId = reviewBody.attr('data-value');
 
             reviewBody.find('.jsEdit').on('click', function () {
-                $.post( '/review', { reviewActions: 'edit' }, function( data ) {
+                $.post('/review', { reviewActions: 'edit' }, function(data) {
                     reviewData.html(data);
                     frm.events.fire('addEditDataToReview', {
-                        userRating : thisUserRating,
-                        reviewText : reviewText,
-                        productId : productId});
+                        userRating: thisUserRating,
+                        reviewText: reviewText,
+                        productId: productId});
                 });
             });
 

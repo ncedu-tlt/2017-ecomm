@@ -7,9 +7,9 @@
         init: function () {
             this.content.find('.jsRegistrationForm')
                 .form({
-                    fields:{
-                        email:{
-                            rules:[
+                    fields: {
+                        email: {
+                            rules: [
                                 {
                                     type: 'email',
                                     prompt: 'Email is incorrect'
@@ -20,15 +20,15 @@
                                 }
                             ]
                         },
-                        password:{
-                            rules:[
+                        password: {
+                            rules: [
                                 {
                                     type: 'empty',
                                     prompt: 'Please enter password'
                                 }
                             ]
                         },
-                        match:{
+                        match: {
                             identifier: 'checkPassword',
                             rules: [
                                 {

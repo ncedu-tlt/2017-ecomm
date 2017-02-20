@@ -7,7 +7,7 @@
 
             frm.events.on('addToCart', function (productId) {
                 $.post('/shoppingCartIcon',
-                    {productId : productId},
+                    {productId: productId},
                     function(result) {
                         $('.jsShoppingCartIcon').text(result);
                     });

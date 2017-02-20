@@ -27,6 +27,17 @@
     ],
     "no-unused-vars": "warn",
     "no-empty": "warn",
-    "no-console": "off"
+    "no-console": "off",
+    "key-spacing": [
+      "error",
+      {
+        "beforeColon": false,
+        "afterColon": true
+      }
+    ],
+    "space-in-parens": [
+      "error",
+      "never"
+    ]
   }
 }
