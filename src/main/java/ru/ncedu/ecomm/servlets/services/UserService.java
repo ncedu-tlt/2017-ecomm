@@ -38,7 +38,7 @@ public class UserService {
     public void redirectIfNotAllowed(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         long userRoleId = Long.parseLong(session.getAttribute("userRoleId").toString());
-        if (userRoleId != ADMINISTRATOR_ROLE){
+        if (userRoleId != ADMINISTRATOR_ROLE) {
             request.getRequestDispatcher("/home").include(request, response);
         }
     }
@@ -54,10 +54,10 @@ public class UserService {
         if (nameIsEmpty(user.getFirstName()) && nameIsEmpty(user.getLastName())) {
             userName = DEFAULT_USER_NAME;
 
-        } else if (nameIsEmpty(user.getFirstName())){
+        } else if (nameIsEmpty(user.getFirstName())) {
             userName = user.getLastName();
 
-        } else if (nameIsEmpty(user.getLastName())){
+        } else if (nameIsEmpty(user.getLastName())) {
             userName = user.getFirstName();
 
         } else {
@@ -66,14 +66,14 @@ public class UserService {
         return userName;
     }
 
-    public String md5DigestPassword(String password){
+    public String md5DigestPassword(String password) {
         String md5Password = null;
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             md5.update(password.getBytes(), 0, password.length());
             BigInteger bigInt = new BigInteger(1, md5.digest());
             md5Password = bigInt.toString();
-            while (md5Password.length() < 32){
+            while (md5Password.length() < 32) {
                 md5Password = "0" + md5Password;
             }
         } catch (NoSuchAlgorithmException e) {
