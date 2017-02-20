@@ -1,43 +1,44 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <head>
-<style media='print' type='text/css'>
-    .menu {
-        display: none;
-        height: 0px;
-        visibility: hidden;
-    }
+    <style media='print' type='text/css'>
+        .menu {
+            display: none;
+            height: 0px;
+            visibility: hidden;
+        }
 
-    .message {
-        display: none;
-        height: 0px;
-        visibility: hidden;
-    }
+        .message {
+            display: none;
+            height: 0px;
+            visibility: hidden;
+        }
 
-    .ui.secondary.basic.right.floated.button.column {
-        display: none;
-        height: 0px;
-        visibility: hidden;
-    }
+        .ui.secondary.basic.right.floated.button.column {
+            display: none;
+            height: 0px;
+            visibility: hidden;
+        }
 
-    .inline.field {
-        display: none;
-        height: 0px;
-        visibility: hidden;
-    }
+        .inline.field {
+            display: none;
+            height: 0px;
+            visibility: hidden;
+        }
 
-    .noPrint {
-        display: none;
-        width: auto;
-    }
-</style>
+        .noPrint {
+            display: none;
+            width: auto;
+        }
+    </style>
 </head>
 <c:set var="salesOrderList" scope="page" value="${requestScope.salesOrderList}"/>
 <c:set var="request" scope="session" value="${requestScope.exception}"/>
 <c:forEach var="salesOrder" items="${salesOrderList}">
     <div class="ui container jsShoppingCartComponent main-content">
-            <h3 class="ui center aligned header">
-                Your Cart
-            </h3>
+        <h3 class="ui center aligned header">
+            Your Cart
+
+        </h3>
         <form method="post" action="cart" class="ui divided items">
             <input name="salesOrderId" type="hidden" value="${salesOrder.getSalesOrderId()}">
             <c:choose>
