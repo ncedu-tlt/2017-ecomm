@@ -28,7 +28,7 @@
     </h2>
     <div class="ui grid centered container">
         <c:forEach var="product" items="${category.getProducts()}">
-            <div action="${pageContext.request.contextPath}/addToShoppingCart" method="post" class="five wide column">
+            <div class="five wide column">
                 <img class="ui fluid image" src="${pageContext.request.contextPath}${product.getImageUrl()}">
                 <h3 class="ui center aligned header horizontal divider">
                     <a href="${pageContext.request.contextPath}/product?product_id=${product.getId()}">

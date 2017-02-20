@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
+
+import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 @WebServlet(name = "AddToShoppingCartServlet", urlPatterns = {"/addToShoppingCart"})
 public class AddToShoppingCartServlet extends HttpServlet {
@@ -20,9 +23,16 @@ public class AddToShoppingCartServlet extends HttpServlet {
         long productId = Long.parseLong(req.getParameter("productId"));
         try {
             ShoppingCartService.getInstance().addToShoppingCart(userId, productId);
-            resp.sendRedirect("/cart");
+            long quantity = getQuantity(userId);
+            PrintWriter out = resp.getWriter();
+            out.println(quantity);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private long getQuantity(long userId) throws SQLException {
+        Long salesOrderId = ShoppingCartService.getInstance().getSalesOrderId(userId);
+        return getDAOFactory().getOrderItemsDAO().getProductsBySalesOrderId(salesOrderId);
     }
 }

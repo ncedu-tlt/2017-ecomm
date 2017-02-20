@@ -4,15 +4,26 @@
 
     var ShoppingCartIconComponent = frm.inheritance.inherits(frm.components.Component, {
         init: function () {
-
-            frm.events.on('addToCart', function (productId) {
-                $.post('/shoppingCartIcon',
-                    {productId: productId},
-                    function(result) {
-                        $('.jsShoppingCartIcon').text(result);
+            var shoppingCartIcon = $('.jsShoppingCartIcon');
+            this.showQuantityIfHave();
+            frm.events.on('addToCart', function (productIdParam) {
+                $.post('/addToShoppingCart',
+                    {productId: productIdParam},
+                    function (result) {
+                        if (shoppingCartIcon.html().trim() === '') {
+                            shoppingCartIcon.show();
+                        }
+                        shoppingCartIcon.text(result);
                     });
             });
-
+        },
+        showQuantityIfHave: function () {
+            if (this.content.find('.jsShoppingCartIcon').html().trim() === '') {
+                $('.jsShoppingCartIcon').hide();
+            }
+            else {
+                $('.jsShoppingCartIcon').show();
+            }
         }
     });
 
