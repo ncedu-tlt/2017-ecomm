@@ -144,6 +144,7 @@ public class ShoppingCartService {
                     .setLimit(salesOrder.getLimit())
                     .setTotalAmount(totalAmountSumAllPriceInOrderItemViewModelList(salesOrder.getSalesOrderId()))
                     .setOrderItems(relationPriceAndQuantityInOrderItemViewModelList(salesOrder.getSalesOrderId()))
+                    .setStatusName(getStatusName(salesOrder.getOrderStatusId()))
                     .build();
             salesOrderViewModels.add(salesOrderViewModel);
         }

@@ -85,7 +85,8 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                         "user_id, \n" +
                         " sales_order_id, \n" +
                         " creation_date," +
-                        " \"limit\"\n" +
+                        " \"limit\",\n" +
+                        "order_status_id\n" +
                         "FROM sales_orders\n" +
                         "WHERE order_status_id = ?\n" +
                         "AND user_id = ?\n" +
@@ -99,6 +100,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                         .setSalesOrderId(resultSet.getLong("sales_order_id"))
                         .setCreationDate(resultSet.getDate("creation_date"))
                         .setLimit(resultSet.getBigDecimal("limit"))
+                        .setOrderStatus(resultSet.getLong("order_status_id"))
                         .build();
                 salesOrders.add(salesOrder);
             }

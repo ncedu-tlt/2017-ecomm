@@ -1,4 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<head>
 <style media='print' type='text/css'>
     .menu {
         display: none;
@@ -29,6 +30,7 @@
         width: auto;
     }
 </style>
+</head>
 <c:set var="salesOrderList" scope="page" value="${requestScope.salesOrderList}"/>
 <c:set var="request" scope="session" value="${requestScope.exception}"/>
 <c:forEach var="salesOrder" items="${salesOrderList}">
