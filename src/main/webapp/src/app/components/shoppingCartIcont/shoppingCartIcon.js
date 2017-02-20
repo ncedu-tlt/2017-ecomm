@@ -5,8 +5,12 @@
     var ShoppingCartIconComponent = frm.inheritance.inherits(frm.components.Component, {
         init: function () {
 
-            frm.events.on('addToCart', function(param){
-                $('#quantityProducts').html(param);
+            frm.events.on('addToCart', function (productId) {
+                $.post('/shoppingCartIcon',
+                    {productId : productId},
+                    function(result) {
+                        $('.jsShoppingCartIcon').text(result);
+                    });
             });
 
         }

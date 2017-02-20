@@ -6,11 +6,12 @@
     <button onclick="window.location.href = '${pageContext.request.contextPath}/cart'" class="circular ui icon button"
             id="shoppingCartIcon">
         <i class="icon shop"></i>
-            <div class="floating ui circular teal label" id="quantityProducts">
+            <div class="floating ui circular teal label jsShoppingCartIcon">
+                <c:if test="${requestScope.quantityProducts > 0}">
                     ${requestScope.quantityProducts}
+                </c:if>
             </div>
-        <c:if test="${requestScope.quantityProducts > 0}">
-        </c:if>
+
     </button>
 </div>
 <script>
