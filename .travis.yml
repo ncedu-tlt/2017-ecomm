@@ -1,3 +1,9 @@
 language: java
 jdk:
   - oraclejdk8
+addons:
+  sonarqube:
+    token:
+      secure: "cIHOylOqRb1OwQqkD5cnUTZImhIWMKjsCzCn0Su28tvIlfOvn3J8FV13se6K+EN/p8Z+0KZJ8hWLL69rbkXPZEdBaUwrPNcveACFeOI6Y4OEWsnfnxf6HfPkfEGwlYsiRtCR6R4DK0C7ezL/HqtF1q1/nNyP2mEGO0b7Xc3mPKRaOP0WkdHi8ti+d6A/XSN3LBxCNbhxB93deVEspaPXSA7ge/6Sa/cUm2uWRo9ybODSfSKj34wH1OitBanwKrkLm0ZWDCXvhf08BGu+gQaM/BwhZevpHOwlDDIfoKqNSr5HvAMk/57XNa8aYONRUCKXbItFiI/bf6sGOuF39QZYcYucdshX6Ts3Mezu2dg4Z6DxxCAGKCU7z9ftw3ZZ8RGd0vsvnIt7CqoStH3g4Krn+2KPEuWd9Hlf1qn2/b8tWnHJiy+UmyaXks2psgD49zR3mD4wABR86rtqLC0NNNaK8aSZ5mcFbdoUThZ5mmnbIzVWCPmDsCbbFDMycgiGq9nC8AW9p8aBsznyJOSCedMTG9QJUnmED8+8Mwm0vO97Y/ycg4Zht5Y7kSwJbexAOoQaiC6/uNQtwYuRcrBMWT7Wm60Xa4F4AOrtzNMsQOjRITlmSfTZXunZQ5YU1PKDcfzId0gEYaEJjUEiu+TOQ16KRhVzg5yJdzMhuvyLgjQ+SLg="
+script:
+  - sonar-scanner
