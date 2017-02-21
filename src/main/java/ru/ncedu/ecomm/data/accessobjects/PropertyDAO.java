@@ -15,12 +15,4 @@ public interface PropertyDAO {
 
     Property updateProperty(Property property);
 
-    List<Property> getSocials();
-
-    Property addSocial(Property property);
-
-    void deleteSocial(Property property);
-
-    Property updateSocial(Property property);
-
 }

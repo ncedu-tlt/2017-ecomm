@@ -1,22 +1,23 @@
 package ru.ncedu.ecomm.servlets.models.builders;
 
-import ru.ncedu.ecomm.data.models.Property;
 import ru.ncedu.ecomm.servlets.models.CompanyInfoViewModel;
 
-import java.util.List;
+import java.util.Map;
 
 public class CompanyInfoViewModelBuilder {
-    private List<Property> socials;
+    private Map<String, String> socials;
     private String email;
     private String phone;
     private String rights;
 
+    public CompanyInfoViewModelBuilder() {
+    }
 
-    public CompanyInfoViewModelBuilder CompanyInfoViewModel() {
+    public CompanyInfoViewModelBuilder aCompanyInfoViewModel() {
         return new CompanyInfoViewModelBuilder();
     }
 
-    public CompanyInfoViewModelBuilder setSocials(List<Property> socials) {
+    public CompanyInfoViewModelBuilder setSocials(Map<String, String> socials) {
         this.socials = socials;
         return this;
     }

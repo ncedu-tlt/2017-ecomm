@@ -1,23 +1,21 @@
 package ru.ncedu.ecomm.servlets.models;
 
-import ru.ncedu.ecomm.data.models.Property;
-
-import java.util.List;
+import java.util.Map;
 
 public class CompanyInfoViewModel {
-    private List<Property> socials;
+    private Map<String, String> socials;
     private String email;
     private String phone;
     private String rights;
 
-    public CompanyInfoViewModel(List<Property> socials, String email, String phone, String rights) {
+    public CompanyInfoViewModel(Map<String, String> socials, String email, String phone, String rights) {
         this.socials = socials;
         this.email = email;
         this.phone = phone;
         this.rights = rights;
     }
 
-    public List<Property> getSocials() {
+    public Map<String, String> getSocials() {
         return socials;
     }
 
