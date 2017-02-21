@@ -7,27 +7,10 @@
             visibility: hidden;
         }
 
-        .message {
+        .hide {
             display: none;
             height: 0px;
             visibility: hidden;
-        }
-
-        .ui.secondary.basic.right.floated.button.column {
-            display: none;
-            height: 0px;
-            visibility: hidden;
-        }
-
-        .inline.field {
-            display: none;
-            height: 0px;
-            visibility: hidden;
-        }
-
-        .noPrint {
-            display: none;
-            width: auto;
         }
     </style>
 </head>
@@ -37,13 +20,12 @@
     <div class="ui container jsShoppingCartComponent main-content">
         <h3 class="ui center aligned header">
             Your Cart
-
         </h3>
         <form method="post" action="cart" class="ui divided items">
             <input name="salesOrderId" type="hidden" value="${salesOrder.getSalesOrderId()}">
             <c:choose>
                 <c:when test="${salesOrder.getOrderItems().isEmpty()}">
-                    <div class="ui icon message">
+                    <div class="ui icon message hide">
                         <i class="trash icon"></i>
                         <div class="content">
                             <div class="header">
@@ -93,14 +75,14 @@
                     </div>
                     <div class="ui section divider"></div>
                     <div class="ui grid seven column row">
-                        <button class="ui secondary basic right floated button column" name="emptyActions"
+                        <button class="ui secondary basic right floated button column hide" name="emptyActions"
                                 value="emptyTrash">EMPTY TRASH
                         </button>
                     </div>
                     <div class="ui grid">
                         <div class="eight wide column">
                             <div class="item">
-                                <div class="inline field">
+                                <div class="inline field hide">
                                     <div class="ui right pointing label big">
                                         Limit:
                                     </div>
@@ -112,7 +94,7 @@
                                 </div>
                             </div>
                             <c:if test="${salesOrder.getLimit() < salesOrder.getTotalAmount() && salesOrder.getLimit() > 0}">
-                                <div class="ui message warning">
+                                <div class="ui message warning hide">
                                     <i class="close icon"></i>
                                     <div class="header">
                                         <p>Total price, exceeds limit value!</p>
@@ -120,7 +102,7 @@
                                 </div>
                             </c:if>
                             <c:if test="${request != null}">
-                                <div class="ui message warning">
+                                <div class="ui message warning hide">
                                     <p>${requestScope.exception}</p>
                                 </div>
                             </c:if>
@@ -133,8 +115,7 @@
                             </h3>
                         </div>
                     </div>
-                    <span class="noPrint">
-                        <div class="ui grid">
+                        <div class="ui grid hide">
                             <div class="eight wide column">
                                 <a href='javascript:window.print(); void 0;'>
                                     <button class="ui secondary basic button" type="button">PRINT</button>
@@ -144,7 +125,6 @@
                                 <button class="ui secondary basic right floated button">CHECKOUT</button>
                             </div>
                         </div>
-                    </span>
                 </c:when>
             </c:choose>
         </form>
