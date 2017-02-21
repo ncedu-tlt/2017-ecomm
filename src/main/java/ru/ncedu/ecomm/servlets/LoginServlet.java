@@ -2,7 +2,7 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.models.User;
-import ru.ncedu.ecomm.servlets.services.UserService;
+import ru.ncedu.ecomm.utils.MD5DigestUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         HttpSession session = req.getSession();
-        String passwordDigest = UserService.getInstance().md5DigestPassword(password);
+        String passwordDigest = MD5DigestUtils.setMd5Digest(password);
         User user = getDAOFactory().getUserDAO().getUserByEmail(email);
         if (user != null && user.getPassword().equals(passwordDigest)) {
             session.setAttribute("userId", user.getId());

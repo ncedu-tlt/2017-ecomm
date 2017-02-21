@@ -6,9 +6,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class UserService {
 
@@ -66,22 +63,6 @@ public class UserService {
             userName = user.getFirstName() + " " + user.getLastName();
         }
         return userName;
-    }
-
-    public String md5DigestPassword(String password) {
-        String md5Password = null;
-        try {
-            MessageDigest md5 = MessageDigest.getInstance("MD5");
-            md5.update(password.getBytes(), 0, password.length());
-            BigInteger bigInt = new BigInteger(1, md5.digest());
-            md5Password = bigInt.toString();
-            while (md5Password.length() < 32) {
-                md5Password = "0" + md5Password;
-            }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return md5Password;
     }
 
     //TODO: не возникала ли мысль, что данный метод способен на большее?

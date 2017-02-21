@@ -4,6 +4,7 @@ import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.models.User;
 import ru.ncedu.ecomm.servlets.services.ProfileService;
 import ru.ncedu.ecomm.servlets.services.UserService;
+import ru.ncedu.ecomm.utils.MD5DigestUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -88,7 +89,7 @@ public class ProfileServlet extends HttpServlet {
         userByChange.setFirstName(req.getParameter("firstName"));
         userByChange.setLastName(req.getParameter("lastName"));
         userByChange.setEmail(req.getParameter("email"));
-        String newPassword = UserService.getInstance().md5DigestPassword(req.getParameter("password"));
+        String newPassword = MD5DigestUtils.setMd5Digest(req.getParameter("password"));
         userByChange.setPassword(newPassword);
 
         return userByChange;
