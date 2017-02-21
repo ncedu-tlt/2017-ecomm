@@ -40,6 +40,8 @@
     "one-var": [
       "error",
       "never"
-    ]
+    ],
+    "keyword-spacing": "error",
+    "space-before-blocks": "error"
   }
 }
