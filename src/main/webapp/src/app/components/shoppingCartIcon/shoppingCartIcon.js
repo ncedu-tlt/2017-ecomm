@@ -4,25 +4,24 @@
 
     var ShoppingCartIconComponent = frm.inheritance.inherits(frm.components.Component, {
         init: function () {
-            var shoppingCartIcon = $('.jsShoppingCartIcon');
             this.showQuantityIfHave();
             frm.events.on('addToCart', function (productIdParam) {
+                var shoppingCartIcon = this.content.find('.jsShoppingCartIcon');
                 $.post('/addToShoppingCart',
                     {productId: productIdParam},
                     function (result) {
-                        if (shoppingCartIcon.html().trim() === '') {
-                            shoppingCartIcon.show();
-                        }
                         shoppingCartIcon.text(result);
+                        $(this).showQuantityIfHave();
                     });
             });
         },
         showQuantityIfHave: function () {
-            if (this.content.find('.jsShoppingCartIcon').html().trim() === '') {
-                $('.jsShoppingCartIcon').hide();
+            var shoppingCartIcon = this.content.find('.jsShoppingCartIcon');
+            if (shoppingCartIcon.html().trim() === '') {
+                shoppingCartIcon.hide();
             }
             else {
-                $('.jsShoppingCartIcon').show();
+                shoppingCartIcon.show();
             }
         }
     });
