@@ -17,12 +17,13 @@
         </textarea>
     </div>
     <div class="ui grid one column">
-        <button class="ui mini green right floated jsEdit button">
-            <i class="checkmark icon"></i>
-            Confirm
-        </button>
+        <div class="ui right floated mini buttons">
+            <button class="ui button jsCancel" type="button">Cancel</button>
+            <div class="or"></div>
+            <button class="ui mini green jsEdit button">
+                <i class="checkmark icon"></i>
+                Confirm
+            </button>
+        </div>
     </div>
 </form>
-<script type="text/javascript">
-    window.frm.components.init('ReviewData', '.jsReviewData');
-</script>

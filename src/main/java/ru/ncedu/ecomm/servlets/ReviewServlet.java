@@ -4,7 +4,6 @@ import ru.ncedu.ecomm.data.DAOFactory;
 import ru.ncedu.ecomm.data.models.Review;
 import ru.ncedu.ecomm.data.models.builders.ReviewBuilder;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +16,11 @@ import java.sql.Date;
 @WebServlet(name = "ReviewServlet", urlPatterns = {"/review"})
 public class ReviewServlet extends HttpServlet {
 
+    private static final String ADD_REVIEW = "add";
+    private static final String REMOVE_REVIEW = "remove";
+    private static final String UPDATE_REVIEW = "update";
+    private static final String EDIT_REVIEW = "edit";
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/views/pages/product.jsp").forward(req, resp);
@@ -24,7 +28,7 @@ public class ReviewServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-     HttpSession httpSession = req.getSession();
+        HttpSession httpSession = req.getSession();
         if (httpSession.getAttribute("userId") != null) {
             addReview(req, resp);
         }
@@ -34,47 +38,56 @@ public class ReviewServlet extends HttpServlet {
         HttpSession httpSession = req.getSession();
 
         String productId = req.getParameter("productId");
-        if (req.getParameter("reviewActions").equals("add")) {
 
-            Review review = new ReviewBuilder()
-                    .setUserId((Long) httpSession.getAttribute("userId"))
-                    .setProductId(Long.parseLong(productId))
-                    .setRating(Integer.parseInt(req.getParameter("rating")))
-                    .setCreationDate(new Date(System.currentTimeMillis()))
-                    .setDescription(req.getParameter("review"))
-                    .build();
+        switch (req.getParameter("reviewActions")) {
+            case ADD_REVIEW: {
 
-            addReviewToBase(review);
+                Review review = new ReviewBuilder()
+                        .setUserId((Long) httpSession.getAttribute("userId"))
+                        .setProductId(Long.parseLong(productId))
+                        .setRating(Integer.parseInt(req.getParameter("rating")))
+                        .setCreationDate(new Date(System.currentTimeMillis()))
+                        .setDescription(req.getParameter("review"))
+                        .build();
 
-            resp.sendRedirect("/product?product_id=" + productId);
+                addReviewToBase(review);
+                resp.sendRedirect("/product?product_id=" + productId);
+                break;
+            }
+            case REMOVE_REVIEW: {
 
-        } else if (req.getParameter("reviewActions").equals("remove")) {
-            Review review = new ReviewBuilder()
-                    .setProductId(Long.parseLong(req.getParameter("productId")))
-                    .setUserId(Long.parseLong(req.getParameter("userId")))
-                    .build();
+                Review review = new ReviewBuilder()
+                        .setProductId(Long.parseLong(req.getParameter("productId")))
+                        .setUserId(Long.parseLong(req.getParameter("userId")))
+                        .build();
 
-            removeReviewByBase(review);
+                removeReviewByBase(review);
+                resp.sendRedirect("/product?product_id=" + productId);
+                break;
+            }
+            case UPDATE_REVIEW: {
 
-            resp.sendRedirect("/product?product_id=" + productId);
+                Review review = new ReviewBuilder()
+                        .setUserId((Long) httpSession.getAttribute("userId"))
+                        .setProductId(Long.parseLong(req.getParameter("productId")))
+                        .setRating(Integer.parseInt(req.getParameter("rating")))
+                        .setCreationDate(new Date(System.currentTimeMillis()))
+                        .setDescription(req.getParameter("reviewDescription"))
+                        .build();
 
-        }else if (req.getParameter("reviewActions").equals("update")){
-            Review review = new ReviewBuilder()
-                    .setUserId((Long) httpSession.getAttribute("userId"))
-                    .setProductId(Long.parseLong(req.getParameter("productId")))
-                    .setRating(Integer.parseInt(req.getParameter("rating")))
-                    .setCreationDate(new Date(System.currentTimeMillis()))
-                    .setDescription(req.getParameter("reviewDescription"))
-                    .build();
+                updateReviewByBase(review);
+                resp.sendRedirect("/product?product_id=" + productId);
+                break;
+            }
+            case EDIT_REVIEW: {
 
-            updateReviewByBase(review);
-            resp.sendRedirect("/product?product_id=" + productId);
-        }else if (req.getParameter("reviewActions").equals("edit")) {
-
-            resp.sendRedirect("/views/components/editReview.jsp");
+                resp.sendRedirect("/views/components/editReview.jsp");
+                break;
+            }
         }
     }
-    private void updateReviewByBase(Review review){
+
+    private void updateReviewByBase(Review review) {
         DAOFactory.getDAOFactory()
                 .getReviewDAO()
                 .updateReviews(review);

@@ -21,26 +21,39 @@
                     on: 'click'
                 });
 
-            var
-                reviewBody = this.content.find('.jsThisUserReview'),
-                reviewData = reviewBody.find('.jsReviewData'),
-                thisUserRating = reviewBody.find('.jsUsersRating').attr('data-rating'),
-                reviewText = reviewBody.find('.jsReview p').text(),
-                productId = reviewBody.attr('data-value');
+
+            var reviewBody = this.content.find('.jsThisUserReview');
+            var reviewData = reviewBody.find('.jsReviewData');
+            var thisUserRating = reviewBody.find('.jsUsersRating').attr('data-rating');
+            var reviewText = reviewBody.find('.jsReview p').text();
+            var productId = reviewBody.attr('data-value');
 
             reviewBody.find('.jsEdit').on('click', function () {
-                $.post('/review', { reviewActions: 'edit' }, function(data) {
+                $.post('/review', {reviewActions: 'edit'}, function (data) {
                     reviewData.html(data);
-                    frm.events.fire('addEditDataToReview', {
-                        userRating: thisUserRating,
-                        reviewText: reviewText,
-                        productId: productId});
+
+                    var userRatingReload = reviewBody.find('.jsEditUserReviewRating');
+                    var oldReviewText = reviewBody.find('.editTextArea');
+                    var ratingField = reviewBody.find('.jsEditRating');
+                    var cancelButton = reviewBody.find('.jsCancel');
+                    var productIdReload = reviewBody.find('.productId');
+
+                    oldReviewText.html(reviewText);
+                    productIdReload.attr('value', productId);
+                    ratingField.attr('value', thisUserRating);
+                    userRatingReload.attr('data-rating', thisUserRating);
+                    userRatingReload.rating('setting', 'onRate', function (value) {
+                        ratingField.val(value);
+                    });
+
+                    cancelButton.on('click', function () {
+                        window.location.reload();
+                    });
                 });
             });
 
             this.content.find('.jsNegative').on('click', this.hidePopup.bind(this));
 
-            this.content.find('.jsEdit').on('click', this.doRequestToServer);
         },
 
         onRatingChange: function (value) {
