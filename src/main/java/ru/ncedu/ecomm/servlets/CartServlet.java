@@ -1,5 +1,6 @@
 package ru.ncedu.ecomm.servlets;
 
+import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.DAOFactory;
 import ru.ncedu.ecomm.data.models.OrderItem;
 import ru.ncedu.ecomm.data.models.SalesOrder;
@@ -33,7 +34,10 @@ public class CartServlet extends HttpServlet {
 
     private void showSalesOrderList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            UserService.getInstance().redirectToLoginIfNeeded(request, response);
+            Boolean userInSystem = UserService.getInstance().redirectToLoginIfNeeded(request);
+            if (!userInSystem){
+                request.getRequestDispatcher(Configuration.getProperty("page.login")).forward(request, response);
+            }
             long userId = UserService.getInstance().getCurrentUserId(request);
             formActionOnShoppingCart(request, userId);
             List<SalesOrderViewModel> salesOrderList = ShoppingCartService.getInstance()

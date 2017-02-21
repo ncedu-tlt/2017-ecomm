@@ -1,5 +1,6 @@
 package ru.ncedu.ecomm.servlets;
 
+import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.servlets.services.ShoppingCartService;
 import ru.ncedu.ecomm.servlets.services.UserService;
 
@@ -18,7 +19,10 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 public class AddToShoppingCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserService.getInstance().redirectToLoginIfNeeded(req, resp);
+        Boolean userInSystem = UserService.getInstance().redirectToLoginIfNeeded(req);
+        if (!userInSystem){
+            req.getRequestDispatcher(Configuration.getProperty("page.login")).forward(req, resp);
+        }
         long userId = UserService.getInstance().getCurrentUserId(req);
         long productId = Long.parseLong(req.getParameter("productId"));
         try {

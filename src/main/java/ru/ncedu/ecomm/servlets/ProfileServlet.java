@@ -41,11 +41,10 @@ public class ProfileServlet extends HttpServlet {
         resp.sendRedirect(Configuration.getProperty("page.profile"));
     }
 
-    private void redirectIfUserNotAuthorized(HttpServletRequest req, HttpServletResponse resp) {
-        try {
-            UserService.getInstance().redirectToLoginIfNeeded(req, resp);
-        } catch (ServletException | IOException e) {
-            throw new RuntimeException(e);
+    private void redirectIfUserNotAuthorized(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Boolean userInSystem = UserService.getInstance().redirectToLoginIfNeeded(req);
+        if (!userInSystem){
+            req.getRequestDispatcher(Configuration.getProperty("page.login")).forward(req, resp);
         }
     }
 

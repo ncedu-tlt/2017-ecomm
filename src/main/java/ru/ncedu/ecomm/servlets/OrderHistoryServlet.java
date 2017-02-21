@@ -4,7 +4,6 @@ package ru.ncedu.ecomm.servlets;
 import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.DAOFactory;
 import ru.ncedu.ecomm.data.models.User;
-import ru.ncedu.ecomm.servlets.models.EnumOrderStatus;
 import ru.ncedu.ecomm.servlets.models.EnumRoles;
 import ru.ncedu.ecomm.servlets.models.SalesOrderViewModel;
 import ru.ncedu.ecomm.servlets.services.ShoppingCartService;
@@ -34,7 +33,10 @@ public class OrderHistoryServlet extends HttpServlet {
 
     private void browseOrdersHistory(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        UserService.getInstance().redirectToLoginIfNeeded(req, resp);
+        Boolean userInSystem = UserService.getInstance().redirectToLoginIfNeeded(req);
+        if (!userInSystem){
+            req.getRequestDispatcher(Configuration.getProperty("page.login")).forward(req, resp);
+        }
 
         long userId = UserService.getInstance().getCurrentUserId(req);
         User user = DAOFactory.getDAOFactory().getUserDAO().getUserById(userId);

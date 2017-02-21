@@ -28,11 +28,13 @@ public class UserService {
         return instance;
     }
 
-    public void redirectToLoginIfNeeded(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public Boolean redirectToLoginIfNeeded(HttpServletRequest request) throws ServletException, IOException {
+        Boolean userInSystem = true;
         HttpSession session = request.getSession();
         if (session.getAttribute("userId") == null) {
-            request.getRequestDispatcher("/views/pages/login.jsp").forward(request, response);
+            userInSystem = false;
         }
+        return userInSystem;
     }
 
     public void redirectIfNotAllowed(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
