@@ -25,15 +25,6 @@ public class ProfileServlet extends HttpServlet {
         showProfile(req, resp);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (checkOnEmpty(req)) {
-            initAttributesSuccessChange(req, resp);
-        } else {
-            this.doGet(req, resp);
-        }
-    }
-
     //show profile
 
     private void showProfile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -64,10 +55,19 @@ public class ProfileServlet extends HttpServlet {
 
     //profile change
 
-    private boolean checkOnEmpty(HttpServletRequest req) {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (isEmptyInputs(req)) {
+            this.doGet(req, resp);
+        } else {
+            initAttributesSuccessChange(req, resp);
+        }
+    }
+
+    private boolean isEmptyInputs(HttpServletRequest req) {
         List<String> userParameters = getUserParameters(req);
         for (String parameter : userParameters) {
-            if (!parameter.trim().isEmpty())
+            if (parameter.trim().isEmpty())
                 return true;
         }
         return false;

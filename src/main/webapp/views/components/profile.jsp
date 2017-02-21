@@ -32,10 +32,12 @@
         </button>
         <div class="ui error message"></div>
     </form>
-    <c:set var="answer" scope="session" value="${requestScope.answer}"/>
-    <div class="ui message warning ">
-        <p>${answer}</p>
-    </div>
+    <c:set var="request" scope="session" value="${requestScope.answer}"/>
+    <c:if test="${request != null}">
+        <div class="ui message warning ">
+            <p>${requestScope.answer}</p>
+        </div>
+    </c:if>
 </div>
 <script>
     window.frm.components.init('ProfileComponent', '.jsProfileComponent');

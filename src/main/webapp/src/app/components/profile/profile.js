@@ -59,18 +59,17 @@
             ;
         },
         showPasswordConfirm: function () {
+            var passwordConfirmInput = this.content.find('.jsPasswordConfirm');
+            this.content.find('.jsProfileTextParam').click(function () {
+                passwordConfirmInput.hide();
+            });
             this.content.find('.jsPassword').click(function () {
-                if($('.jsPassword').val().length === 0){
-                    $('.jsPasswordConfirm').hide();
-                }
-                else{
-                    $('.jsPasswordConfirm').show();
-                }
+                passwordConfirmInput.transition('pulse');
             });
         },
         showApplyButton: function () {
-            if (!this.content.find('.jsSendFormProfileBtn').is(':visible')) {
-                var inputs = $('input');
+            if (!this.content.find('#jsSendFormProfileBtn').is(':visible')) {
+                var inputs = this.content.find('.jsProfileTextParam');
                 inputs.keyup(function () {
                     $('#jsSendFormProfileBtn').show();
                 });
