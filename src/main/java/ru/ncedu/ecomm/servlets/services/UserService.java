@@ -4,7 +4,6 @@ import ru.ncedu.ecomm.data.models.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -14,7 +13,6 @@ import java.security.NoSuchAlgorithmException;
 public class UserService {
 
     private static final String DEFAULT_USER_NAME = "Anonymous";
-    private static final int ADMINISTRATOR_ROLE = 1;
 
     private UserService() {
     }
@@ -37,12 +35,14 @@ public class UserService {
         return userInSystem;
     }
 
-    public void redirectIfNotAllowed(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public Boolean redirectIfNotAllowed(HttpServletRequest request, long role) throws ServletException, IOException {
+        Boolean userHaveNeededRole = true;
         HttpSession session = request.getSession();
         long userRoleId = Long.parseLong(session.getAttribute("userRoleId").toString());
-        if (userRoleId != ADMINISTRATOR_ROLE) {
-            request.getRequestDispatcher("/home").include(request, response);
+        if (userRoleId != role) {
+            userHaveNeededRole = false;
         }
+        return userHaveNeededRole;
     }
 
     public long getCurrentUserId(HttpServletRequest request) throws ServletException, IOException {

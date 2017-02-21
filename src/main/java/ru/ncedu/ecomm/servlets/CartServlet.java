@@ -43,7 +43,7 @@ public class CartServlet extends HttpServlet {
             List<SalesOrderViewModel> salesOrderList = ShoppingCartService.getInstance()
                     .getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
             request.setAttribute("salesOrderList", salesOrderList);
-            request.getRequestDispatcher("/views/pages/cart.jsp").forward(request, response);
+            request.getRequestDispatcher(Configuration.getProperty("page.cart")).forward(request, response);
         } catch (SQLException e) {
             e.printStackTrace();
         }

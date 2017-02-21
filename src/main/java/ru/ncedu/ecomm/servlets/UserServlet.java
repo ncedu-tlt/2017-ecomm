@@ -4,6 +4,7 @@ import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.DAOFactory;
 import ru.ncedu.ecomm.data.models.Role;
 import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.servlets.models.EnumRoles;
 import ru.ncedu.ecomm.servlets.models.UserViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.UserViewModelBuilder;
 import ru.ncedu.ecomm.servlets.services.UserService;
@@ -37,7 +38,11 @@ public class UserServlet extends HttpServlet {
             req.getRequestDispatcher(Configuration.getProperty("page.login")).forward(req, resp);
         }
 
-        UserService.getInstance().redirectIfNotAllowed(req, resp);
+        Boolean userAreAdministrator = UserService.getInstance().redirectIfNotAllowed(req, EnumRoles.ADMINISTRATOR.getRole());
+        if (!userAreAdministrator){
+             req.getRequestDispatcher("/home").include(req, resp);
+        }
+
         List<UserViewModel> users = getUserToView();
 
         req.setAttribute("users", users);

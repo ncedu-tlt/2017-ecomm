@@ -1,5 +1,6 @@
 package ru.ncedu.ecomm.servlets;
 
+import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.models.User;
 import ru.ncedu.ecomm.servlets.services.UserService;
 
@@ -19,7 +20,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/views/pages/login.jsp").forward(req, resp);
+        req.getRequestDispatcher(Configuration.getProperty("page.login")).forward(req, resp);
     }
 
     @Override
@@ -40,7 +41,7 @@ public class LoginServlet extends HttpServlet {
             resp.sendRedirect("/home");
         } else {
             req.setAttribute("answer", "Uncorrect user! Check email and password");
-            req.getRequestDispatcher("/views/pages/login.jsp").forward(req, resp);
+            req.getRequestDispatcher(Configuration.getProperty("page.login")).forward(req, resp);
         }
     }
 }

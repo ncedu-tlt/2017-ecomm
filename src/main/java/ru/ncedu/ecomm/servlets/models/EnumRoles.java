@@ -7,13 +7,13 @@ public enum EnumRoles {
     MANAGER(2),
     USER(3);
 
-    private int role;
+    private long role;
 
-    EnumRoles(int role) {
+    EnumRoles(long role) {
         this.role = role;
     }
 
-    public int getRole() {
+    public long getRole() {
         return role;
     }
 }
