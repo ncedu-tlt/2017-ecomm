@@ -3,15 +3,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/shoppingCartIcon"/>
 <div class="ui item jsShoppingCartIconComponent jsShoppingCartComponent" id="shoppingCartTopPanel">
-    <button onclick="window.location.href = '${pageContext.request.contextPath}/cart'" class="circular ui icon button"
-            id="shoppingCartIcon">
+    <button onclick="window.location.href = '${pageContext.request.contextPath}/cart'" class="circular ui icon button">
         <i class="icon shop"></i>
-            <div class="floating ui circular teal label jsShoppingCartIcon">
+            <div class="floating ui circular teal label jsShoppingCartIcon" id="shoppingCartIcon">
                 <c:if test="${requestScope.quantityProducts > 0}">
                     ${requestScope.quantityProducts}
                 </c:if>
             </div>
-
     </button>
 </div>
 <script>

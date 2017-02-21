@@ -6,12 +6,12 @@
         init: function () {
             this.showQuantityIfHave();
             frm.events.on('addToCart', function (productIdParam) {
-                var shoppingCartIcon = this.content.find('.jsShoppingCartIcon');
+                var shoppingCartIcon = $('#shoppingCartIcon');
                 $.post('/addToShoppingCart',
                     {productId: productIdParam},
                     function (result) {
                         shoppingCartIcon.text(result);
-                        $(this).showQuantityIfHave();
+                        shoppingCartIcon.transition('jiggle');
                     });
             });
         },
@@ -21,7 +21,7 @@
                 shoppingCartIcon.hide();
             }
             else {
-                shoppingCartIcon.show();
+                shoppingCartIcon.transition('jiggle');
             }
         }
     });
