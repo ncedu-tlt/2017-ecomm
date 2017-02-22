@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
-//TODO: слишком много запросов к БД, можно оптимизировать
 public class ShoppingCartService {
 
     private ShoppingCartService() {
@@ -55,6 +54,18 @@ public class ShoppingCartService {
         return salesOrderId;
     }
 
+    public void updateQuantity(long salesOrderId, int newQuantity, long productId) throws SQLException {
+        List<OrderItemViewModel> orderItems = getOrderItemModelList(salesOrderId);
+        OrderItemViewModel orderItemBySalesOrderId = getOrderItemBySalesOrderId(productId, salesOrderId, orderItems);
+        if (orderItemBySalesOrderId != null) {
+            orderItemBySalesOrderId.setQuantity(newQuantity);
+            changeQuantityOrderItem(orderItemBySalesOrderId, newQuantity);
+        }
+        else{
+            System.out.println("Error of update quantity");
+        }
+    }
+
     private void addProductToOrderItem(long productId, long salesOrderId) throws SQLException {
         List<OrderItemViewModel> orderItems = getOrderItemModelList(salesOrderId);
         OrderItemViewModel orderItemBySalesOrderId = getOrderItemBySalesOrderId(productId, salesOrderId, orderItems);
@@ -62,7 +73,8 @@ public class ShoppingCartService {
             addNewOrderItem(productId, salesOrderId);
         } else {
             try {
-                incrementQuantityOrderItem(orderItemBySalesOrderId);
+                final int MIN_QUANTITY = 1;
+                changeQuantityOrderItem(orderItemBySalesOrderId, MIN_QUANTITY);
             } catch (NullPointerException e) {
                 throw new RuntimeException(e);
             }
@@ -84,17 +96,16 @@ public class ShoppingCartService {
         getDAOFactory().getOrderItemsDAO().addOrderItem(orderItem);
     }
 
-    private OrderItemViewModel incrementQuantityOrderItem(OrderItemViewModel orderItemBySalesOrderId) throws SQLException {
-        OrderItem orderItemWithIncreaseQuantity = getOrderItemWithIncreaseQuantity(orderItemBySalesOrderId);
+    private OrderItemViewModel changeQuantityOrderItem(OrderItemViewModel orderItemBySalesOrderId, int newQuantity) throws SQLException {
+        OrderItem orderItemWithIncreaseQuantity = getOrderItemWithChangeQuantity(orderItemBySalesOrderId, newQuantity);
         getDAOFactory().getOrderItemsDAO().updateOrderItem(orderItemWithIncreaseQuantity);
         return orderItemBySalesOrderId;
     }
 
-    private OrderItem getOrderItemWithIncreaseQuantity(OrderItemViewModel orderItemBySalesOrderId) {
-        int quantity = orderItemBySalesOrderId.getQuantity() + 1;
-        OrderItem orderItemWithIncreaseQuantity = getOrderItemByViewModel(orderItemBySalesOrderId);
-        orderItemWithIncreaseQuantity.setQuantity(quantity);
-        return orderItemWithIncreaseQuantity;
+    private OrderItem getOrderItemWithChangeQuantity(OrderItemViewModel orderItemBySalesOrderId, int newQuantity) {
+        OrderItem orderItemWithChangeQuantity = getOrderItemByViewModel(orderItemBySalesOrderId);
+        orderItemWithChangeQuantity.setQuantity(newQuantity);
+        return orderItemWithChangeQuantity;
     }
 
     private OrderItem getOrderItemByViewModel(OrderItemViewModel orderItemBySalesOrderId) {

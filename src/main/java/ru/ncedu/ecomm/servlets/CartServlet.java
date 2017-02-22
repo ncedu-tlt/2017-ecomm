@@ -35,7 +35,7 @@ public class CartServlet extends HttpServlet {
     private void showSalesOrderList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             Boolean userInSystem = UserService.getInstance().redirectToLoginIfNeeded(request);
-            if (!userInSystem){
+            if (!userInSystem) {
                 request.getRequestDispatcher(Configuration.getProperty("page.login")).forward(request, response);
             }
             long userId = UserService.getInstance().getCurrentUserId(request);
@@ -56,10 +56,11 @@ public class CartServlet extends HttpServlet {
                         Long.parseLong(request.getParameter("productId")),
                         Long.parseLong(request.getParameter("salesOrderId")));
             } else if (request.getParameter("quantityButton") != null && request.getParameter("quantityButton").equals("quantity")) {
-                setQuantityInDataBase(
-                        Long.parseLong(request.getParameter("productId")),
+                ShoppingCartService.getInstance().updateQuantity(
                         Long.parseLong(request.getParameter("salesOrderId")),
-                        Integer.parseInt(request.getParameter("quantityValue")));
+                        Integer.parseInt(request.getParameter("quantityValue")),
+                        Long.parseLong(request.getParameter("productId"))
+                );
             } else if (request.getParameter("emptyActions") != null && request.getParameter("emptyActions").equals("emptyTrash")) {
                 ShoppingCartService.getInstance().deletedAllProductsInOrderItemDataBase(userId);
             } else if (request.getParameter("limitButton") != null && request.getParameter("limitButton").equals("apply")) {
@@ -88,6 +89,5 @@ public class CartServlet extends HttpServlet {
         } else {
             ShoppingCartService.getInstance().deletedProductInOrderItemDataBase(productId, salesOrderId);
         }
-
     }
 }
