@@ -305,7 +305,9 @@ public class PostgresProductDAO implements ProductDAO {
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT *\n" +
                              "FROM public.products\n" +
-                             "WHERE name ~* '" + name + "'")) {
+                             "WHERE name ~*  ? ")) {
+
+            statement.setString(1, name);
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
