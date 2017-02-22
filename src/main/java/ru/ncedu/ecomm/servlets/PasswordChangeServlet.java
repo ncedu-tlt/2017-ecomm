@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.models.User;
-import ru.ncedu.ecomm.utils.MD5DigestUtils;
+import ru.ncedu.ecomm.utils.EncryptionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,7 +42,7 @@ public class PasswordChangeServlet extends HttpServlet {
 
     private void updatePassword(User userByRecovery){
         User userNewPassword = getDAOFactory().getUserDAO().getUserByEmail(userByRecovery.getEmail());
-        String newPassword = MD5DigestUtils.setMd5Digest(userByRecovery.getPassword());
+        String newPassword = EncryptionUtils.getMd5Digest(userByRecovery.getPassword());
         userNewPassword.setPassword(newPassword);
         userNewPassword.setRecoveryHash(null);
         getDAOFactory().getUserDAO().updateUser(userNewPassword);

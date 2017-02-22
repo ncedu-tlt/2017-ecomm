@@ -4,20 +4,20 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class MD5DigestUtils {
+public class EncryptionUtils {
 
     private static final int OFFSET = 0;
     private static final int SIGNUM = 1;
-    private static final int LENGTHOFBITES = 32;
+    private static final int BITES_COUNT = 32;
 
-    public static String setMd5Digest(String password) {
+    public static String getMd5Digest(String string) {
         String md5Password = null;
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
-            md5.update(password.getBytes(), OFFSET, password.length());
+            md5.update(string.getBytes(), OFFSET, string.length());
             BigInteger bigInt = new BigInteger(SIGNUM, md5.digest());
             md5Password = bigInt.toString();
-            while (md5Password.length() < LENGTHOFBITES) {
+            while (md5Password.length() < BITES_COUNT) {
                 md5Password = "0" + md5Password;
             }
         } catch (NoSuchAlgorithmException e) {

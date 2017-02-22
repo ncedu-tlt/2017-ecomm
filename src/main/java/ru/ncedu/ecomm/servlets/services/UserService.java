@@ -33,13 +33,9 @@ public class UserService {
     }
 
     public Boolean redirectIfNotAllowed(HttpServletRequest request, long role) throws ServletException, IOException {
-        Boolean userHaveNeededRole = true;
         HttpSession session = request.getSession();
         long userRoleId = Long.parseLong(session.getAttribute("userRoleId").toString());
-        if (userRoleId != role) {
-            userHaveNeededRole = false;
-        }
-        return userHaveNeededRole;
+        return userRoleId == role;
     }
 
     public long getCurrentUserId(HttpServletRequest request) throws ServletException, IOException {

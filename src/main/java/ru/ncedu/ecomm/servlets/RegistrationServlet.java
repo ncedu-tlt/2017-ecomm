@@ -2,7 +2,7 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.models.User;
 import ru.ncedu.ecomm.data.models.builders.UserBuilder;
-import ru.ncedu.ecomm.utils.MD5DigestUtils;
+import ru.ncedu.ecomm.utils.EncryptionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -56,7 +56,7 @@ public class RegistrationServlet extends HttpServlet {
             return;
         }
 
-        String hashPassword = MD5DigestUtils.setMd5Digest(req.getParameter("password"));
+        String hashPassword = EncryptionUtils.getMd5Digest(req.getParameter("password"));
         User user = new UserBuilder()
                 .setEmail(req.getParameter("email"))
                 .setPassword(hashPassword)
