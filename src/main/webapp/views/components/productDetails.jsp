@@ -39,9 +39,9 @@
             </div>
         </div>
         <div class="ui two column grid">
-            <form action="${pageContext.request.contextPath}/addToShoppingCart" method="post" class="column aligned left">
-                <button name="productId" value="${browseProduct.getId()}" class="ui button">ADD TO CART</button>
-            </form>
+            <div class="column aligned left">
+                <button name="productId" value="${browseProduct.getId()}" class="ui button jsAddToCart">ADD TO CART</button>
+            </div>
             <div class="column right aligned container">
                 <div class="ui button" tabindex="0">COMPARE</div>
             </div>

@@ -30,6 +30,11 @@
                     });
                 }
             });
+
+            this.content.find('.jsAddToCart').on('click', function() {
+                var productId = $(this).val();
+                frm.events.fire('addToCart', productId);
+            });
         }
 
 
