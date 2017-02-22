@@ -21,41 +21,48 @@
                     on: 'click'
                 });
 
-
-            var reviewBody = this.content.find('.jsThisUserReview');
-            var reviewData = reviewBody.find('.jsReviewData');
-            var thisUserRating = reviewBody.find('.jsUsersRating').attr('data-rating');
-            var reviewText = reviewBody.find('.jsReview p').text();
-            var productId = reviewBody.attr('data-value');
-
-            reviewBody.find('.jsEdit').on('click', function () {
-                $.post('/review', {reviewActions: 'edit'}, function (data) {
-                    reviewData.html(data);
-
-                    var userRatingReload = reviewBody.find('.jsEditUserReviewRating');
-                    var oldReviewText = reviewBody.find('.editTextArea');
-                    var ratingField = reviewBody.find('.jsEditRating');
-                    var cancelButton = reviewBody.find('.jsCancel');
-                    var productIdReload = reviewBody.find('.productId');
-
-                    oldReviewText.html(reviewText);
-                    productIdReload.attr('value', productId);
-                    ratingField.attr('value', thisUserRating);
-                    userRatingReload.attr('data-rating', thisUserRating);
-                    userRatingReload.rating('setting', 'onRate', function (value) {
-                        ratingField.val(value);
-                    });
-
-                    cancelButton.on('click', function () {
-                        window.location.reload();
-                    });
-                });
-            });
+            this.content.find('.jsThisUserReview').find('.jsEdit').on('click', this.getData.bind(this));
 
             this.content.find('.jsNegative').on('click', this.hidePopup.bind(this));
 
         },
+        getData: function () {
+            $.post('/review',
+                {reviewActions: 'edit'},
+                this.writeFormForUpdateComment.bind(this));
+        },
 
+        writeFormForUpdateComment: function (data) {
+
+            var reviewBody = this.content.find('.jsThisUserReview');
+            var thisUserRating = reviewBody.find('.jsUsersRating').attr('data-rating');
+            var reviewText = reviewBody.find('.jsReview p').text();
+            var productId = reviewBody.attr('data-value');
+            var reviewData = reviewBody.find('.jsReviewData');
+
+
+            reviewData.html(data);
+
+            var userRatingReload = this.content.find('.jsEditUserReviewRating');
+            var oldReviewText = this.content.find('.editTextArea');
+            var ratingField = this.content.find('.jsEditRating');
+            var cancelButton = this.content.find('.jsCancel');
+            var productIdReload = this.content.find('.productId');
+
+            oldReviewText.html(reviewText);
+            productIdReload.attr('value', productId);
+            ratingField.attr('value', thisUserRating);
+            userRatingReload.attr('data-rating', thisUserRating);
+
+            userRatingReload.rating('setting', 'onRate', function (value) {
+                ratingField.val(value);
+            });
+
+            cancelButton.on('click', this.reloadPage);
+        },
+        reloadPage: function () {
+            window.location.reload();
+        },
         onRatingChange: function (value) {
             this.content.find('.jsRating').val(value);
 
