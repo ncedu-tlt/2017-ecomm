@@ -4,9 +4,9 @@
 
     var ShoppingCartIconComponent = frm.inheritance.inherits(frm.components.Component, {
         init: function () {
-            this.showQuantityIfHave();
+            var shoppingCartIcon = this.content.find('.jsShoppingCartIcon');
+            this.showQuantityIfHave(shoppingCartIcon);
             frm.events.on('addToCart', function (productIdParam) {
-                var shoppingCartIcon = $('#shoppingCartIcon');
                 $.post('/addToShoppingCart',
                     {productId: productIdParam},
                     function (result) {
@@ -15,8 +15,7 @@
                     });
             });
         },
-        showQuantityIfHave: function () {
-            var shoppingCartIcon = this.content.find('.jsShoppingCartIcon');
+        showQuantityIfHave: function (shoppingCartIcon) {
             if (shoppingCartIcon.html().trim() === '') {
                 shoppingCartIcon.hide();
             }
