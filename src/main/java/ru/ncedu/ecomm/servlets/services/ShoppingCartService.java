@@ -54,14 +54,13 @@ public class ShoppingCartService {
         return salesOrderId;
     }
 
-    public void updateQuantity(long salesOrderId, int newQuantity, long productId) throws SQLException {
+    public void updateQuantity(long salesOrderId, int inputQuantity, long productId) throws SQLException {
         List<OrderItemViewModel> orderItems = getOrderItemModelList(salesOrderId);
         OrderItemViewModel orderItemBySalesOrderId = getOrderItemBySalesOrderId(productId, salesOrderId, orderItems);
         if (orderItemBySalesOrderId != null) {
-            orderItemBySalesOrderId.setQuantity(newQuantity);
-            changeQuantityOrderItem(orderItemBySalesOrderId, newQuantity);
-        }
-        else{
+            orderItemBySalesOrderId.setQuantity(inputQuantity);
+            changeQuantityOrderItem(orderItemBySalesOrderId, inputQuantity, false);
+        } else {
             System.out.println("Error of update quantity");
         }
     }
@@ -73,8 +72,8 @@ public class ShoppingCartService {
             addNewOrderItem(productId, salesOrderId);
         } else {
             try {
-                final int MIN_QUANTITY = 1;
-                changeQuantityOrderItem(orderItemBySalesOrderId, MIN_QUANTITY);
+                final int INPUT_QUANTITY_CHANGE = 1;
+                changeQuantityOrderItem(orderItemBySalesOrderId, INPUT_QUANTITY_CHANGE, true);
             } catch (NullPointerException e) {
                 throw new RuntimeException(e);
             }
@@ -96,29 +95,38 @@ public class ShoppingCartService {
         getDAOFactory().getOrderItemsDAO().addOrderItem(orderItem);
     }
 
-    private OrderItemViewModel changeQuantityOrderItem(OrderItemViewModel orderItemBySalesOrderId, int newQuantity) throws SQLException {
-        OrderItem orderItemWithIncreaseQuantity = getOrderItemWithChangeQuantity(orderItemBySalesOrderId, newQuantity);
-        getDAOFactory().getOrderItemsDAO().updateOrderItem(orderItemWithIncreaseQuantity);
-        return orderItemBySalesOrderId;
+    private void changeQuantityOrderItem(OrderItemViewModel orderItemBySalesOrderId, int inputQuantity, boolean isSingleAdd) throws SQLException {
+        if (isSingleAdd) {
+            OrderItem orderItemWithChangeQuantity = getSingleAddToCart(orderItemBySalesOrderId, inputQuantity);
+            getDAOFactory().getOrderItemsDAO().updateOrderItem(orderItemWithChangeQuantity);
+        } else {
+            OrderItem orderItemWithChangeQuantity = getOrderItemByViewModel(orderItemBySalesOrderId);
+            orderItemWithChangeQuantity.setQuantity(inputQuantity);
+            System.out.println(orderItemWithChangeQuantity.getQuantity());
+            getDAOFactory().getOrderItemsDAO().updateOrderItem(orderItemWithChangeQuantity);
+        }
     }
 
-    private OrderItem getOrderItemWithChangeQuantity(OrderItemViewModel orderItemBySalesOrderId, int newQuantity) {
+    private OrderItem getSingleAddToCart(OrderItemViewModel orderItemBySalesOrderId, int inputQuantity) {
         OrderItem orderItemWithChangeQuantity = getOrderItemByViewModel(orderItemBySalesOrderId);
+        int oldQuantity = orderItemWithChangeQuantity.getQuantity();
+        int newQuantity = oldQuantity + inputQuantity;
         orderItemWithChangeQuantity.setQuantity(newQuantity);
         return orderItemWithChangeQuantity;
     }
+
 
     private OrderItem getOrderItemByViewModel(OrderItemViewModel orderItemBySalesOrderId) {
         OrderItem orderItem = new OrderItem();
         orderItem.setProductId(orderItemBySalesOrderId.getProductId());
         orderItem.setSalesOrderId(orderItemBySalesOrderId.getSalesOrderId());
+        orderItem.setQuantity(orderItemBySalesOrderId.getQuantity());
 
         return orderItem;
     }
 
     private OrderItem addToOrderItem(long productId, long salesOrderId) {
         final int minQuantity = 1;
-
 
         OrderItem orderItem = new OrderItem();
         orderItem.setProductId(productId);
