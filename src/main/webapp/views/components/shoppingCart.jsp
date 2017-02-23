@@ -49,9 +49,10 @@
                                                 name="deleteButton" value="delete">
                                             <i class="icon remove"></i>
                                         </button>
-                                        <h2 class="ui header right floated center middle aligned">
-                                            $${itemOrder.getPrice()}
+                                        <h2 class="ui header right floated center middle aligned jsPrice">
+                                            ${itemOrder.getPrice()}
                                         </h2>
+                                        <h2 class="ui header right floated center middle aligned">$</h2>
                                     </div>
                                 </div>
                                 <div class="ui divider"></div>
@@ -94,10 +95,8 @@
                         </div>
                         <div class="eight wide column">
                             <h3 class="ui grey header right floated bottom jsAmount">
-                                $${salesOrder.getTotalAmount()}</h3>
-                            <h3 class="ui header right floated bottom">
-                                Total:
-                            </h3>
+                                ${salesOrder.getTotalAmount()}</h3>
+                            <h3 class="ui header right floated bottom">Total: $</h3>
                         </div>
                     </div>
                         <div class="ui grid hide">

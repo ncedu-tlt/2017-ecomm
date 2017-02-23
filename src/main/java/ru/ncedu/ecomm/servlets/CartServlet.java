@@ -39,10 +39,10 @@ public class CartServlet extends HttpServlet {
                 request.getRequestDispatcher(Configuration.getProperty("page.login")).forward(request, response);
             }
             long userId = UserService.getInstance().getCurrentUserId(request);
-            formActionOnShoppingCart(request, userId);
             List<SalesOrderViewModel> salesOrderList = ShoppingCartService.getInstance()
                     .getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
             request.setAttribute("salesOrderList", salesOrderList);
+            formActionOnShoppingCart(request, userId);
             request.getRequestDispatcher(Configuration.getProperty("page.cart")).forward(request, response);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -56,11 +56,16 @@ public class CartServlet extends HttpServlet {
                         Long.parseLong(request.getParameter("productId")),
                         Long.parseLong(request.getParameter("salesOrderId")));
             } else if (request.getParameter("quantityButton") != null && request.getParameter("quantityButton").equals("quantity")) {
-                ShoppingCartService.getInstance().updateQuantity(
+                /*ShoppingCartService.getInstance().updateQuantity(
                         Long.parseLong(request.getParameter("salesOrderId")),
                         Integer.parseInt(request.getParameter("quantityValue")),
                         Long.parseLong(request.getParameter("productId"))
-                );
+                );*/
+                setQuantityInDataBase(
+                        Long.parseLong(request.getParameter("productId")),
+                        Long.parseLong(request.getParameter("salesOrderId")),
+                        Integer.parseInt(request.getParameter("quantityValue")));
+                System.out.println(Long.parseLong(request.getParameter("productId")) + " " + Long.parseLong(request.getParameter("salesOrderId")) + " " + Integer.parseInt(request.getParameter("quantityValue")));
             } else if (request.getParameter("emptyActions") != null && request.getParameter("emptyActions").equals("emptyTrash")) {
                 ShoppingCartService.getInstance().deletedAllProductsInOrderItemDataBase(userId);
             } else if (request.getParameter("limitButton") != null && request.getParameter("limitButton").equals("apply")) {

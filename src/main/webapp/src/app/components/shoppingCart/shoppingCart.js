@@ -8,28 +8,40 @@
                 $this = this.content.find('.jsItemOrder'),
                 minus = $this.find('.jsLeft'),
                 plus = $this.find('.jsRight'),
-                price = $this.find('.jsPrice'),
-                amount = $this.find('.jsAmount');
+                amount = this.content.find('.jsAmount');
 
             minus.click(function () {
                 var
                     $input = $(this).parent().find('.jsInput'),
-                    count = parseInt($input.val()) - 1;
-                price.val(parseInt(price.val()) / parseInt($input.val()));
-                count = count < 1 ? 1 : count;
-                $input.val(count);
-                $input.change();
-                price.change();
-                return false;
+                    price = $(this).parent().parent().find('.jsPrice'),
+                    standardPrice = parseInt(price.text()) / parseInt($input.val()),
+                    count = parseInt($input.val());
+                if (count > 1) {
+                    amount.text(parseInt(amount.text()) - standardPrice);
+                    count = count <= 1 ? 1 : count - 1;
+                    price.text(standardPrice * count);
+                    $input.val(count);
+                    $input.change();
+                    price.change();
+                    amount.change();
+                    return false;
+                }
             });
 
             plus.click(function () {
-                var $input = $(this).parent().find('.jsInput');
-                $input.val(parseInt($input.val()) + 1);
-                $input.change();
-                price.val(parseInt(price.val()) * parseInt($input.val()));
-                price.change();
-                return false;
+                var $input = $(this).parent().find('.jsInput'),
+                    price = $(this).parent().parent().find('.jsPrice'),
+                    standardPrice = parseInt(price.text()) / parseInt($input.val()),
+                    count = parseInt($input.val());
+                if(count >= 1){
+                    $input.val(parseInt($input.val()) + 1);
+                    $input.change();
+                    price.text(standardPrice * parseInt($input.val()));
+                    price.change();
+                    amount.text(parseInt(amount.text()) + standardPrice);
+                    amount.change();
+                    return false;
+                }
             });
         }
     });
