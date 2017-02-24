@@ -66,7 +66,7 @@ public class CartServlet extends HttpServlet {
                         Long.parseLong(request.getParameter("salesOrderId")),
                         Integer.parseInt(request.getParameter("quantityValue")));
                 System.out.println(Long.parseLong(request.getParameter("productId")) + " " + Long.parseLong(request.getParameter("salesOrderId")) + " " + Integer.parseInt(request.getParameter("quantityValue")));
-            } else if (request.getParameter("emptyActions") != null && request.getParameter("emptyActions").equals("emptyTrash")) {
+            } else if (request.getParameter("emptyButton") != null && request.getParameter("emptyButton").equals("emptyTrash")) {
                 ShoppingCartService.getInstance().deletedAllProductsInOrderItemDataBase(userId);
             } else if (request.getParameter("limitButton") != null && request.getParameter("limitButton").equals("apply")) {
                 setLimitInDataBase(

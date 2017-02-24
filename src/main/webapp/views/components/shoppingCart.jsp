@@ -6,8 +6,7 @@
         <h3 class="ui center aligned header">
             Your Cart
         </h3>
-        <form method="post" action="cart" class="ui divided items">
-            <input name="salesOrderId" type="hidden" value="${salesOrder.getSalesOrderId()}">
+        <div class="ui divided items">
             <c:choose>
                 <c:when test="${salesOrder.getOrderItems().isEmpty()}">
                     <div class="ui icon message hide">
@@ -23,8 +22,9 @@
                 <c:when test="${salesOrder.getOrderItems() != null}">
                     <div class="ui divided items jsItemOrder">
                         <c:forEach var="itemOrder" items="${salesOrder.getOrderItems()}">
-                            <div class="item">
+                            <form method="post" action="cart"  class="item">
                                 <input name="productId" type="hidden" value="${itemOrder.getProductId()}">
+                                <input name="salesOrderId" type="hidden" value="${itemOrder.getSalesOrderId()}">
                                 <div class="ui small image">
                                     <img src="${itemOrder.getImgUrl()}">
                                 </div>
@@ -41,7 +41,7 @@
                                             <input type="text" name="quantityValue" class="jsInput"
                                                    value="${itemOrder.getQuantity()}">
                                             <button class="ui right attached button jsRight" type="button">+</button>
-                                            <button class="ui secondary button" name="quantityButton" value="quantity">
+                                            <button class="ui secondary button" name="quantityButton" type="submit" value="quantity">
                                                 Save
                                             </button>
                                         </div>
@@ -56,26 +56,26 @@
                                     </div>
                                 </div>
                                 <div class="ui divider"></div>
-                            </div>
+                            </form>
                         </c:forEach>
                     </div>
                     <div class="ui section divider"></div>
-                    <div class="ui grid seven column row">
-                        <button class="ui secondary basic right floated button column hide" name="emptyActions"
-                                value="emptyTrash">EMPTY TRASH
+                    <form method="post" action="cart" class="ui grid seven column row">
+                        <button class="ui secondary basic right floated button column hide" name="emptyButton"
+                                type="submit" value="emptyTrash">EMPTY TRASH
                         </button>
-                    </div>
+                    </form>
                     <div class="ui grid">
-                        <div class="eight wide column">
+                        <form method="post" action="cart"  class="eight wide column">
+                            <input name="salesOrderId" type="hidden" value="${salesOrder.getSalesOrderId()}">
                             <div class="item">
                                 <div class="inline field hide">
                                     <div class="ui right pointing label big">
                                         Limit:
                                     </div>
                                     <div class="ui left labeled button" tabindex="0">
-                                        <input type="text" class="ui basic right pointing label" name="limitInput"
-                                               value="${salesOrder.getLimit()}"/>
-                                        <button class="ui button" name="limitButton" value="apply">APPLY</button>
+                                        <input type="text" class="ui basic right pointing label" name="limitInput" value="${salesOrder.getLimit()}">
+                                        <button class="ui button" name="limitButton" type="submit" value="apply">APPLY</button>
                                     </div>
                                 </div>
                             </div>
@@ -92,7 +92,7 @@
                                     <p>${requestScope.exception}</p>
                                 </div>
                             </c:if>
-                        </div>
+                        </form>
                         <div class="eight wide column">
                             <h3 class="ui grey header right floated bottom jsAmount">
                                 ${salesOrder.getTotalAmount()}</h3>
@@ -106,12 +106,12 @@
                                 </a>
                             </div>
                             <div class="eight wide column">
-                                <button class="ui secondary basic right floated button">CHECKOUT</button>
+                                <button class="ui secondary basic right floated button" type="button">CHECKOUT</button>
                             </div>
                         </div>
                 </c:when>
             </c:choose>
-        </form>
+        </div>
     </div>
 </c:forEach>
 <script>
