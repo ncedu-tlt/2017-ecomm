@@ -55,8 +55,8 @@
                             ]
                         }
                     }
-                })
-            ;
+                });
+            this.content.find('#jsSendFormProfileBtn').on('click', this.addLoadingToButton());
         },
         showPasswordConfirm: function () {
             var passwordConfirmInput = this.content.find('.jsPasswordConfirm');
@@ -74,6 +74,9 @@
                     $('#jsSendFormProfileBtn').show();
                 });
             }
+        },
+        addLoadingToButton: function () {
+            this.content.find('#jsSendFormProfileBtn').addClass('loading');
         }
     });
 
