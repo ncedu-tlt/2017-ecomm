@@ -7,6 +7,7 @@
     <jsp:param name="socialsUrlId" value="google+Url"/>
     <jsp:param name="socialsUrlId" value="vkUrl"/>
 </jsp:include>
+<div class="ui divider"></div>
 <div class="ui grid one column center aligned container footerCompanyInfo">
     <div class="column">
         <p>
