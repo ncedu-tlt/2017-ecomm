@@ -9,37 +9,15 @@
          * Executed on component initialization
          */
         init: function () {
-            if($('.jsProfileComponent').length) { //TODO: глобальный селектор
-                $('#profile').addClass('active'); //TODO: идентификатор
+            var locationPage = window.location.pathname;
+            this.addActive(locationPage);
+        },
+        addActive: function(locationPage) {
+            if (locationPage === '/views/pages/profile.jsp') {
+                this.content.find('.jsProfile').addClass('active');
             }
-
-            if($('.jsOrdersHistoryComponent').length) {
-                $('#orderHistory').addClass('active');
-            }
-
-            var href=$('.menuElement'); //TODO: класс должен начинаться с js
-            href.click(function () {
-                changeActive($(this));
-                return false;
-            });
-
-            function changeActive(current) { //TODO: не стоит использовать вложенные функции
-                console.log(href);
-                href.removeClass('active');
-                current.addClass('active');
-            }
-
-            $('.item').click(function(){
-                changeStateDisplay($(this).attr('id'));
-            });
-
-            function changeStateDisplay(block){ //TODO: а почему сразу ссылки не проставить на элементы?
-                if(block === 'profile'){
-                    window.location.replace('/views/pages/profile.jsp');
-                }
-                if(block === 'orderHistory'){
-                    window.location.replace('/orders');
-                }
+            if (locationPage === '/orders') {
+                this.content.find('.jsOrderHistory').addClass('active');
             }
         }
     });
