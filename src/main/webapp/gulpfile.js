@@ -5,6 +5,10 @@ var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
 var ngAnnotate = require('gulp-ng-annotate');
 var embedTemplates = require('gulp-angular-embed-templates');
+var gutil = require("gulp-util");
+var webpack = require('webpack');
+
+var webpackConfig = require('./webpack.config');
 
 //--------------------------------------------------
 //--------------- Shop Tasks - Start ---------------
@@ -133,7 +137,31 @@ gulp.task('build-management', [
 //------------- Management Tasks - End -------------
 //--------------------------------------------------
 
-gulp.task('build', ['build-shop', 'build-management']);
+
+//--------------------------------------------------
+//----------- Management v2 Tasks - Start ----------
+//--------------------------------------------------
+
+gulp.task('build-management-v2', function(callback) {
+    webpack(webpackConfig, function(err, stats) {
+        if(err) throw new gutil.PluginError("webpack", err);
+        gutil.log("[webpack]", stats.toString({
+            // output options
+        }));
+        callback();
+    });
+});
+
+//--------------------------------------------------
+//------------ Management v2 Tasks - End -----------
+//--------------------------------------------------
+
+gulp.task('build', [
+    'build-shop',
+    // Commented for build performance reasons
+    // 'build-management',   // Angular 1 version
+    // 'build-management-v2' // Angular 2 version
+]);
 
 gulp.task('watch', function () {
     gulp.watch('./src/framework/**/*.js', ['shop-js-framework']);

@@ -1,0 +1,16 @@
+<table>
+    <thead>
+    <tr>
+        <th *ngFor="let column of model.columns">
+            {{column.name}}
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let row of model.data" (click)="onSelect(row)">
+        <td *ngFor="let column of model.columns">
+            {{getValue(row, column.key)}}
+        </td>
+    </tr>
+    </tbody>
+</table>
