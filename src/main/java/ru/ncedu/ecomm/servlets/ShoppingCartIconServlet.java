@@ -24,6 +24,15 @@ public class ShoppingCartIconServlet extends HttpServlet {
         }
     }
 
+    @Override
+    protected  void doPost(HttpServletRequest req, HttpServletResponse resp){
+        try {
+            this.doGet(req, resp);
+        } catch (ServletException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void showQuantity(HttpServletRequest req) throws ServletException, IOException, SQLException {
         final int EMPTY_QUANTITY = 0;
         HttpSession authorization = req.getSession();
