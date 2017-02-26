@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="ui container jsRegistrationComponent main-content">
     <div class="ui three column centered grid">
         <div class="column">
@@ -29,9 +30,10 @@
                         </div>
                     </button>
                 </div>
-
                 <p>Already a member? <a href="${pageContext.request.contextPath}/login"> Login </a></p>
-                <div class="ui error message"></div>
+                <div class="ui error message">
+                    <p>${requestScope.answer}</p>
+                </div>
             </form>
             <div class="ui hidden divider"></div>
         </div>

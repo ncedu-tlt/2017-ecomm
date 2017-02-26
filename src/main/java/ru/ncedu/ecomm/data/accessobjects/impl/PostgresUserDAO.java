@@ -135,36 +135,6 @@ public class PostgresUserDAO implements UserDAO {
     }
 
     @Override
-    public boolean getBoolUserByEmail(String email) {
-        try (Connection connection = DBUtils.getConnection();
-             PreparedStatement statement = connection.prepareStatement(
-                     "SELECT\n" +
-                             "  user_id,\n" +
-                             "  role_id,\n" +
-                             "  first_name,\n" +
-                             "  last_name,\n" +
-                             "  password,\n" +
-                             "  phone,\n" +
-                             "  email,\n" +
-                             "  registration_date,\n" +
-                             "  recovery_hash,\n" +
-                             "  user_avatar\n" +
-                             "FROM users\n" +
-                             "WHERE email = ?")) {
-
-            statement.setString(1, email);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()){
-
-                return true;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return false;
-    }
-
-    @Override
     public List<User> getUserByRoleId(long roleId) {
         List<User> users = new ArrayList<>();
 

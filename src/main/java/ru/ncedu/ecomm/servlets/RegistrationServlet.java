@@ -20,6 +20,7 @@ public class RegistrationServlet extends HttpServlet {
     private static final String CHECK = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
     private static final String REGISTRATION = "/views/pages/registration.jsp";
     private static final String LOGIN = "/views/pages/login.jsp";
+    private static final int ROLE_USER = 3;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -49,7 +50,7 @@ public class RegistrationServlet extends HttpServlet {
             return;
         }
 
-        if (getDAOFactory().getUserDAO().getBoolUserByEmail(req.getParameter("email"))) {
+        if (getDAOFactory().getUserDAO().getUserByEmail(req.getParameter("email")) != null) {
 
             req.setAttribute("answer", "Email is already in use");
             req.getRequestDispatcher(REGISTRATION).forward(req, resp);
@@ -60,7 +61,7 @@ public class RegistrationServlet extends HttpServlet {
         User user = new UserBuilder()
                 .setEmail(req.getParameter("email"))
                 .setPassword(hashPassword)
-                .setRoleId(3)
+                .setRoleId(ROLE_USER)
                 .build();
         getDAOFactory().getUserDAO().addUser(user);
 
