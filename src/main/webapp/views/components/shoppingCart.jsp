@@ -30,7 +30,9 @@
                                 </div>
                                 <div class="middle aligned content">
                                     <div class="header">
-                                            ${itemOrder.getName()}
+                                        <a href="${pageContext.request.contextPath}/product?product_id=${itemOrder.getProductId()}">
+                                                ${itemOrder.getName()}
+                                        </a>
                                     </div>
                                     <div class="ui container">
                                         <p>Quantity:</p>
