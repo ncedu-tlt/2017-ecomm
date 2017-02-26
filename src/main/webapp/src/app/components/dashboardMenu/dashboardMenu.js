@@ -13,7 +13,8 @@
             this.addActive(locationPage);
         },
         addActive: function(locationPage) {
-            if (locationPage === '/views/pages/profile.jsp') {
+            console.log(locationPage);
+            if (locationPage === '/profile') {
                 this.content.find('.jsProfile').addClass('active');
             }
             if (locationPage === '/orders') {
