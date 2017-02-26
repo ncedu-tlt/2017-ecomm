@@ -29,7 +29,17 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        updateSalesOrderList(req);
         showSalesOrderList(req, resp);
+    }
+
+    private void updateSalesOrderList(HttpServletRequest request) throws ServletException, IOException {
+        long userId = UserService.getInstance().getCurrentUserId(request);
+        try {
+            formActionOnShoppingCart(request, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showSalesOrderList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,7 +52,6 @@ public class CartServlet extends HttpServlet {
             List<SalesOrderViewModel> salesOrderList = ShoppingCartService.getInstance()
                     .getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
             request.setAttribute("salesOrderList", salesOrderList);
-            formActionOnShoppingCart(request, userId);
             request.getRequestDispatcher(Configuration.getProperty("page.cart")).forward(request, response);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -56,16 +65,11 @@ public class CartServlet extends HttpServlet {
                         Long.parseLong(request.getParameter("productId")),
                         Long.parseLong(request.getParameter("salesOrderId")));
             } else if (request.getParameter("quantityButton") != null && request.getParameter("quantityButton").equals("quantity")) {
-                /*ShoppingCartService.getInstance().updateQuantity(
+                ShoppingCartService.getInstance().updateQuantity(
                         Long.parseLong(request.getParameter("salesOrderId")),
                         Integer.parseInt(request.getParameter("quantityValue")),
                         Long.parseLong(request.getParameter("productId"))
-                );*/
-                setQuantityInDataBase(
-                        Long.parseLong(request.getParameter("productId")),
-                        Long.parseLong(request.getParameter("salesOrderId")),
-                        Integer.parseInt(request.getParameter("quantityValue")));
-                System.out.println(Long.parseLong(request.getParameter("productId")) + " " + Long.parseLong(request.getParameter("salesOrderId")) + " " + Integer.parseInt(request.getParameter("quantityValue")));
+                );
             } else if (request.getParameter("emptyButton") != null && request.getParameter("emptyButton").equals("emptyTrash")) {
                 ShoppingCartService.getInstance().deletedAllProductsInOrderItemDataBase(userId);
             } else if (request.getParameter("limitButton") != null && request.getParameter("limitButton").equals("apply")) {
