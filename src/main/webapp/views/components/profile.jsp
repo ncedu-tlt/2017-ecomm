@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:include page="/profile"/>
+${requestScope.username}
 <div class="ui aligned center text container segment jsProfileComponent" data-tab="profile">
     <form class="ui form jsProfileForm" method="post" action="${pageContext.request.contextPath}/profile">
         <div class="field">
@@ -19,10 +19,10 @@
         </div>
         <div class="field">
             <label>Password:</label>
-            <input type="password" class="jsPassword" name="password" placeholder="Password">
+            <input type="password" class="jsPassword jsProfileTextParam" name="password" placeholder="Password">
         </div>
         <div class="field">
-            <input type="password" class="jsPasswordConfirm" name="passwordConfirm" placeholder="Current Password">
+            <input type="password" class="jsPasswordConfirm jsProfileTextParam" name="passwordConfirm" placeholder="Current Password">
         </div>
         <button class="ui animated primary button" id="jsSendFormProfileBtn">
             <div class="visible content">Apply Changes</div>

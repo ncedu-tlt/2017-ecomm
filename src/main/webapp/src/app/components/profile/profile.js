@@ -56,11 +56,16 @@
                         }
                     }
                 });
-            this.content.find('#jsSendFormProfileBtn').on('click', this.addLoadingToButton());
+            this.content.find('#jsSendFormProfileBtn').click(function () {
+                $(this).addClass('loading');
+            });
+            this.content.find('.jsProfileTextParam').keyup(function () {
+                $('#jsSendFormProfileBtn').removeClass('loading');
+            });
         },
         showPasswordConfirm: function () {
             var passwordConfirmInput = this.content.find('.jsPasswordConfirm');
-            this.content.find('.jsProfileTextParam').click(function () {
+            this.content.find('.jsProfileTextParam:not([type="password"])').click(function () {
                 passwordConfirmInput.hide();
             });
             this.content.find('.jsPassword').click(function () {
@@ -74,9 +79,6 @@
                     $('#jsSendFormProfileBtn').show();
                 });
             }
-        },
-        addLoadingToButton: function () {
-            this.content.find('#jsSendFormProfileBtn').addClass('loading');
         }
     });
 
