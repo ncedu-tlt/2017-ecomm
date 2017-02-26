@@ -20,17 +20,16 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 @WebServlet(name = "ProfileServlet", urlPatterns = {"/profile"})
 public class ProfileServlet extends HttpServlet {
 
+    //show profile
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         showProfile(req, resp);
+        req.getRequestDispatcher(Configuration.getProperty("page.profile")).forward(req, resp);
     }
-
-    //show profile
 
     private void showProfile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         redirectIfUserNotAuthorized(req, resp);
         createAttributeProfile(req);
-        resp.sendRedirect(Configuration.getProperty("page.profile"));
     }
 
     private void redirectIfUserNotAuthorized(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -57,32 +56,19 @@ public class ProfileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (isEmptyInputs(req)) {
-            this.doGet(req, resp);
-        } else {
-            initAttributesSuccessChange(req, resp);
-        }
-    }
-
-    private boolean isEmptyInputs(HttpServletRequest req) {
-        List<String> userParameters = getUserParameters(req);
-        for (String parameter : userParameters) {
-            if (parameter.trim().isEmpty())
-                return true;
-        }
-        return false;
-    }
-
-    private void initAttributesSuccessChange(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long userId = UserService.getInstance().getCurrentUserId(req);
-        changeProfile(userId, req);
-        resp.sendRedirect("/profile");
+        if(changeProfile(userId, req)){
+            req.setAttribute("answer", "Success change");
+            this.doGet(req, resp);
+        }
+        req.getRequestDispatcher(Configuration.getProperty("page.profile")).forward(req, resp);
     }
 
-    private void changeProfile(long userId, HttpServletRequest req) {
+    private boolean changeProfile(long userId, HttpServletRequest req) {
         User userByChange = getDAOFactory().getUserDAO().getUserById(userId);
         userByChange = setUserNewParameters(userByChange, req);
         getDAOFactory().getUserDAO().updateUser(userByChange);
+        return true;
     }
 
     private User setUserNewParameters(User userByChange, HttpServletRequest req) {
