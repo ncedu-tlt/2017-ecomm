@@ -30,61 +30,81 @@ public class ReviewServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession();
         if (httpSession.getAttribute("userId") != null) {
-            addReview(req, resp);
+            doAction(req, resp);
         }
     }
 
-    private void addReview(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession httpSession = req.getSession();
-
-        String productId = req.getParameter("productId");
+    private void doAction(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         switch (req.getParameter("reviewActions")) {
             case ADD_REVIEW: {
+                addUserReview(req, resp);
 
-                Review review = new ReviewBuilder()
-                        .setUserId((Long) httpSession.getAttribute("userId"))
-                        .setProductId(Long.parseLong(productId))
-                        .setRating(Integer.parseInt(req.getParameter("rating")))
-                        .setCreationDate(new Date(System.currentTimeMillis()))
-                        .setDescription(req.getParameter("review"))
-                        .build();
-
-                addReviewToBase(review);
-                resp.sendRedirect("/product?product_id=" + productId);
                 break;
             }
             case REMOVE_REVIEW: {
+                removeReview(req, resp);
 
-                Review review = new ReviewBuilder()
-                        .setProductId(Long.parseLong(req.getParameter("productId")))
-                        .setUserId(Long.parseLong(req.getParameter("userId")))
-                        .build();
-
-                removeReviewByBase(review);
-                resp.sendRedirect("/product?product_id=" + productId);
                 break;
             }
             case UPDATE_REVIEW: {
+                updateReview(req, resp);
 
-                Review review = new ReviewBuilder()
-                        .setUserId((Long) httpSession.getAttribute("userId"))
-                        .setProductId(Long.parseLong(req.getParameter("productId")))
-                        .setRating(Integer.parseInt(req.getParameter("rating")))
-                        .setCreationDate(new Date(System.currentTimeMillis()))
-                        .setDescription(req.getParameter("reviewDescription"))
-                        .build();
-
-                updateReviewByBase(review);
-                resp.sendRedirect("/product?product_id=" + productId);
                 break;
             }
             case EDIT_REVIEW: {
+                editReview(req, resp);
 
-                resp.sendRedirect("/views/components/editReview.jsp");
                 break;
             }
         }
+    }
+
+    private void editReview(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
+        resp.sendRedirect("/views/components/editReview.jsp");
+    }
+
+    private void updateReview(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String productId = req.getParameter("productId");
+
+        Review review = new ReviewBuilder()
+                .setUserId((Long) req.getSession().getAttribute("userId"))
+                .setProductId(Long.parseLong(productId))
+                .setRating(Integer.parseInt(req.getParameter("rating")))
+                .setCreationDate(new Date(System.currentTimeMillis()))
+                .setDescription(req.getParameter("reviewDescription"))
+                .build();
+
+        updateReviewByBase(review);
+        resp.sendRedirect("/product?product_id=" + productId);
+    }
+
+    private void removeReview(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String productId = req.getParameter("productId");
+
+        Review review = new ReviewBuilder()
+                .setProductId(Long.parseLong(productId))
+                .setUserId(Long.parseLong(req.getParameter("userId")))
+                .build();
+
+        removeReviewByBase(review);
+        resp.sendRedirect("/product?product_id=" + productId);
+    }
+
+    private void addUserReview(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String productId = req.getParameter("productId");
+
+        Review review = new ReviewBuilder()
+                .setUserId((Long) req.getSession().getAttribute("userId"))
+                .setProductId(Long.parseLong(productId))
+                .setRating(Integer.parseInt(req.getParameter("rating")))
+                .setCreationDate(new Date(System.currentTimeMillis()))
+                .setDescription(req.getParameter("review"))
+                .build();
+
+        addReviewToBase(review);
+        resp.sendRedirect("/product?product_id=" + productId);
     }
 
     private void updateReviewByBase(Review review) {

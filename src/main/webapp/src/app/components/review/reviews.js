@@ -21,7 +21,7 @@
                     on: 'click'
                 });
 
-            this.content.find('.jsThisUserReview').find('.jsEdit').on('click', this.getData.bind(this));
+            this.content.find('.jsThisUserReview .jsEdit').on('click', this.getData.bind(this));
 
             this.content.find('.jsNegative').on('click', this.hidePopup.bind(this));
 
