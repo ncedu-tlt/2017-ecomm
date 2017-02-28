@@ -7,16 +7,23 @@
             var shoppingCartIcon = this.content.find('.jsShoppingCartIcon');
             this.showQuantityIfHave(shoppingCartIcon);
             frm.events.on('addToCart', function (productIdParam) {
+                var jsDimmer = $('#jsDimmerAdd');
+                jsDimmer.dimmer({
+                    closable: false
+                });
+                jsDimmer.dimmer('show');
                 $.post('/addToShoppingCart',
                     {productId: productIdParam},
                     function (result) {
                         shoppingCartIcon.text(result);
                         shoppingCartIcon.transition('jiggle');
+                    }).done(function () {
+                        jsDimmer.dimmer('hide');
                     });
             });
         },
         showQuantityIfHave: function (shoppingCartIcon) {
-            if (shoppingCartIcon.html().trim() === '') {
+            if (shoppingCartIcon.html().trim() == '') {
                 shoppingCartIcon.hide();
             }
             else {

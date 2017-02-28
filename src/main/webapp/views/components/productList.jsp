@@ -65,7 +65,13 @@
     </div>
 </c:forEach>
 <p>${requestScope.max}</p>
+<div class="ui page dimmer" id="jsDimmerAdd">
+    <div class="content">
+        <div class="ui text loader">Loading</div>
+    </div>
 </div>
+</div>
+
 <script>
     window.frm.components.init('ProductListComponent', '.jsProductListComponent');
 </script>
