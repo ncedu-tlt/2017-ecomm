@@ -211,7 +211,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                              "SET user_id       = ?,\n" +
                              "  creation_date   = ?,\n" +
                              "  \"limit\"         = ?,\n" +
-                             "  order_status_id = ?,\n" +
+                             "  order_status_id = ?\n" +
                              "WHERE sales_order_id = ?"
              )) {
 
