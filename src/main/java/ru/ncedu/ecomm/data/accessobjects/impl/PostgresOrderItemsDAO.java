@@ -22,7 +22,8 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
                     "SELECT\n" +
                             "  product_id,\n" +
                             "  sales_order_id,\n" +
-                            "  quantity\n" +
+                            "  quantity,\n" +
+                            "  standard_price\n" +
                             "FROM public.order_items");
 
             while (resultSet.next()) {
@@ -30,6 +31,7 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
                         .setProductId(resultSet.getLong("product_id"))
                         .setSalesOrederId(resultSet.getLong("sales_order_id"))
                         .setQuantity(resultSet.getInt("quantity"))
+                        .setStandardPrice(resultSet.getLong("standard_price"))
                         .build();
 
                 orderItems.add(orderItem);
@@ -49,7 +51,8 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
                "SELECT\n"+
                        " product_id,\n" +
                        " sales_order_id,\n" +
-                       " quantity\n" +
+                       " quantity,\n" +
+                       " standard_price\n" +
                        "FROM order_items\n" +
                        "WHERE sales_order_id = ?\n")) {
             preparedStatement.setLong(1, salesOrderId);
@@ -59,6 +62,7 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
                         .setProductId(resultSet.getLong("product_id"))
                         .setSalesOrederId(resultSet.getLong("sales_order_id"))
                         .setQuantity(resultSet.getInt("quantity"))
+                        .setStandardPrice(resultSet.getLong("standard_price"))
                         .build();
                 orderItemsBySalesOrderId.add(orderItem);
             }
@@ -73,12 +77,13 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "INSERT INTO public.order_items\n" +
-                             "(product_id, sales_order_id, quantity)\n" +
-                             "VALUES (?, ?, ?)"
+                             "(product_id, sales_order_id, quantity, standard_price)\n" +
+                             "VALUES (?, ?, ?, ?)"
              )) {
             statement.setLong(1, orderItem.getProductId());
             statement.setLong(2, orderItem.getSalesOrderId());
             statement.setInt(3, orderItem.getQuantity());
+            statement.setLong(4, orderItem.getStandardPrice());
             statement.execute();
 
             return orderItem;
@@ -93,14 +98,16 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "UPDATE public.order_items\n" +
-                             "SET quantity = ?\n" +
+                             "SET quantity = ?\n," +
+                             "    standard_price = ?\n" +
                              "WHERE product_id = ?\n" +
                              "      AND sales_order_id = ?"
              )) {
 
             statement.setInt(1, orderItem.getQuantity());
-            statement.setLong(2, orderItem.getProductId());
-            statement.setLong(3, orderItem.getSalesOrderId());
+            statement.setLong(2, orderItem.getStandardPrice());
+            statement.setLong(3, orderItem.getProductId());
+            statement.setLong(4, orderItem.getSalesOrderId());
             statement.execute();
 
             return orderItem;
@@ -119,7 +126,8 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
                     "SELECT\n" +
                             "  product_id,\n" +
                             "  sales_order_id,\n" +
-                            "  quantity\n" +
+                            "  quantity,\n" +
+                            "  standard_price\n"+
                             "FROM public.order_items \n" +
                             "WHERE product_id = ? \n AND " +
                             "sales_order_id = ?")){
@@ -131,6 +139,7 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
                         .setProductId(resultSet.getLong("product_id"))
                         .setSalesOrederId(resultSet.getLong("sales_order_id"))
                         .setQuantity(resultSet.getInt("quantity"))
+                        .setStandardPrice(resultSet.getLong("standard_price"))
                         .build();
             }
             return orderItem;

@@ -6,6 +6,7 @@ public class OrderItemBuilder {
     private long productId;
     private long salesOrederId;
     private int quantity;
+    private long standardPrice;
 
     public OrderItemBuilder(){
 
@@ -29,11 +30,17 @@ public class OrderItemBuilder {
         return this;
     }
 
+    public OrderItemBuilder setStandardPrice(long standardPrice) {
+        this.standardPrice = standardPrice;
+        return this;
+    }
+
     public OrderItem build(){
         return new OrderItem(
                 productId,
                 salesOrederId,
-                quantity
+                quantity,
+                standardPrice
         );
     }
 }

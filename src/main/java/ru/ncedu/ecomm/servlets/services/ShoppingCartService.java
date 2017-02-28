@@ -3,6 +3,7 @@ package ru.ncedu.ecomm.servlets.services;
 import ru.ncedu.ecomm.data.DAOFactory;
 import ru.ncedu.ecomm.data.models.OrderItem;
 import ru.ncedu.ecomm.data.models.OrderStatus;
+import ru.ncedu.ecomm.data.models.Product;
 import ru.ncedu.ecomm.data.models.SalesOrder;
 import ru.ncedu.ecomm.servlets.models.EnumOrderStatus;
 import ru.ncedu.ecomm.servlets.models.OrderItemViewModel;
@@ -90,7 +91,7 @@ public class ShoppingCartService {
         return null;
     }
 
-    private void addNewOrderItem(long productId, long salesOrderId) {
+    private void addNewOrderItem(long productId, long salesOrderId) throws SQLException {
         OrderItem orderItem = addToOrderItem(productId, salesOrderId);
         getDAOFactory().getOrderItemsDAO().addOrderItem(orderItem);
     }
@@ -121,17 +122,22 @@ public class ShoppingCartService {
         orderItem.setProductId(orderItemBySalesOrderId.getProductId());
         orderItem.setSalesOrderId(orderItemBySalesOrderId.getSalesOrderId());
         orderItem.setQuantity(orderItemBySalesOrderId.getQuantity());
-
+        if (orderItemBySalesOrderId.getDiscount() != 0){
+            orderItem.setStandardPrice(orderItemBySalesOrderId.getDiscount());
+        }else {
+         orderItem.setStandardPrice(orderItemBySalesOrderId.getPrice());
+        }
         return orderItem;
     }
 
-    private OrderItem addToOrderItem(long productId, long salesOrderId) {
+    private OrderItem addToOrderItem(long productId, long salesOrderId) throws SQLException {
         final int minQuantity = 1;
 
         OrderItem orderItem = new OrderItem();
         orderItem.setProductId(productId);
         orderItem.setSalesOrderId(salesOrderId);
         orderItem.setQuantity(minQuantity);
+        orderItem.setStandardPrice(getPrice(productId));
 
         return orderItem;
     }
@@ -249,14 +255,16 @@ public class ShoppingCartService {
         for (Long sum : priceList) {
             sumAllPrice += sum;
         }
-        setTotalPriceInDatabase(salesOrderId, sumAllPrice);
         return sumAllPrice;
     }
 
-    private void setTotalPriceInDatabase(long salesOrderId, long totalPrice) throws SQLException {
-        SalesOrder salesOrder = getDAOFactory().getSalesOrderDAO().getSalesOrderById(salesOrderId);
-        salesOrder.setTotalPrice(totalPrice);
-        getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
+    private long getPrice(long productId) throws SQLException{
+        Product product = DAOFactory.getDAOFactory().getProductDAO().getProductById(productId);
+        long discountPrice = DiscountService.getInstance().getDiscountPrice(product.getDiscountId(), product.getPrice());
+        if (product.getDiscountId() > 1){
+            return discountPrice;
+        }
+        return product.getPrice();
     }
 
     private List<OrderItemViewModel> relationPriceAndQuantityInOrderItemViewModelList(long salesOrderId) throws SQLException {
