@@ -22,7 +22,7 @@ Drop TABLE IF EXISTS users CASCADE;
 
 CREATE TABLE categories (
     category_id bigint NOT NULL PRIMARY KEY,
-    parent_id bigint NULL,
+    parent_id bigint,
     name character varying(100) NOT NULL,
     description character varying(1000)
 );
@@ -148,6 +148,7 @@ CREATE TABLE order_items (
     product_id bigint NOT NULL,
     sales_order_id bigint NOT NULL,
     quantity integer NOT NULL,
+    standard_price bigint,
 	PRIMARY KEY (product_id, sales_order_id)
 );
  
@@ -278,9 +279,8 @@ CREATE TABLE sales_orders (
     sales_order_id bigint NOT NULL PRIMARY KEY,
     user_id bigint NOT NULL,
     creation_date date NOT NULL,
-    "limit" money NOT NULL,
-    order_status_id bigint NOT NULL,
-    total_price bigint NOT NULL
+    "limit" numeric(12,2),
+    order_status_id bigint NOT NULL
 );
 
 --
@@ -307,14 +307,14 @@ ALTER SEQUENCE sales_orders_sales_order_id_seq OWNED BY sales_orders.sales_order
 CREATE TABLE users (
     user_id bigint NOT NULL PRIMARY KEY,
     role_id bigint NOT NULL,
-    first_name character varying(100) NOT NULL,
-    last_name character varying(100) NOT NULL,
+    first_name character varying,
+    last_name character varying,
     password character varying(1000) NOT NULL,
-    phone character varying(100) NOT NULL,
+    phone character varying,
     email character varying(100) NOT NULL,
-    registration_date date NOT NULL,
-    recovery_hash character varying(100) NOT NULL,
-    user_avatar character varying(100) NOT NULL
+    registration_date date,
+    recovery_hash character varying(10),
+    user_avatar character varying DEFAULT '/images/useravatars/unknownuser/unknownuser.png'::character varying
 );
 
 --
@@ -332,7 +332,6 @@ CREATE SEQUENCE users_user_id_seq
 -- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public 
 --
 ALTER TABLE users ALTER COLUMN user_id SET DEFAULT nextval('users_user_id_seq');
-
 ALTER SEQUENCE users_user_id_seq OWNED BY users.user_id;
 
 --

@@ -61,17 +61,15 @@ INSERT INTO characteristics(
 	(1, 'Battery Type', 4, false),
 	(1, 'Expandable Memory Compatibility', 4, false),
 	
-	
 	(5, 'Brand', 1, true),
 	(5, 'Hard Drive Capacity', 1, true),
 	(5, 'Number Of USB Port(s)', 1, false),
 	(5, 'Number Of HDMI Outputs', 1, false),
 	(5, 'Wireless Network Compatibility', 1, false),
-	(5, 'Internal Hard Drive', 1),
+	(5, 'Internal Hard Drive', 1, false),
 	(5, 'Additional Accessories Included', 3, false),
 	(5, 'Model Number', 4, false),
 	(5, 'Color', 3, false),
-	
 	(5, 'Name', 5, false),
 	(5, 'Synopsis', 5, false),
 	(5, 'Product Features', 5, false),
@@ -260,13 +258,59 @@ INSERT INTO characteristic_values(
 	(28, 2, '\images\cat_id1\cat_id2\prod_id2\macbookpro.png, \images\cat_id1\cat_id2\prod_id2\macbookpro.png,\images\cat_id1\cat_id2\prod_id2\macbookpro.png'),
 	(28, 5, '\images\cat_id1\cat_id3\prod_id5\imac.png');
 	
-INSERT INTO users(
+INSERT INTO users(user_id,
 	role_id, first_name, last_name, password, phone, email, registration_date, recovery_hash, user_avatar)
-	VALUES (1, 'andrew', 'andrew', 111111, 78965443, 'admin@admin.com', current_timestamp, NULL, '/images/useravatars/unknownuser/unknownuser.png'),
-	(2, 'sergey', 'sergey', 'manager', 222222, 78965443, 'manager@manager.com', current_timestamp, NULL, '/images/useravatars/unknownuser/unknownuser.png'),
-	(3, 'boris', 'boris', 'user', 333333, 78965443, 'user@user.com', current_timestamp, NULL, '/images/useravatars/unknownuser/unknownuser.png'),
-	(3, 'max', 'max', 'user1', 444444, 78965443, 'user1@user1.com', current_timestamp, NULL, '/images/useravatars/unknownuser/unknownuser.png');
-	
+	VALUES (36, 3, 'a', NULL,  42767516990368493138776584305024125808, NULL, 'user@mail.ru', '2017-01-18', 4247867252, '/images/useravatars/unknownuser/unknownuser.png'),
+(60, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user1234@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(40, 3, 'Alex', NULL, 42767516990368493138776584305024125808, NULL,'user1234@mail.ru', '2017-01-25', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(41, 3, 'Bobffg', 'Gagaf', 172615877915217560892406575915100721237, NULL, 'lordever@mail.ru', '2017-02-02', 7683130118, '/images/useravatars/unknownuser/unknownuser.png'),
+(4, 3, 'max', 'max', 316448663440605426369181748590440883182, 444444, 'user@mail.ru', '2016-12-05', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(57, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user123@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(66, 3, NULL, NULL, 316448663440605426369181748590440883182, NULL, 'user@admin.com', '2017-02-11', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(68, 3, NULL, NULL, 316448663440605426369181748590440883182, NULL, 'user@mail.admin.ru', '2017-02-12', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(6, 2, 'alexander', 'samon', 62303972861003552617591658957390934968, 79362673456, 'hdg@mail.ru', '2016-12-12', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(75, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, '4235@mail.ru', '2017-02-14', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(37, 1, 'User', 'Test', 12707736894140473154801792860916528374, NULL, 'test@test.com', '2017-01-19', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(65, 3, NULL, NULL, 173447602773428053556316684567667297915, NULL, 'kastiel63@gmail.com', '2017-02-09', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(5, 1, NULL, NULL, 173447602773428053556316684567667297915, NULL, 'test@email.ru', '2016-12-05', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(1, 1, 'andrew', 'andrew', 32254982671930602039565692807661004282, 111111, 'admin@admin.com', '2016-12-05', 0154541624, '/images/useravatars/unknownuser/unknownuser.png'),
+(69, 3, 'Donald', 'Trump', 172615877915217560892406575915100721237, NULL, 'crab16_91@mail.ru', '2017-02-12', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(67, 3, NULL, NULL, 316448663440605426369181748590440883182, NULL, 'admin@user.com', '2017-02-12', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(71, 3, NULL, NULL, 172615877915217560892406575915100721237, NULL, 'test@testtest.com', '2017-02-14', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(56, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user123@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(3, 3, 'boris', 'boris', 316448663440605426369181748590440883182, 333333, 'user@user.com', '2016-12-05', 1631121811, '/images/useravatars/unknownuser/unknownuser.png'),
+(50, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user123@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(58, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user123@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(47, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user123@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(53, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user123@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(52, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user123@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(55, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user123@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(49, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user123@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(43, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user123@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(45, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user123@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(54, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user123@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(44, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user123@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(51, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user123@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(48, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user123@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(46, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user123@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(73, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user999@mail.ru', '2017-02-14', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(63, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user@mail.ru', '2017-02-09', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(42, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(61, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user@mail.ru', '2017-02-09', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(59, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'user@mail.ru', '2017-02-08', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(64, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, '123321@mail.ru', '2017-02-09', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(74, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, '12345678@mail.ru', '2017-02-14', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(62, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, '12345@mail.ru', '2017-02-09', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(33, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, '123@mail.ru', '2016-12-26', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(76, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, '76584@mail.ru', '2017-02-15', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(72, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'Haba321@mail.com', '2017-02-14', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(35, 3, 'Ivan', 'Alekseev', 172615877915217560892406575915100721237, NULL, 'jegius@gmail.com', '2017-01-16', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(2, 2, 'sergey', 'sergey', 38559796714846015341288105611672564112, 222222, 'manager@manager.com', '2016-12-05', 6816810077, '/images/useravatars/unknownuser/unknownuser.png'),
+(70, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, 'Haba@mail.com', '2017-02-13', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(77, 3, NULL, NULL, 42767516990368493138776584305024125808, NULL, '987@mail.ru', '2017-02-15', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(78, 3, 'Alexf', 'Mikles', 172615877915217560892406575915100721237, NULL, 'admin@gmail.comd', '2017-02-21', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
+(79, 3, 'Alex', 'Syrus', 172615877915217560892406575915100721237, NULL, 'lordever@mail.ru', '2017-02-25', NULL, '/images/useravatars/unknownuser/unknownuser.png');
+
 INSERT INTO reviews(
 	product_id, user_id, description, creation_date, raiting)
 	VALUES (1, 3, 'Good notepad', current_timestamp, 9),
@@ -312,18 +356,49 @@ INSERT INTO reviews(
 	(14, 4, 'Bad game, I didnt have console', current_timestamp, 2),
 	
 	(15, 3, 'Nice Game, I liked', current_timestamp, 8),
-	(15, 4, 'Bad game, I didnt have console', current_timestamp, 2);
+	(15, 4, 'Bad game, I didnt have console', current_timestamp, 2),
+(2,	35,	'It is a long established fact that a reader will be distracted by the ' ||
+ 'readable content of a page when looking at its layout. The point of using ' ||
+  'Lorem Ipsum is that it has a more-or-less normal distribution of letters, as' ||
+   ' opposed to using Content here, content here, making it look like readable English. Many' ||
+    ' desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, a' ||
+     'nd a search for lorem ipsum will uncover many web sites still in their infancy. Various vers' ||
+      'ions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).ready for yours.',	'2017-02-22',	5),
+(1,	78,	'so good',	'2017-02-23',	4),
+(1,	69,	'It is ideal notebook!',	'2017-02-27',	5),
+(1,	35,	'213',	'2017-02-27',	5),
+(7,	35,	'Boost productivity with this Samsung Galaxy Tab A tablet. The 7-inch touch display provides ' ||
+ 'the ideal compromise between portability and functionality, while the 8GB of internal' ||
+  ' memory lets you take photos, games, music and movies with you. The 4,000 mAh battery in this' ||
+   ' Samsung Galaxy Tab A delivers plenty of juice to get you through the day.',	'2017-02-10',	5),
+(1,	37,	'	','2017-02-21',	2);
 	
-INSERT INTO sales_orders(
-	user_id, creation_date, "limit", order_status_id, total_price)
-	VALUES (3, current_timestamp, 5000, 1, 0),
-	(3, current_timestamp, 10000, 2, 0),
-	(4, current_timestamp, 500000, 3, 0),
-	(4, current_timestamp, 1000000, 4, 0);
+INSERT INTO sales_orders(sales_order_id,
+	user_id, creation_date, "limit", order_status_id)
+	VALUES (158,	41,	'2017-02-20',	NULL, 1),
+(155,	69,	'2017-02-12',	NULL,	1),
+(152, 3,	'2017-02-12',	800.00,	3),
+(153,	1,	'2017-02-12',	NULL, 1),
+(157,	41,	'2017-02-13',	NULL, 2),
+(160,	78,	'2017-02-21',	3000.00, 1),
+(154,	37,	'2017-02-12',	NULL, 1),
+(156,	35,	'2017-02-12',	NULL,	1),
+(164,	57,	'2017-02-28', NULL, 1),
+(159,	3,	'2017-02-20',	1000.00, 1);
 	
 INSERT INTO order_items(
-	product_id, sales_order_id, quantity)
-	VALUES (14, 1, 2);
+	product_id, sales_order_id, quantity, standard_price)
+	VALUES (1, 157, 1, NULL),
+	(1, 152, 1, NULL),
+	(1, 156, 5, NULL),
+	(1, 154, 2, NULL),
+	(7, 156, 8, NULL),
+	(5, 154, 1, NULL),
+	(1, 160, 1, NULL),
+	(10, 159, 1, 240),
+	(7, 160, 4, NULL),
+	(10, 154, 2, NULL),
+	(1, 159, 1, 480);
 	
 INSERT INTO recommended_products(
 	source_product_id, target_product_id)
@@ -362,4 +437,11 @@ INSERT INTO recommended_products(
 		
 INSERT INTO properties(
 	property_id, value)
-	VALUES ('About', 'Our Shop is a leading provider of technology products, services and solutions. The company offers expert service at an unbeatable price more than 1.5 billion times a year to the consumers, small business owners and educators who visit our stores. The shop has operations in the Russia where more than 70 percent of the population.');
+	VALUES ('About', 'Our Shop is a leading provider of technology products, services and solutions. The company offers expert service at an unbeatable price more than 1.5 billion times a year to the consumers, small business owners and educators who visit our stores. The shop has operations in the Russia where more than 70 percent of the population.'),
+  ('Email',	'inbox@shop.com'),
+  ('Phone', '+1 888-222-1010'),
+  ('Rights',	'© 2005-2017, Shop, LLC. All rights reserved.'),
+  ('facebookUrl',	'https://facebook.com'),
+  ('google+Url',	'https://plus.google.com'),
+  ('twitterUrl',	'https://twitter.com'),
+  ('vkUrl',	'https://vk.com');
