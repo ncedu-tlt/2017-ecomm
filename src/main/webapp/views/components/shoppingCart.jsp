@@ -22,9 +22,9 @@
                 <c:when test="${salesOrder.getOrderItems() != null}">
                     <div class="ui divided items jsItemOrder">
                         <c:forEach var="itemOrder" items="${salesOrder.getOrderItems()}">
-                            <form method="post" action="cart"  class="item">
-                                <input name="productId" type="hidden" value="${itemOrder.getProductId()}">
-                                <input name="salesOrderId" type="hidden" value="${itemOrder.getSalesOrderId()}">
+                            <form method="post" action="cart" class="item">
+                                <input class="jsProductId" name="productId" type="hidden" value="${itemOrder.getProductId()}">
+                                <input class="jsSalesOrderId" name="salesOrderId" type="hidden" value="${itemOrder.getSalesOrderId()}">
                                 <div class="ui small image">
                                     <img src="${itemOrder.getImgUrl()}">
                                 </div>
@@ -43,16 +43,17 @@
                                             <input type="text" name="quantityValue" class="jsInput"
                                                    value="${itemOrder.getQuantity()}">
                                             <button class="ui right attached button jsRight" type="button">+</button>
-                                            <button class="ui secondary button" name="quantityButton" type="submit" value="quantity">
+                                            <button class="ui secondary button" name="submitButton" type="submit"
+                                                    value="quantity">
                                                 Save
                                             </button>
                                         </div>
                                         <button class="circular right floated ui icon button middle aligned"
-                                                name="deleteButton" value="delete">
+                                                name="submitButton" value="delete">
                                             <i class="icon remove"></i>
                                         </button>
                                         <h2 class="ui header right floated center middle aligned jsPrice">
-                                            ${itemOrder.getPrice()}
+                                                ${itemOrder.getPrice()}
                                         </h2>
                                         <h2 class="ui header right floated center middle aligned">$</h2>
                                     </div>
@@ -63,12 +64,12 @@
                     </div>
                     <div class="ui section divider"></div>
                     <form method="post" action="cart" class="ui grid seven column row">
-                        <button class="ui secondary basic right floated button column hide" name="emptyButton"
+                        <button class="ui secondary basic right floated button column hide" name="submitButton"
                                 type="submit" value="emptyTrash">EMPTY TRASH
                         </button>
                     </form>
                     <div class="ui grid">
-                        <form method="post" action="cart"  class="eight wide column">
+                        <form method="post" action="cart" class="eight wide column">
                             <input name="salesOrderId" type="hidden" value="${salesOrder.getSalesOrderId()}">
                             <div class="item">
                                 <div class="inline field hide">
@@ -76,12 +77,15 @@
                                         Limit:
                                     </div>
                                     <div class="ui left labeled button" tabindex="0">
-                                        <input type="text" class="ui basic right pointing label" name="limitInput" value="${salesOrder.getLimit()}">
-                                        <button class="ui button" name="limitButton" type="submit" value="apply">APPLY</button>
+                                        <input type="text" class="ui basic right pointing label" name="limitInput"
+                                               value="${salesOrder.getLimit()}">
+                                        <button class="ui button" name="submitButton" type="submit" value="apply">APPLY
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                            <c:if test="${salesOrder.getLimit() < salesOrder.getTotalAmount() && salesOrder.getLimit() > 0}">
+                            <c:if test="${salesOrder.getLimit() < salesOrder.getTotalAmount() && salesOrder.getLimit() > 0
+                            && salesOrder.getLimit() != 0.00}">
                                 <div class="ui message warning hide">
                                     <i class="close icon"></i>
                                     <div class="header">
@@ -97,20 +101,23 @@
                         </form>
                         <div class="eight wide column">
                             <h3 class="ui grey header right floated bottom jsAmount">
-                                ${salesOrder.getTotalAmount()}</h3>
+                                    ${salesOrder.getTotalAmount()}</h3>
                             <h3 class="ui header right floated bottom">Total: $</h3>
                         </div>
                     </div>
-                        <div class="ui grid hide">
-                            <div class="eight wide column">
-                                <a href='javascript:window.print(); void 0;'>
-                                    <button class="ui secondary basic button" type="button">PRINT</button>
-                                </a>
-                            </div>
-                            <div class="eight wide column">
-                                <button class="ui secondary basic right floated button" type="button">CHECKOUT</button>
-                            </div>
+                    <div class="ui grid hide">
+                        <div class="eight wide column">
+                            <a href='javascript:window.print(); void 0;'>
+                                <button class="ui secondary basic button" type="button">PRINT</button>
+                            </a>
                         </div>
+                        <form method="post" action="cart" class="eight wide column">
+                            <input name="salesOrderId" type="hidden" value="${salesOrder.getSalesOrderId()}">
+                            <button class="ui secondary basic right floated button jsCheckOut" type="button" name="submitButton" value="checkout">
+                                CHECKOUT
+                            </button>
+                        </form>
+                    </div>
                 </c:when>
             </c:choose>
         </div>

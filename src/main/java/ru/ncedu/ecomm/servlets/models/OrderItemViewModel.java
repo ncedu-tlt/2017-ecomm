@@ -5,6 +5,7 @@ public class OrderItemViewModel {
     private long productId;
     private long salesOrderId;
     private int quantity;
+    private long standardPrice;
     private String name;
     private long price;
     private String imgUrl;
@@ -13,10 +14,11 @@ public class OrderItemViewModel {
     public OrderItemViewModel() {
     }
 
-    public OrderItemViewModel(long productId, long salesOrderId, int quantity, String name, long price, String imgUrl, long discount) {
+    public OrderItemViewModel(long productId, long salesOrderId, int quantity, long standardPrice, String name, long price, String imgUrl, long discount) {
         this.productId = productId;
         this.salesOrderId = salesOrderId;
         this.quantity = quantity;
+        this.standardPrice = standardPrice;
         this.name = name;
         this.price = price;
         this.imgUrl = imgUrl;
@@ -45,6 +47,14 @@ public class OrderItemViewModel {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public long getStandardPrice() {
+        return standardPrice;
+    }
+
+    public void setStandardPrice(long standardPrice) {
+        this.standardPrice = standardPrice;
     }
 
     public String getName() {

@@ -122,10 +122,10 @@ public class ShoppingCartService {
         orderItem.setProductId(orderItemBySalesOrderId.getProductId());
         orderItem.setSalesOrderId(orderItemBySalesOrderId.getSalesOrderId());
         orderItem.setQuantity(orderItemBySalesOrderId.getQuantity());
-        if (orderItemBySalesOrderId.getDiscount() != 0){
+        if (orderItemBySalesOrderId.getDiscount() != 0) {
             orderItem.setStandardPrice(orderItemBySalesOrderId.getDiscount());
-        }else {
-         orderItem.setStandardPrice(orderItemBySalesOrderId.getPrice());
+        } else {
+            orderItem.setStandardPrice(orderItemBySalesOrderId.getPrice());
         }
         return orderItem;
     }
@@ -167,8 +167,8 @@ public class ShoppingCartService {
                     .setSalesOrderId(salesOrder.getSalesOrderId())
                     .setCreationDate(salesOrder.getCreationDate())
                     .setLimit(salesOrder.getLimit())
-                    .setTotalAmount(totalAmountSumAllPriceInOrderItemViewModelList(salesOrder.getSalesOrderId()))
-                    .setOrderItems(relationPriceAndQuantityInOrderItemViewModelList(salesOrder.getSalesOrderId()))
+                    .setTotalAmount(totalAmount(salesOrder.getSalesOrderId()))
+                    .setOrderItems(relationPriceAndQuantity(salesOrder.getSalesOrderId()))
                     .setStatusName(getStatusName(salesOrder.getOrderStatusId()))
                     .build();
             salesOrderViewModels.add(salesOrderViewModel);
@@ -185,8 +185,8 @@ public class ShoppingCartService {
                     .setSalesOrderId(salesOrder.getSalesOrderId())
                     .setCreationDate(salesOrder.getCreationDate())
                     .setLimit(salesOrder.getLimit())
-                    .setTotalAmount(totalAmountSumAllPriceInOrderItemViewModelList(salesOrder.getSalesOrderId()))
-                    .setOrderItems(relationPriceAndQuantityInOrderItemViewModelList(salesOrder.getSalesOrderId()))
+                    .setTotalAmount(totalAmount(salesOrder.getSalesOrderId()))
+                    .setOrderItems(relationPriceAndQuantity(salesOrder.getSalesOrderId()))
                     .build();
             salesOrderViewModels.add(salesOrderViewModel);
         }
@@ -202,8 +202,8 @@ public class ShoppingCartService {
                     .setSalesOrderId(salesOrder.getSalesOrderId())
                     .setCreationDate(salesOrder.getCreationDate())
                     .setLimit(salesOrder.getLimit())
-                    .setTotalAmount(totalAmountSumAllPriceInOrderItemViewModelList(salesOrder.getSalesOrderId()))
-                    .setOrderItems(relationPriceAndQuantityInOrderItemViewModelList(salesOrder.getSalesOrderId()))
+                    .setTotalAmount(totalAmount(salesOrder.getSalesOrderId()))
+                    .setOrderItems(relationPriceAndQuantity(salesOrder.getSalesOrderId()))
                     .setStatusName(getStatusName(salesOrder.getOrderStatusId()))
                     .build();
             salesOrderViewModels.add(salesOrderViewModel);
@@ -220,8 +220,8 @@ public class ShoppingCartService {
                     .setSalesOrderId(salesOrder.getSalesOrderId())
                     .setCreationDate(salesOrder.getCreationDate())
                     .setLimit(salesOrder.getLimit())
-                    .setTotalAmount(totalAmountSumAllPriceInOrderItemViewModelList(salesOrder.getSalesOrderId()))
-                    .setOrderItems(relationPriceAndQuantityInOrderItemViewModelList(salesOrder.getSalesOrderId()))
+                    .setTotalAmount(totalAmount(salesOrder.getSalesOrderId()))
+                    .setOrderItems(relationPriceAndQuantity(salesOrder.getSalesOrderId()))
                     .setStatusName(getStatusName(salesOrder.getOrderStatusId()))
                     .build();
             salesOrderViewModels.add(salesOrderViewModel);
@@ -237,6 +237,7 @@ public class ShoppingCartService {
                     .setSalesOrderId(salesOrderId)
                     .setProductId(product.getId())
                     .setQuantity(getQuantity(product.getId(), salesOrderId))
+                    .setStandardPrice(getStandardPrice(product.getId(), salesOrderId))
                     .setName(product.getName())
                     .setPrice(product.getPrice())
                     .setImgUrl(product.getImageUrl())
@@ -247,10 +248,10 @@ public class ShoppingCartService {
         return orderItemsView;
     }
 
-    private long totalAmountSumAllPriceInOrderItemViewModelList(long salesOrderId) throws SQLException {
+    private long totalAmount(long salesOrderId) throws SQLException {
         long sumAllPrice = 0;
         List<Long> priceList = new ArrayList<>();
-        List<OrderItemViewModel> orderItemViewModels = relationPriceAndQuantityInOrderItemViewModelList(salesOrderId);
+        List<OrderItemViewModel> orderItemViewModels = relationPriceAndQuantity(salesOrderId);
         priceList.addAll(orderItemViewModels.stream().map(OrderItemViewModel::getPrice).collect(Collectors.toList()));
         for (Long sum : priceList) {
             sumAllPrice += sum;
@@ -258,24 +259,11 @@ public class ShoppingCartService {
         return sumAllPrice;
     }
 
-    private long getPrice(long productId) throws SQLException{
-        Product product = DAOFactory.getDAOFactory().getProductDAO().getProductById(productId);
-        long discountPrice = DiscountService.getInstance().getDiscountPrice(product.getDiscountId(), product.getPrice());
-        if (product.getDiscountId() > 1){
-            return discountPrice;
-        }
-        return product.getPrice();
-    }
-
-    private List<OrderItemViewModel> relationPriceAndQuantityInOrderItemViewModelList(long salesOrderId) throws SQLException {
+    private List<OrderItemViewModel> relationPriceAndQuantity(long salesOrderId) throws SQLException {
         List<OrderItemViewModel> orderItemViewModels = getOrderItemModelList(salesOrderId);
         for (OrderItemViewModel model : orderItemViewModels) {
-            long amount = model.getPrice();
-            if (model.getDiscount() != 0) {
-                amount = model.getDiscount() * model.getQuantity();
-            } else {
-                amount *= model.getQuantity();
-            }
+            long amount = model.getStandardPrice();
+            amount *= model.getQuantity();
             model.setPrice(amount);
         }
         return orderItemViewModels;
@@ -298,10 +286,23 @@ public class ShoppingCartService {
         }
     }
 
+    private long getPrice(long productId) throws SQLException {
+        Product product = DAOFactory.getDAOFactory().getProductDAO().getProductById(productId);
+        long discountPrice = DiscountService.getInstance().getDiscountPrice(product.getDiscountId(), product.getPrice());
+        if (product.getDiscountId() > 1) {
+            return discountPrice;
+        }
+        return product.getPrice();
+    }
+
     private int getQuantity(long productId, long salesOrderId) throws SQLException {
         OrderItem orderItem = getOrderItem(productId, salesOrderId);
         return orderItem.getQuantity();
+    }
 
+    private long getStandardPrice(long productId, long salesOrderId) throws SQLException {
+        OrderItem orderItem = getOrderItem(productId, salesOrderId);
+        return orderItem.getStandardPrice();
     }
 
     private OrderItem getOrderItem(long productId, long salesOrderId) throws SQLException {

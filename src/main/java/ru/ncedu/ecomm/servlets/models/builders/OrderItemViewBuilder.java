@@ -7,6 +7,7 @@ public class OrderItemViewBuilder {
     private long productId;
     private long salesOrderId;
     private int quantity;
+    private long standardPrice;
     private String name;
     private long price;
     private String imgUrl;
@@ -27,6 +28,11 @@ public class OrderItemViewBuilder {
 
     public OrderItemViewBuilder setQuantity(int quantity) {
         this.quantity = quantity;
+        return this;
+    }
+
+    public OrderItemViewBuilder setStandardPrice(long standardPrice) {
+        this.standardPrice = standardPrice;
         return this;
     }
 
@@ -51,6 +57,6 @@ public class OrderItemViewBuilder {
     }
 
     public OrderItemViewModel build(){
-        return new OrderItemViewModel(productId, salesOrderId, quantity, name, price, imgUrl, discount);
+        return new OrderItemViewModel(productId, salesOrderId, quantity, standardPrice, name, price, imgUrl, discount);
     }
 }

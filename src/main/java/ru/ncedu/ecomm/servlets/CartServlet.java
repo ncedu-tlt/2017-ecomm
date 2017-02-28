@@ -29,11 +29,11 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        updateSalesOrderList(req);
+        updateSalesOrderList(req, resp);
         showSalesOrderList(req, resp);
     }
 
-    private void updateSalesOrderList(HttpServletRequest request) throws ServletException, IOException {
+    private void updateSalesOrderList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         long userId = UserService.getInstance().getCurrentUserId(request);
         try {
             formActionOnShoppingCart(request, userId);
@@ -60,22 +60,30 @@ public class CartServlet extends HttpServlet {
 
     private void formActionOnShoppingCart(HttpServletRequest request, long userId) throws SQLException {
         try {
-            if (request.getParameter("deleteButton") != null && request.getParameter("deleteButton").equals("delete")) {
-                ShoppingCartService.getInstance().deletedProductInOrderItemDataBase(
-                        Long.parseLong(request.getParameter("productId")),
-                        Long.parseLong(request.getParameter("salesOrderId")));
-            } else if (request.getParameter("quantityButton") != null && request.getParameter("quantityButton").equals("quantity")) {
-                ShoppingCartService.getInstance().updateQuantity(
-                        Long.parseLong(request.getParameter("salesOrderId")),
-                        Integer.parseInt(request.getParameter("quantityValue")),
-                        Long.parseLong(request.getParameter("productId"))
-                );
-            } else if (request.getParameter("emptyButton") != null && request.getParameter("emptyButton").equals("emptyTrash")) {
-                ShoppingCartService.getInstance().deletedAllProductsInOrderItemDataBase(userId);
-            } else if (request.getParameter("limitButton") != null && request.getParameter("limitButton").equals("apply")) {
-                setLimitInDataBase(
-                        BigDecimal.valueOf(Long.parseLong(request.getParameter("limitInput"))),
-                        Long.parseLong(request.getParameter("salesOrderId")));
+            switch (request.getParameter("submitButton")){
+                case "delete":{
+                    ShoppingCartService.getInstance().deletedProductInOrderItemDataBase(
+                            Long.parseLong(request.getParameter("productId")),
+                            Long.parseLong(request.getParameter("salesOrderId")));
+                    break;
+                }
+                case "quantity":{
+                    ShoppingCartService.getInstance().updateQuantity(
+                            Long.parseLong(request.getParameter("salesOrderId")),
+                            Integer.parseInt(request.getParameter("quantityValue")),
+                            Long.parseLong(request.getParameter("productId")));
+                    break;
+                }
+                case "emptyTrash":{
+                    ShoppingCartService.getInstance().deletedAllProductsInOrderItemDataBase(userId);
+                    break;
+                }
+                case "apply":{
+                    setLimitInDataBase(
+                            BigDecimal.valueOf(Long.parseLong(request.getParameter("limitInput"))),
+                            Long.parseLong(request.getParameter("salesOrderId")));
+                    break;
+                }
             }
         } catch (NumberFormatException e) {
             request.setAttribute("exception", "Unknown format");
@@ -90,13 +98,11 @@ public class CartServlet extends HttpServlet {
         }
     }
 
-    private void setQuantityInDataBase(long productId, long salesOrderId, int quantity) throws SQLException {
-        OrderItem orderItem = DAOFactory.getDAOFactory().getOrderItemsDAO().getOrderItem(productId, salesOrderId);
-        orderItem.setQuantity(quantity);
-        if (orderItem.getQuantity() >= 1) {
-            DAOFactory.getDAOFactory().getOrderItemsDAO().updateOrderItem(orderItem);
-        } else {
-            ShoppingCartService.getInstance().deletedProductInOrderItemDataBase(productId, salesOrderId);
+    private void testQ(long salesOrderId, long productId, int quantity) throws SQLException {
+        List<OrderItem> orderItems = DAOFactory.getDAOFactory().getOrderItemsDAO().getOrderItemsBySalesOrderId(salesOrderId);
+        for (OrderItem orderItem: orderItems){
+            System.out.println(orderItem.getProductId() + " " + orderItem.getSalesOrderId() + " " + orderItem.getQuantity());
+            /*DAOFactory.getDAOFactory().getOrderItemsDAO().updateOrderItem(orderItem);*/
         }
     }
 }
