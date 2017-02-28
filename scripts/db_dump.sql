@@ -18,12 +18,12 @@ SET row_security = off;
 -- Name: ecommerceDev1; Type: DATABASE; Schema: -; Owner: ecommerceDev1
 --
 
-CREATE DATABASE "ecommerceDev1" WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8';
+-- CREATE DATABASE "ecommerceDev1" WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8';
 
 
-ALTER DATABASE "ecommerceDev1" OWNER TO "ecommerceDev1";
+-- ALTER DATABASE "ecommerceDev1" OWNER TO "ecommerceDev1";
 
-\connect "ecommerceDev1"
+-- \connect "ecommerceDev1"
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -45,7 +45,7 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
 
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+-- COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 SET search_path = public, pg_catalog;
@@ -66,7 +66,7 @@ CREATE TABLE categories (
 );
 
 
-ALTER TABLE categories OWNER TO "ecommerceDev1";
+-- ALTER TABLE categories OWNER TO "ecommerceDev1";
 
 --
 -- Name: categories_category_id_seq; Type: SEQUENCE; Schema: public; Owner: ecommerceDev1
@@ -80,7 +80,7 @@ CREATE SEQUENCE categories_category_id_seq
     CACHE 1;
 
 
-ALTER TABLE categories_category_id_seq OWNER TO "ecommerceDev1";
+-- ALTER TABLE categories_category_id_seq OWNER TO "ecommerceDev1";
 
 --
 -- Name: categories_category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: ecommerceDev1
@@ -99,7 +99,7 @@ CREATE TABLE characteristic_groups (
 );
 
 
-ALTER TABLE characteristic_groups OWNER TO "ecommerceDev1";
+-- ALTER TABLE characteristic_groups OWNER TO "ecommerceDev1";
 
 --
 -- Name: characteristic_groups_characteristic_group_id_seq; Type: SEQUENCE; Schema: public; Owner: ecommerceDev1
@@ -113,7 +113,7 @@ CREATE SEQUENCE characteristic_groups_characteristic_group_id_seq
     CACHE 1;
 
 
-ALTER TABLE characteristic_groups_characteristic_group_id_seq OWNER TO "ecommerceDev1";
+-- ALTER TABLE characteristic_groups_characteristic_group_id_seq OWNER TO "ecommerceDev1";
 
 --
 -- Name: characteristic_groups_characteristic_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: ecommerceDev1
@@ -133,7 +133,7 @@ CREATE TABLE characteristic_values (
 );
 
 
-ALTER TABLE characteristic_values OWNER TO "ecommerceDev1";
+-- ALTER TABLE characteristic_values OWNER TO "ecommerceDev1";
 
 --
 -- Name: characteristics; Type: TABLE; Schema: public; Owner: ecommerceDev1
@@ -148,7 +148,7 @@ CREATE TABLE characteristics (
 );
 
 
-ALTER TABLE characteristics OWNER TO "ecommerceDev1";
+-- ALTER TABLE characteristics OWNER TO "ecommerceDev1";
 
 --
 -- Name: characteristics_characteristic_id_seq; Type: SEQUENCE; Schema: public; Owner: ecommerceDev1
@@ -162,7 +162,7 @@ CREATE SEQUENCE characteristics_characteristic_id_seq
     CACHE 1;
 
 
-ALTER TABLE characteristics_characteristic_id_seq OWNER TO "ecommerceDev1";
+-- ALTER TABLE characteristics_characteristic_id_seq OWNER TO "ecommerceDev1";
 
 --
 -- Name: characteristics_characteristic_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: ecommerceDev1
@@ -182,7 +182,7 @@ CREATE TABLE discount (
 );
 
 
-ALTER TABLE discount OWNER TO "ecommerceDev1";
+-- ALTER TABLE discount OWNER TO "ecommerceDev1";
 
 --
 -- Name: discount_discount_id_seq; Type: SEQUENCE; Schema: public; Owner: ecommerceDev1
@@ -196,7 +196,7 @@ CREATE SEQUENCE discount_discount_id_seq
     CACHE 1;
 
 
-ALTER TABLE discount_discount_id_seq OWNER TO "ecommerceDev1";
+-- ALTER TABLE discount_discount_id_seq OWNER TO "ecommerceDev1";
 
 --
 -- Name: discount_discount_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: ecommerceDev1
@@ -217,7 +217,7 @@ CREATE TABLE order_items (
 );
 
 
-ALTER TABLE order_items OWNER TO "ecommerceDev1";
+-- ALTER TABLE order_items OWNER TO "ecommerceDev1";
 
 --
 -- Name: order_statuses; Type: TABLE; Schema: public; Owner: ecommerceDev1
@@ -229,7 +229,7 @@ CREATE TABLE order_statuses (
 );
 
 
-ALTER TABLE order_statuses OWNER TO "ecommerceDev1";
+-- ALTER TABLE order_statuses OWNER TO "ecommerceDev1";
 
 --
 -- Name: order_statuses_order_status_id_seq; Type: SEQUENCE; Schema: public; Owner: ecommerceDev1
@@ -243,7 +243,7 @@ CREATE SEQUENCE order_statuses_order_status_id_seq
     CACHE 1;
 
 
-ALTER TABLE order_statuses_order_status_id_seq OWNER TO "ecommerceDev1";
+-- ALTER TABLE order_statuses_order_status_id_seq OWNER TO "ecommerceDev1";
 
 --
 -- Name: order_statuses_order_status_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: ecommerceDev1
@@ -266,7 +266,7 @@ CREATE TABLE products (
 );
 
 
-ALTER TABLE products OWNER TO "ecommerceDev1";
+-- ALTER TABLE products OWNER TO "ecommerceDev1";
 
 --
 -- Name: products_product_id_seq; Type: SEQUENCE; Schema: public; Owner: ecommerceDev1
@@ -280,7 +280,7 @@ CREATE SEQUENCE products_product_id_seq
     CACHE 1;
 
 
-ALTER TABLE products_product_id_seq OWNER TO "ecommerceDev1";
+-- ALTER TABLE products_product_id_seq OWNER TO "ecommerceDev1";
 
 --
 -- Name: products_product_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: ecommerceDev1
@@ -299,7 +299,7 @@ CREATE TABLE properties (
 );
 
 
-ALTER TABLE properties OWNER TO "ecommerceDev1";
+-- ALTER TABLE properties OWNER TO "ecommerceDev1";
 
 --
 -- Name: recommended_products; Type: TABLE; Schema: public; Owner: ecommerceDev1
@@ -311,7 +311,7 @@ CREATE TABLE recommended_products (
 );
 
 
-ALTER TABLE recommended_products OWNER TO "ecommerceDev1";
+-- ALTER TABLE recommended_products OWNER TO "ecommerceDev1";
 
 --
 -- Name: reviews; Type: TABLE; Schema: public; Owner: ecommerceDev1
@@ -327,7 +327,7 @@ CREATE TABLE reviews (
 );
 
 
-ALTER TABLE reviews OWNER TO "ecommerceDev1";
+-- ALTER TABLE reviews OWNER TO "ecommerceDev1";
 
 --
 -- Name: roles; Type: TABLE; Schema: public; Owner: ecommerceDev1
@@ -339,7 +339,7 @@ CREATE TABLE roles (
 );
 
 
-ALTER TABLE roles OWNER TO "ecommerceDev1";
+-- ALTER TABLE roles OWNER TO "ecommerceDev1";
 
 --
 -- Name: roles_role_id_seq; Type: SEQUENCE; Schema: public; Owner: ecommerceDev1
@@ -353,7 +353,7 @@ CREATE SEQUENCE roles_role_id_seq
     CACHE 1;
 
 
-ALTER TABLE roles_role_id_seq OWNER TO "ecommerceDev1";
+-- ALTER TABLE roles_role_id_seq OWNER TO "ecommerceDev1";
 
 --
 -- Name: roles_role_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: ecommerceDev1
@@ -375,7 +375,7 @@ CREATE TABLE sales_orders (
 );
 
 
-ALTER TABLE sales_orders OWNER TO "ecommerceDev1";
+-- ALTER TABLE sales_orders OWNER TO "ecommerceDev1";
 
 --
 -- Name: sales_orders_sales_order_id_seq; Type: SEQUENCE; Schema: public; Owner: ecommerceDev1
@@ -389,7 +389,7 @@ CREATE SEQUENCE sales_orders_sales_order_id_seq
     CACHE 1;
 
 
-ALTER TABLE sales_orders_sales_order_id_seq OWNER TO "ecommerceDev1";
+-- ALTER TABLE sales_orders_sales_order_id_seq OWNER TO "ecommerceDev1";
 
 --
 -- Name: sales_orders_sales_order_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: ecommerceDev1
@@ -416,7 +416,7 @@ CREATE TABLE users (
 );
 
 
-ALTER TABLE users OWNER TO "ecommerceDev1";
+-- ALTER TABLE users OWNER TO "ecommerceDev1";
 
 --
 -- Name: users_user_id_seq; Type: SEQUENCE; Schema: public; Owner: ecommerceDev1
@@ -430,7 +430,7 @@ CREATE SEQUENCE users_user_id_seq
     CACHE 1;
 
 
-ALTER TABLE users_user_id_seq OWNER TO "ecommerceDev1";
+-- ALTER TABLE users_user_id_seq OWNER TO "ecommerceDev1";
 
 --
 -- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: ecommerceDev1
@@ -1284,9 +1284,9 @@ ALTER TABLE ONLY recommended_products
 -- Name: public; Type: ACL; Schema: -; Owner: ecommerceDev1
 --
 
-REVOKE ALL ON SCHEMA public FROM rdsadmin;
+-- REVOKE ALL ON SCHEMA public FROM rdsadmin;
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
-GRANT ALL ON SCHEMA public TO "ecommerceDev1";
+-- GRANT ALL ON SCHEMA public TO "ecommerceDev1";
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
