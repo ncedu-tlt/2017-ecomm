@@ -13,7 +13,6 @@
             this.addActive(locationPage);
         },
         addActive: function(locationPage) {
-            console.log(locationPage);
             if (locationPage === '/profile') {
                 this.content.find('.jsProfile').addClass('active');
             }

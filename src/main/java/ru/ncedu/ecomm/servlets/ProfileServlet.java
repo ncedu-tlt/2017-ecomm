@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
@@ -34,7 +32,7 @@ public class ProfileServlet extends HttpServlet {
 
     private void redirectIfUserNotAuthorized(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Boolean userInSystem = UserService.getInstance().isUserAuthorized(req);
-        if (!userInSystem){
+        if (!userInSystem) {
             req.getRequestDispatcher(Configuration.getProperty("page.login")).forward(req, resp);
         }
     }
@@ -57,18 +55,15 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long userId = UserService.getInstance().getCurrentUserId(req);
-        if(changeProfile(userId, req)){
-            req.setAttribute("answer", "Success change");
-            this.doGet(req, resp);
-        }
-        req.getRequestDispatcher(Configuration.getProperty("page.profile")).forward(req, resp);
+        changeProfile(userId, req);
+        req.setAttribute("answer", "Success change");
+        this.doGet(req, resp);
     }
 
-    private boolean changeProfile(long userId, HttpServletRequest req) {
+    private void changeProfile(long userId, HttpServletRequest req) {
         User userByChange = getDAOFactory().getUserDAO().getUserById(userId);
         userByChange = setUserNewParameters(userByChange, req);
         getDAOFactory().getUserDAO().updateUser(userByChange);
-        return true;
     }
 
     private User setUserNewParameters(User userByChange, HttpServletRequest req) {
@@ -80,23 +75,4 @@ public class ProfileServlet extends HttpServlet {
 
         return userByChange;
     }
-
-    private List<String> getUserParameters(HttpServletRequest req) {
-        List<String> userParameters = new ArrayList<>();
-        userParameters = addNewUserParameters(userParameters, req);
-        return userParameters;
-
-    }
-
-    private List<String> addNewUserParameters(List<String> userParameters, HttpServletRequest req) {
-        userParameters.add(req.getParameter("firstName"));
-        userParameters.add(req.getParameter("lastName"));
-        userParameters.add(req.getParameter("email"));
-        userParameters.add(req.getParameter("password"));
-
-        return userParameters;
-    }
-
-
-
 }
