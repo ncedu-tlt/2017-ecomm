@@ -19,6 +19,9 @@
                         shoppingCartIcon.transition('jiggle');
                     }).done(function () {
                         jsDimmer.dimmer('hide');
+                    }).
+                    fail(function() {
+                        window.location.replace('/login');
                     });
             });
         },
