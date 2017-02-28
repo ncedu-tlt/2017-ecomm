@@ -6,9 +6,6 @@
                 <i class="circular registered in icon"></i>
                 Registration
             </h2>
-            <div>
-                ${requestScope.answer}
-            </div>
             <form class="ui equal dividing width form jsRegistrationForm" method="post">
                 <div class="field">
                     <label for="email">E-mail: </label>
@@ -31,9 +28,29 @@
                     </button>
                 </div>
                 <p>Already a member? <a href="${pageContext.request.contextPath}/login"> Login </a></p>
-                <div class="ui error message">
-                    <p>${requestScope.answer}</p>
+
+                <div class="ui error message"></div>
+                <c:set var="request" scope="session" value="${requestScope.answer}"/>
+                    <c:if test="${request != null}">
+                        <div class="ui error message" style="display: block">
+
+                        <c:choose>
+                            <c:when test='${requestScope.answer == "Fields must not be empty"}'>
+                                Fields must not be empty
+                            </c:when>
+                            <c:when test='${requestScope.answer == "Email is incorrect"}'>
+                                Email is incorrect
+                            </c:when>
+                            <c:when test='${requestScope.answer == "Passwords dont match"}'>
+                                Passwords dont match
+                            </c:when>
+                            <c:when test='${requestScope.answer == "Email is already in use"}'>
+                                Email is already in use
+                            </c:when>
+                        </c:choose>
+                    </c:if>
                 </div>
+
             </form>
             <div class="ui hidden divider"></div>
         </div>
