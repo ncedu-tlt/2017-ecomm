@@ -33,7 +33,7 @@ public class OrderHistoryServlet extends HttpServlet {
 
     private void browseOrdersHistory(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        Boolean userInSystem = UserService.getInstance().redirectToLoginIfNeeded(req);
+        Boolean userInSystem = UserService.getInstance().isUserAuthorized(req);
         if (!userInSystem){
             req.getRequestDispatcher(Configuration.getProperty("page.login")).forward(req, resp);
         }

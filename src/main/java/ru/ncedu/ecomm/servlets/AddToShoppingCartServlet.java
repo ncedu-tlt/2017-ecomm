@@ -1,6 +1,5 @@
 package ru.ncedu.ecomm.servlets;
 
-import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.servlets.services.ShoppingCartService;
 import ru.ncedu.ecomm.servlets.services.UserService;
 
@@ -19,19 +18,20 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 public class AddToShoppingCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Boolean userInSystem = UserService.getInstance().redirectToLoginIfNeeded(req);
+        Boolean userInSystem = UserService.getInstance().isUserAuthorized(req);
         if (!userInSystem){
-            req.getRequestDispatcher(Configuration.getProperty("page.login")).forward(req, resp);
-        }
-        long userId = UserService.getInstance().getCurrentUserId(req);
-        long productId = Long.parseLong(req.getParameter("productId"));
-        try {
-            ShoppingCartService.getInstance().addToShoppingCart(userId, productId);
-            long quantity = getQuantity(userId);
-            PrintWriter out = resp.getWriter();
-            out.println(quantity);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }else {
+            long userId = UserService.getInstance().getCurrentUserId(req);
+            long productId = Long.parseLong(req.getParameter("productId"));
+            try {
+                ShoppingCartService.getInstance().addToShoppingCart(userId, productId);
+                long quantity = getQuantity(userId);
+                PrintWriter out = resp.getWriter();
+                out.println(quantity);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

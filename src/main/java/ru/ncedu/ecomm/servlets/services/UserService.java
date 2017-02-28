@@ -23,7 +23,7 @@ public class UserService {
         return instance;
     }
 
-    public Boolean redirectToLoginIfNeeded(HttpServletRequest request) throws ServletException, IOException {
+    public Boolean isUserAuthorized(HttpServletRequest request) throws ServletException, IOException {
         Boolean userInSystem = true;
         HttpSession session = request.getSession();
         if (session.getAttribute("userId") == null) {

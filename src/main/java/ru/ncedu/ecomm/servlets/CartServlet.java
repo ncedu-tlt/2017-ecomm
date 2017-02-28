@@ -44,7 +44,7 @@ public class CartServlet extends HttpServlet {
 
     private void showSalesOrderList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            Boolean userInSystem = UserService.getInstance().redirectToLoginIfNeeded(request);
+            Boolean userInSystem = UserService.getInstance().isUserAuthorized(request);
             if (!userInSystem) {
                 request.getRequestDispatcher(Configuration.getProperty("page.login")).forward(request, response);
             }
