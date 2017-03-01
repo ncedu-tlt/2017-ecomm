@@ -9,63 +9,57 @@
                     minus = $this.find('.jsLeft'),
                     plus = $this.find('.jsRight'),
                     amount = this.content.find('.jsAmount'),
-                    checkout = this.content.find('.jsCheckOut'),
-                    massive = [],
-                    globalInput = this.content.find('.jsItemOrder').find('.jsInput');
-
-                /*globalInput.each(function () {
-                    var row = [],
-                        test = $(this).find('.jsInput');
-                    row.push(test.val());
-                    massive.push(row);
-                });*/
+                    clear;
 
                 minus.click(function () {
                     var
                         input = $(this).parent().find('.jsInput'),
                         price = $(this).parent().parent().find('.jsPrice'),
                         standardPrice = parseInt(price.text()) / parseInt(input.val()),
-                        count = parseInt(input.val());
+                        count = parseInt(input.val()),
+                        product = $(this).parent().find(".jsProductId"),
+                        salesOrder = $(this).parent().find(".jsSalesOrderId"),
+                        productId = parseInt(product.val()),
+                        salesOrderId = parseInt(salesOrder.val());
                     if (count > 1) {
                         amount.text(parseInt(amount.text()) - standardPrice);
                         count = count <= 1 ? 1 : count - 1;
                         price.text(standardPrice * count);
                         input.val(count);
-                        input.change();
-                        price.change();
-                        amount.change();
-                        massive.push(count);
-                        return false;
+                        clearTimeout(clear);
+                        clear = setTimeout(function () {
+                            $.post('/cart', {input: input.val(), product: productId, salesOrder: salesOrderId});
+                        }, 2000);
                     }
+                    input.change();
+                    price.change();
+                    amount.change();
+                    return false;
                 });
 
                 plus.click(function () {
                     var input = $(this).parent().find('.jsInput'),
                         price = $(this).parent().parent().find('.jsPrice'),
                         standardPrice = parseInt(price.text()) / parseInt(input.val()),
+                        product = $(this).parent().parent().parent().parent().find(".jsProductId"),
+                        salesOrder = $(this).parent().parent().parent().parent().find(".jsSalesOrderId"),
+                        productId = parseInt(product.val()),
+                        salesOrderId = parseInt(salesOrder.val()),
                         count = parseInt(input.val());
                     if (count >= 1) {
                         input.val(parseInt(input.val()) + 1);
-                        input.change();
                         price.text(standardPrice * parseInt(input.val()));
-                        price.change();
                         amount.text(parseInt(amount.text()) + standardPrice);
-                        amount.change();
-                        massive.push(count);
-                        return false;
                     }
+                    clearTimeout(clear);
+                    clear = setTimeout(function () {
+                        $.post('/cart', {input: input.val(), product: productId, salesOrder: salesOrderId});
+                    }, 2000);
+                    input.change();
+                    price.change();
+                    amount.change();
+                    return false;
                 });
-
-                checkout.click(function () {
-                    console.log(globalInput);
-                    /*$.ajax({
-                     type: "POST",
-                     url: "/cart",
-                     data: massive
-                     }).done(function () {
-                     alert(massive);
-                     })*/
-                })
             }
         })
         ;

@@ -23,8 +23,6 @@
                     <div class="ui divided items jsItemOrder">
                         <c:forEach var="itemOrder" items="${salesOrder.getOrderItems()}">
                             <form method="post" action="cart" class="item">
-                                <input class="jsProductId" name="productId" type="hidden" value="${itemOrder.getProductId()}">
-                                <input class="jsSalesOrderId" name="salesOrderId" type="hidden" value="${itemOrder.getSalesOrderId()}">
                                 <div class="ui small image">
                                     <img src="${itemOrder.getImgUrl()}">
                                 </div>
@@ -39,14 +37,16 @@
                                     </div>
                                     <div class="description">
                                         <div class="ui input">
+                                            <input class="jsProductId" name="productId" type="hidden"
+                                                   value="${itemOrder.getProductId()}">
+                                            <input class="jsSalesOrderId" name="salesOrderId" type="hidden"
+                                                   value="${itemOrder.getSalesOrderId()}">
                                             <button class="ui left attached button jsLeft" type="button">-</button>
                                             <input type="text" name="quantityValue" class="jsInput"
                                                    value="${itemOrder.getQuantity()}">
                                             <button class="ui right attached button jsRight" type="button">+</button>
-                                            <button class="ui secondary button" name="submitButton" type="submit"
-                                                    value="quantity">
-                                                Save
-                                            </button>
+                                            <input class="ui secondary button" name="submitButton" type="hidden"
+                                                   value="quantity">
                                         </div>
                                         <button class="circular right floated ui icon button middle aligned"
                                                 name="submitButton" value="delete">
@@ -113,7 +113,8 @@
                         </div>
                         <form method="post" action="cart" class="eight wide column">
                             <input name="salesOrderId" type="hidden" value="${salesOrder.getSalesOrderId()}">
-                            <button class="ui secondary basic right floated button jsCheckOut" type="button" name="submitButton" value="checkout">
+                            <button class="ui secondary basic right floated button jsCheckOut" type="button"
+                                    name="submitButton" value="checkout">
                                 CHECKOUT
                             </button>
                         </form>

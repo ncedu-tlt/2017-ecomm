@@ -103,7 +103,6 @@ public class ShoppingCartService {
         } else {
             OrderItem orderItemWithChangeQuantity = getOrderItemByViewModel(orderItemBySalesOrderId);
             orderItemWithChangeQuantity.setQuantity(inputQuantity);
-            System.out.println(orderItemWithChangeQuantity.getQuantity());
             getDAOFactory().getOrderItemsDAO().updateOrderItem(orderItemWithChangeQuantity);
         }
     }
