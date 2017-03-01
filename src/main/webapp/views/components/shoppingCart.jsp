@@ -22,7 +22,7 @@
                 <c:when test="${salesOrder.getOrderItems() != null}">
                     <div class="ui divided items jsItemOrder">
                         <c:forEach var="itemOrder" items="${salesOrder.getOrderItems()}">
-                            <form method="post" action="cart" class="item">
+                            <div class="item">
                                 <div class="ui small image">
                                     <img src="${itemOrder.getImgUrl()}">
                                 </div>
@@ -36,30 +36,34 @@
                                         <p>Quantity:</p>
                                     </div>
                                     <div class="description">
-                                        <div class="ui input">
+                                        <form method="post" action="cart" class="ui input">
                                             <input class="jsProductId" name="productId" type="hidden"
                                                    value="${itemOrder.getProductId()}">
                                             <input class="jsSalesOrderId" name="salesOrderId" type="hidden"
                                                    value="${itemOrder.getSalesOrderId()}">
+                                            <input name="submitButton" type="hidden" value="quantity">
                                             <button class="ui left attached button jsLeft" type="button">-</button>
                                             <input type="text" name="quantityValue" class="jsInput"
                                                    value="${itemOrder.getQuantity()}">
                                             <button class="ui right attached button jsRight" type="button">+</button>
-                                            <input class="ui secondary button" name="submitButton" type="hidden"
-                                                   value="quantity">
-                                        </div>
-                                        <button class="circular right floated ui icon button middle aligned"
-                                                name="submitButton" value="delete">
-                                            <i class="icon remove"></i>
-                                        </button>
-                                        <h2 class="ui header right floated center middle aligned jsPrice">
-                                                ${itemOrder.getPrice()}
-                                        </h2>
-                                        <h2 class="ui header right floated center middle aligned">$</h2>
+                                        </form>
+                                        <form method="post" action="cart"
+                                              class="ui right floated center middle aligned">
+                                            <input name="productId" type="hidden" value="${itemOrder.getProductId()}">
+                                            <input name="salesOrderId" type="hidden" value="${itemOrder.getSalesOrderId()}">
+                                            <button class="circular right floated ui icon button middle aligned"
+                                                    name="submitButton" type="submit" value="delete">
+                                                <i class="icon remove"></i>
+                                            </button>
+                                            <h2 class="ui header right floated center middle aligned jsPrice">
+                                                    ${itemOrder.getPrice()}
+                                            </h2>
+                                            <h2 class="ui header right floated center middle aligned">$</h2>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="ui divider"></div>
-                            </form>
+                            </div>
                         </c:forEach>
                     </div>
                     <div class="ui section divider"></div>

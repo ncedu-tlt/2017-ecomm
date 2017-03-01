@@ -74,6 +74,10 @@ public class CartServlet extends HttpServlet {
                                     Long.parseLong(request.getParameter("salesOrderId")),
                                     Integer.parseInt(request.getParameter("quantityValue")),
                                     Long.parseLong(request.getParameter("productId")));
+                        }else {
+                            ShoppingCartService.getInstance().deletedProductInOrderItemDataBase(
+                                    Long.parseLong(request.getParameter("productId")),
+                                    Long.parseLong(request.getParameter("salesOrderId")));
                         }
                         break;
                     }
