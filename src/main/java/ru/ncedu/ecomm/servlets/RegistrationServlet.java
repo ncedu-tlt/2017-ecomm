@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
@@ -21,6 +20,12 @@ public class RegistrationServlet extends HttpServlet {
     private static final String REGISTRATION = "/views/pages/registration.jsp";
     private static final String LOGIN = "/views/pages/login.jsp";
     private static final int ROLE_USER = 3;
+    private static final String ANSWER = "answer";
+    private static final String EMAIL = "email";
+    private static final String PASSWORD = "password";
+    private static final String CHECK_PASSWORD = "checkPassword";
+    private static final String REGISTRATION_ = "registration"; // Это временно, пока с пропертями разбираюсь
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -30,42 +35,42 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        if(req.getParameter("email").isEmpty()
-           && req.getParameter("password").isEmpty()
-           && req.getParameter("checkPassword").isEmpty()) {
-            req.setAttribute("answer", "empty_fields");
+        if(req.getParameter(EMAIL).isEmpty()
+           && req.getParameter(PASSWORD).isEmpty()
+           && req.getParameter(CHECK_PASSWORD).isEmpty()) {
+            req.setAttribute(ANSWER, "empty_fields");
             req.getRequestDispatcher(REGISTRATION).forward(req, resp);
             return;
         }
 
-        if (!EmailUtils.checkEmail(req.getParameter("email"))) {
-            req.setAttribute("answer", "incorrect_email");
+        if (!EmailUtils.checkEmail(req.getParameter(EMAIL))) {
+            req.setAttribute(ANSWER, "incorrect_email");
             req.getRequestDispatcher(REGISTRATION).forward(req, resp);
             return;
         }
 
-        if (!req.getParameter("password").equals(req.getParameter("checkPassword"))) {
-            req.setAttribute("answer", "pass_error");
+        if (!req.getParameter(PASSWORD).equals(req.getParameter(CHECK_PASSWORD))) {
+            req.setAttribute(ANSWER, "pass_error");
             req.getRequestDispatcher(REGISTRATION).forward(req, resp);
             return;
         }
 
-        if (getDAOFactory().getUserDAO().getUserByEmail(req.getParameter("email")) != null) {
+        if (getDAOFactory().getUserDAO().getUserByEmail(req.getParameter(EMAIL)) != null) {
 
-            req.setAttribute("answer", "email_used");
+            req.setAttribute(ANSWER, "email_used");
             req.getRequestDispatcher(REGISTRATION).forward(req, resp);
             return;
         }
 
-        String hashPassword = EncryptionUtils.getMd5Digest(req.getParameter("password"));
+        String hashPassword = EncryptionUtils.getMd5Digest(req.getParameter(PASSWORD));
         User user = new UserBuilder()
-                .setEmail(req.getParameter("email"))
+                .setEmail(req.getParameter(EMAIL))
                 .setPassword(hashPassword)
                 .setRoleId(ROLE_USER)
                 .build();
         getDAOFactory().getUserDAO().addUser(user);
 
-        req.setAttribute("registration", "Registration success! Please sign in");
+        req.setAttribute(REGISTRATION_, "Registration success! Please sign in");
         req.getRequestDispatcher(LOGIN).forward(req, resp);
     }
 
