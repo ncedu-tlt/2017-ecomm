@@ -19,19 +19,23 @@ public class AddToShoppingCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Boolean userInSystem = UserService.getInstance().isUserAuthorized(req);
-        if (!userInSystem){
+        if (!userInSystem) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }else {
+        } else {
             long userId = UserService.getInstance().getCurrentUserId(req);
             long productId = Long.parseLong(req.getParameter("productId"));
-            try {
-                ShoppingCartService.getInstance().addToShoppingCart(userId, productId);
-                long quantity = getQuantity(userId);
-                PrintWriter out = resp.getWriter();
-                out.println(quantity);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            sendQuantityToPage(userId, productId, resp);
+        }
+    }
+
+    private void sendQuantityToPage(long userId, long productId, HttpServletResponse resp) throws IOException {
+        try {
+            ShoppingCartService.getInstance().addToShoppingCart(userId, productId);
+            long quantity = getQuantity(userId);
+            PrintWriter out = resp.getWriter();
+            out.println(quantity);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
