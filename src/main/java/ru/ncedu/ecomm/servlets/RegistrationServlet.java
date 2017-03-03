@@ -1,5 +1,6 @@
 package ru.ncedu.ecomm.servlets;
 
+import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.models.User;
 import ru.ncedu.ecomm.data.models.builders.UserBuilder;
 import ru.ncedu.ecomm.utils.EmailUtils;
@@ -17,19 +18,17 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 @WebServlet(name = "RegistrationServlet", urlPatterns = {"/registration"})
 public class RegistrationServlet extends HttpServlet {
-    private static final String REGISTRATION = "/views/pages/registration.jsp";
-    private static final String LOGIN = "/views/pages/login.jsp";
     private static final int ROLE_USER = 3;
     private static final String ANSWER = "answer";
     private static final String EMAIL = "email";
     private static final String PASSWORD = "password";
     private static final String CHECK_PASSWORD = "checkPassword";
-    private static final String REGISTRATION_ = "registration"; // Это временно, пока с пропертями разбираюсь
+    private static final String REGISTRATION = "registration";
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher(REGISTRATION).forward(req, resp);
+        req.getRequestDispatcher(Configuration.getProperty("page.registration")).forward(req, resp);
     }
 
     @Override
@@ -39,26 +38,26 @@ public class RegistrationServlet extends HttpServlet {
            && req.getParameter(PASSWORD).isEmpty()
            && req.getParameter(CHECK_PASSWORD).isEmpty()) {
             req.setAttribute(ANSWER, "empty_fields");
-            req.getRequestDispatcher(REGISTRATION).forward(req, resp);
+            req.getRequestDispatcher(Configuration.getProperty("page.registration")).forward(req, resp);
             return;
         }
 
         if (!EmailUtils.checkEmail(req.getParameter(EMAIL))) {
             req.setAttribute(ANSWER, "incorrect_email");
-            req.getRequestDispatcher(REGISTRATION).forward(req, resp);
+            req.getRequestDispatcher(Configuration.getProperty("page.registration")).forward(req, resp);
             return;
         }
 
         if (!req.getParameter(PASSWORD).equals(req.getParameter(CHECK_PASSWORD))) {
             req.setAttribute(ANSWER, "pass_error");
-            req.getRequestDispatcher(REGISTRATION).forward(req, resp);
+            req.getRequestDispatcher(Configuration.getProperty("page.registration")).forward(req, resp);
             return;
         }
 
         if (getDAOFactory().getUserDAO().getUserByEmail(req.getParameter(EMAIL)) != null) {
 
             req.setAttribute(ANSWER, "email_used");
-            req.getRequestDispatcher(REGISTRATION).forward(req, resp);
+            req.getRequestDispatcher(Configuration.getProperty("page.registration")).forward(req, resp);
             return;
         }
 
@@ -70,8 +69,8 @@ public class RegistrationServlet extends HttpServlet {
                 .build();
         getDAOFactory().getUserDAO().addUser(user);
 
-        req.setAttribute(REGISTRATION_, "Registration success! Please sign in");
-        req.getRequestDispatcher(LOGIN).forward(req, resp);
+        req.setAttribute(REGISTRATION, "Registration success! Please sign in");
+        req.getRequestDispatcher(Configuration.getProperty("page.login")).forward(req, resp);
     }
 
 }
