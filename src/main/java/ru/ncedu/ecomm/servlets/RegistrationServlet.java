@@ -2,6 +2,7 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.models.User;
 import ru.ncedu.ecomm.data.models.builders.UserBuilder;
+import ru.ncedu.ecomm.utils.EmailUtils;
 import ru.ncedu.ecomm.utils.EncryptionUtils;
 
 import javax.servlet.ServletException;
@@ -17,7 +18,6 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 @WebServlet(name = "RegistrationServlet", urlPatterns = {"/registration"})
 public class RegistrationServlet extends HttpServlet {
-    private static final String CHECK = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
     private static final String REGISTRATION = "/views/pages/registration.jsp";
     private static final String LOGIN = "/views/pages/login.jsp";
     private static final int ROLE_USER = 3;
@@ -38,7 +38,7 @@ public class RegistrationServlet extends HttpServlet {
             return;
         }
 
-        if (!checkEmail(req.getParameter("email"))) {
+        if (!EmailUtils.checkEmail(req.getParameter("email"))) {
             req.setAttribute("answer", "incorrect_email");
             req.getRequestDispatcher(REGISTRATION).forward(req, resp);
             return;
@@ -67,15 +67,6 @@ public class RegistrationServlet extends HttpServlet {
 
         req.setAttribute("registration", "Registration success! Please sign in");
         req.getRequestDispatcher(LOGIN).forward(req, resp);
-    }
-
-    private static boolean checkEmail(String email){
-
-        Pattern patternEmailValidation = Pattern.compile(CHECK
-                                                         ,Pattern.CASE_INSENSITIVE);
-        Matcher matcher = patternEmailValidation.matcher(email);
-
-        return matcher.find();
     }
 
 }
