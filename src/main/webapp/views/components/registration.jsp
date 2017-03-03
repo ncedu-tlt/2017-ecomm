@@ -29,22 +29,22 @@
                 </div>
                 <p>Already a member? <a href="${pageContext.request.contextPath}/login"> Login </a></p>
 
-                <div class="ui error message"></div>
+
                 <c:set var="request" scope="session" value="${requestScope.answer}"/>
                     <c:if test="${request != null}">
                         <div class="ui error message" style="display: block">
 
                         <c:choose>
-                            <c:when test='${requestScope.answer == "Fields must not be empty"}'>
+                            <c:when test='${requestScope.answer == "empty_fields"}'>
                                 Fields must not be empty
                             </c:when>
-                            <c:when test='${requestScope.answer == "Email is incorrect"}'>
+                            <c:when test='${requestScope.answer == "incorrect_email"}'>
                                 Email is incorrect
                             </c:when>
-                            <c:when test='${requestScope.answer == "Passwords dont match"}'>
+                            <c:when test='${requestScope.answer == "pass_error"}'>
                                 Passwords dont match
                             </c:when>
-                            <c:when test='${requestScope.answer == "Email is already in use"}'>
+                            <c:when test='${requestScope.answer == "email_used"}'>
                                 Email is already in use
                             </c:when>
                         </c:choose>

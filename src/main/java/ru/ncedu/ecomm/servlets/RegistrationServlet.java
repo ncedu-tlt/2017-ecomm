@@ -33,26 +33,26 @@ public class RegistrationServlet extends HttpServlet {
         if(req.getParameter("email").isEmpty()
            && req.getParameter("password").isEmpty()
            && req.getParameter("checkPassword").isEmpty()) {
-            req.setAttribute("answer", "Fields must not be empty");
+            req.setAttribute("answer", "empty_fields");
             req.getRequestDispatcher(REGISTRATION).forward(req, resp);
             return;
         }
 
         if (!checkEmail(req.getParameter("email"))) {
-            req.setAttribute("answer", "Email is incorrect");
+            req.setAttribute("answer", "incorrect_email");
             req.getRequestDispatcher(REGISTRATION).forward(req, resp);
             return;
         }
 
         if (!req.getParameter("password").equals(req.getParameter("checkPassword"))) {
-            req.setAttribute("answer", "Passwords dont match");
+            req.setAttribute("answer", "pass_error");
             req.getRequestDispatcher(REGISTRATION).forward(req, resp);
             return;
         }
 
         if (getDAOFactory().getUserDAO().getUserByEmail(req.getParameter("email")) != null) {
 
-            req.setAttribute("answer", "Email is already in use");
+            req.setAttribute("answer", "email_used");
             req.getRequestDispatcher(REGISTRATION).forward(req, resp);
             return;
         }
