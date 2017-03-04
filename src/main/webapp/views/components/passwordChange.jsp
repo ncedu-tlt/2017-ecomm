@@ -34,7 +34,14 @@
             <c:set var="request" scope="session" value="${requestScope.answer}"/>
             <c:if test="${request != null}">
                 <div class="ui message warning">
-                    <p>${requestScope.answer}</p>
+                    <c:choose>
+                        <c:when test='${requestScope.answer == "ChangeSuccess"}'>
+                            <p>Your password was change.</p>
+                        </c:when>
+                        <c:when test='${requestScope.answer == "ChangeError"}'>
+                            <p>Error. Try again to recovery your password</p>
+                        </c:when>
+                    </c:choose>
                 </div>
             </c:if>
         </div>

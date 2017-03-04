@@ -85,8 +85,6 @@ public class SendingMailService {
         }
     }
 
-
-
     public Session getSession() {
         String username = Configuration.getProperty("mail.username");
         String password = Configuration.getProperty("mail.password");

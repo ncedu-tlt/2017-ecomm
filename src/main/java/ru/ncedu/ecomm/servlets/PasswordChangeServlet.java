@@ -25,11 +25,11 @@ public class PasswordChangeServlet extends HttpServlet {
         User userByRecovery = getUserByRecovery(req);
         if(checkEmailAndRecoveryHash(userByRecovery) ){
             updatePassword(userByRecovery);
-            req.setAttribute("answer", "Your password was change."); //TODO: в JSP
+            req.setAttribute("answer", "ChangeSuccess");
             req.getRequestDispatcher("/views/pages/passwordChange.jsp").forward(req, resp);
         }
         else{
-            req.setAttribute("answer", "Error. Try again to recovery your password"); //TODO: в JSP
+            req.setAttribute("answer", "ChangeError");
             req.getRequestDispatcher("/views/pages/passwordChange.jsp").forward(req, resp);
         }
     }
