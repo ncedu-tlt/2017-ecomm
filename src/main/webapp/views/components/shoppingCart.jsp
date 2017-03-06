@@ -1,13 +1,13 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="salesOrderList" scope="page" value="${requestScope.salesOrderList}"/>
 <c:set var="request" scope="session" value="${requestScope.exception}"/>
-<c:set var="salesOrderListIsNull" scope="session" value="${requestScope.salesOrderListIsNull}"/>
-<c:if test="${salesOrderListIsNull != null}">
-    <div class="ui container jsShoppingCartComponent main-content">
-        <h3 class="ui center aligned header">
-            Your Cart
-        </h3>
-        <div class="ui divided items">
+<c:set var="salesOrderListIsEmpty" scope="session" value="${requestScope.salesOrderListIsEmpty}"/>
+<div class="ui container jsShoppingCartComponent main-content">
+    <h3 class="ui center aligned header">
+        Your Cart
+    </h3>
+    <div class="ui divided items">
+        <c:if test="${salesOrderListIsEmpty != null}">
             <div class="ui icon message hide">
                 <i class="in cart icon"></i>
                 <div class="content">
@@ -17,15 +17,8 @@
                     <p>You needs, add to cart any product</p>
                 </div>
             </div>
-        </div>
-    </div>
-</c:if>
-<c:forEach var="salesOrder" items="${salesOrderList}">
-    <div class="ui container jsShoppingCartComponent main-content">
-        <h3 class="ui center aligned header">
-            Your Cart
-        </h3>
-        <div class="ui divided items">
+        </c:if>
+        <c:forEach var="salesOrder" items="${salesOrderList}">
             <c:choose>
                 <c:when test="${salesOrder.getOrderItems().isEmpty()}">
                     <div class="ui icon message hide">
@@ -136,16 +129,18 @@
                             </a>
                         </div>
                         <div class="eight wide column">
-                                <button class="ui secondary basic right floated button" onclick="window.location.href = '/submitOrder'">
-                                    CHECKOUT
-                                </button>
+                            <button class="ui secondary basic right floated button"
+                                    onclick="window.location.href = '/submitOrder'">
+                                CHECKOUT
+                            </button>
                         </div>
                     </div>
                 </c:when>
             </c:choose>
-        </div>
+        </c:forEach>
     </div>
-</c:forEach>
+</div>
+
 <script>
     window.frm.components.init('ShoppingCartComponent', '.jsShoppingCartComponent');
 </script>

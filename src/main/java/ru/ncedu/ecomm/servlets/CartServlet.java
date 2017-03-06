@@ -52,7 +52,7 @@ public class CartServlet extends HttpServlet {
             List<SalesOrderViewModel> salesOrderList = ShoppingCartService.getInstance()
                     .getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
             if (salesOrderList.isEmpty()){
-                request.setAttribute("salesOrderListIsNull", "Null");
+                request.setAttribute("salesOrderListIsEmpty", "Empty");
             }else {
                 request.setAttribute("salesOrderList", salesOrderList);
             }
