@@ -60,7 +60,7 @@ public class ReviewServlet extends HttpServlet {
         }
     }
 
-    private void editReview(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void editReview(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         Review review = new ReviewBuilder()
                 .setDescription(req.getParameter("reviewText"))
                 .setProductId(Long.parseLong(req.getParameter("productId")))
@@ -68,7 +68,7 @@ public class ReviewServlet extends HttpServlet {
                 .build();
 
         req.setAttribute("review", review);
-        req.getRequestDispatcher("/views/components/editReview.jsp").forward(req, resp)
+        req.getRequestDispatcher("/views/components/editReview.jsp").forward(req, resp);
     }
 
     private void updateReview(HttpServletRequest req, HttpServletResponse resp) throws IOException {
