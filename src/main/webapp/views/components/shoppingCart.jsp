@@ -1,6 +1,25 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="salesOrderList" scope="page" value="${requestScope.salesOrderList}"/>
 <c:set var="request" scope="session" value="${requestScope.exception}"/>
+<c:set var="salesOrderListIsNull" scope="session" value="${requestScope.salesOrderListIsNull}"/>
+<c:if test="${salesOrderListIsNull != null}">
+    <div class="ui container jsShoppingCartComponent main-content">
+        <h3 class="ui center aligned header">
+            Your Cart
+        </h3>
+        <div class="ui divided items">
+            <div class="ui icon message hide">
+                <i class="trash icon"></i>
+                <div class="content">
+                    <div class="header">
+                        Trash is Empty
+                    </div>
+                    <p>You needs, add to cart any product</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</c:if>
 <c:forEach var="salesOrder" items="${salesOrderList}">
     <div class="ui container jsShoppingCartComponent main-content">
         <h3 class="ui center aligned header">
@@ -50,7 +69,8 @@
                                         <form method="post" action="cart"
                                               class="ui right floated center middle aligned">
                                             <input name="productId" type="hidden" value="${itemOrder.getProductId()}">
-                                            <input name="salesOrderId" type="hidden" value="${itemOrder.getSalesOrderId()}">
+                                            <input name="salesOrderId" type="hidden"
+                                                   value="${itemOrder.getSalesOrderId()}">
                                             <button class="circular right floated ui icon button middle aligned"
                                                     name="submitButton" type="submit" value="delete">
                                                 <i class="icon remove"></i>
@@ -117,7 +137,7 @@
                         </div>
                         <form method="post" action="cart" class="eight wide column">
                             <input name="salesOrderId" type="hidden" value="${salesOrder.getSalesOrderId()}">
-                            <button class="ui secondary basic right floated button jsCheckOut" type="button"
+                            <button class="ui secondary basic right floated button" type="submit"
                                     name="submitButton" value="checkout">
                                 CHECKOUT
                             </button>
