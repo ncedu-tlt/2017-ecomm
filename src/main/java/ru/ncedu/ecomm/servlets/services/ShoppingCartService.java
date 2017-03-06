@@ -55,6 +55,13 @@ public class ShoppingCartService {
         return salesOrderId;
     }
 
+    /**
+     * Универсальный метод для обновления количества товара в корзине.
+     * Используется при любом изменении количества товара в корзине.
+     * @param inputQuantity - нужен для задания требуемого количества товара
+     *                      для изменения. В случае изменении количества товара
+     *                      из корзины, может принимать значения больше 1.
+     */
     public void updateQuantity(long salesOrderId, int inputQuantity, long productId) throws SQLException {
         List<OrderItemViewModel> orderItems = getOrderItemModelList(salesOrderId);
         OrderItemViewModel orderItemBySalesOrderId = getOrderItemBySalesOrderId(productId, salesOrderId, orderItems);
@@ -81,6 +88,14 @@ public class ShoppingCartService {
         }
     }
 
+    /**
+     * Метод возвращает orderItem в случае наличия товара в корзине.
+     * @param productId - параметр для проверки
+     * @param salesOrderId - параметр для проверки
+     * @param orderItems - нужен для проверки наличия товара в корзине
+     * @return orderItem или null в зависимости от того, есть товар в корзине
+     * или нет
+     */
     private OrderItemViewModel getOrderItemBySalesOrderId(long productId, long salesOrderId, List<OrderItemViewModel> orderItems) {
         for (OrderItemViewModel orderItem : orderItems) {
             if (orderItem.getProductId() == productId
@@ -96,6 +111,14 @@ public class ShoppingCartService {
         getDAOFactory().getOrderItemsDAO().addOrderItem(orderItem);
     }
 
+    /**
+     * Метод в зависимости от характера изменения количества товара,
+     * по разному обновляет параметр quantity. Если товар изменяется из корзины,
+     * то есть возможность обновить счётчик как от меньшего к большему,
+     * так и от большего к меньшему - поэтому необходимы разные методы для обновления.
+     * @param isSingleAdd - проверка на добавление товара из корзины(false)
+     *                    и из других страниц(true)
+     */
     private void changeQuantityOrderItem(OrderItemViewModel orderItemBySalesOrderId, int inputQuantity, boolean isSingleAdd) throws SQLException {
         if (isSingleAdd) {
             OrderItem orderItemWithChangeQuantity = getSingleAddToCart(orderItemBySalesOrderId, inputQuantity);

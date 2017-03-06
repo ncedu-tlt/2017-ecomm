@@ -57,7 +57,7 @@ public class SendingMailService {
         return sendMessageWithMimeMessage(toEmail, textHtml);
     }
 
-    private boolean sendMessageWithMimeMessage( String toEmail, String textHtml) {
+    private boolean sendMessageWithMimeMessage(String toEmail, String textHtml) {
         Session session = getSession();
         MimeMessage message = new MimeMessage(session);
         return setMimeMessage(message, toEmail, textHtml) && sendToTransport(message);
