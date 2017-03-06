@@ -20,10 +20,13 @@
                 <c:otherwise> ${category.getName()}</c:otherwise>
             </c:choose>
         </c:if>
-        <c:if test="${category.getId() >= 0}">
+        <c:if test="${category.getId() > 0}">
             <a href="${pageContext.request.contextPath}/category?category_id=${category.getId()}">
                     ${category.getName()}
             </a>
+        </c:if>
+        <c:if test="${category.getId() == 0}">
+            Best Offers
         </c:if>
     </h2>
     <div class="ui grid centered container">

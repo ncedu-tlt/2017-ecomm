@@ -13,7 +13,7 @@
                     <img src="${pageContext.request.contextPath}${review.getUserAvatarLink()}" alt="avatar"
                          class="ui image small">
                 </div>
-                <div class="eleven wide column">
+                <div class="eleven wide column jsReviewParent">
                     <div class="ui grid four column">
                         <div class="column">
                             <a href="${pageContext.request.contextPath}/profile?user_id=${review.getUserId()}">

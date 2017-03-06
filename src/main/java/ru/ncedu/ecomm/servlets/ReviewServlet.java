@@ -61,7 +61,15 @@ public class ReviewServlet extends HttpServlet {
     }
 
     private void editReview(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession();
 
+        Review review = new ReviewBuilder()
+                .setDescription(req.getParameter("reviewText"))
+                .setProductId(Long.parseLong(req.getParameter("productId")))
+                .setRating(Integer.parseInt(req.getParameter("thisUserRating")))
+                .build();
+
+        session.setAttribute("review", review);
         resp.sendRedirect("/views/components/editReview.jsp");
     }
 
