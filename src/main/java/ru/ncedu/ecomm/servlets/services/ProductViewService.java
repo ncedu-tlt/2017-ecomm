@@ -5,7 +5,6 @@ import ru.ncedu.ecomm.data.models.Category;
 import ru.ncedu.ecomm.data.models.CharacteristicValue;
 import ru.ncedu.ecomm.data.models.Product;
 import ru.ncedu.ecomm.data.models.Rating;
-import ru.ncedu.ecomm.data.models.builders.CategoryBuilder;
 import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
 import ru.ncedu.ecomm.servlets.models.ProductViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.CategoryViewBuilder;
@@ -21,7 +20,6 @@ public class ProductViewService {
     public static final String DEFAULT_IMAGE_URL = "/images/defaultimage/image.png";
     public static final long CHARACTERISTIC_ID_FOR_IMAGE_URL = 28;
 
-    private static final String NAME_FOR_BEST_OFFERS_CATEGORY = "Best Offers"; //TODO: в JSP
     private static final Long CATEGORY_ID_FOR_BEST_OFFERS = 0L; //TODO: не нужно
 
     private ProductViewService() {
@@ -40,13 +38,8 @@ public class ProductViewService {
         List<CategoryViewModel> bestOffersCategory = new ArrayList<>();
 
         CategoryViewModel bestOffers = new CategoryViewBuilder()
-                .setName(NAME_FOR_BEST_OFFERS_CATEGORY)
                 .setId(CATEGORY_ID_FOR_BEST_OFFERS)
-                .setProducts(addProductToViewByCategoryId(
-                        new CategoryBuilder()
-                                .setCategoryId(CATEGORY_ID_FOR_BEST_OFFERS) //TODO: а не проще было сделать так, чтобы метод принимал идентификатор?
-                                .build())
-                )
+                .setProducts(getProductForCategory(CATEGORY_ID_FOR_BEST_OFFERS))
                 .build();
 
         bestOffersCategory.add(bestOffers);
@@ -62,7 +55,7 @@ public class ProductViewService {
             CategoryViewModel categoryByRequest = new CategoryViewBuilder()
                     .setId(category.getCategoryId())
                     .setName(category.getName())
-                    .setProducts(addProductToViewByCategoryId(category))
+                    .setProducts(getProductForCategory(category.getCategoryId()))
                     .build();
 
             categoriesById.add(categoryByRequest);
@@ -70,15 +63,13 @@ public class ProductViewService {
         return categoriesById;
     }
 
-    //TODO: почему называется add, если это получение?
-    //TODO: уточнения в духе byCategoryId нужны только тогда, когда может возникнуть недопонимание. В большинстве случаев, достаточно самих параметров
-    private List<ProductViewModel> addProductToViewByCategoryId(Category category) {
+    private List<ProductViewModel> getProductForCategory(long categoryId) {
 
-        if (category.getParentId() == 0 && category.getCategoryId() != CATEGORY_ID_FOR_BEST_OFFERS) {
-            return getProductsToView(getProductAllChildrenCategory(category.getCategoryId()));
+        if (categoryId != CATEGORY_ID_FOR_BEST_OFFERS) {
+            return getProductsToView(getProductAllChildrenCategory(categoryId));
 
         } else {
-            return getProductsToView(getProductsById(category.getCategoryId()));
+            return getProductsToView(getProductsById(categoryId));
 
         }
     }
@@ -100,12 +91,12 @@ public class ProductViewService {
                         CHARACTERISTIC_ID_FOR_IMAGE_URL);
     }
 
-    List<ProductViewModel> getProductModelByOrderId(long orderId){
-       List<Product> productForBuild = DAOFactory.getDAOFactory()
+    List<ProductViewModel> getProductModelByOrderId(long orderId) {
+        List<Product> productForBuild = DAOFactory.getDAOFactory()
                 .getProductDAO()
                 .getProductByOrderId(orderId);
 
-       return getProductsToView(productForBuild);
+        return getProductsToView(productForBuild);
     }
 
     private Rating getRating(long productId) {
@@ -122,46 +113,46 @@ public class ProductViewService {
 
     public List<ProductViewModel> getProductsToView(List<Product> products) {
 
-            List<ProductViewModel> productsView = new ArrayList<>();
+        List<ProductViewModel> productsView = new ArrayList<>();
 
-            ProductViewModel itemForView;
-            Rating productAverageRating;
-            CharacteristicValue characteristicValue;
+        ProductViewModel itemForView;
+        Rating productAverageRating;
+        CharacteristicValue characteristicValue;
 
-            for (Product product : products) {
-                int productRating = 0;
+        for (Product product : products) {
+            int productRating = 0;
 
-                String imageUrl = DEFAULT_IMAGE_URL;
+            String imageUrl = DEFAULT_IMAGE_URL;
 
-                characteristicValue = getImageUrl(product.getId());
+            characteristicValue = getImageUrl(product.getId());
 
-                if (characteristicValue != null) {
+            if (characteristicValue != null) {
 
-                    imageUrl = getImageUrlByCharacteristicList(characteristicValue);
-                }
-
-                productAverageRating = getRating(product.getId());
-
-                if (productAverageRating != null) {
-                    productRating = productAverageRating.getRaiting();
-                }
-
-
-                itemForView = new ProductItemsViewBuilder()
-                        .setProductId(product.getId())
-                        .setName(product.getName())
-                        .setPrice(product.getPrice())
-                        .setImageUrl(imageUrl)
-                        .setRating(productRating)
-                        .build();
-
-                if (product.getDiscountId() > 1) {
-                    itemForView.setDiscount(getDiscountPrice(product.getDiscountId(),
-                            product.getPrice()));
-                }
-
-                productsView.add(itemForView);
+                imageUrl = getImageUrlByCharacteristicList(characteristicValue);
             }
+
+            productAverageRating = getRating(product.getId());
+
+            if (productAverageRating != null) {
+                productRating = productAverageRating.getRaiting();
+            }
+
+
+            itemForView = new ProductItemsViewBuilder()
+                    .setProductId(product.getId())
+                    .setName(product.getName())
+                    .setPrice(product.getPrice())
+                    .setImageUrl(imageUrl)
+                    .setRating(productRating)
+                    .build();
+
+            if (product.getDiscountId() > 1) {
+                itemForView.setDiscount(getDiscountPrice(product.getDiscountId(),
+                        product.getPrice()));
+            }
+
+            productsView.add(itemForView);
+        }
         return productsView;
     }
 
