@@ -12,7 +12,7 @@
 
 <c:import url="../fragments/topPanel.jsp"/>
 
-<c:import url="../components/payment.jsp"/>
+<c:import url="../components/submitOrder.jsp"/>
 
 <c:import url="../components/companyInfo.jsp"/>
 

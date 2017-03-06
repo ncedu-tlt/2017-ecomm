@@ -28,13 +28,14 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        updateSalesOrderList(req, resp);
+        updateSalesOrderList(req);
+        showSalesOrderList(req, resp);
     }
 
-    private void updateSalesOrderList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void updateSalesOrderList(HttpServletRequest request) throws ServletException, IOException {
         long userId = UserService.getInstance().getCurrentUserId(request);
         try {
-            formActionOnShoppingCart(request, response, userId);
+            formActionOnShoppingCart(request, userId);
             setQuantityInDataBase(request);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,7 +62,7 @@ public class CartServlet extends HttpServlet {
         }
     }
 
-    private void formActionOnShoppingCart(HttpServletRequest request, HttpServletResponse response, long userId) throws SQLException {
+    private void formActionOnShoppingCart(HttpServletRequest request, long userId) throws SQLException {
         try {
             if (request.getParameter("submitButton") != null) {
                 switch (request.getParameter("submitButton")) {
@@ -69,38 +70,26 @@ public class CartServlet extends HttpServlet {
                         ShoppingCartService.getInstance().deletedProductInOrderItemDataBase(
                                 Long.parseLong(request.getParameter("productId")),
                                 Long.parseLong(request.getParameter("salesOrderId")));
-                        showSalesOrderList(request, response);
                         break;
                     }
                     case "quantity": {
                         updateQuantity(request);
-                        showSalesOrderList(request, response);
                         break;
                     }
-                    case "emptyTrash": {
+                    case "emptyCart": {
                         ShoppingCartService.getInstance().deletedAllProductsInOrderItemDataBase(userId);
-                        showSalesOrderList(request, response);
                         break;
                     }
                     case "apply": {
                         setLimitInDataBase(
                                 BigDecimal.valueOf(Long.parseLong(request.getParameter("limitInput"))),
                                 Long.parseLong(request.getParameter("salesOrderId")));
-                        showSalesOrderList(request, response);
-                        break;
-                    }
-                    case "checkout":{
-                        response.sendRedirect(Configuration.getProperty("page.payment"));
                         break;
                     }
                 }
             }
         } catch (NumberFormatException e) {
             request.setAttribute("exception", "Unknown format");
-        }catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
-            e.printStackTrace();
         }
     }
 

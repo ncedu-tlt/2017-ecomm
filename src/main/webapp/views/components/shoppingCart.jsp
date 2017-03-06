@@ -9,10 +9,10 @@
         </h3>
         <div class="ui divided items">
             <div class="ui icon message hide">
-                <i class="trash icon"></i>
+                <i class="in cart icon"></i>
                 <div class="content">
                     <div class="header">
-                        Trash is Empty
+                        Cart is Empty
                     </div>
                     <p>You needs, add to cart any product</p>
                 </div>
@@ -29,10 +29,10 @@
             <c:choose>
                 <c:when test="${salesOrder.getOrderItems().isEmpty()}">
                     <div class="ui icon message hide">
-                        <i class="trash icon"></i>
+                        <i class="in cart icon"></i>
                         <div class="content">
                             <div class="header">
-                                Trash is Empty
+                                Cart is Empty
                             </div>
                             <p>You needs, add to cart any product</p>
                         </div>
@@ -89,7 +89,7 @@
                     <div class="ui section divider"></div>
                     <form method="post" action="cart" class="ui grid seven column row">
                         <button class="ui secondary basic right floated button column hide" name="submitButton"
-                                type="submit" value="emptyTrash">EMPTY TRASH
+                                type="submit" value="emptyCart">EMPTY CART
                         </button>
                     </form>
                     <div class="ui grid">
@@ -135,13 +135,11 @@
                                 <button class="ui secondary basic button" type="button">PRINT</button>
                             </a>
                         </div>
-                        <form method="post" action="cart" class="eight wide column">
-                            <input name="salesOrderId" type="hidden" value="${salesOrder.getSalesOrderId()}">
-                            <button class="ui secondary basic right floated button" type="submit"
-                                    name="submitButton" value="checkout">
-                                CHECKOUT
-                            </button>
-                        </form>
+                        <div class="eight wide column">
+                                <button class="ui secondary basic right floated button" onclick="window.location.href = '/submitOrder'">
+                                    CHECKOUT
+                                </button>
+                        </div>
                     </div>
                 </c:when>
             </c:choose>
