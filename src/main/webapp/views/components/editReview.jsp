@@ -1,6 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="review" scope="page" value="${session.getAttribute('review')}"/>
-
 <form method="post" action="review" class="ui form grid one column jsReviewEditData" style="display: none">
     <input name="productId" type="hidden" value="${review.productId}">
     <input class="jsEditRating" name="rating" type="hidden" value="${review.rating}">
