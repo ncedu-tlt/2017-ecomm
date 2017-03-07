@@ -29,39 +29,40 @@
         getData: function () {
             var reviewBody = this.content.find('.jsThisUserReview');
             var thisUserRating = reviewBody.find('.jsUsersRating').data('rating');
-            var reviewText = reviewBody.find('.jsReview p').text();
+            var reviewText = reviewBody.find('.jsReview').text();
             var productId = this.content.find('.jsThisUserReview').data('value');
 
             $.post('/review',
                 {
                     reviewActions: 'edit',
                     productId: productId,
-                    reviewText: reviewText,
-                    thisUserRating: thisUserRating
+                    review: reviewText,
+                    rating: thisUserRating
                 },
                 this.writeFormForUpdateComment.bind(this));
         },
 
         writeFormForUpdateComment: function (data) {
-            var reviewParent = this.content.find('.jsThisUserReview .jsReviewParent')
+            var reviewParent = this.content.find('.jsThisUserReview .jsReviewParent');
             var reviewData = reviewParent.find('.jsReviewData');
 
-            reviewParent.append(data);
 
-            var editData = reviewParent.find('.jsReviewEditData')
+
             reviewData.fadeOut('fast', function () {
-                editData.fadeIn();
-            });
-
-            var ratingField = editData.find('.jsEditRating');
-            var cancelButton = editData.find('.jsCancel');
+                reviewParent.append(data);
 
 
-            ratingField.rating('setting', 'onRate', function (value) {
-                ratingField.val(value);
-            });
+                var editData = reviewParent.find('.jsReviewEditData');
+                var ratingField = editData.find('.jsEditRating');
+                var cancelButton = editData.find('.jsCancel');
 
-            cancelButton.on('click', this.cancelEdit.bind(this));
+                ratingField.rating('setting', 'onRate', function (value) {
+                    ratingField.val(value);
+                });
+
+                cancelButton.on('click', this.cancelEdit.bind(this));
+
+            }.bind(this));
         },
         cancelEdit: function () {
             var reviewParent = this.content.find('.jsReviewParent');

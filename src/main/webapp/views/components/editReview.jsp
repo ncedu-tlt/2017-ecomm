@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<form method="post" action="review" class="ui form grid one column jsReviewEditData" style="display: none">
+<form method="post" action="review" class="ui form grid one column jsReviewEditData">
     <input name="productId" type="hidden" value="${review.productId}">
     <input class="jsEditRating" name="rating" type="hidden" value="${review.rating}">
     <input name="reviewActions" type="hidden" value="update">
@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="ui grid one column">
-        <textarea class="editTextArea" name="reviewDescription" class="column jsReview">${review.description}</textarea>
+        <textarea class="editTextArea" name="review" class="column jsReview">${review.description}</textarea>
     </div>
     <div class="ui grid one column">
         <div class="ui right floated mini buttons">

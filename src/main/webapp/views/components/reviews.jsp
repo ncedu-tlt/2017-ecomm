@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div class="ui text two column grid container main-content reviews jsReviewsComponent" style="margin-top: 2em">
+<div class="ui hidden divider"></div>
+<div class="ui text two column grid container main-content reviews jsReviewsComponent">
     <div class="ui top attached menu">
         <div class="item">
             <i class="comments icon large"></i>
@@ -42,8 +43,8 @@
                             </div>
                         </div>
                         <div class="ui grid one column">
-                            <div class="column jsReview">
-                                <p>${review.getDescription()}</p>
+                            <div class="column">
+                                <p class="jsReview">${review.getDescription()}</p>
                             </div>
                         </div>
                         <div class="ui grid one column">
@@ -97,7 +98,7 @@
                 <div class="field">
                     <label>Write your review:</label>
                     <span class="ui huge jsUserReviewRating rating"></span>
-                    <textarea name="review" style="margin-top: 0; margin-bottom: 0; height: 168px;"
+                    <textarea name="review"
                               title="review"></textarea>
                 </div>
                 <button class="positive ui mini button">Add review</button>

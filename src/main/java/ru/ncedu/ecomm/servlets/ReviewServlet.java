@@ -1,5 +1,6 @@
 package ru.ncedu.ecomm.servlets;
 
+import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.DAOFactory;
 import ru.ncedu.ecomm.data.models.Review;
 import ru.ncedu.ecomm.data.models.builders.ReviewBuilder;
@@ -20,23 +21,28 @@ public class ReviewServlet extends HttpServlet {
     private static final String REMOVE_REVIEW = "remove";
     private static final String UPDATE_REVIEW = "update";
     private static final String EDIT_REVIEW = "edit";
+    private static final String USER_ID = "userId";
+    private static final String ACTIONS = "reviewActions";
+    private static final String REVIEW = "review";
+    private static final String PRODUCT_ID = "productId";
+    private static final String RATING = "rating";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/views/pages/product.jsp").forward(req, resp);
+        req.getRequestDispatcher(Configuration.getProperty("page.product")).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession();
-        if (httpSession.getAttribute("userId") != null) {
+        if (httpSession.getAttribute(USER_ID) != null) {
             doAction(req, resp);
         }
     }
 
     private void doAction(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        switch (req.getParameter("reviewActions")) {
+        switch (req.getParameter(ACTIONS)) {
             case ADD_REVIEW: {
                 addUserReview(req, resp);
 
@@ -62,70 +68,70 @@ public class ReviewServlet extends HttpServlet {
 
     private void editReview(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         Review review = new ReviewBuilder()
-                .setDescription(req.getParameter("reviewText"))
-                .setProductId(Long.parseLong(req.getParameter("productId")))
-                .setRating(Integer.parseInt(req.getParameter("thisUserRating")))
+                .setDescription(req.getParameter(REVIEW))
+                .setProductId(Long.parseLong(req.getParameter(PRODUCT_ID)))
+                .setRating(Integer.parseInt(req.getParameter(RATING)))
                 .build();
 
-        req.setAttribute("review", review);
-        req.getRequestDispatcher("/views/components/editReview.jsp").forward(req, resp);
+        req.setAttribute(REVIEW, review);
+        req.getRequestDispatcher(Configuration.getProperty("page.editReview")).forward(req, resp);
     }
 
     private void updateReview(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String productId = req.getParameter("productId");
+        String productId = req.getParameter(PRODUCT_ID);
 
         Review review = new ReviewBuilder()
-                .setUserId((Long) req.getSession().getAttribute("userId"))
+                .setUserId((Long) req.getSession().getAttribute(USER_ID))
                 .setProductId(Long.parseLong(productId))
-                .setRating(Integer.parseInt(req.getParameter("rating")))
+                .setRating(Integer.parseInt(req.getParameter(RATING)))
                 .setCreationDate(new Date(System.currentTimeMillis()))
-                .setDescription(req.getParameter("reviewDescription"))
+                .setDescription(req.getParameter(REVIEW))
                 .build();
 
-        updateReviewByBase(review);
+        updateReviewInDAO(review);
         resp.sendRedirect("/product?product_id=" + productId);
     }
 
     private void removeReview(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String productId = req.getParameter("productId");
+        String productId = req.getParameter(PRODUCT_ID);
 
         Review review = new ReviewBuilder()
                 .setProductId(Long.parseLong(productId))
-                .setUserId(Long.parseLong(req.getParameter("userId")))
+                .setUserId(Long.parseLong(req.getParameter(USER_ID)))
                 .build();
 
-        removeReviewByBase(review);
+        removeReviewFromDAO(review);
         resp.sendRedirect("/product?product_id=" + productId);
     }
 
     private void addUserReview(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String productId = req.getParameter("productId");
+        String productId = req.getParameter(PRODUCT_ID);
 
         Review review = new ReviewBuilder()
-                .setUserId((Long) req.getSession().getAttribute("userId"))
+                .setUserId((Long) req.getSession().getAttribute(USER_ID))
                 .setProductId(Long.parseLong(productId))
-                .setRating(Integer.parseInt(req.getParameter("rating")))
+                .setRating(Integer.parseInt(req.getParameter(RATING)))
                 .setCreationDate(new Date(System.currentTimeMillis()))
-                .setDescription(req.getParameter("review"))
+                .setDescription(req.getParameter(REVIEW))
                 .build();
 
-        addReviewToBase(review);
+        addReviewToDAO(review);
         resp.sendRedirect("/product?product_id=" + productId);
     }
 
-    private void updateReviewByBase(Review review) {
+    private void updateReviewInDAO(Review review) {
         DAOFactory.getDAOFactory()
                 .getReviewDAO()
                 .updateReviews(review);
     }
 
-    private void removeReviewByBase(Review review) {
+    private void removeReviewFromDAO(Review review) {
         DAOFactory.getDAOFactory()
                 .getReviewDAO()
                 .deleteReviews(review);
     }
 
-    private void addReviewToBase(Review review) {
+    private void addReviewToDAO(Review review) {
         DAOFactory.getDAOFactory()
                 .getReviewDAO()
                 .addReviews(review);
