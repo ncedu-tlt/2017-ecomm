@@ -1,5 +1,13 @@
 #!/bin/sh
 
+CONTEXT_FILE_PATTERN="src/main/webapp/META-INF/context.xml";
+
+if git diff --cached --name-only | grep --quiet "$CONTEXT_FILE_PATTERN"
+then
+    echo "context.xml changes detected";
+    exit 1;
+fi
+
 git remote update;
 
 UPSTREAM=${1:-'@{u}'}
