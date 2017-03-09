@@ -9,6 +9,8 @@
             var plus = $this.find('.jsRight');
             var amount = this.content.find('.jsAmount');
             var clear;
+            var globalInput = $this.find('.jsInput');
+            var globalPrice = $this.find('.jsPrice');
 
             minus.click(function () {
                 var input = $(this).parent().find('.jsInput');
@@ -56,6 +58,31 @@
                 input.change();
                 price.change();
                 amount.change();
+                return false;
+            });
+
+            globalInput.keyup('inputChange', function () {
+                var $input = $(this).val();
+                var input = parseInt($input);
+                var $price = $(this).parent().parent().find('.jsPrice');
+                var $standardPrice = $(this).parent().parent().find('.jsStandardPrice');
+                var standardPrice = parseInt($standardPrice.val());
+                var amountSum = 0;
+                var priceMassive = [];
+                if (input > 0) {
+                    $price.text(standardPrice * input);
+                    $price.change();
+                    globalPrice.each(function () {
+                        var price = $(this).text();
+                        priceMassive.push(parseInt(price));
+                    });
+                    for (var i=0;i<priceMassive.length;i++) {
+                        amountSum = amountSum + priceMassive[i];
+                    }
+                    priceMassive.length = 0;
+                    amount.text(amountSum);
+                    amount.change();
+                }
                 return false;
             });
         }

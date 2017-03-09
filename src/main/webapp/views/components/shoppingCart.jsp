@@ -53,6 +53,8 @@
                                                    value="${itemOrder.getProductId()}">
                                             <input class="jsSalesOrderId" name="salesOrderId" type="hidden"
                                                    value="${itemOrder.getSalesOrderId()}">
+                                            <input class="jsStandardPrice" name="standardPrice" type="hidden"
+                                                   value="${itemOrder.getStandardPrice()}">
                                             <input name="submitButton" type="hidden" value="quantity">
                                             <button class="ui left attached button jsLeft" type="button">-</button>
                                             <input type="text" name="quantityValue" class="jsInput"
