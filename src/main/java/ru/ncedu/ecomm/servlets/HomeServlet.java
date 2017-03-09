@@ -30,6 +30,8 @@ public class HomeServlet extends HttpServlet {
 
     private void browseCategories(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        response.addHeader("Transfer-Encoding", "chunked");
+
         List<CategoryViewModel> categoryViewModels = ProductViewService
                 .getInstance()
                 .getBestOffersCategory();
