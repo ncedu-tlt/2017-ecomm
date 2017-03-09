@@ -128,12 +128,11 @@
                                 <button class="ui secondary basic button" type="button">PRINT</button>
                             </a>
                         </div>
-                        <div class="eight wide column">
-                            <button class="ui secondary basic right floated button"
-                                    onclick="window.location.href = '/submitOrder'">
+                        <form method="post" action="cart" class="eight wide column">
+                            <button class="ui secondary basic right floated button" name="submitButton" value="checkout">
                                 CHECKOUT
                             </button>
-                        </div>
+                        </form>
                     </div>
                 </c:when>
             </c:choose>
