@@ -27,7 +27,7 @@
                     clearTimeout(clear);
                     clear = setTimeout(function () {
                         $.post('/cart', {input: input.val(), product: productId, salesOrder: salesOrderId});
-                    }, 2000);
+                    }, 5000);
                 }
                 input.change();
                 price.change();
@@ -52,7 +52,7 @@
                 clearTimeout(clear);
                 clear = setTimeout(function () {
                     $.post('/cart', {input: input.val(), product: productId, salesOrder: salesOrderId});
-                }, 2000);
+                }, 5000);
                 input.change();
                 price.change();
                 amount.change();
