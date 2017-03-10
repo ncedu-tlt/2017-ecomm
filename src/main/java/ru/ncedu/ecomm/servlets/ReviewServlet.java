@@ -14,6 +14,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Date;
 
+import static ru.ncedu.ecomm.utils.RedirectUtil.redirectToPage;
+
 @WebServlet(name = "ReviewServlet", urlPatterns = {"/review"})
 public class ReviewServlet extends HttpServlet {
 
@@ -89,7 +91,7 @@ public class ReviewServlet extends HttpServlet {
                 .build();
 
         updateReviewInDAO(review);
-        resp.sendRedirect("/product?product_id=" + productId);
+        redirectToPage(req, resp, Configuration.getProperty("servlet.productByProductId" + productId));
     }
 
     private void removeReview(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -101,7 +103,7 @@ public class ReviewServlet extends HttpServlet {
                 .build();
 
         removeReviewFromDAO(review);
-        resp.sendRedirect("/product?product_id=" + productId);
+        redirectToPage(req, resp, Configuration.getProperty("servlet.productByProductId" + productId));
     }
 
     private void addUserReview(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -116,7 +118,7 @@ public class ReviewServlet extends HttpServlet {
                 .build();
 
         addReviewToDAO(review);
-        resp.sendRedirect("/product?product_id=" + productId);
+        redirectToPage(req, resp, Configuration.getProperty("servlet.productByProductId" + productId));
     }
 
     private void updateReviewInDAO(Review review) {
