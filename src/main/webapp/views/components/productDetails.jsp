@@ -29,7 +29,7 @@
             <div class="column right aligned container">
                 <c:if test="${browseProduct.getDiscount() != 0}">
                     <span class="productPrice" style="text-decoration: line-through;">$${browseProduct.getPrice()}</span>
-                    <span style="margin-left: .2em"  class="ui red large label">
+                    <span style="   margin-left: .2em"  class="ui red large label">
                         $${browseProduct.getDiscount()}
                     </span>
                 </c:if>

@@ -20,6 +20,7 @@
                 <c:otherwise> ${category.getName()}</c:otherwise>
             </c:choose>
         </c:if>
+    <c:if test="${not empty category.getProducts()}">
         <c:if test="${category.getId() > 0}">
             <a href="${pageContext.request.contextPath}/category?category_id=${category.getId()}">
                     ${category.getName()}
@@ -28,6 +29,7 @@
         <c:if test="${category.getId() == 0}">
             Best Offers
         </c:if>
+    </c:if>
     </h2>
     <div class="ui grid centered container">
         <c:forEach var="product" items="${category.getProducts()}">
