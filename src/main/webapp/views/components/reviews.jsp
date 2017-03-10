@@ -55,7 +55,7 @@
                                             <i class="trash outline icon"></i>
                                             Remove
                                         </button>
-                                        <form method="post" action="review"
+                                        <form method="post" action="${pageContext.request.contextPath}/review"
                                               class="ui fluid jsRemoveForm popup top left transition hidden">
                                             <input name="userId" type="hidden" value="${sessionScope.userId}">
                                             <input name="productId" type="hidden" value="${product.getId()}">
@@ -109,5 +109,8 @@
 
 <%-- JS controller initilization --%>
 <script type="text/javascript">
-    window.frm.components.init('productReviews', '.jsReviewsComponent');
+    window.frm.components.init('productReviews', '.jsReviewsComponent', {
+        baseUrl: '${pageContext.request.contextPath}'
+    });
+
 </script>

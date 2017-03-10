@@ -32,7 +32,7 @@
             var reviewText = reviewBody.find('.jsReview').text();
             var productId = this.content.find('.jsThisUserReview').data('value');
 
-            $.post('/review',
+            $.post(this.params.reviewUrl + '/review',
                 {
                     reviewActions: 'edit',
                     productId: productId,
