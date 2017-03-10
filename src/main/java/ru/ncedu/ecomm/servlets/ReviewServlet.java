@@ -91,7 +91,7 @@ public class ReviewServlet extends HttpServlet {
                 .build();
 
         updateReviewInDAO(review);
-        redirectToPage(req, resp, Configuration.getProperty("servlet.productByProductId" + productId));
+        redirectToPage(req, resp, Configuration.getProperty("servlet.productByProductId") + productId);
     }
 
     private void removeReview(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -103,7 +103,7 @@ public class ReviewServlet extends HttpServlet {
                 .build();
 
         removeReviewFromDAO(review);
-        redirectToPage(req, resp, Configuration.getProperty("servlet.productByProductId" + productId));
+        redirectToPage(req, resp, Configuration.getProperty("servlet.productByProductId") + productId);
     }
 
     private void addUserReview(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -118,7 +118,7 @@ public class ReviewServlet extends HttpServlet {
                 .build();
 
         addReviewToDAO(review);
-        redirectToPage(req, resp, Configuration.getProperty("servlet.productByProductId" + productId));
+        redirectToPage(req, resp, Configuration.getProperty("servlet.productByProductId") + productId);
     }
 
     private void updateReviewInDAO(Review review) {
