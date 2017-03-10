@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
+import static ru.ncedu.ecomm.utils.RedirectUtil.redirectToPage;
 
 
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
@@ -38,7 +39,7 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("userId", user.getId());
             session.setAttribute("userRoleId", user.getRoleId());
             req.setAttribute("answer", "User was found");
-            resp.sendRedirect("/home");
+            redirectToPage(req, resp, Configuration.getProperty("servlet.home"));
         } else {
             req.setAttribute("answer", "Uncorrect user! Check email and password");
             req.getRequestDispatcher(Configuration.getProperty("page.login")).forward(req, resp);
