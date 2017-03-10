@@ -58,6 +58,7 @@ public class ShoppingCartService {
     /**
      * Универсальный метод для обновления количества товара в корзине.
      * Используется при любом изменении количества товара в корзине.
+     *
      * @param inputQuantity - нужен для задания требуемого количества товара
      *                      для изменения. В случае изменении количества товара
      *                      из корзины, может принимать значения больше 1.
@@ -90,9 +91,10 @@ public class ShoppingCartService {
 
     /**
      * Метод возвращает orderItem в случае наличия товара в корзине.
-     * @param productId - параметр для проверки
+     *
+     * @param productId    - параметр для проверки
      * @param salesOrderId - параметр для проверки
-     * @param orderItems - нужен для проверки наличия товара в корзине
+     * @param orderItems   - нужен для проверки наличия товара в корзине
      * @return orderItem или null в зависимости от того, есть товар в корзине
      * или нет
      */
@@ -116,18 +118,27 @@ public class ShoppingCartService {
      * по разному обновляет параметр quantity. Если товар изменяется из корзины,
      * то есть возможность обновить счётчик как от меньшего к большему,
      * так и от большего к меньшему - поэтому необходимы разные методы для обновления.
+     *
      * @param isSingleAdd - проверка на добавление товара из корзины(false)
      *                    и из других страниц(true)
      */
     private void changeQuantityOrderItem(OrderItemViewModel orderItemBySalesOrderId, int inputQuantity, boolean isSingleAdd) throws SQLException {
         if (isSingleAdd) {
-            OrderItem orderItemWithChangeQuantity = getSingleAddToCart(orderItemBySalesOrderId, inputQuantity);
-            getDAOFactory().getOrderItemsDAO().updateOrderItem(orderItemWithChangeQuantity);
+            singleUpdatingOrderItem(orderItemBySalesOrderId, inputQuantity);
         } else {
-            OrderItem orderItemWithChangeQuantity = getOrderItemByViewModel(orderItemBySalesOrderId);
-            orderItemWithChangeQuantity.setQuantity(inputQuantity);
-            getDAOFactory().getOrderItemsDAO().updateOrderItem(orderItemWithChangeQuantity);
+            multiplyUpdatingOrderItem(orderItemBySalesOrderId, inputQuantity);
         }
+    }
+
+    private void singleUpdatingOrderItem(OrderItemViewModel orderItemBySalesOrderId, int inputQuantity) {
+        OrderItem orderItemWithChangeQuantity = getSingleAddToCart(orderItemBySalesOrderId, inputQuantity);
+        getDAOFactory().getOrderItemsDAO().updateOrderItem(orderItemWithChangeQuantity);
+    }
+
+    private void multiplyUpdatingOrderItem(OrderItemViewModel orderItemBySalesOrderId, int inputQuantity) {
+        OrderItem orderItemWithChangeQuantity = getOrderItemByViewModel(orderItemBySalesOrderId);
+        orderItemWithChangeQuantity.setQuantity(inputQuantity);
+        getDAOFactory().getOrderItemsDAO().updateOrderItem(orderItemWithChangeQuantity);
     }
 
     private OrderItem getSingleAddToCart(OrderItemViewModel orderItemBySalesOrderId, int inputQuantity) {
