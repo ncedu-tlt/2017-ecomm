@@ -50,6 +50,10 @@ public class CartServlet extends HttpServlet {
             long userId = UserService.getInstance().getCurrentUserId(request);
             List<SalesOrderViewModel> salesOrderList = ShoppingCartService.getInstance()
                     .getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
+            for(SalesOrderViewModel salesOrder : salesOrderList ){
+                System.out.println("Status name: " + salesOrder.getStatusName());
+                System.out.println("Sales order id:" + salesOrder.getSalesOrderId());
+            }
             if (salesOrderList.isEmpty()){
                 request.setAttribute("salesOrderListIsEmpty", "Empty");
             }else {
