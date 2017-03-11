@@ -7,7 +7,9 @@
                 Login
             </h2>
             <div>
-                ${requestScope.registration}
+                    <c:if test='${requestScope.registration == "reg_success"}'>
+                        Registration success! Please sign in
+                    </c:if>
             </div>
             <form class="ui equal dividing width form" action="${pageContext.request.contextPath}/login" method="post">
                 <div class="field">

@@ -69,7 +69,7 @@ public class RegistrationServlet extends HttpServlet {
                 .build();
         getDAOFactory().getUserDAO().addUser(user);
 
-        req.setAttribute(REGISTRATION, "Registration success! Please sign in");
+        req.setAttribute(REGISTRATION, "reg_success");
         req.getRequestDispatcher(Configuration.getProperty("page.login")).forward(req, resp);
     }
 
