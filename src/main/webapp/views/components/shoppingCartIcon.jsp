@@ -13,7 +13,10 @@
     </button>
 </div>
 <script>
-    window.frm.components.init('ShoppingCartIconComponent', '.jsShoppingCartIconComponent');
+    window.frm.components.init('ShoppingCartIconComponent', '.jsShoppingCartIconComponent', {
+        baseIconUrl: '${pageContext.request.contextPath}'
+    });
+
 </script>
 
 

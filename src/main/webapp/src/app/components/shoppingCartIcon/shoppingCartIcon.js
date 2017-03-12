@@ -12,18 +12,18 @@
                     closable: false
                 });
                 jsDimmer.dimmer('show');
-                $.post('/addToShoppingCart',
+                $.post(this.params.baseIconUrl + '/addToShoppingCart',
                     {productId: productIdParam},
                     function (result) {
                         shoppingCartIcon.text(result);
                         shoppingCartIcon.transition('jiggle');
-                    }).done(function () {
+                    }.bind(this)).done(function () {
                         jsDimmer.dimmer('hide');
                     }).
                     fail(function() {
-                        window.location.replace('/login');
-                    });
-            });
+                        window.location.replace(this.params.baseIconUrl + '/login');
+                    }.bind(this));
+            }.bind(this));
         },
         showQuantityIfHave: function (shoppingCartIcon) {
             if (shoppingCartIcon.html().trim() == '') {

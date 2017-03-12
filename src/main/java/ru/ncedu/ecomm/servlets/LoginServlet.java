@@ -38,7 +38,6 @@ public class LoginServlet extends HttpServlet {
         if (user != null && user.getPassword().equals(passwordDigest)) {
             session.setAttribute("userId", user.getId());
             session.setAttribute("userRoleId", user.getRoleId());
-            req.setAttribute("answer", "User was found");
             redirectToPage(req, resp, Configuration.getProperty("servlet.home"));
         } else {
             req.setAttribute("answer", "Uncorrect user! Check email and password");

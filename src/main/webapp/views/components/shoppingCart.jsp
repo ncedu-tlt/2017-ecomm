@@ -36,7 +36,7 @@
                         <c:forEach var="itemOrder" items="${salesOrder.getOrderItems()}">
                             <div class="item">
                                 <div class="ui small image">
-                                    <img src="${itemOrder.getImgUrl()}">
+                                    <img src="${pageContext.request.contextPath}${itemOrder.getImgUrl()}">
                                 </div>
                                 <div class="middle aligned content">
                                     <div class="header">
@@ -143,5 +143,7 @@
 </div>
 
 <script>
-    window.frm.components.init('ShoppingCartComponent', '.jsShoppingCartComponent');
+    window.frm.components.init('ShoppingCartComponent', '.jsShoppingCartComponent', {
+        shoppingCartUrl: '${pageContext.request.contextPath}'
+    });
 </script>

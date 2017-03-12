@@ -11,7 +11,7 @@
                 </div>
                 <p>Your Order was submitted</p>
             </div>
-            <button class="ui secondary button" onclick="window.location.href = '/home'">
+            <button class="ui secondary button" onclick="window.location.href = '${pageContext.request.contextPath}' + '/home'">
                 Okay
             </button>
         </div>

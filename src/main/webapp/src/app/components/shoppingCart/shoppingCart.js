@@ -11,6 +11,7 @@
             var clear;
             var globalInput = $this.find('.jsInput');
             var globalPrice = $this.find('.jsPrice');
+            var globalUrl = this.params.shoppingCartUrl;
 
             minus.click(function () {
                 var input = $(this).parent().find('.jsInput');
@@ -28,7 +29,7 @@
                     input.val(count);
                     clearTimeout(clear);
                     clear = setTimeout(function () {
-                        $.post('/cart', {input: input.val(), product: productId, salesOrder: salesOrderId});
+                        $.post(globalUrl + '/cart', {input: input.val(), product: productId, salesOrder: salesOrderId});
                     }, 5000);
                 }
                 input.change();
@@ -53,7 +54,7 @@
                 }
                 clearTimeout(clear);
                 clear = setTimeout(function () {
-                    $.post('/cart', {input: input.val(), product: productId, salesOrder: salesOrderId});
+                    $.post(globalUrl + '/cart', {input: input.val(), product: productId, salesOrder: salesOrderId});
                 }, 5000);
                 input.change();
                 price.change();

@@ -18,6 +18,8 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
+import static ru.ncedu.ecomm.utils.RedirectUtil.redirectToPage;
+
 @WebServlet(name = "CartServlet", urlPatterns = {"/cart"})
 public class CartServlet extends HttpServlet {
 
@@ -91,7 +93,7 @@ public class CartServlet extends HttpServlet {
                     }
                     case "checkout": {
                         setOrderStatusId(userId);
-                        response.sendRedirect(Configuration.getProperty("page.submitOrder"));
+                        redirectToPage(request, response, Configuration.getProperty("page.submitOrder"));
                         break;
                     }
                 }
