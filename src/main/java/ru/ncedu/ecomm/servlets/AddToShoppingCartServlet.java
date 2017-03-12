@@ -24,8 +24,16 @@ public class AddToShoppingCartServlet extends HttpServlet {
         } else {
             long userId = UserService.getInstance().getCurrentUserId(req);
             long productId = Long.parseLong(req.getParameter("productId"));
-            AddToCart(userId, productId);
+            addToCart(userId, productId);
             displayQuantityOnPage(userId, resp);
+        }
+    }
+
+    private void addToCart(long userId, long productId) throws IOException {
+        try {
+            ShoppingCartService.getInstance().addToShoppingCart(userId, productId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -35,14 +43,6 @@ public class AddToShoppingCartServlet extends HttpServlet {
             PrintWriter out = resp.getWriter();
             out.println(quantity);
         } catch (SQLException | IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void AddToCart(long userId, long productId) throws IOException {
-        try {
-            ShoppingCartService.getInstance().addToShoppingCart(userId, productId);
-        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

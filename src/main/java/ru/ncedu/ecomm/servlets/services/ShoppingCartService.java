@@ -16,6 +16,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
@@ -35,24 +36,26 @@ public class ShoppingCartService {
     }
 
     public void addToShoppingCart(long userId, long productId) throws SQLException {
-        long salesOrderId = getSalesOrderId(userId);
-        if (salesOrderId < 0) {
-            addNewSalesOrder(userId);
-            addProductToOrderItem(productId, salesOrderId);
-        } else {
-            addProductToOrderItem(productId, salesOrderId);
-        }
+        Long salesOrderId = getSalesOrderId(userId);
+        do {
+            if (Objects.isNull(salesOrderId)) {
+                addNewSalesOrder(userId);
+            } else {
+                addProductToOrderItem(productId, salesOrderId);
+            }
+        } while (salesOrderId == null);
     }
 
-    public long getSalesOrderId(long userId) throws SQLException {
-        List<SalesOrderViewModel> salesOrders = getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
-        long salesOrderId = -1;
-        for (SalesOrderViewModel salesOrder : salesOrders) {
-            if (salesOrder.getUserId() == userId) {
-                salesOrderId = salesOrder.getSalesOrderId();
-            }
-        }
-        return salesOrderId;
+    public Long getSalesOrderId(long userId) throws SQLException {
+        SalesOrder salesOrderByUserId = salesOrderByUserId(userId);
+        return salesOrderByUserId.getSalesOrderId();
+    }
+
+    private SalesOrder salesOrderByUserId(long userId) {
+        List<SalesOrder> salesOrderList =
+                getSalesOrder(EnumOrderStatus.ENTERING.getStatus(), userId);
+        final int FIRST_INDEX = 0;
+        return salesOrderList.get(FIRST_INDEX);
     }
 
     /**
