@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Objects;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
@@ -20,7 +21,9 @@ public class AddToShoppingCartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Boolean userInSystem = UserService.getInstance().isUserAuthorized(req);
         if (!userInSystem) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            resp.setStatus(500);
+            PrintWriter out = resp.getWriter();
+            out.println("error");
         } else {
             long userId = UserService.getInstance().getCurrentUserId(req);
             long productId = Long.parseLong(req.getParameter("productId"));
@@ -39,16 +42,24 @@ public class AddToShoppingCartServlet extends HttpServlet {
 
     private void displayQuantityOnPage(long userId, HttpServletResponse resp) {
         try {
-            long quantity = getQuantity(userId);
-            PrintWriter out = resp.getWriter();
-            out.println(quantity);
+            Long quantity = getQuantity(userId);
+            if (Objects.isNull(quantity)) {
+                throw new RuntimeException();
+            } else {
+                PrintWriter out = resp.getWriter();
+                out.println(quantity);
+            }
         } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private long getQuantity(long userId) throws SQLException {
+    private Long getQuantity(long userId) throws SQLException {
         Long salesOrderId = ShoppingCartService.getInstance().getSalesOrderId(userId);
-        return getDAOFactory().getOrderItemsDAO().getProductsBySalesOrderId(salesOrderId);
+        if (Objects.isNull(salesOrderId)) {
+            return null;
+        } else {
+            return getDAOFactory().getOrderItemsDAO().getQuantityBySalesOrderId(salesOrderId);
+        }
     }
 }
