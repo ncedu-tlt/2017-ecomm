@@ -7,22 +7,25 @@
             var shoppingCartIcon = this.content.find('.jsShoppingCartIcon');
             this.showQuantityIfHave(shoppingCartIcon);
             frm.events.on('addToCart', function (productIdParam) {
-                var jsDimmer = $('#jsDimmerAdd');
+                var jsDimmer = this.content.find('#jsDimmerAdd');
                 jsDimmer.dimmer({
                     closable: false
                 });
                 jsDimmer.dimmer('show');
-                $.post(this.params.baseIconUrl + '/addToShoppingCart',
-                    {productId: productIdParam},
-                    function (result) {
+                $.ajax({
+                    url: this.params.baseIconUrl + '/addToShoppingCart',
+                    type: 'POST',
+                    data: {productId: productIdParam},
+                    success: function (result) {
                         shoppingCartIcon.text(result);
                         shoppingCartIcon.transition('jiggle');
-                    }.bind(this)).done(function () {
-                        jsDimmer.dimmer('hide');
-                    }).
-                    fail(function() {
+                    },
+                    error: function () {
                         window.location.replace(this.params.baseIconUrl + '/login');
-                    }.bind(this));
+                    }.bind(this)
+                }).done(function () {
+                    jsDimmer.dimmer('hide');
+                });
             }.bind(this));
         },
         showQuantityIfHave: function (shoppingCartIcon) {
