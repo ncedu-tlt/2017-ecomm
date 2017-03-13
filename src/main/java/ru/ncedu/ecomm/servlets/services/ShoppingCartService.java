@@ -48,14 +48,26 @@ public class ShoppingCartService {
 
     public Long getSalesOrderId(long userId) throws SQLException {
         SalesOrder salesOrderByUserId = salesOrderByUserId(userId);
-        return salesOrderByUserId.getSalesOrderId();
+        if (Objects.isNull(salesOrderByUserId)) {
+            return null;
+        } else {
+            return salesOrderByUserId.getSalesOrderId();
+        }
     }
 
     private SalesOrder salesOrderByUserId(long userId) {
         List<SalesOrder> salesOrderList =
                 getSalesOrder(EnumOrderStatus.ENTERING.getStatus(), userId);
-        final int FIRST_INDEX = 0;
-        return salesOrderList.get(FIRST_INDEX);
+        if (Objects.isNull(salesOrderList)) {
+            return null;
+        } else {
+            final int FIRST_INDEX = 0;
+            if (salesOrderList.size() == 0) {
+                return null;
+            } else {
+                return salesOrderList.get(FIRST_INDEX);
+            }
+        }
     }
 
     /**
@@ -346,7 +358,12 @@ public class ShoppingCartService {
     }
 
     private List<SalesOrder> getSalesOrder(long orderStatusId, long userId) {
-        return DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderByOrderStatusId(orderStatusId, userId);
+        List<SalesOrder> salesOrders = DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderByOrderStatusId(orderStatusId, userId);
+        if (Objects.isNull(salesOrders)) {
+            return null;
+        } else {
+            return salesOrders;
+        }
     }
 
     private List<SalesOrder> getSalesOrderByUserId(long userId) {

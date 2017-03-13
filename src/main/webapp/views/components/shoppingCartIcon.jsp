@@ -16,7 +16,6 @@
     window.frm.components.init('ShoppingCartIconComponent', '.jsShoppingCartIconComponent', {
         baseIconUrl: '${pageContext.request.contextPath}'
     });
-
 </script>
 
 
