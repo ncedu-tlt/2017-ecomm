@@ -166,7 +166,7 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
     }
 
     @Override
-    public long getProductsBySalesOrderId(long salesOrderId) {
+    public long getQuantityBySalesOrderId(long salesOrderId) {
         long quantityProducts = 0;
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(

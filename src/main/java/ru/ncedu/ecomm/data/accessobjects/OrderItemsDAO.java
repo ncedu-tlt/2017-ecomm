@@ -18,6 +18,6 @@ public interface OrderItemsDAO {
 
     void deleteOrderItem(OrderItem orderItem);
 
-    long getProductsBySalesOrderId(long salesOrderId);
+    long getQuantityBySalesOrderId(long salesOrderId);
 
 }
