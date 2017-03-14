@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import org.apache.log4j.Logger;
 
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
@@ -24,6 +25,7 @@ public class RegistrationServlet extends HttpServlet {
     private static final String PASSWORD = "password";
     private static final String CHECK_PASSWORD = "checkPassword";
     private static final String REGISTRATION = "registration";
+    private static final Logger LOG = Logger.getLogger(String.valueOf(RegistrationServlet.class));
 
 
     @Override
@@ -68,6 +70,7 @@ public class RegistrationServlet extends HttpServlet {
                 .setRoleId(ROLE_USER)
                 .build();
         getDAOFactory().getUserDAO().addUser(user);
+        LOG.error("smt");
 
         req.setAttribute(REGISTRATION, "reg_success");
         req.getRequestDispatcher(Configuration.getProperty("page.login")).forward(req, resp);
