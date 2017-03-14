@@ -11,6 +11,11 @@
                 </c:if>
             </div>
     </button>
+    <div class="ui page dimmer jsDimmerAdd">
+        <div class="content">
+            <div class="ui text loader">Loading</div>
+        </div>
+    </div>
 </div>
 <script>
     window.frm.components.init('ShoppingCartIconComponent', '.jsShoppingCartIconComponent', {

@@ -69,11 +69,6 @@
         </c:forEach>
     </div>
 </c:forEach>
-<div class="ui page dimmer" id="jsDimmerAdd">
-    <div class="content">
-        <div class="ui text loader">Loading</div>
-    </div>
-</div>
 </div>
 
 <script>

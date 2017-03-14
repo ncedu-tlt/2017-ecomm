@@ -7,7 +7,7 @@
             var shoppingCartIcon = this.content.find('.jsShoppingCartIcon');
             this.showQuantityIfHave(shoppingCartIcon);
             frm.events.on('addToCart', function (productIdParam) {
-                var jsDimmer = $('#jsDimmerAdd');
+                var jsDimmer = this.content.find('.jsDimmerAdd');
                 jsDimmer.dimmer({
                     closable: false
                 });
