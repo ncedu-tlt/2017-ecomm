@@ -1,8 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<c:forEach var="category" items="${requestScope.categoriesForView}">
-    <div class="ui container jsProductListComponent main-content" style="margin: 1.5em 0;">
-    <h2 class="ui center aligned header horizontal divider">
+    <div class="ui container jsProductListComponent main-content" >
+        <c:forEach var="category" items="${requestScope.categoriesForView}">
+        <h2 class="ui center aligned header horizontal divider">
         <c:if test="${category.getId() == null}">
             <c:choose>
                 <c:when test="${category.getName() == 'Search'}">
@@ -69,7 +69,6 @@
         </c:forEach>
     </div>
 </c:forEach>
-<p>${requestScope.max}</p>
 <div class="ui page dimmer" id="jsDimmerAdd">
     <div class="content">
         <div class="ui text loader">Loading</div>
