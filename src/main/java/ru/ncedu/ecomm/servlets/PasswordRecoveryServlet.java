@@ -40,7 +40,6 @@ public class PasswordRecoveryServlet extends HttpServlet {
     }
 
 
-    //TODO: по хорошему бы вынести это в отдельный файл
     private String getTextHtml(String toEmail, String recoveryHash) {
         return "<p>Please change your password in here:</p>" +
                 "<a href='https://ncedu-ecomm-dev.herokuapp.com/passwordChange?email="
