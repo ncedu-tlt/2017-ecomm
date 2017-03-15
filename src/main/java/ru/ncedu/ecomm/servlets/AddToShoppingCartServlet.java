@@ -20,15 +20,15 @@ public class AddToShoppingCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Boolean userInSystem = UserService.getInstance().isUserAuthorized(req);
-        if (!userInSystem) {
-            resp.setStatus(500);
-            PrintWriter out = resp.getWriter();
-            out.println("error");
-        } else {
+        if (userInSystem) {
             long userId = UserService.getInstance().getCurrentUserId(req);
             long productId = Long.parseLong(req.getParameter("productId"));
             addToCart(userId, productId);
             displayQuantityOnPage(userId, resp);
+        } else {
+            resp.setStatus(500);
+            PrintWriter out = resp.getWriter();
+            out.println("error");
         }
     }
 

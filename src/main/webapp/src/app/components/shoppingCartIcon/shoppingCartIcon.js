@@ -21,12 +21,12 @@
                 shoppingCartIcon.transition('jiggle');
             }
         },
-        dimmerConfig: function(jsDimmer) {
+        dimmerConfig: function (jsDimmer) {
             jsDimmer.dimmer({
                 closable: false
             });
         },
-        ajaxRequest: function(productIdParam, shoppingCartIcon, jsDimmer) {
+        ajaxRequest: function (productIdParam, shoppingCartIcon, jsDimmer) {
             $.ajax({
                 url: this.params.baseIconUrl + '/addToShoppingCart',
                 type: 'POST',

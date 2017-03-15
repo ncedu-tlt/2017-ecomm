@@ -35,11 +35,15 @@ public class ShoppingCartService {
         return instance;
     }
 
+    /**
+     * @param userId    - из этого параметра мы получим salesOrderId или создадим новый salesOrder
+     * @param productId - продукт, который добавится в базу
+     */
     public void addToShoppingCart(long userId, long productId) throws SQLException {
         Long salesOrderId = getSalesOrderId(userId);
         if (Objects.isNull(salesOrderId)) {
-            addNewSalesOrder(userId);
-            salesOrderId = getSalesOrderId(userId);
+            SalesOrder newSalesOrder = createAndGetNewSalesOrder(userId);
+            salesOrderId = newSalesOrder.getSalesOrderId();
             addProductToOrderItem(productId, salesOrderId);
         } else {
             addProductToOrderItem(productId, salesOrderId);
@@ -47,7 +51,7 @@ public class ShoppingCartService {
     }
 
     public Long getSalesOrderId(long userId) throws SQLException {
-        SalesOrder salesOrderByUserId = salesOrderByUserId(userId);
+        SalesOrder salesOrderByUserId = getSalesOrderFromCollection(userId);
         if (Objects.isNull(salesOrderByUserId)) {
             return null;
         } else {
@@ -55,19 +59,19 @@ public class ShoppingCartService {
         }
     }
 
-    private SalesOrder salesOrderByUserId(long userId) {
+    private SalesOrder getSalesOrderFromCollection(long userId) {
         List<SalesOrder> salesOrderList =
                 getSalesOrder(EnumOrderStatus.ENTERING.getStatus(), userId);
-        if (Objects.isNull(salesOrderList)) {
+        if (Objects.isNull(salesOrderList) || salesOrderList.size() == 0) {
             return null;
         } else {
-            int FIRST_INDEX = 0;
-            if (salesOrderList.size() == 0) {
-                return null;
-            } else {
-                return salesOrderList.get(FIRST_INDEX);
-            }
+            return getDesiredSalesOrder(salesOrderList);
         }
+    }
+
+    private SalesOrder getDesiredSalesOrder(List<SalesOrder> salesOrderList) {
+        int FIRST_INDEX = 0;
+        return salesOrderList.get(FIRST_INDEX);
     }
 
     /**
@@ -75,17 +79,16 @@ public class ShoppingCartService {
      * Используется при любом изменении количества товара в корзине.
      *
      * @param inputQuantity нужен для задания требуемого количества товара
-     *                      для изменения. В случае изменении количества товара
-     *                      из корзины, может принимать значения больше 1.
+     *                      для изменения.
      */
     public void updateQuantity(long salesOrderId, int inputQuantity, long productId) throws SQLException {
         List<OrderItemViewModel> orderItems = getOrderItemModelList(salesOrderId);
         OrderItemViewModel orderItemBySalesOrderId = getOrderItemBySalesOrderId(productId, salesOrderId, orderItems);
-        if (orderItemBySalesOrderId != null) {
+        if (Objects.isNull(orderItemBySalesOrderId)) {
+            System.out.println("Error of update quantity");
+        } else {
             orderItemBySalesOrderId.setQuantity(inputQuantity);
             changeQuantityOrderItem(orderItemBySalesOrderId, inputQuantity, false);
-        } else {
-            System.out.println("Error of update quantity");
         }
     }
 
@@ -96,7 +99,7 @@ public class ShoppingCartService {
             addNewOrderItem(productId, salesOrderId);
         } else {
             try {
-                final int INPUT_QUANTITY_CHANGE = 1;
+                int INPUT_QUANTITY_CHANGE = 1;
                 changeQuantityOrderItem(orderItemBySalesOrderId, INPUT_QUANTITY_CHANGE, true);
             } catch (NullPointerException e) {
                 throw new RuntimeException(e);
@@ -179,7 +182,7 @@ public class ShoppingCartService {
     }
 
     private OrderItem addToOrderItem(long productId, long salesOrderId) throws SQLException {
-        final int minQuantity = 1;
+        int minQuantity = 1;
 
         OrderItem orderItem = new OrderItem();
         orderItem.setProductId(productId);
@@ -190,12 +193,12 @@ public class ShoppingCartService {
         return orderItem;
     }
 
-    private void addNewSalesOrder(long userId) {
-        SalesOrder salesOrder = addToSalesOrder(userId);
-        getDAOFactory().getSalesOrderDAO().addSalesOrder(salesOrder);
+    private SalesOrder createAndGetNewSalesOrder(long userId) {
+        SalesOrder salesOrder = getSalesOrderByEnteringStatus(userId);
+        return getDAOFactory().getSalesOrderDAO().addSalesOrder(salesOrder);
     }
 
-    private SalesOrder addToSalesOrder(long userId) {
+    private SalesOrder getSalesOrderByEnteringStatus(long userId) {
         SalesOrder saleOrder = new SalesOrder();
         Date creationDate = new Date(System.currentTimeMillis());
 
