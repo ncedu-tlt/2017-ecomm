@@ -37,13 +37,11 @@ public class ShoppingCartService {
 
     public void addToShoppingCart(long userId, long productId) throws SQLException {
         Long salesOrderId = getSalesOrderId(userId);
-        do {
             if (Objects.isNull(salesOrderId)) {
                 addNewSalesOrder(userId);
             } else {
                 addProductToOrderItem(productId, salesOrderId);
             }
-        } while (salesOrderId == null);
     }
 
     public Long getSalesOrderId(long userId) throws SQLException {
