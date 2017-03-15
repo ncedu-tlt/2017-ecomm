@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 import static ru.ncedu.ecomm.utils.RedirectUtil.redirectToPage;
 
@@ -52,9 +53,9 @@ public class CartServlet extends HttpServlet {
             long userId = UserService.getInstance().getCurrentUserId(request);
             List<SalesOrderViewModel> salesOrderList = ShoppingCartService.getInstance()
                     .getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
-            if (salesOrderList.isEmpty()){
+            if (salesOrderList.isEmpty() || Objects.isNull(salesOrderList)) {
                 request.setAttribute("salesOrderListIsEmpty", "Empty");
-            }else {
+            } else {
                 request.setAttribute("salesOrderList", salesOrderList);
             }
             request.getRequestDispatcher(Configuration.getProperty("page.cart")).forward(request, response);
@@ -135,7 +136,7 @@ public class CartServlet extends HttpServlet {
                     Long.parseLong(request.getParameter("salesOrderId")),
                     Integer.parseInt(request.getParameter("quantityValue")),
                     Long.parseLong(request.getParameter("productId")));
-        }else {
+        } else {
             ShoppingCartService.getInstance().deletedProductInOrderItemDataBase(
                     Long.parseLong(request.getParameter("productId")),
                     Long.parseLong(request.getParameter("salesOrderId")));

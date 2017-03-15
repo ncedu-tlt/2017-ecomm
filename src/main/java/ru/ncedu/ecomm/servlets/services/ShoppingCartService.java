@@ -37,11 +37,13 @@ public class ShoppingCartService {
 
     public void addToShoppingCart(long userId, long productId) throws SQLException {
         Long salesOrderId = getSalesOrderId(userId);
-            if (Objects.isNull(salesOrderId)) {
-                addNewSalesOrder(userId);
-            } else {
-                addProductToOrderItem(productId, salesOrderId);
-            }
+        if (Objects.isNull(salesOrderId)) {
+            addNewSalesOrder(userId);
+            salesOrderId = getSalesOrderId(userId);
+            addProductToOrderItem(productId, salesOrderId);
+        } else {
+            addProductToOrderItem(productId, salesOrderId);
+        }
     }
 
     public Long getSalesOrderId(long userId) throws SQLException {
@@ -59,7 +61,7 @@ public class ShoppingCartService {
         if (Objects.isNull(salesOrderList)) {
             return null;
         } else {
-            final int FIRST_INDEX = 0;
+            int FIRST_INDEX = 0;
             if (salesOrderList.size() == 0) {
                 return null;
             } else {
@@ -207,19 +209,23 @@ public class ShoppingCartService {
     public List<SalesOrderViewModel> getSalesOrderModelList(long orderStatusId, long userId) throws SQLException {
         List<SalesOrderViewModel> salesOrderViewModels = new ArrayList<>();
         List<SalesOrder> salesOrders = getSalesOrder(orderStatusId, userId);
-        for (SalesOrder salesOrder : salesOrders) {
-            SalesOrderViewModel salesOrderViewModel = new SalesOrderViewBuilder()
-                    .setUserId(salesOrder.getUserId())
-                    .setSalesOrderId(salesOrder.getSalesOrderId())
-                    .setCreationDate(salesOrder.getCreationDate())
-                    .setLimit(salesOrder.getLimit())
-                    .setTotalAmount(totalAmount(salesOrder.getSalesOrderId()))
-                    .setOrderItems(relationPriceAndQuantity(salesOrder.getSalesOrderId()))
-                    .setStatusName(getStatusName(salesOrder.getOrderStatusId()))
-                    .build();
-            salesOrderViewModels.add(salesOrderViewModel);
+        if (Objects.isNull(salesOrders)) {
+            return null;
+        } else {
+            for (SalesOrder salesOrder : salesOrders) {
+                SalesOrderViewModel salesOrderViewModel = new SalesOrderViewBuilder()
+                        .setUserId(salesOrder.getUserId())
+                        .setSalesOrderId(salesOrder.getSalesOrderId())
+                        .setCreationDate(salesOrder.getCreationDate())
+                        .setLimit(salesOrder.getLimit())
+                        .setTotalAmount(totalAmount(salesOrder.getSalesOrderId()))
+                        .setOrderItems(relationPriceAndQuantity(salesOrder.getSalesOrderId()))
+                        .setStatusName(getStatusName(salesOrder.getOrderStatusId()))
+                        .build();
+                salesOrderViewModels.add(salesOrderViewModel);
+            }
+            return salesOrderViewModels;
         }
-        return salesOrderViewModels;
     }
 
     public List<SalesOrderViewModel> getSalesOrderModelListByStatusId(long orderStatusId) throws SQLException {

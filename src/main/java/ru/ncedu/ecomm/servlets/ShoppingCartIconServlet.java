@@ -35,7 +35,7 @@ public class ShoppingCartIconServlet extends HttpServlet {
     }
 
     private void showQuantity(HttpServletRequest req) throws ServletException, IOException, SQLException {
-        final int EMPTY_QUANTITY = 0;
+        int EMPTY_QUANTITY = 0;
         HttpSession authorization = req.getSession();
         Long userId = (Long) authorization.getAttribute("userId");
         if (Objects.isNull(userId)) {
@@ -46,7 +46,7 @@ public class ShoppingCartIconServlet extends HttpServlet {
     }
 
     private void showQuantityIfNeed(Long userId, HttpServletRequest req) throws SQLException {
-        final int EMPTY_QUANTITY = 0;
+        int EMPTY_QUANTITY = 0;
         Long quantityProducts = getQuantityProducts(userId);
         if (Objects.isNull(quantityProducts)) {
             req.setAttribute("quantityProducts", EMPTY_QUANTITY);
