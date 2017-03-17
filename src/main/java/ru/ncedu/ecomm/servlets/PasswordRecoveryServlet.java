@@ -4,6 +4,7 @@ package ru.ncedu.ecomm.servlets;
 import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.servlets.services.passwordRecovery.PasswordRecoveryService;
 import ru.ncedu.ecomm.servlets.services.passwordRecovery.SendingMailService;
+import ru.ncedu.ecomm.utils.EmailUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,7 +29,7 @@ public class PasswordRecoveryServlet extends HttpServlet {
 
     private void sendLetterToEmail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String toEmail = req.getParameter("email");
-        if (SendingMailService.getInstance().checkEmail(toEmail)) {
+        if (EmailUtils.checkEmail(toEmail)) {
             String answerFromMailService = getAnswerAndUpdateRecoveryHash(toEmail);
             req.setAttribute("answer", answerFromMailService);
             req.getRequestDispatcher(Configuration.getProperty("page.passwordRecovery")).forward(req, resp);

@@ -2,13 +2,12 @@ package ru.ncedu.ecomm.servlets.services.passwordRecovery;
 
 import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.utils.EmailUtils;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
@@ -37,16 +36,8 @@ public class SendingMailService {
     }
 
     public boolean sendMail(String toEmail, String textHtml) {
-        return checkEmail(toEmail) && searchMailInDatabase(toEmail) && sendLetterToUser(toEmail, textHtml);
+        return EmailUtils.checkEmail(toEmail) && searchMailInDatabase(toEmail) && sendLetterToUser(toEmail, textHtml);
     }
-
-    public boolean checkEmail(String toEmail) {
-        String regPattern = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
-        Pattern patternEmailValidation = Pattern.compile(regPattern, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = patternEmailValidation.matcher(toEmail);
-        return matcher.find();
-    }
-
 
     private boolean searchMailInDatabase(String toEmail) {
         User userByEmail = getDAOFactory().getUserDAO().getUserByEmail(toEmail);
