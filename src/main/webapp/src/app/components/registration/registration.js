@@ -11,12 +11,12 @@
                         email: {
                             rules: [
                                 {
-                                    type: 'email',
-                                    prompt: 'Email is incorrect'
-                                },
-                                {
                                     type: 'empty',
                                     prompt: 'Please enter email'
+                                },
+                                {
+                                    type: 'email',
+                                    prompt: 'Email is incorrect'
                                 }
                             ]
                         },
