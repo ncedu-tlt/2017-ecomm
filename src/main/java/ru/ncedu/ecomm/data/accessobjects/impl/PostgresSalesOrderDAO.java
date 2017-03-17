@@ -8,8 +8,10 @@ import ru.ncedu.ecomm.utils.DBUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 public class PostgresSalesOrderDAO implements SalesOrdersDAO {
+    private static final Logger LOG  = Logger.getLogger(PostgresSalesOrderDAO.class);
     @Override
     public List<SalesOrder> getSalesOrders() {
         List<SalesOrder> salesOrders = new ArrayList<>();
@@ -37,7 +39,9 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                 salesOrders.add(salesOrder);
             }
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return salesOrders;
@@ -60,6 +64,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
+                LOG.info(null);
                 return new SalesOrderBuilder()
                         .setSalesOrderId(resultSet.getLong("sales_order_id"))
                         .setUserId(resultSet.getLong("user_id"))
@@ -70,6 +75,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
             }
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return null;
@@ -104,7 +110,9 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                         .build();
                 salesOrders.add(salesOrder);
             }
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return salesOrders;
@@ -137,7 +145,9 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                         .build();
                 salesOrders.add(salesOrder);
             }
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return salesOrders;
@@ -168,7 +178,9 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                         .build();
                 salesOrders.add(salesOrder);
             }
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return salesOrders;
@@ -197,9 +209,11 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                 salesOrder.setSalesOrderId(salesOrderId);
             }
 
+            LOG.info(null);
             return salesOrder;
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -223,9 +237,11 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
             statement.setLong(5, salesOrder.getSalesOrderId());
             statement.execute();
 
+            LOG.info(null);
             return salesOrder;
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -240,7 +256,9 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
             statement.setLong(1, salesOrder.getSalesOrderId());
             statement.execute();
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }

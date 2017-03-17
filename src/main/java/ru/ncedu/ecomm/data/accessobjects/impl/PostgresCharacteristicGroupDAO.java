@@ -8,8 +8,10 @@ import ru.ncedu.ecomm.utils.DBUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 public class PostgresCharacteristicGroupDAO implements CharacteristicGroupDAO {
+    private static final Logger LOG = Logger.getLogger(PostgresCharacteristicGroupDAO.class);
 
     @Override
     public List<CharacteristicGroup> getCharacteristicGroup() {
@@ -31,8 +33,11 @@ public class PostgresCharacteristicGroupDAO implements CharacteristicGroupDAO {
 
                 characteristicGroups.add(characteristicGroup);
             }
+
+            LOG.info(null);
             return characteristicGroups;
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -50,6 +55,8 @@ public class PostgresCharacteristicGroupDAO implements CharacteristicGroupDAO {
             statement.setLong(1, characteristicGroupId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
+
+                LOG.info(null);
                 return new CharacteristicGroupBuilder()
                         .setCharacteristicGroupId(resultSet.getLong("characteristic_group_id"))
                         .setCharacteristicGroupName(resultSet.getString("name"))
@@ -57,6 +64,7 @@ public class PostgresCharacteristicGroupDAO implements CharacteristicGroupDAO {
             }
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return null;
@@ -81,8 +89,10 @@ public class PostgresCharacteristicGroupDAO implements CharacteristicGroupDAO {
                 characteristicGroup.setCharacteristicGroupId(statement.getResultSet().getLong("characteristic_group_id"));
             }
 
+            LOG.info(null);
             return characteristicGroup;
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -101,9 +111,11 @@ public class PostgresCharacteristicGroupDAO implements CharacteristicGroupDAO {
             statement.setLong(2, characteristicGroup.getCharacteristicGroupId());
             statement.execute();
 
+            LOG.info(null);
             return characteristicGroup;
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -118,7 +130,9 @@ public class PostgresCharacteristicGroupDAO implements CharacteristicGroupDAO {
             statement.setLong(1, characteristicGroup.getCharacteristicGroupId());
             statement.execute();
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }

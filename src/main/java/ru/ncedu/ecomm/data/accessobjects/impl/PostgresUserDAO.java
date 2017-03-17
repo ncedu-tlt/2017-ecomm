@@ -8,8 +8,11 @@ import ru.ncedu.ecomm.utils.DBUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 public class PostgresUserDAO implements UserDAO {
+    private static final Logger LOG  = Logger.getLogger(PostgresUserDAO.class);
+
     @Override
     public List<User> getUsers() {
         List<User> users = new ArrayList<>();
@@ -46,7 +49,9 @@ public class PostgresUserDAO implements UserDAO {
 
                 users.add(user);
             }
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return users;
@@ -74,6 +79,7 @@ public class PostgresUserDAO implements UserDAO {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
+                LOG.info(null);
                 return new UserBuilder()
                         .setUserId(resultSet.getLong("user_id"))
                         .setRoleId(resultSet.getLong("role_id"))
@@ -88,6 +94,7 @@ public class PostgresUserDAO implements UserDAO {
                         .build();
             }
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return null;
@@ -115,6 +122,7 @@ public class PostgresUserDAO implements UserDAO {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()){
 
+                LOG.info(null);
                 return new UserBuilder()
                         .setUserId(resultSet.getLong("user_id"))
                         .setRoleId(resultSet.getLong("role_id"))
@@ -129,6 +137,7 @@ public class PostgresUserDAO implements UserDAO {
                         .build();
             }
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return null;
@@ -173,7 +182,9 @@ public class PostgresUserDAO implements UserDAO {
 
                 users.add(user);
             }
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return users;
@@ -201,6 +212,7 @@ public class PostgresUserDAO implements UserDAO {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()){
 
+                LOG.info(null);
                 return new UserBuilder()
                         .setUserId(resultSet.getLong("user_id"))
                         .setRoleId(resultSet.getLong("role_id"))
@@ -215,6 +227,7 @@ public class PostgresUserDAO implements UserDAO {
                         .build();
             }
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return null;
@@ -248,10 +261,13 @@ public class PostgresUserDAO implements UserDAO {
             ResultSet resultSet = statement.getResultSet();
             if (resultSet.next()) {
                 user.setId(resultSet.getLong(1));
+
+                LOG.info(null);
                 return user;
             }
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return user;
@@ -281,8 +297,10 @@ public class PostgresUserDAO implements UserDAO {
             statement.setLong(8, user.getId());
             statement.execute();
 
+            LOG.info(null);
             return user;
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -297,7 +315,9 @@ public class PostgresUserDAO implements UserDAO {
             statement.setLong(1, user.getId());
             statement.execute();
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }

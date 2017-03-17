@@ -10,8 +10,10 @@ import ru.ncedu.ecomm.utils.DBUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 public class PostgresReviewsDAO implements ReviewsDAO {
+    private static final Logger LOG  = Logger.getLogger(PostgresReviewsDAO.class);
 
     @Override
     public List<Review> getReviews() {
@@ -39,7 +41,9 @@ public class PostgresReviewsDAO implements ReviewsDAO {
                 reviews.add(review);
             }
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return reviews;
@@ -64,8 +68,10 @@ public class PostgresReviewsDAO implements ReviewsDAO {
             statement.setInt(5, review.getRating());
             statement.execute();
 
+            LOG.info(null);
             return review;
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -89,8 +95,10 @@ public class PostgresReviewsDAO implements ReviewsDAO {
             statement.setLong(5, review.getUserId());
             statement.execute();
 
+            LOG.info(null);
             return review;
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -118,6 +126,7 @@ public class PostgresReviewsDAO implements ReviewsDAO {
 
             if (resultSet.next()) {
 
+                LOG.info(null);
                 return new ReviewBuilder()
                         .setCreationDate(resultSet.getDate("creation_date"))
                         .setDescription(resultSet.getString("description"))
@@ -127,6 +136,7 @@ public class PostgresReviewsDAO implements ReviewsDAO {
                         .build();
             }
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return null;
@@ -145,7 +155,9 @@ public class PostgresReviewsDAO implements ReviewsDAO {
             statement.setLong(2, review.getUserId());
             statement.execute();
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -180,9 +192,12 @@ public class PostgresReviewsDAO implements ReviewsDAO {
 
                 reviews.add(review);
             }
+
+            LOG.info(null);
             return reviews;
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -216,9 +231,11 @@ public class PostgresReviewsDAO implements ReviewsDAO {
 
                 reviews.add(review);
             }
+            LOG.info(null);
             return reviews;
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -245,7 +262,10 @@ public class PostgresReviewsDAO implements ReviewsDAO {
 
                 raitings.add(raiting);
             }
+
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return raitings;
@@ -269,12 +289,15 @@ public class PostgresReviewsDAO implements ReviewsDAO {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
+
+                LOG.info(null);
                 return new RatingBuilder()
                         .setProductId(resultSet.getLong("product_id"))
                         .setRating(resultSet.getInt("average_rating"))
                         .build();
             }
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
 

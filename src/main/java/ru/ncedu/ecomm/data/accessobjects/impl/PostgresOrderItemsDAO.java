@@ -8,8 +8,11 @@ import ru.ncedu.ecomm.utils.DBUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 public class PostgresOrderItemsDAO implements OrderItemsDAO {
+    private static final Logger LOG  = Logger.getLogger(PostgresOrderItemsDAO.class);
+
     @Override
     public List<OrderItem> getOrderItems() {
 
@@ -37,7 +40,9 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
                 orderItems.add(orderItem);
             }
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return orderItems;
@@ -66,7 +71,10 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
                         .build();
                 orderItemsBySalesOrderId.add(orderItem);
             }
+
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return orderItemsBySalesOrderId;
@@ -86,8 +94,10 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
             statement.setLong(4, orderItem.getStandardPrice());
             statement.execute();
 
+            LOG.info(null);
             return orderItem;
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -110,9 +120,11 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
             statement.setLong(4, orderItem.getSalesOrderId());
             statement.execute();
 
+            LOG.info(null);
             return orderItem;
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -142,8 +154,11 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
                         .setStandardPrice(resultSet.getLong("standard_price"))
                         .build();
             }
+
+            LOG.info(null);
             return orderItem;
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -160,7 +175,9 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
             statement.setLong(2, orderItem.getSalesOrderId());
             statement.execute();
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -183,7 +200,10 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
             while (resultSet.next()) {
                 quantityProducts = resultSet.getLong("sum");
             }
+
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return quantityProducts;

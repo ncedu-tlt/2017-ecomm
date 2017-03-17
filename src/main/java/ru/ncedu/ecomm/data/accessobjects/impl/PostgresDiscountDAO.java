@@ -11,8 +11,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 public class PostgresDiscountDAO implements DiscountDAO {
+    private static final Logger LOG  = Logger.getLogger(PostgresDiscountDAO.class);
+
     @Override
     public List<Discount> getDiscount() {
         List<Discount> discounts = new ArrayList<>();
@@ -36,7 +39,10 @@ public class PostgresDiscountDAO implements DiscountDAO {
 
                 discounts.add(discount);
             }
+
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return discounts;

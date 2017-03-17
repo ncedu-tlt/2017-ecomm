@@ -11,11 +11,13 @@ import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
 import java.util.*;
+import org.apache.log4j.Logger;
 
 public class PostgresProductDAO implements ProductDAO {
 
     private static final int MAX_ITEM_FOR_MAIN_PAGE = 6;
     private static final int MAX_ITEM_FOR_CATEGORY_PAGE = 6;
+    private static final Logger LOG  = Logger.getLogger(PostgresProductDAO.class);
 
     @Override
     public List<Product> getProducts() {
@@ -47,7 +49,10 @@ public class PostgresProductDAO implements ProductDAO {
 
                 products.add(product);
             }
+
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -78,9 +83,12 @@ public class PostgresProductDAO implements ProductDAO {
             ResultSet resultSet = statement.getResultSet();
             if (resultSet.next()) {
                 product.setId(resultSet.getLong(1));
+
+                LOG.info(null);
                 return product;
             }
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return null;
@@ -107,9 +115,11 @@ public class PostgresProductDAO implements ProductDAO {
             statement.setLong(6, product.getProductId());
             statement.execute();
 
+            LOG.info(null);
             return product;
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -125,7 +135,9 @@ public class PostgresProductDAO implements ProductDAO {
             statement.setLong(1, product.getProductId());
             statement.execute();
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.info(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -150,6 +162,8 @@ public class PostgresProductDAO implements ProductDAO {
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
+
+                LOG.info(null);
                 return new ProductBuilder()
                         .setProductId(resultSet.getLong("product_id"))
                         .setCategoryId(resultSet.getLong("category_id"))
@@ -160,6 +174,7 @@ public class PostgresProductDAO implements ProductDAO {
                         .build();
             }
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -198,7 +213,10 @@ public class PostgresProductDAO implements ProductDAO {
                         .build();
                 products.add(product);
             }
+
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return products;
@@ -255,7 +273,10 @@ public class PostgresProductDAO implements ProductDAO {
 
                 products.add(product);
             }
+
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return products;
@@ -293,7 +314,10 @@ public class PostgresProductDAO implements ProductDAO {
 
                 products.add(product);
             }
+
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return products;
@@ -322,7 +346,10 @@ public class PostgresProductDAO implements ProductDAO {
 
                 products.add(product);
             }
+
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return products;
@@ -351,12 +378,15 @@ public class PostgresProductDAO implements ProductDAO {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
+
+                LOG.info(null);
                 return new PriceRangeViewModelBuilder()
                         .setMin(resultSet.getDouble("min"))
                         .setMax(resultSet.getDouble("max"))
                         .build();
             }
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return null;
@@ -431,7 +461,9 @@ public class PostgresProductDAO implements ProductDAO {
                         .build());
             }
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return products;
@@ -470,7 +502,10 @@ public class PostgresProductDAO implements ProductDAO {
 
                 products.add(product);
             }
+
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return products;

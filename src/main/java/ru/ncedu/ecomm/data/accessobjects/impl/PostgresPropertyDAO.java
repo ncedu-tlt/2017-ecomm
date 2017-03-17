@@ -8,9 +8,11 @@ import ru.ncedu.ecomm.utils.DBUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 
 public class PostgresPropertyDAO implements PropertyDAO {
+    private static final Logger LOG  = Logger.getLogger(PostgresPropertyDAO.class);
 
     @Override
     public List<Property> getProperties() {
@@ -32,7 +34,10 @@ public class PostgresPropertyDAO implements PropertyDAO {
 
                 properties.add(property);
             }
+
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return properties;
@@ -53,6 +58,8 @@ public class PostgresPropertyDAO implements PropertyDAO {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
+
+                LOG.info(null);
                 return new PropertyBuilder()
                         .setPropertyId(resultSet.getString("property_id"))
                         .setValue(resultSet.getString("value"))
@@ -60,6 +67,7 @@ public class PostgresPropertyDAO implements PropertyDAO {
 
             }
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return null;
@@ -79,9 +87,11 @@ public class PostgresPropertyDAO implements PropertyDAO {
             statement.setString(2, property.getId());
             statement.execute();
 
+            LOG.info(null);
             return property;
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -97,7 +107,9 @@ public class PostgresPropertyDAO implements PropertyDAO {
             statement.setString(1, property.getId());
             statement.execute();
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -114,9 +126,11 @@ public class PostgresPropertyDAO implements PropertyDAO {
             statement.setString(2, property.getId());
             statement.execute();
 
+            LOG.info(null);
             return property;
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }

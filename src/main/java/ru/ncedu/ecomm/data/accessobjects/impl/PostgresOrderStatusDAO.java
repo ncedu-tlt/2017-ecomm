@@ -9,8 +9,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.apache.log4j.Logger;
 
 public class PostgresOrderStatusDAO implements OrderSratusDAO{
+    private static final Logger LOG  = Logger.getLogger(PostgresOrderStatusDAO.class);
 
     @Override
     public OrderStatus getOrdersStatusById(long oderStatusId) {
@@ -26,12 +28,14 @@ public class PostgresOrderStatusDAO implements OrderSratusDAO{
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()){
+                LOG.info(null);
                 return new OrderStatusBuilder()
                         .setName(resultSet.getString("name"))
                         .setOrderStatusId(resultSet.getLong("order_status_id"))
                         .build();
             }
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             e.printStackTrace();
         }
         return null;

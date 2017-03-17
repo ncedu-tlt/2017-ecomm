@@ -8,8 +8,10 @@ import ru.ncedu.ecomm.utils.DBUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 public class PostgresRoleDAO implements RoleDAO {
+    private static final Logger LOG  = Logger.getLogger(PostgresRoleDAO.class);
 
     @Override
     public List<Role> getRoles() {
@@ -32,7 +34,10 @@ public class PostgresRoleDAO implements RoleDAO {
                 roles.add(role);
             }
 
+            LOG.info(null);
+
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -59,9 +64,12 @@ public class PostgresRoleDAO implements RoleDAO {
                         .setName(resultSet.getString("name"))
                         .setId(resultSet.getLong("role_id"))
                         .build();
+
+                LOG.info(null);
                 return role;
             }
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
 

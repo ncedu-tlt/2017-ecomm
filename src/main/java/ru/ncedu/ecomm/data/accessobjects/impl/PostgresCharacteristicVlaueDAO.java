@@ -8,8 +8,10 @@ import ru.ncedu.ecomm.utils.DBUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
+    private static final Logger LOG = Logger.getLogger(PostgresCharacteristicVlaueDAO.class);
 
     @Override
     public List<CharacteristicValue> getCharacteristicValues() {
@@ -33,7 +35,9 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
                 characteristicValues.add(characteristicValue);
             }
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return characteristicValues;
@@ -64,7 +68,9 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
                 characteristicValuesById.add(characteristicValue);
             }
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -96,7 +102,9 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
                 characteristicValuesByProductId.add(characteristicValue);
             }
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -121,6 +129,7 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
 
+                LOG.info(null);
                 return new CharacteristicValueBuilder()
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
                         .setCharacteristicValue(resultSet.getString("value"))
@@ -129,6 +138,7 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
             }
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -157,7 +167,9 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
                 characteristicValue.setCharacteristicId(statement.getResultSet().getLong(1));
             }
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -179,9 +191,11 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
             statement.setLong(3, characteristicValue.getProductId());
             statement.execute();
 
+            LOG.info(null);
             return characteristicValue;
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -198,7 +212,9 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
             statement.setLong(2, characteristicValue.getProductId());
             statement.execute();
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -238,7 +254,9 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
 
             }
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
 

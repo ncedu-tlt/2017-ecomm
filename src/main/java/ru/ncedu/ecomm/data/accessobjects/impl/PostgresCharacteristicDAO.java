@@ -8,8 +8,10 @@ import ru.ncedu.ecomm.utils.DBUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 public class PostgresCharacteristicDAO implements CharacteristicDAO {
+    private static final Logger LOG = Logger.getLogger(PostgresCharacteristicDAO.class);
 
     @Override
     public List<Characteristic> getCharacteristic() {
@@ -36,7 +38,9 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
                 characteristics.add(characteristic);
             }
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return characteristics;
@@ -73,7 +77,9 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
                 characteristics.add(characteristic);
             }
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             e.printStackTrace();
         }
 
@@ -112,7 +118,9 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
                 characteristics.add(characteristic);
             }
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             e.printStackTrace();
         }
 
@@ -143,9 +151,11 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
                 characteristic.setCharacteristicId(statement.getResultSet().getLong("characteristic_id"));
             }
 
+            LOG.info(null);
             return characteristic;
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -169,6 +179,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
 
+                LOG.info(null);
                 return new CharacteristicBuilder()
                         .setCharacteristicGroupId(resultSet.getLong("characteristic_group_id"))
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
@@ -178,6 +189,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
             }
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return null;
@@ -200,9 +212,11 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
             statement.setLong(4, characteristic.getCharacteristicId());
             statement.execute();
 
+            LOG.info(null);
             return characteristic;
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -218,7 +232,9 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
             statement.setLong(1, characteristic.getCharacteristicId());
             statement.execute();
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -257,7 +273,9 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
                         .build());
             }
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return characteristics;

@@ -8,8 +8,10 @@ import ru.ncedu.ecomm.utils.DBUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 public class PostgresCategoryDAO implements CategoryDAO {
+    private static final Logger LOG = Logger.getLogger(PostgresCategoryDAO.class);
 
     @Override
     public List<Category> getCategories() {
@@ -36,7 +38,10 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
                 categories.add(category);
             }
+
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return categories;
@@ -88,7 +93,10 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
                 categories.add(category);
             }
+
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return categories;
@@ -115,8 +123,11 @@ public class PostgresCategoryDAO implements CategoryDAO {
             if (resultSet.next()) {
                 category.setCategoryId(statement.getResultSet().getLong("category_id"));
             }
+
+            LOG.info(null);
             return category;
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -139,9 +150,11 @@ public class PostgresCategoryDAO implements CategoryDAO {
             statement.setLong(4, category.getCategoryId());
             statement.execute();
 
+            LOG.info(null);
             return category;
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -159,7 +172,9 @@ public class PostgresCategoryDAO implements CategoryDAO {
             statement.setLong(1, category.getCategoryId());
             statement.execute();
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -183,6 +198,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
 
+                LOG.info(null);
                 return new CategoryBuilder()
                         .setCategoryId(resultSet.getLong("category_id"))
                         .setParentId(resultSet.getLong("parent_id"))
@@ -191,6 +207,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
                         .build();
             }
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return null;
@@ -221,7 +238,10 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
                 categories.add(category);
             }
+
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return categories;
@@ -277,7 +297,10 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
                 categories.add(category);
             }
+
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return categories;
@@ -312,7 +335,10 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
                 categories.add(category);
             }
+
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return categories;
@@ -368,7 +394,10 @@ public class PostgresCategoryDAO implements CategoryDAO {
                         .build();
                 categories.add(category);
             }
+
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return categories;

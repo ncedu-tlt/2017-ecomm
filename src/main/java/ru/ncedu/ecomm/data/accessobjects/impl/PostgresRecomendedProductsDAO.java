@@ -8,8 +8,11 @@ import ru.ncedu.ecomm.utils.DBUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 public class PostgresRecomendedProductsDAO implements RecomendedProductsDAO{
+    private static final Logger LOG  = Logger.getLogger(PostgresRecomendedProductsDAO.class);
+
     @Override
     public List<RecomendedProduct> getRecomendedProducts() {
         List<RecomendedProduct> recomendedProducts = new ArrayList<>();
@@ -31,8 +34,10 @@ public class PostgresRecomendedProductsDAO implements RecomendedProductsDAO{
                 recomendedProducts.add(recomendedProduct);
             }
 
+            LOG.info(null);
             return recomendedProducts;
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -50,9 +55,11 @@ public class PostgresRecomendedProductsDAO implements RecomendedProductsDAO{
                 statement.setLong(2, recomendedProduct.getTargetProductId());
                 statement.execute();
 
+                LOG.info(null);
                 return recomendedProduct;
 
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -70,7 +77,9 @@ public class PostgresRecomendedProductsDAO implements RecomendedProductsDAO{
             statement.setLong(2, recomendedProduct.getTargetProductId());
             statement.execute();
 
+            LOG.info(null);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
