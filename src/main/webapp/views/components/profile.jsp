@@ -17,26 +17,45 @@ ${requestScope.username}
             <input type="text" name="email" placeholder="Email" class="jsProfileTextParam"
                    value="${requestScope.email}">
         </div>
-        <div class="field">
+        <div class="field jsPasswordField">
             <label>Password:</label>
             <input type="password" class="jsPassword jsProfileTextParam" name="password" placeholder="Password">
         </div>
-        <div class="field">
-            <input type="password" class="jsPasswordConfirm jsProfileTextParam" name="passwordConfirm" placeholder="Current Password">
+        <div class="field jsPasswordField">
+            <input type="password" class="jsPasswordConfirm jsProfileTextParam" name="passwordConfirm"
+                   placeholder="Current Password">
         </div>
         <button class="ui animated primary button" id="jsSendFormProfileBtn">
-            <div class="visible content">Apply Changes</div>
+            <div class="visible content">Save</div>
             <div class="hidden content">
                 <i class="repeat icon outline"></i>
             </div>
         </button>
+        <button type="button" class="positive ui button jsPasswordCall">Change Password</button>
         <div class="ui error message"></div>
     </form>
     <c:set var="request" scope="session" value="${requestScope.answer}"/>
     <c:if test="${request != null}">
-        <div class="ui message warning ">
-            <p>${requestScope.answer}</p>
-        </div>
+        <c:choose>
+            <c:when test='${requestScope.answer == "success"}'>
+                <div class="ui positive message">
+                    <i class="close icon"></i>
+                    <div class="header">
+                        Success!
+                    </div>
+                    <p>Your profile was change successful!</p>
+                </div>
+            </c:when>
+            <c:when test='${requestScope.answer == "error"}'>
+                <div class="ui positive message">
+                    <i class="close icon"></i>
+                    <div class="header">
+                        Error!
+                    </div>
+                    <p>Your profile could not be edited. Please try again!!</p>
+                </div>
+            </c:when>
+        </c:choose>
     </c:if>
 </div>
 <script>
