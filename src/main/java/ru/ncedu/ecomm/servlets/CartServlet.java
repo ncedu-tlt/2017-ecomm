@@ -122,7 +122,7 @@ public class CartServlet extends HttpServlet {
 
     private void setQuantityInDataBase(HttpServletRequest request) throws SQLException {
         if (request.getParameter("input") != null) {
-            int input = Integer.parseInt(String.valueOf(request.getParameter("input")));
+            int input = Integer.parseInt(request.getParameter("input"));
             long product = Long.parseLong(request.getParameter("product"));
             long sales = Long.parseLong(request.getParameter("salesOrder"));
             ShoppingCartService.getInstance().updateQuantity(sales, input, product);
