@@ -24,7 +24,7 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        checkSalesOrder(req, resp);
+        checkUserInSystem(req, resp);
     }
 
     @Override
@@ -35,14 +35,14 @@ public class CartServlet extends HttpServlet {
     private void updateSalesOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         long userId = UserService.getInstance().getCurrentUserId(request);
         try {
-            formActionOnShoppingCart(request, response, userId);
+            actionsInShoppingCart(request, response, userId);
             setQuantityInDataBase(request);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private void checkSalesOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void checkUserInSystem(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Boolean userInSystem = UserService.getInstance().isUserAuthorized(request);
         if (!userInSystem) {
             redirectToPage(request, response, Configuration.getProperty("page.login"));
@@ -63,12 +63,12 @@ public class CartServlet extends HttpServlet {
         }
     }
 
-    private void formActionOnShoppingCart(HttpServletRequest request, HttpServletResponse response, long userId) throws SQLException {
+    private void actionsInShoppingCart(HttpServletRequest request, HttpServletResponse response, long userId) throws SQLException {
         try {
             if (request.getParameter("submitButton") != null) {
                 switch (request.getParameter("submitButton")) {
                     case "delete": {
-                        ShoppingCartService.getInstance().deletedProductInOrderItemDataBase(
+                        ShoppingCartService.getInstance().deletedProductsInOrderItem(
                                 Long.parseLong(request.getParameter("productId")),
                                 Long.parseLong(request.getParameter("salesOrderId")));
                         showSalesOrder(request, response);
@@ -136,7 +136,7 @@ public class CartServlet extends HttpServlet {
                     Integer.parseInt(request.getParameter("quantityValue")),
                     Long.parseLong(request.getParameter("productId")));
         } else {
-            ShoppingCartService.getInstance().deletedProductInOrderItemDataBase(
+            ShoppingCartService.getInstance().deletedProductsInOrderItem(
                     Long.parseLong(request.getParameter("productId")),
                     Long.parseLong(request.getParameter("salesOrderId")));
         }

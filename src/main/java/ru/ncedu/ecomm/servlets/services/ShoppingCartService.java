@@ -315,7 +315,7 @@ public class ShoppingCartService {
         return orderItemViewModels;
     }
 
-    public void deletedProductInOrderItemDataBase(long productId, long salesOrderId) throws SQLException {
+    public void deletedProductsInOrderItem(long productId, long salesOrderId) throws SQLException {
         OrderItem orderItem = getOrderItem(productId, salesOrderId);
         orderItem.setProductId(productId);
         orderItem.setSalesOrderId(salesOrderId);
