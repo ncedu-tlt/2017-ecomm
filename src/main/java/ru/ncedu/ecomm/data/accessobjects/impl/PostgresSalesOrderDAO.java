@@ -1,5 +1,6 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
+import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.SalesOrdersDAO;
 import ru.ncedu.ecomm.data.models.SalesOrder;
 import ru.ncedu.ecomm.data.models.builders.SalesOrderBuilder;
@@ -8,7 +9,6 @@ import ru.ncedu.ecomm.utils.DBUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 public class PostgresSalesOrderDAO implements SalesOrdersDAO {
     private static final Logger LOG  = Logger.getLogger(PostgresSalesOrderDAO.class);
@@ -82,8 +82,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
     }
 
     @Override
-    public List<SalesOrder> getSalesOrderByOrderStatusId(long statusId, long userId) {
-        List<SalesOrder> salesOrders = new ArrayList<>();
+    public SalesOrder getSalesOrderByOrderStatusId(long statusId, long userId) {
 
         try (Connection connection = DBUtils.getConnection();
         PreparedStatement statement = connection.prepareStatement(
@@ -100,22 +99,21 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
             statement.setLong(1, statusId);
             statement.setLong(2, userId);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()){
-                SalesOrder salesOrder = new SalesOrderBuilder()
+            if (resultSet.next()){
+                return new SalesOrderBuilder()
                         .setUserId(resultSet.getLong("user_id"))
                         .setSalesOrderId(resultSet.getLong("sales_order_id"))
                         .setCreationDate(resultSet.getDate("creation_date"))
                         .setLimit(resultSet.getBigDecimal("limit"))
                         .setOrderStatus(resultSet.getLong("order_status_id"))
                         .build();
-                salesOrders.add(salesOrder);
             }
             LOG.info(null);
         } catch (SQLException e) {
             LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
-        return salesOrders;
+        return null;
     }
 
     @Override

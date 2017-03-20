@@ -45,7 +45,7 @@ public class OrderHistoryServlet extends HttpServlet {
         List<SalesOrderViewModel> orderHistory = null;
         try {
             if (roleId == EnumRoles.ADMINISTRATOR.getRole())
-                orderHistory = ShoppingCartService.getInstance().getSalesOrderModelList();
+                orderHistory = ShoppingCartService.getInstance().getSalesOrderModel();
             else
                orderHistory = ShoppingCartService.getInstance().getSalesOrderModelListByUserId(userId);
 

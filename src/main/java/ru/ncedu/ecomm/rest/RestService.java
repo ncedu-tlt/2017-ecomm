@@ -208,7 +208,7 @@ public class RestService {
     @GET
     @Path("/salesorder/orderstatus/{salesOrderStatusId}/{salesOrderUserId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<SalesOrder> getSalesOrderByOrderStatusId(@PathParam("salesOrderStatusId") long salesOrderStatusId, @PathParam("salesOrderUserId") long salesOrderUserId){
+    public SalesOrder getSalesOrderByOrderStatusId(@PathParam("salesOrderStatusId") long salesOrderStatusId, @PathParam("salesOrderUserId") long salesOrderUserId){
         return getDAOFactory().getSalesOrderDAO().getSalesOrderByOrderStatusId(salesOrderStatusId, salesOrderUserId);
     }
 

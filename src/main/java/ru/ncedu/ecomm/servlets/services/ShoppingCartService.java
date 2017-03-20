@@ -60,19 +60,15 @@ public class ShoppingCartService {
     }
 
     private SalesOrder getSalesOrderFromCollection(long userId) {
-        List<SalesOrder> salesOrderList =
+        SalesOrder salesOrder =
                 getSalesOrder(EnumOrderStatus.ENTERING.getStatus(), userId);
-        if (Objects.isNull(salesOrderList) || salesOrderList.size() == 0) {
+        if (Objects.isNull(salesOrder)) {
             return null;
         } else {
-            return getDesiredSalesOrder(salesOrderList);
+            return salesOrder;
         }
     }
 
-    private SalesOrder getDesiredSalesOrder(List<SalesOrder> salesOrderList) {
-        int FIRST_INDEX = 0;
-        return salesOrderList.get(FIRST_INDEX);
-    }
 
     /**
      * Универсальный метод для обновления количества товара в корзине.
@@ -209,25 +205,20 @@ public class ShoppingCartService {
         return saleOrder;
     }
 
-    public List<SalesOrderViewModel> getSalesOrderModelList(long orderStatusId, long userId) throws SQLException {
-        List<SalesOrderViewModel> salesOrderViewModels = new ArrayList<>();
-        List<SalesOrder> salesOrders = getSalesOrder(orderStatusId, userId);
-        if (Objects.isNull(salesOrders)) {
+    public SalesOrderViewModel getSalesOrderModel(long orderStatusId, long userId) throws SQLException {
+        SalesOrder salesOrder = getSalesOrder(orderStatusId, userId);
+        if (Objects.isNull(salesOrder)) {
             return null;
         } else {
-            for (SalesOrder salesOrder : salesOrders) {
-                SalesOrderViewModel salesOrderViewModel = new SalesOrderViewBuilder()
-                        .setUserId(salesOrder.getUserId())
-                        .setSalesOrderId(salesOrder.getSalesOrderId())
-                        .setCreationDate(salesOrder.getCreationDate())
-                        .setLimit(salesOrder.getLimit())
-                        .setTotalAmount(totalAmount(salesOrder.getSalesOrderId()))
-                        .setOrderItems(relationPriceAndQuantity(salesOrder.getSalesOrderId()))
-                        .setStatusName(getStatusName(salesOrder.getOrderStatusId()))
-                        .build();
-                salesOrderViewModels.add(salesOrderViewModel);
-            }
-            return salesOrderViewModels;
+            return new SalesOrderViewBuilder()
+                    .setUserId(salesOrder.getUserId())
+                    .setSalesOrderId(salesOrder.getSalesOrderId())
+                    .setCreationDate(salesOrder.getCreationDate())
+                    .setLimit(salesOrder.getLimit())
+                    .setTotalAmount(totalAmount(salesOrder.getSalesOrderId()))
+                    .setOrderItems(relationPriceAndQuantity(salesOrder.getSalesOrderId()))
+                    .setStatusName(getStatusName(salesOrder.getOrderStatusId()))
+                    .build();
         }
     }
 
@@ -266,7 +257,7 @@ public class ShoppingCartService {
         return salesOrderViewModels;
     }
 
-    public List<SalesOrderViewModel> getSalesOrderModelList() throws SQLException {
+    public List<SalesOrderViewModel> getSalesOrderModel() throws SQLException {
         List<SalesOrderViewModel> salesOrderViewModels = new ArrayList<>();
         List<SalesOrder> salesOrders = DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrders();
         for (SalesOrder salesOrder : salesOrders) {
@@ -364,12 +355,12 @@ public class ShoppingCartService {
         return DAOFactory.getDAOFactory().getOrderItemsDAO().getOrderItem(productId, salesOrderId);
     }
 
-    private List<SalesOrder> getSalesOrder(long orderStatusId, long userId) {
-        List<SalesOrder> salesOrders = DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderByOrderStatusId(orderStatusId, userId);
-        if (Objects.isNull(salesOrders)) {
+    private SalesOrder getSalesOrder(long orderStatusId, long userId) {
+        SalesOrder salesOrder = DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderByOrderStatusId(orderStatusId, userId);
+        if (Objects.isNull(salesOrder)) {
             return null;
         } else {
-            return salesOrders;
+            return salesOrder;
         }
     }
 

@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Objects;
 
 import static ru.ncedu.ecomm.utils.RedirectUtil.redirectToPage;
@@ -51,12 +50,12 @@ public class CartServlet extends HttpServlet {
                 request.getRequestDispatcher(Configuration.getProperty("page.login")).forward(request, response);
             }
             long userId = UserService.getInstance().getCurrentUserId(request);
-            List<SalesOrderViewModel> salesOrderList = ShoppingCartService.getInstance()
-                    .getSalesOrderModelList(EnumOrderStatus.ENTERING.getStatus(), userId);
-            if (salesOrderList.isEmpty() || Objects.isNull(salesOrderList)) {
+            SalesOrderViewModel salesOrder = ShoppingCartService.getInstance()
+                    .getSalesOrderModel(EnumOrderStatus.ENTERING.getStatus(), userId);
+            if (Objects.isNull(salesOrder)) {
                 request.setAttribute("salesOrderListIsEmpty", "Empty");
             } else {
-                request.setAttribute("salesOrderList", salesOrderList);
+                request.setAttribute("salesOrder", salesOrder);
             }
             request.getRequestDispatcher(Configuration.getProperty("page.cart")).forward(request, response);
         } catch (SQLException e) {

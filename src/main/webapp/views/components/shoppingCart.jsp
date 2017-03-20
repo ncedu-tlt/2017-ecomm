@@ -1,5 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="salesOrderList" scope="page" value="${requestScope.salesOrderList}"/>
+<c:set var="salesOrder" scope="page" value="${requestScope.salesOrder}"/>
 <c:set var="request" scope="session" value="${requestScope.exception}"/>
 <c:set var="salesOrderListIsEmpty" scope="session" value="${requestScope.salesOrderListIsEmpty}"/>
 <div class="ui container jsShoppingCartComponent main-content">
@@ -18,7 +18,6 @@
                 </div>
             </div>
         </c:if>
-        <c:forEach var="salesOrder" items="${salesOrderList}">
             <c:choose>
                 <c:when test="${salesOrder.getOrderItems().isEmpty()}">
                     <div class="ui icon message hide">
@@ -138,7 +137,6 @@
                     </div>
                 </c:when>
             </c:choose>
-        </c:forEach>
     </div>
 </div>
 
