@@ -26,7 +26,12 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        checkUserInSystem(req, resp);
+        Boolean userInSystem = UserService.getInstance().isUserAuthorized(req);
+        if (!userInSystem) {
+            redirectToPage(req, resp, Configuration.getProperty("servlet.login"));
+        }else {
+            showSalesOrder(req, resp);
+        }
     }
 
     @Override
@@ -41,15 +46,6 @@ public class CartServlet extends HttpServlet {
             setQuantityInDataBase(request);
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-    }
-
-    private void checkUserInSystem(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Boolean userInSystem = UserService.getInstance().isUserAuthorized(request);
-        if (!userInSystem) {
-            redirectToPage(request, response, Configuration.getProperty("page.login"));
-        }else {
-            showSalesOrder(request, response);
         }
     }
 
