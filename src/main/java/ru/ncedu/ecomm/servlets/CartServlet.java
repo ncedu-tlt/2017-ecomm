@@ -22,6 +22,8 @@ import static ru.ncedu.ecomm.utils.RedirectUtil.redirectToPage;
 @WebServlet(name = "CartServlet", urlPatterns = {"/cart"})
 public class CartServlet extends HttpServlet {
 
+    private final BigDecimal COMPARE_DECIMAL = new BigDecimal("0.00");
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         checkUserInSystem(req, resp);
@@ -115,7 +117,8 @@ public class CartServlet extends HttpServlet {
     private void setLimitInDataBase(BigDecimal limit, long salesOrderId) {
         SalesOrder salesOrder = DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderById(salesOrderId);
         salesOrder.setLimit(limit);
-        if (Long.parseLong(String.valueOf(salesOrder.getLimit())) >= 0) {
+        int compare = salesOrder.getLimit().compareTo(COMPARE_DECIMAL);
+        if (compare >= 0) {
             DAOFactory.getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
         }
     }

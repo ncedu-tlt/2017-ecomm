@@ -32,10 +32,6 @@
                         $.post(globalUrl + '/cart', {input: input.val(), product: productId, salesOrder: salesOrderId});
                     }, 5000);
                 }
-                input.change();
-                price.change();
-                amount.change();
-                return false;
             });
 
             plus.click(function () {
@@ -56,10 +52,6 @@
                 clear = setTimeout(function () {
                     $.post(globalUrl + '/cart', {input: input.val(), product: productId, salesOrder: salesOrderId});
                 }, 5000);
-                input.change();
-                price.change();
-                amount.change();
-                return false;
             });
 
             globalInput.keyup('inputChange', function () {
