@@ -4,6 +4,10 @@ import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.SalesOrdersDAO;
 import ru.ncedu.ecomm.data.models.SalesOrder;
 import ru.ncedu.ecomm.data.models.builders.SalesOrderBuilder;
+import ru.ncedu.ecomm.servlets.models.OrderItemViewModel;
+import ru.ncedu.ecomm.servlets.models.SalesOrderViewModel;
+import ru.ncedu.ecomm.servlets.models.builders.OrderItemViewBuilder;
+import ru.ncedu.ecomm.servlets.models.builders.SalesOrderViewBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -182,6 +186,98 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
             throw new RuntimeException(e);
         }
         return salesOrders;
+    }
+
+    @Override
+    public List<SalesOrderViewModel> getSalesOrderToOrderHistory(long userId) {
+        List<SalesOrderViewModel> salesOrders = new ArrayList<>();
+
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT\n" +
+                             " user_id,\n" +
+                             " sales_orders.sales_order_id,\n" +
+                             " creation_date,\n" +
+                             " order_statuses.name,\n" +
+                             " summ.total\n" +
+                             "FROM sales_orders,\n" +
+                             " order_statuses, \n " +
+                             " (SELECT SUM(standard_price) as total,\n" +
+                             " sales_orders.sales_order_id\n " +
+                             " FROM order_items,\n " +
+                             "sales_orders\n " +
+                             " WHERE order_items.sales_order_id = sales_orders.sales_order_id\n" +
+                             " GROUP BY  sales_orders.user_id,\n " +
+                             "sales_orders.sales_order_id) summ\n" +
+                             "WHERE user_id = ?\n" +
+                             " AND order_statuses.order_status_id = sales_orders.order_status_id \n" +
+                             " AND sales_orders.order_status_id = 1\n" +
+                             " AND summ.sales_order_id = sales_orders.sales_order_id\n" +
+                             "ORDER BY creation_date DESC")) {
+            statement.setLong(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                SalesOrderViewModel salesOrder = new SalesOrderViewBuilder()
+                        .setUserId(resultSet.getLong("user_id"))
+                        .setSalesOrderId(resultSet.getLong("sales_order_id"))
+                        .setCreationDate(resultSet.getDate("creation_date"))
+                        .setStatusName(resultSet.getString("name"))
+                        .setTotalAmount(resultSet.getLong("total"))
+                        .build();
+                salesOrder.setOrderItems(getOrderItemsToSalesOrder(salesOrder.getSalesOrderId()));
+
+                salesOrders.add(salesOrder);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return salesOrders;
+
+    }
+
+    @Override
+    public List<OrderItemViewModel> getOrderItemsToSalesOrder(long salesOrderId) throws SQLException {
+        List<OrderItemViewModel> orderItems = new ArrayList<>();
+
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT\n" +
+                             " order_items.product_id,\n" +
+                             " quantity,\n" +
+                             " products.name,\n" +
+                             " standard_price,\n" +
+                             " discount_id,\n" +
+                             " imgUrl.value\n" +
+                             "FROM order_items,\n" +
+                             " products\n" +
+                             " LEFT JOIN\n" +
+                             "(SELECT characteristic_values.value,\n " +
+                             " characteristic_values.product_id\n" +
+                             " FROM characteristic_values, characteristics\n" +
+                             " WHERE characteristic_values.characteristic_id = characteristics.characteristic_id\n" +
+                             "AND characteristics.characteristic_id = 28)  imgUrl\n" +
+                             " ON imgUrl.product_id = products.product_id\n" +
+                             "WHERE order_items.sales_order_id = ?\n" +
+                             " AND order_items.product_id = products.product_id")) {
+
+            statement.setLong(1, salesOrderId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                OrderItemViewModel orderItem = new OrderItemViewBuilder()
+                        .setProductId(resultSet.getLong("product_id"))
+                        .setQuantity(resultSet.getInt("quantity"))
+                        .setName(resultSet.getString("name"))
+                        .setPrice(resultSet.getLong("standard_price"))
+                        .setDiscount(resultSet.getLong("discount_id"))
+                        .setImgUrl(resultSet.getString("value"))
+                        .build();
+                orderItems.add(orderItem);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return orderItems;
     }
 
     @Override

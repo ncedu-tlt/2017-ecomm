@@ -1,7 +1,10 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
 import ru.ncedu.ecomm.data.models.SalesOrder;
+import ru.ncedu.ecomm.servlets.models.OrderItemViewModel;
+import ru.ncedu.ecomm.servlets.models.SalesOrderViewModel;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface SalesOrdersDAO {
@@ -20,4 +23,9 @@ public interface SalesOrdersDAO {
     SalesOrder updateSalesOrder(SalesOrder salesOrder);
 
     void deleteSalesOrder(SalesOrder salesOrder);
+
+
+    List<SalesOrderViewModel> getSalesOrderToOrderHistory(long userId);
+
+    List<OrderItemViewModel> getOrderItemsToSalesOrder(long salesOrderId) throws SQLException;
 }
