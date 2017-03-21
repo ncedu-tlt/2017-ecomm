@@ -44,7 +44,7 @@
                                                value="${itemOrder.getStandardPrice()}">
                                         <input name="submitButton" type="hidden" value="quantity">
                                         <button class="ui left attached button jsLeft" type="button">-</button>
-                                        <input type="text" name="quantityValue" class="jsInput"
+                                        <input type="number" name="quantityValue" class="jsInput"
                                                value="${itemOrder.getQuantity()}">
                                         <button class="ui right attached button jsRight" type="button">+</button>
                                     </form>
@@ -83,7 +83,7 @@
                                     Limit:
                                 </div>
                                 <div class="ui left labeled button" tabindex="0">
-                                    <input type="text" class="ui basic right pointing label" name="limitInput"
+                                    <input type="number" class="ui basic right pointing label" name="limitInput"
                                            value="${salesOrder.getLimit()}">
                                     <button class="ui button" name="submitButton" type="submit" value="apply">APPLY
                                     </button>
