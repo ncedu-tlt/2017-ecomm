@@ -130,6 +130,6 @@
 
 <script>
     window.frm.components.init('ShoppingCartComponent', '.jsShoppingCartComponent', {
-        shoppingCartUrl: '${pageContext.request.contextPath}'
+        shoppingCartUrl: '${pageContext.request.contextPath}' + '/cart'
     });
 </script>
