@@ -10,8 +10,36 @@
         },
         init: function () {
             this.content.find('.jsPasswordCall').on('click', this.showPasswordField.bind(this));
+            this.content.find('.jsAnswerFromServlet .jsCloseAnswerFromServlet')
+                .on('click', function () {
+                    $(this)
+                        .closest('.message')
+                        .transition('fade');
+                });
             this.content.find('.jsProfileForm').form({
+                inline: true,
+                on: 'blur',
                 fields: {
+                    firstName: {
+                        identifier: 'firstName',
+                        optional: true,
+                        rules: [
+                            {
+                                type: 'minLength[2]',
+                                prompt: 'Your first name must be at least {ruleValue} characters'
+                            }
+                        ]
+                    },
+                    lastName: {
+                        identifier: 'lastName',
+                        optional: true,
+                        rules: [
+                            {
+                                type: 'minLength[2]',
+                                prompt: 'Your last name must be at least {ruleValue} characters'
+                            }
+                        ]
+                    },
                     email: {
                         identifier: 'email',
                         rules: [

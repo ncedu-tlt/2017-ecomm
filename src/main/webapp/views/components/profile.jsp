@@ -32,27 +32,63 @@ ${requestScope.username}
             </div>
         </button>
         <button type="button" class="positive ui button jsPasswordCall">Change Password</button>
-        <div class="ui error message"></div>
     </form>
     <c:set var="request" scope="session" value="${requestScope.answer}"/>
     <c:if test="${request != null}">
         <c:choose>
-            <c:when test='${requestScope.answer == "success"}'>
-                <div class="ui positive message">
-                    <i class="close icon"></i>
+            <c:when test='${requestScope.answer == "Success"}'>
+                <div class="ui positive message jsAnswerFromServlet">
+                    <i class="close icon jsCloseAnswerFromServlet"></i>
                     <div class="header">
                         Success!
                     </div>
                     <p>Your profile was change successful!</p>
                 </div>
             </c:when>
-            <c:when test='${requestScope.answer == "error"}'>
-                <div class="ui positive message">
-                    <i class="close icon"></i>
+            <c:when test='${requestScope.answer == "ErrorInputEmail"}'>
+                <div class="ui negative  message jsAnswerFromServlet">
+                    <i class="close icon jsCloseAnswerFromServlet"></i>
                     <div class="header">
-                        Error!
+                        Error typing email!
                     </div>
-                    <p>Your profile could not be edited. Please try again!!</p>
+                    <p>Your email has been entered incorrectly.</p>
+                </div>
+            </c:when>
+            <c:when test='${requestScope.answer == "ErrorInputPassword"}'>
+                <div class="ui negative  message jsAnswerFromServlet">
+                    <i class="close icon jsCloseAnswerFromServlet"></i>
+                    <div class="header">
+                        Password failed!
+                    </div>
+                    <p>
+                        Your password must contain uppercase, or
+                        lowercase Latin characters or Cyrillic
+                        (special characters: @ $ _) and be a length of 4 to 20 characters.
+                    </p>
+                </div>
+            </c:when>
+            <c:when test='${requestScope.answer == "ErrorInputFirstName"}'>
+                <div class="ui negative  message jsAnswerFromServlet">
+                    <i class="close icon jsCloseAnswerFromServlet"></i>
+                    <div class="header">
+                        Error entering first name!
+                    </div>
+                    <p>
+                        Your first name must contain Latin characters or
+                        Cyrillic characters and be from 2 to 20 characters in length.
+                    </p>
+                </div>
+            </c:when>
+            <c:when test='${requestScope.answer == "ErrorInputLastName"}'>
+                <div class="ui negative message jsAnswerFromServlet">
+                    <i class="close icon jsCloseAnswerFromServlet"></i>
+                    <div class="header">
+                        Error entering last name!
+                    </div>
+                    <p>
+                        Your last name must contain Latin characters or
+                        Cyrillic characters and be from 2 to 20 characters in length.
+                    </p>
                 </div>
             </c:when>
         </c:choose>
