@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.Objects;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
@@ -43,7 +42,7 @@ public class AddToShoppingCartServlet extends HttpServlet {
     private void displayQuantityOnPage(long userId, HttpServletResponse resp) {
         try {
             Long quantity = getQuantity(userId);
-            if (Objects.isNull(quantity)) {
+            if (quantity == null) {
                 throw new RuntimeException();
             } else {
                 PrintWriter out = resp.getWriter();
@@ -56,7 +55,7 @@ public class AddToShoppingCartServlet extends HttpServlet {
 
     private Long getQuantity(long userId) throws SQLException {
         Long salesOrderId = ShoppingCartService.getInstance().getSalesOrderId(userId);
-        if (Objects.isNull(salesOrderId)) {
+        if (salesOrderId == null) {
             return null;
         } else {
             return getDAOFactory().getOrderItemsDAO().getQuantityBySalesOrderId(salesOrderId);

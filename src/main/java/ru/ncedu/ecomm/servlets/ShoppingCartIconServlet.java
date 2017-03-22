@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Objects;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
@@ -38,7 +37,7 @@ public class ShoppingCartIconServlet extends HttpServlet {
         int EMPTY_QUANTITY = 0;
         HttpSession authorization = req.getSession();
         Long userId = (Long) authorization.getAttribute("userId");
-        if (Objects.isNull(userId)) {
+        if (userId == null) {
             req.setAttribute("quantityProducts", EMPTY_QUANTITY);
         } else {
             showQuantityIfNeed(userId, req);
@@ -48,7 +47,7 @@ public class ShoppingCartIconServlet extends HttpServlet {
     private void showQuantityIfNeed(Long userId, HttpServletRequest req) throws SQLException {
         int EMPTY_QUANTITY = 0;
         Long quantityProducts = getQuantityProducts(userId);
-        if (Objects.isNull(quantityProducts)) {
+        if (quantityProducts == null) {
             req.setAttribute("quantityProducts", EMPTY_QUANTITY);
         } else {
             req.setAttribute("quantityProducts", quantityProducts);

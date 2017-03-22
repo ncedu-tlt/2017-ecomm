@@ -6,7 +6,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Objects;
 
 public class UserService {
 
@@ -27,7 +26,7 @@ public class UserService {
     public Boolean isUserAuthorized(HttpServletRequest request) throws ServletException, IOException {
         Boolean userInSystem = true;
         HttpSession session = request.getSession();
-        if (Objects.isNull(session.getAttribute("userId"))) {
+        if (session.getAttribute("userId") == null) {
             userInSystem = false;
         }
         return userInSystem;
