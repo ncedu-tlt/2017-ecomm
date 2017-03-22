@@ -1,5 +1,6 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
+import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.UserDAO;
 import ru.ncedu.ecomm.data.models.User;
 import ru.ncedu.ecomm.data.models.builders.UserBuilder;
@@ -8,7 +9,6 @@ import ru.ncedu.ecomm.utils.DBUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 public class PostgresUserDAO implements UserDAO {
     private static final Logger LOG  = Logger.getLogger(PostgresUserDAO.class);
@@ -278,7 +278,7 @@ public class PostgresUserDAO implements UserDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "UPDATE users\n" +
+                     "UPDATE public.users\n" +
                              "SET role_id     = ?,\n" +
                              "  first_name    = ?,\n" +
                              "  last_name     = ?,\n" +
