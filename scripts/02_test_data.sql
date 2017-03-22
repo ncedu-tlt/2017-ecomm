@@ -82,13 +82,13 @@ INSERT INTO products(
 	(2, 'Apple - MacBook Pro', 'The new MacBook Pro is faster and more powerful than before, yet remarkably thinner and lighter.? It has the brightest, most colorful Mac notebook display ever. And it introduces the revolutionary Touch Bar�a Multi-Touch� enabled strip of glass built into the keyboard for instant access to what you want to do, when you want to do it. The new MacBook Pro is built on groundbreaking ideas. And it�s ready for yours.', 1, 1999.99),
 	(2, 'Samsung - Chromebook 3', 'Samsung Chromebook 3: Unleash the power of modern computing with this Samsung Chromebook laptop. It has all the space you need with the 11.6-inch screen, which ensures portability, and 4GB of RAM and an Intel Celeron processor lets you complete basic office tasks all day long. The 16GB storage capacity means this Samsung Chromebook laptop can store files and programs for offline use.', 1, 179.00),
 	(3, 'iBUYPOWER - Desktop', 'iBuyPower Desktop: Play hard with this iBUYPOWER gaming PC. With a 3.4GHz Intel i7 quad-core processor, 16GB of RAM and an NVIDIA GeForce 3GB graphics card, this machine can handle the most demanding adventures. This iBUYPOWER gaming PC has a 1TB SATA III hard drive and 120GB solid-state drive to provide ample file storage.', 1, 949.99),
-	(3, 'Apple - iMac�', 'iMac features a gorgeous widescreen display, powerful Intel� processors, superfast graphics, and more. All in a stunningly thin enclosure thats only 5 mm thin at its edge.', 1, 1299.99),
-	(3, 'Dell - Inspiron', 'Dell Inspiron All-In-One Computer: Glide your fingertips across the 23.8" touch screen to adjust music and video playback, surf the Web and play games, all in 1920 x 1080 resolution. Built-in Wi-Fi provides easy access to streaming entertainment.', 1, 649.99),
+	(3, 'Apple - iMac�', 'iMac features a gorgeous widescreen display, powerful Intel� processors, superfast graphics, and more. All in a stunningly thin enclosure thats only 5 mm thin at its edge.', 5, 1299.99),
+	(3, 'Dell - Inspiron', 'Dell Inspiron All-In-One Computer: Glide your fingertips across the 23.8" touch screen to adjust music and video playback, surf the Web and play games, all in 1920 x 1080 resolution. Built-in Wi-Fi provides easy access to streaming entertainment.', 7, 649.99),
 	(4, 'Samsung - Galaxy Tab A (2016)', 'Boost productivity with this Samsung Galaxy Tab A tablet. The 7-inch touch display provides the ideal compromise between portability and functionality, while the 8GB of internal memory lets you take photos, games, music and movies with you. The 4,000 mAh battery in this Samsung Galaxy Tab A delivers plenty of juice to get you through the day.', 1, 89.99),
-	(4, 'Apple - iPad Air 2', 'The thinnest iPad ever is also the most capable. Its loaded with advanced technologies, including the Touch ID fingerprint sensor.', 1, 399.99),
+	(4, 'Apple - iPad Air 2', 'The thinnest iPad ever is also the most capable. Its loaded with advanced technologies, including the Touch ID fingerprint sensor.', 2, 399.99),
 	(4, 'DigiLand - Tablet', 'DigiLand Tablet: Stay connected wherever you go with this 8" tablet. Windows 10 makes Web navigation a snap, and you can house plenty of photos, music and documents with 32GB of storage space. Plus, snap clear photos of events with 2.0MP front- and rear-facing cameras.', 1, 79.99),
-	(6, 'Sony - PlayStation 4 Pro', 'PS4 Pro gets you closer to your game. Heighten your experiences. Enrich your adventures. Let the super-charged PS4 Pro lead the way.', 1, 399.99),
-	(6, 'Microsoft - Xbox One S', 'Own the Xbox One S Battlefield� 1 Bundle (500GB), featuring 4K Blu-ray�, 4K video streaming, High Dynamic Range, a full game download of Battlefield� 1, and one month of EA Access.', 1, 299.99),
+	(6, 'Sony - PlayStation 4 Pro', 'PS4 Pro gets you closer to your game. Heighten your experiences. Enrich your adventures. Let the super-charged PS4 Pro lead the way.', 4, 399.99),
+	(6, 'Microsoft - Xbox One S', 'Own the Xbox One S Battlefield� 1 Bundle (500GB), featuring 4K Blu-ray�, 4K video streaming, High Dynamic Range, a full game download of Battlefield� 1, and one month of EA Access.', 7, 299.99),
 	(7, 'Final Fantasy XV Day One Edition', 'Final Fantasy XV Day One Edition - PlayStation 4', 1, 59.99),
 	(7, 'Battlefield 1', 'Battlefield 1 - PlayStation 4', 1, 59.99),
 	(7, 'Battlefield 1', 'Battlefield 1 - Xbox One', 1, 59.99),
@@ -313,49 +313,49 @@ INSERT INTO users(user_id,
 
 INSERT INTO reviews(
 	product_id, user_id, description, creation_date, raiting)
-	VALUES (1, 3, 'Good notepad', current_timestamp, 9),
+	VALUES (1, 3, 'Good notepad', current_timestamp, 2),
 	(1, 4, 'Bad notepad, not working', current_timestamp, 2),
 	
-	(2, 3, 'Good iPad', current_timestamp, 10),
+	(2, 3, 'Good iPad', current_timestamp, 5),
 	(2, 4, 'Bad notepad, not working iPad', current_timestamp, 3),
 	
-	(3, 3, 'Good notepad', current_timestamp, 7),
+	(3, 3, 'Good notepad', current_timestamp, 4),
 	(3, 4, 'Bad notepad, not working', current_timestamp, 4),
 	
-	(4, 3, 'Nice PC', current_timestamp, 10),
+	(4, 3, 'Nice PC', current_timestamp, 2),
 	(4, 4, 'Bad PC, very big price', current_timestamp, 1),
 	
-	(5, 3, 'Nice Mac', current_timestamp, 10),
+	(5, 3, 'Nice Mac', current_timestamp, 3),
 	(5, 4, 'Bad Mac, i hate him', current_timestamp, 1),
 	
-	(6, 3, 'Nice PC', current_timestamp, 6),
+	(6, 3, 'Nice PC', current_timestamp, 4),
 	(6, 4, 'Bad PC, so many lags', current_timestamp, 2),
 	
-	(7, 3, 'Nice tablet', current_timestamp, 8),
+	(7, 3, 'Nice tablet', current_timestamp, 5),
 	(7, 4, 'Bad tablet, Samsung bad company', current_timestamp, 2),
 	
-	(8, 3, 'Nice tablet', current_timestamp, 10),
+	(8, 3, 'Nice tablet', current_timestamp, 2),
 	(8, 4, 'Bad tablet, i dont like apple production', current_timestamp, 1),
 	
 	(9, 3, 'This tablet not interesting', current_timestamp, 5),
-	(9, 4, 'Nice tablet, ill like this price', current_timestamp, 9),
+	(9, 4, 'Nice tablet, ill like this price', current_timestamp, 3),
 	
-	(10, 3, 'This console the best, thanks Sony', current_timestamp, 10),
+	(10, 3, 'This console the best, thanks Sony', current_timestamp, 4),
 	(10, 4, 'Sony, can only product TV', current_timestamp, 2),
 	
 	(11, 3, 'I dont like Microsoft', current_timestamp, 5),
 	(11, 4, 'I dont have money, then console is bad', current_timestamp, 1),
 	
-	(12, 3, 'Nice Game, I liked', current_timestamp, 9),
+	(12, 3, 'Nice Game, I liked', current_timestamp, 4),
 	(12, 4, 'Bad game, I didnt have console', current_timestamp, 2),
 	
-	(13, 3, 'Nice Game, I liked', current_timestamp, 8),
+	(13, 3, 'Nice Game, I liked', current_timestamp, 4),
 	(13, 4, 'Bad game, I didnt have console', current_timestamp, 2),
 	
-	(14, 3, 'Nice Game, I liked', current_timestamp, 8),
+	(14, 3, 'Nice Game, I liked', current_timestamp, 2),
 	(14, 4, 'Bad game, I didnt have console', current_timestamp, 2),
 	
-	(15, 3, 'Nice Game, I liked', current_timestamp, 8),
+	(15, 3, 'Nice Game, I liked', current_timestamp, 5),
 	(15, 4, 'Bad game, I didnt have console', current_timestamp, 2),
 (2,	35,	'It is a long established fact that a reader will be distracted by the ' ||
  'readable content of a page when looking at its layout. The point of using ' ||

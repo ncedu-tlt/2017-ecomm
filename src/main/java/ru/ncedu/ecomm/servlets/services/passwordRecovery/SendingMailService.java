@@ -2,7 +2,7 @@ package ru.ncedu.ecomm.servlets.services.passwordRecovery;
 
 import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.models.User;
-import ru.ncedu.ecomm.utils.EmailUtils;
+import ru.ncedu.ecomm.utils.UserValidationUtils;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -36,7 +36,7 @@ public class SendingMailService {
     }
 
     public boolean sendMail(String toEmail, String textHtml) {
-        return EmailUtils.checkEmail(toEmail) && searchMailInDatabase(toEmail) && sendLetterToUser(toEmail, textHtml);
+        return UserValidationUtils.checkEmail(toEmail) && searchMailInDatabase(toEmail) && sendLetterToUser(toEmail, textHtml);
     }
 
     private boolean searchMailInDatabase(String toEmail) {

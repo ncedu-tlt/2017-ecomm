@@ -3,7 +3,7 @@ package ru.ncedu.ecomm.servlets;
 import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.models.User;
 import ru.ncedu.ecomm.data.models.builders.UserBuilder;
-import ru.ncedu.ecomm.utils.EmailUtils;
+import ru.ncedu.ecomm.utils.UserValidationUtils;
 import ru.ncedu.ecomm.utils.EncryptionUtils;
 
 import javax.servlet.ServletException;
@@ -42,7 +42,7 @@ public class RegistrationServlet extends HttpServlet {
             return;
         }
 
-        if (!EmailUtils.checkEmail(req.getParameter(EMAIL))) {
+        if (!UserValidationUtils.checkEmail(req.getParameter(EMAIL))) {
             req.setAttribute(ANSWER, "incorrect_email");
             req.getRequestDispatcher(Configuration.getProperty("page.registration")).forward(req, resp);
             return;
