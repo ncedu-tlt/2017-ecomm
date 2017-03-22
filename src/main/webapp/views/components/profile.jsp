@@ -25,7 +25,7 @@ ${requestScope.username}
             <input type="password" class="jsPasswordConfirm jsProfileTextParam" name="passwordConfirm"
                    placeholder="Current Password">
         </div>
-        <button class="ui animated primary button" id="jsSendFormProfileBtn">
+        <button class="ui animated primary button jsSendFormProfileBtn">
             <div class="visible content">Save</div>
             <div class="hidden content">
                 <i class="repeat icon outline"></i>
@@ -37,8 +37,8 @@ ${requestScope.username}
     <c:if test="${request != null}">
         <c:choose>
             <c:when test='${requestScope.answer == "Success"}'>
-                <div class="ui positive message jsAnswerFromServlet">
-                    <i class="close icon jsCloseAnswerFromServlet"></i>
+                <div class="ui positive message jsMessageFromServlet">
+                    <i class="close icon jsCloseMessageFromServlet"></i>
                     <div class="header">
                         Success!
                     </div>
@@ -46,17 +46,17 @@ ${requestScope.username}
                 </div>
             </c:when>
             <c:when test='${requestScope.answer == "ErrorInputEmail"}'>
-                <div class="ui negative  message jsAnswerFromServlet">
-                    <i class="close icon jsCloseAnswerFromServlet"></i>
+                <div class="ui negative  message jsMessageFromServlet">
+                    <i class="close icon jsCloseMessageFromServlet"></i>
                     <div class="header">
                         Error typing email!
                     </div>
-                    <p>Your email has been entered incorrectly.</p>
+                    <p>Your email has been entered incorrectly or differs from the old.</p>
                 </div>
             </c:when>
             <c:when test='${requestScope.answer == "ErrorInputPassword"}'>
-                <div class="ui negative  message jsAnswerFromServlet">
-                    <i class="close icon jsCloseAnswerFromServlet"></i>
+                <div class="ui negative  message jsMessageFromServlet">
+                    <i class="close icon jsCloseMessageFromServlet"></i>
                     <div class="header">
                         Password failed!
                     </div>
@@ -68,8 +68,8 @@ ${requestScope.username}
                 </div>
             </c:when>
             <c:when test='${requestScope.answer == "ErrorInputFirstName"}'>
-                <div class="ui negative  message jsAnswerFromServlet">
-                    <i class="close icon jsCloseAnswerFromServlet"></i>
+                <div class="ui negative  message jsMessageFromServlet">
+                    <i class="close icon jsCloseMessageFromServlet"></i>
                     <div class="header">
                         Error entering first name!
                     </div>
@@ -80,8 +80,8 @@ ${requestScope.username}
                 </div>
             </c:when>
             <c:when test='${requestScope.answer == "ErrorInputLastName"}'>
-                <div class="ui negative message jsAnswerFromServlet">
-                    <i class="close icon jsCloseAnswerFromServlet"></i>
+                <div class="ui negative message jsMessageFromServlet">
+                    <i class="close icon jsCloseMessageFromServlet"></i>
                     <div class="header">
                         Error entering last name!
                     </div>
@@ -93,6 +93,11 @@ ${requestScope.username}
             </c:when>
         </c:choose>
     </c:if>
+    <div class="ui page dimmer jsDimmerProfile">
+        <div class="content">
+            <div class="ui text loader">Loading</div>
+        </div>
+    </div>
 </div>
 <script>
     window.frm.components.init('ProfileComponent', '.jsProfileComponent');

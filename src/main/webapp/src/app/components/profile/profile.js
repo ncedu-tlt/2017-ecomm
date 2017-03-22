@@ -4,16 +4,27 @@
 
     //noinspection JSAnnotator
     var ProfileComponent = frm.inheritance.inherits(frm.components.Component, {
+        showDimmer: function () {
+            var jsDimmer = this.content.find('.jsDimmerProfile');
+            this.dimmerConfig(jsDimmer);
+            jsDimmer.dimmer('show');
+        },
+        dimmerConfig: function (jsDimmer) {
+            jsDimmer.dimmer({
+                closable: false
+            });
+        },
         showPasswordField: function () {
             this.content.find('.jsPasswordField')
                 .transition('vertical flip');
         },
         init: function () {
+            this.content.find('.jsSendFormProfileBtn').on('click', this.showDimmer.bind(this));
             this.content.find('.jsPasswordCall').on('click', this.showPasswordField.bind(this));
-            this.content.find('.jsAnswerFromServlet .jsCloseAnswerFromServlet')
+            this.content.find('.jsMessageFromServlet .jsCloseMessageFromServlet')
                 .on('click', function () {
                     $(this)
-                        .closest('.message')
+                        .closest('.jsMessageFromServlet')
                         .transition('fade');
                 });
             this.content.find('.jsProfileForm').form({
