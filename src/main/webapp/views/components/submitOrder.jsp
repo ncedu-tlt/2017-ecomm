@@ -1,5 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div class="ui container jsShoppingCartComponent main-content">
+<div class="ui container main-content">
     <h3 class="ui center aligned header">
         Payment
     </h3>

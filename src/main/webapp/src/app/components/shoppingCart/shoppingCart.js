@@ -55,7 +55,7 @@
         onInputWrite: function (event) {
             var eventFind = $(event.currentTarget);
             var input = eventFind.val();
-            var price = eventFind.parent().parent().find('.jsPrice');
+            var price = eventFind.closest('.description').find('.jsPrice');
             var standardPrice = eventFind.closest('.description').find('.jsStandardPrice');
             var amount = this.content.find('.jsAmount');
             var globalPrice = this.content.find('.jsItemOrder .jsPrice');
