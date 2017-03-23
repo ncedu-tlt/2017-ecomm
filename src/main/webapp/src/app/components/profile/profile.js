@@ -18,15 +18,12 @@
             this.content.find('.jsPasswordField')
                 .transition('vertical flip');
         },
+        showLabels: function() {
+            this.content.find('.jsLabelProfile')
+                .transition('fade up');
+        },
         init: function () {
-            this.content.find('.jsSendFormProfileBtn').on('click', this.showDimmer.bind(this));
-            this.content.find('.jsPasswordCall').on('click', this.showPasswordField.bind(this));
-            this.content.find('.jsMessageFromServlet .jsCloseMessageFromServlet')
-                .on('click', function () {
-                    $(this)
-                        .closest('.jsMessageFromServlet')
-                        .transition('fade');
-                });
+            this.content.find('.jsLabelProfile').hide();
             this.content.find('.jsProfileForm').form({
                 inline: true,
                 on: 'blur',
@@ -53,6 +50,7 @@
                     },
                     email: {
                         identifier: 'email',
+                        optional: true,
                         rules: [
                             {
                                 type: 'email',
@@ -76,6 +74,16 @@
                     }
                 }
             });
+            //listeners
+            this.content.find('.jsSendFormProfileBtn').on('click', this.showDimmer.bind(this));
+            this.content.find('.jsPasswordCall').on('click', this.showPasswordField.bind(this));
+            this.content.find('.jsVisible').on('click', this.showLabels.bind(this));
+            this.content.find('.jsMessageFromServlet .jsCloseMessageFromServlet')
+                .on('click', function () {
+                    $(this)
+                        .closest('.jsMessageFromServlet')
+                        .transition('fade');
+                });
         }
     });
 

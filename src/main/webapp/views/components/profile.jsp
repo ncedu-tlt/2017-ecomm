@@ -1,21 +1,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-${requestScope.username}
-<div class="ui aligned center text container segment jsProfileComponent" data-tab="profile">
+<div class="ui aligned piled text container segment jsProfileComponent" data-tab="profile">
     <form class="ui form jsProfileForm" method="post" action="${pageContext.request.contextPath}/profile">
         <div class="field">
-            <label>First Name:</label>
-            <input type="text" name="firstName" placeholder="First Name" class="jsProfileTextParam"
-                   value="${requestScope.firstName}">
+            <div class="ui pointing below teal label jsLabelProfile">
+                Your first name: ${requestScope.firstName}
+            </div>
+            <input type="text" name="firstName" placeholder="First Name" class="jsProfileTextParam"/>
         </div>
         <div class="field">
-            <label>Last Name:</label>
-            <input type="text" name="lastName" placeholder="Last Name" class="jsProfileTextParam"
-                   value="${requestScope.lastName}">
+            <div class="ui pointing below teal label jsLabelProfile">
+                Your last name: ${requestScope.lastName}
+            </div>
+            <input type="text" name="lastName" placeholder="Last Name" class="jsProfileTextParam"/>
         </div>
         <div class="field">
-            <label>Email:</label>
-            <input type="text" name="email" placeholder="Email" class="jsProfileTextParam"
-                   value="${requestScope.email}">
+            <div class="ui pointing below teal label jsLabelProfile">
+                Your email: ${requestScope.email}
+            </div>
+            <input type="text" name="email" placeholder="E-mail" class="jsProfileTextParam"/>
         </div>
         <div class="field jsPasswordField">
             <label>Password:</label>
@@ -32,6 +34,9 @@ ${requestScope.username}
             </div>
         </button>
         <button type="button" class="positive ui button jsPasswordCall">Change Password</button>
+        <button type="button" class="circular ui icon yellow right floated button jsVisible">
+            <i class="icon settings idea"></i>
+        </button>
     </form>
     <c:set var="request" scope="session" value="${requestScope.answer}"/>
     <c:if test="${request != null}">
@@ -51,7 +56,16 @@ ${requestScope.username}
                     <div class="header">
                         Error typing email!
                     </div>
-                    <p>Your email has been entered incorrectly or differs from the old.</p>
+                    <p>Your email has been entered incorrectly.</p>
+                </div>
+            </c:when>
+            <c:when test='${requestScope.answer == "ErrorCompareEmail"}'>
+                <div class="ui negative message jsMessageFromServlet">
+                    <i class="close icon jsCloseMessageFromServlet"></i>
+                    <div class="header">
+                        Error typing email!
+                    </div>
+                    <p>This email already exists</p>
                 </div>
             </c:when>
             <c:when test='${requestScope.answer == "ErrorInputPassword"}'>
@@ -89,6 +103,15 @@ ${requestScope.username}
                         Your last name must contain Latin characters or
                         Cyrillic characters and be from 2 to 20 characters in length.
                     </p>
+                </div>
+            </c:when>
+            <c:when test='${requestScope.answer == "ErrorUpdate"}'>
+                <div class="ui negative message jsMessageFromServlet">
+                    <i class="close icon jsCloseMessageFromServlet"></i>
+                    <div class="header">
+                        Profile change error!
+                    </div>
+                    <p>Please try again later.</p>
                 </div>
             </c:when>
         </c:choose>
