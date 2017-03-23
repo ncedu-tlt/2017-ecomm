@@ -2,6 +2,7 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.servlets.models.EnumRoles;
 import ru.ncedu.ecomm.servlets.services.ProfileService;
 import ru.ncedu.ecomm.servlets.services.UserService;
 import ru.ncedu.ecomm.utils.EncryptionUtils;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
@@ -39,8 +41,7 @@ public class ProfileServlet extends HttpServlet {
 
     private void createAttributeProfile(HttpServletRequest req) throws ServletException, IOException {
         long userId = UserService.getInstance().getCurrentUserId(req);
-        ProfileService profileService = ProfileService.getInstance();
-        User userProfile = profileService.getUserProfileById(userId);
+        User userProfile = getDAOFactory().getUserDAO().getUserById(userId);
         initAttributesProfileForShow(userProfile, req);
     }
 
@@ -54,25 +55,72 @@ public class ProfileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        long userId = UserService.getInstance().getCurrentUserId(req);
-        changeProfile(userId, req);
-        req.setAttribute("answer", "Success change");
+        User userForCompare = getUserForCompare(req);
+        User userForChange = initUserForChangeFromRequest(req);
+        String answer = getAnswerFromProfileService(userForChange, userForCompare);
+        req.setAttribute("answer", answer);
         this.doGet(req, resp);
     }
 
-    private void changeProfile(long userId, HttpServletRequest req) {
-        User userByChange = getDAOFactory().getUserDAO().getUserById(userId);
-        userByChange = setUserNewParameters(userByChange, req);
-        getDAOFactory().getUserDAO().updateUser(userByChange);
+    private User getUserForCompare(HttpServletRequest req) throws ServletException, IOException {
+        long userId = UserService.getInstance().getCurrentUserId(req);
+        return  getDAOFactory().getUserDAO().getUserById(userId);
     }
 
-    private User setUserNewParameters(User userByChange, HttpServletRequest req) {
-        userByChange.setFirstName(req.getParameter("firstName"));
-        userByChange.setLastName(req.getParameter("lastName"));
-        userByChange.setEmail(req.getParameter("email"));
-        String newPassword = EncryptionUtils.getMd5Digest(req.getParameter("password"));
-        userByChange.setPassword(newPassword);
+    private User initUserForChangeFromRequest(HttpServletRequest req) {
+        User userForChange = new User();
+        userForChange = getUserFromRequest(userForChange, req);
 
-        return userByChange;
+        return userForChange;
+    }
+
+    private String getAnswerFromProfileService(User userForChange, User userForCompare) throws ServletException, IOException {
+        String resultValidation = getResultValidation(userForChange, userForCompare);
+        userForChange = getUserWithoutEmptyEmail(userForChange, userForCompare);
+        userForChange = getUserWithCorrectPassword(userForChange, userForCompare);
+        return ProfileService.getInstance().getAnswerAccordingValidation(resultValidation, userForChange);
+    }
+
+    private User getUserFromRequest(User userForChange, HttpServletRequest req) {
+        userForChange.setRoleId(EnumRoles.USER.getRole());
+        userForChange.setFirstName(req.getParameter("firstName"));
+        userForChange.setLastName(req.getParameter("lastName"));
+        userForChange.setEmail(req.getParameter("email"));
+        userForChange.setPassword(req.getParameter("password"));
+
+        return userForChange;
+    }
+
+    private String getResultValidation(User userForChange, User userForCompare) throws ServletException, IOException {
+        userForChange = fillingNonEmptyFields(userForChange, userForCompare);
+        return ProfileService.getInstance().getResultAfterValidation(userForChange, userForCompare);
+    }
+
+    /**
+     * Заполняем сущность параметрами, которые не вводим в интерфейсе
+     */
+    private User fillingNonEmptyFields(User userForChange, User userForCompare) {
+        userForChange.setId(userForCompare.getId());
+        userForChange.setPhone(userForCompare.getPhone());
+        userForChange.setRegistrationDate(userForCompare.getRegistrationDate());
+        return userForChange;
+    }
+
+    private User getUserWithoutEmptyEmail(User userForChange, User userForCompare) {
+        if(Objects.equals(userForChange.getEmail(), "")){
+            userForChange.setEmail(userForCompare.getEmail());
+        }
+        return userForChange;
+    }
+
+    private User getUserWithCorrectPassword(User userForChange, User userForCompare){
+        if(Objects.equals(userForChange.getPassword(), "")){
+            userForChange.setPassword(userForCompare.getPassword());
+        }
+        else{
+            String passwordWithoutHash = userForChange.getPassword();
+            userForChange.setPassword(EncryptionUtils.getMd5Digest(passwordWithoutHash));
+        }
+        return userForChange;
     }
 }
