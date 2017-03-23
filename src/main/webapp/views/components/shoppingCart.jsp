@@ -1,6 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="salesOrder" scope="page" value="${requestScope.salesOrder}"/>
-<c:set var="request" scope="session" value="${requestScope.exception}"/>
 <div class="ui container jsShoppingCartComponent main-content">
     <h3 class="ui center aligned header">
         Your Cart
@@ -97,11 +96,6 @@
                                 <div class="header">
                                     <p>Total price, exceeds limit value!</p>
                                 </div>
-                            </div>
-                        </c:if>
-                        <c:if test="${request != null}">
-                            <div class="ui message warning hide">
-                                <p>${requestScope.exception}</p>
                             </div>
                         </c:if>
                     </form>
