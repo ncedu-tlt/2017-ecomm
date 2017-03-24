@@ -20,15 +20,20 @@ public class AddToShoppingCartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Boolean userInSystem = UserService.getInstance().isUserAuthorized(req);
         if (userInSystem) {
-            long userId = UserService.getInstance().getCurrentUserId(req);
-            long productId = Long.parseLong(req.getParameter("productId"));
-            addToCart(userId, productId);
-            displayQuantityOnPage(userId, resp);
+            performAdditionAndDisplayQuantity(req, resp);
         } else {
-            resp.setStatus(500);
+            int errorStatus = 500;
+            resp.setStatus(errorStatus);
             PrintWriter out = resp.getWriter();
             out.println("error");
         }
+    }
+
+    private void performAdditionAndDisplayQuantity(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        long userId = UserService.getInstance().getCurrentUserId(req);
+        long productId = Long.parseLong(req.getParameter("productId"));
+        addToCart(userId, productId);
+        displayQuantityOnPage(userId, resp);
     }
 
     private void addToCart(long userId, long productId) throws IOException {

@@ -8,8 +8,7 @@
             this.showQuantityIfHave(shoppingCartIcon);
             frm.events.on('addToCart', function (productIdParam) {
                 var jsDimmer = this.content.find('.jsDimmerAdd');
-                this.dimmerConfig(jsDimmer);
-                jsDimmer.dimmer('show');
+                this.showDimmer(jsDimmer);
                 this.ajaxRequest(productIdParam, shoppingCartIcon, jsDimmer);
             }.bind(this));
         },
@@ -20,6 +19,10 @@
             else {
                 shoppingCartIcon.transition('jiggle');
             }
+        },
+        showDimmer: function (jsDimmer) {
+            this.dimmerConfig(jsDimmer);
+            jsDimmer.dimmer('show');
         },
         dimmerConfig: function (jsDimmer) {
             jsDimmer.dimmer({
