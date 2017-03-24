@@ -15,6 +15,12 @@
                 <div class="column">
                     <form class="ui form jsPasswordRecoveryForm" method="post"
                           action="${pageContext.request.contextPath}/passwordChange">
+
+                        <input name="hiddenEmail" type="hidden"
+                               value="${requestScope.email}">
+                        <input name="hiddenHash" type="hidden"
+                               value="${requestScope.recoveryHash}">
+
                         <div class="field">
                             <input type="password" name="password" placeholder="Password">
                         </div>
@@ -22,7 +28,7 @@
                             <input type="password" name="passwordConfirm" placeholder="Password Confirm">
                         </div>
                         <div class="ui error message"></div>
-                        <button class="ui fluid animated primary button">
+                        <button class="ui fluid animated primary button jsPasswordChangeBtn">
                             <div class="visible content">Change Password</div>
                             <div class="hidden content">
                                 <i class="repeat icon outline"></i>
@@ -44,6 +50,11 @@
                     </c:choose>
                 </div>
             </c:if>
+        </div>
+    </div>
+    <div class="ui page dimmer jsDimmerPasswordChange">
+        <div class="content">
+            <div class="ui text loader">Change password</div>
         </div>
     </div>
 </div>
