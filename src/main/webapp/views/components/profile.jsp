@@ -118,7 +118,7 @@
     </c:if>
     <div class="ui page dimmer jsDimmerProfile">
         <div class="content">
-            <div class="ui text loader">Loading</div>
+            <div class="ui text loader">Changing Profile</div>
         </div>
     </div>
 </div>

@@ -9,6 +9,11 @@
             Order History
         </a>
     </div>
+    <div class="ui page dimmer jsDimmerDashboard">
+        <div class="content">
+            <div class="ui text loader">Loading</div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
     window.frm.components.init('DashboardComponent', '.jsDashboardComponent');

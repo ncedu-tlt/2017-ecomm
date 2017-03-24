@@ -13,7 +13,7 @@
     </button>
     <div class="ui page dimmer jsDimmerAdd">
         <div class="content">
-            <div class="ui text loader">Loading</div>
+            <div class="ui text loader">Adding goods</div>
         </div>
     </div>
 </div>
