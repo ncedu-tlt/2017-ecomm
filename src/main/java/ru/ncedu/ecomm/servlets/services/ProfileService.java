@@ -32,8 +32,8 @@ public class ProfileService {
             case "ErrorInputEmail":
                 result = "ErrorInputEmail";
                 break;
-            case "ErrorCompareEmail":
-                result = "ErrorCompareEmail";
+            case "ErrorDiffersEmail":
+                result = "ErrorDiffersEmail";
                 break;
             case "ErrorInputPassword":
                 result = "ErrorInputPassword";
@@ -66,8 +66,8 @@ public class ProfileService {
     public String getResultAfterValidation(User userForChange, User userForCompare) {
         if (!isEmailCorrect(userForChange.getEmail()))
             return "ErrorInputEmail";
-        if (!isNewEmailDiffers(userForChange.getEmail(), userForCompare))
-            return "ErrorCompareEmail";
+        if (!isNewEmailDiffers(userForChange.getEmail()))
+            return "ErrorDiffersEmail";
         if (!isPasswordCorrect(userForChange.getPassword(), userForCompare))
             return "ErrorInputPassword";
         if (!isFirstNameCorrect(userForChange.getFirstName()))
@@ -86,12 +86,26 @@ public class ProfileService {
         return true;
     }
 
+    private boolean isNewEmailDiffers(String newEmail) {
+        if(!Objects.equals(newEmail, "")) {
+            User userByEmail = getDAOFactory().getUserDAO().getUserByEmail(newEmail);
+            return userByEmail == null;
+        }
+        return true;
+    }
+
     private boolean isPasswordCorrect(String password, User userForCompare) {
         if (!Objects.equals(password, "")) {
             if (!UserValidationUtils.checkPassword(password) && !isNewPasswordDiffers(password, userForCompare))
                 return false;
         }
         return true;
+    }
+
+    private boolean isNewPasswordDiffers(String newPassword, User userForCompare) {
+        String newPasswordHash = EncryptionUtils.getMd5Digest(newPassword);
+        String oldPassword = userForCompare.getPassword();
+        return !(oldPassword.equals(newPasswordHash));
     }
 
     private boolean isFirstNameCorrect(String firstName) {
@@ -110,16 +124,5 @@ public class ProfileService {
             }
         }
         return true;
-    }
-
-    private boolean isNewEmailDiffers(String newEmail, User userForCompare) {
-        String oldEmail = userForCompare.getEmail();
-        return !(oldEmail.equals(newEmail));
-    }
-
-    private boolean isNewPasswordDiffers(String newPassword, User userForCompare) {
-        String newPasswordHash = EncryptionUtils.getMd5Digest(newPassword);
-        String oldPassword = userForCompare.getPassword();
-        return !(oldPassword.equals(newPasswordHash));
     }
 }
