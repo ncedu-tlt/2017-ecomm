@@ -7,10 +7,10 @@
         <c:forEach var="orders" items="${orderHistory}">
             <div class="item order">
                 <div class="content">
-                    <div class="ui horizontal divider">
-                        Order #${orders.getSalesOrderId()}
-                    </div>
-                    <c:if test="${orders.getTotalAmount() != 0}">
+                    <c:if test='${not empty "${orders.getOrderItems()}"}'>
+                        <div class="ui horizontal divider">
+                            Order #${orders.getSalesOrderId()}
+                        </div>
                         <h3 class="ui teal tag label right floated header">
                                 ${orders.getCreationDate()}
                         </h3>
@@ -26,7 +26,7 @@
                                         </div>
                                         <div class="extra">
                                             <div class="ui right floated header">
-                                                    $${orderItems.getPrice()}
+                                                $${orderItems.getPrice()}
                                             </div>
                                         </div>
                                         <div class="left floated description">
@@ -40,10 +40,10 @@
                         </div>
                         <h2 class="ui horizontal divider blue header">
                             <i class="bar chart icon"></i>
-                                Total: $${orders.getTotalAmount()}
+                            Total: $${orders.getTotalAmount()}
                         </h2>
                     </c:if>
-                    <c:if test="${orders.getTotalAmount() == 0}">
+                    <c:if test='${empty "${orders.getOrderItems()}"}'>
                         No orders
                     </c:if>
                     <c:if test="${request != null}">
