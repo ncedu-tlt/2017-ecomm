@@ -4,10 +4,16 @@
 
     //noinspection JSAnnotator
     var ProfileComponent = frm.inheritance.inherits(frm.components.Component, {
-        showDimmer: function () {
-            var jsDimmer = this.content.find('.jsDimmerProfile');
-            this.dimmerConfig(jsDimmer);
-            jsDimmer.dimmer('show');
+        showDimmerIfFormValid: function () {
+            var isValid = this.content.find('.jsProfileForm').form('is valid');
+            if (isValid) {
+                var jsDimmer = this.content.find('.jsDimmerProfile');
+                this.dimmerConfig(jsDimmer);
+                jsDimmer.dimmer('show');
+            }
+            else {
+                this.content.find('.jsPasswordField').transition('show');
+            }
         },
         dimmerConfig: function (jsDimmer) {
             jsDimmer.dimmer({
@@ -18,12 +24,13 @@
             this.content.find('.jsPasswordField')
                 .transition('vertical flip');
         },
-        showLabels: function() {
+        showLabels: function () {
             this.content.find('.jsLabelProfile')
                 .transition('fade up');
         },
         init: function () {
-            this.content.find('.jsLabelProfile').hide();
+            this.content.find('.jsLabelProfile').transition('hide');
+            this.content.find('.jsPasswordField').transition('hide');
             this.content.find('.jsProfileForm').form({
                 inline: true,
                 on: 'blur',
@@ -75,7 +82,7 @@
                 }
             });
             //listeners
-            this.content.find('.jsSendFormProfileBtn').on('click', this.showDimmer.bind(this));
+            this.content.find('.jsSendFormProfileBtn').on('click', this.showDimmerIfFormValid.bind(this));
             this.content.find('.jsPasswordCall').on('click', this.showPasswordField.bind(this));
             this.content.find('.jsVisible').on('click', this.showLabels.bind(this));
             this.content.find('.jsMessageFromServlet .jsCloseMessageFromServlet')

@@ -59,7 +59,7 @@
                     <p>Your email has been entered incorrectly.</p>
                 </div>
             </c:when>
-            <c:when test='${requestScope.answer == "ErrorCompareEmail"}'>
+            <c:when test='${requestScope.answer == "ErrorDiffersEmail"}'>
                 <div class="ui negative message jsMessageFromServlet">
                     <i class="close icon jsCloseMessageFromServlet"></i>
                     <div class="header">
