@@ -211,7 +211,6 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                              "sales_orders.sales_order_id) summ\n" +
                              "WHERE user_id = ?\n" +
                              " AND order_statuses.order_status_id = sales_orders.order_status_id \n" +
-                             " AND sales_orders.order_status_id = 1\n" +
                              " AND summ.sales_order_id = sales_orders.sales_order_id\n" +
                              "ORDER BY creation_date DESC")) {
             statement.setLong(1, userId);
@@ -248,7 +247,10 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                              " products.name,\n" +
                              " standard_price,\n" +
                              " discount_id,\n" +
-                             " imgUrl.value\n" +
+                             " COALESCE(" +
+                             "NULLIF(imgUrl.value, " +
+                             "'/ecomm/images/defaultimage/image.png'), " +
+                             "'/ecomm/images/defaultimage/image.png') as image\n" +
                              "FROM order_items,\n" +
                              " products\n" +
                              " LEFT JOIN\n" +
@@ -270,7 +272,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                         .setName(resultSet.getString("name"))
                         .setPrice(resultSet.getLong("standard_price"))
                         .setDiscount(resultSet.getLong("discount_id"))
-                        .setImgUrl(resultSet.getString("value"))
+                        .setImgUrl(resultSet.getString("image"))
                         .build();
                 orderItems.add(orderItem);
             }
