@@ -15,6 +15,15 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 @WebServlet(name = "PasswordChangeServlet", urlPatterns = {"/passwordChange"})
 public class PasswordChangeServlet extends HttpServlet {
 
+    private static final String EMAIL = "email";
+    private static final String RECOVERY_HASH = "recoveryHash";
+    private static final String RESULT_SUCCESS = "ChangeSuccess";
+    private static final String RESULT_ERROR = "ChangeError";
+    private static final String ANSWER = "answer";
+    private static final String PASSWORD = "password";
+    private static final String HIDDEN_HASH = "hiddenHash";
+    private static final String HIDDEN_EMAIL = "hiddenEmail";
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req = getRequestWithAllAttributes(req);
@@ -22,10 +31,8 @@ public class PasswordChangeServlet extends HttpServlet {
     }
 
     private HttpServletRequest getRequestWithAllAttributes(HttpServletRequest req) {
-        String email = req.getParameter("email");
-        String recoveryHash = req.getParameter("recoveryHash");
-        req.setAttribute("email", email);
-        req.setAttribute("recoveryHash", recoveryHash);
+        req.setAttribute(EMAIL, req.getParameter(EMAIL));
+        req.setAttribute(RECOVERY_HASH, req.getParameter(RECOVERY_HASH));
 
         return req;
     }
@@ -35,11 +42,11 @@ public class PasswordChangeServlet extends HttpServlet {
         User userToRecovery = getUserToRecovery(req);
         if(checkEmailAndRecoveryHash(userToRecovery) ){
             updatePassword(userToRecovery);
-            req.setAttribute("answer", "ChangeSuccess");
+            req.setAttribute(ANSWER, RESULT_SUCCESS);
             req.getRequestDispatcher("/views/pages/passwordChange.jsp").forward(req, resp);
         }
         else{
-            req.setAttribute("answer", "ChangeError");
+            req.setAttribute(ANSWER, RESULT_ERROR);
             req.getRequestDispatcher("/views/pages/passwordChange.jsp").forward(req, resp);
         }
     }
@@ -61,9 +68,9 @@ public class PasswordChangeServlet extends HttpServlet {
     private User getUserToRecovery(HttpServletRequest req) {
         User userByRecovery = new User();
 
-        userByRecovery.setPassword(req.getParameter("password"));
-        userByRecovery.setRecoveryHash(req.getParameter("hiddenHash"));
-        userByRecovery.setEmail(req.getParameter("hiddenEmail"));
+        userByRecovery.setPassword(req.getParameter(PASSWORD));
+        userByRecovery.setRecoveryHash(req.getParameter(HIDDEN_HASH));
+        userByRecovery.setEmail(req.getParameter(HIDDEN_EMAIL));
 
         return userByRecovery;
     }

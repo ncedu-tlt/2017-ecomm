@@ -20,6 +20,15 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 @WebServlet(name = "ProfileServlet", urlPatterns = {"/profile"})
 public class ProfileServlet extends HttpServlet {
 
+    private static final String FIRST_NAME = "firstName";
+    private static final String LAST_NAME = "lastName";
+    private static final String EMAIL = "email";
+    private static final String PHONE = "phone";
+    private static final String AVATAR = "avatar";
+    private static final String PASSWORD = "password";
+    private static final String ANSWER = "answer";
+
+
     //show profile
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -33,8 +42,8 @@ public class ProfileServlet extends HttpServlet {
     }
 
     private void redirectIfUserNotAuthorized(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Boolean userInSystem = UserService.getInstance().isUserAuthorized(req);
-        if (!userInSystem) {
+        Boolean isUserAuthorized = UserService.getInstance().isUserAuthorized(req);
+        if (!isUserAuthorized) {
             req.getRequestDispatcher(Configuration.getProperty("page.login")).forward(req, resp);
         }
     }
@@ -46,9 +55,11 @@ public class ProfileServlet extends HttpServlet {
     }
 
     private void initAttributesProfileForShow(User userProfile, HttpServletRequest req) {
-        req.setAttribute("firstName", userProfile.getFirstName());
-        req.setAttribute("lastName", userProfile.getLastName());
-        req.setAttribute("email", userProfile.getEmail());
+        req.setAttribute(FIRST_NAME, userProfile.getFirstName());
+        req.setAttribute(LAST_NAME, userProfile.getLastName());
+        req.setAttribute(EMAIL, userProfile.getEmail());
+        req.setAttribute(PHONE, userProfile.getPhone());
+        req.setAttribute(AVATAR, userProfile.getUserAvatar());
     }
 
     //profile change
@@ -58,7 +69,7 @@ public class ProfileServlet extends HttpServlet {
         User userForCompare = getUserForCompare(req);
         User userForChange = initUserForChangeFromRequest(req);
         String answer = getAnswerFromProfileService(userForChange, userForCompare);
-        req.setAttribute("answer", answer);
+        req.setAttribute(ANSWER, answer);
         this.doGet(req, resp);
     }
 
@@ -83,10 +94,10 @@ public class ProfileServlet extends HttpServlet {
 
     private User getUserFromRequest(User userForChange, HttpServletRequest req) {
         userForChange.setRoleId(EnumRoles.USER.getRole());
-        userForChange.setFirstName(req.getParameter("firstName"));
-        userForChange.setLastName(req.getParameter("lastName"));
-        userForChange.setEmail(req.getParameter("email"));
-        userForChange.setPassword(req.getParameter("password"));
+        userForChange.setFirstName(req.getParameter(FIRST_NAME));
+        userForChange.setLastName(req.getParameter(LAST_NAME));
+        userForChange.setEmail(req.getParameter(EMAIL));
+        userForChange.setPassword(req.getParameter(PASSWORD));
 
         return userForChange;
     }

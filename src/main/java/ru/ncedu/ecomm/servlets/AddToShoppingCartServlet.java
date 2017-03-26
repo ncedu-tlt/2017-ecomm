@@ -16,6 +16,9 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 @WebServlet(name = "AddToShoppingCartServlet", urlPatterns = {"/addToShoppingCart"})
 public class AddToShoppingCartServlet extends HttpServlet {
+    private static final String RESULT_ERROR = "error";
+    private static final String PRODUCT_ID = "productId";
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Boolean userInSystem = UserService.getInstance().isUserAuthorized(req);
@@ -25,13 +28,13 @@ public class AddToShoppingCartServlet extends HttpServlet {
             int errorStatus = 500;
             resp.setStatus(errorStatus);
             PrintWriter out = resp.getWriter();
-            out.println("error");
+            out.println(RESULT_ERROR);
         }
     }
 
     private void performAdditionAndDisplayQuantity(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         long userId = UserService.getInstance().getCurrentUserId(req);
-        long productId = Long.parseLong(req.getParameter("productId"));
+        long productId = Long.parseLong(req.getParameter(PRODUCT_ID));
         addToCart(userId, productId);
         displayQuantityOnPage(userId, resp);
     }

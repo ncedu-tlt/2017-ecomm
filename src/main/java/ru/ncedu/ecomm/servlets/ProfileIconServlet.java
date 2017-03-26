@@ -14,6 +14,10 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 @WebServlet(name = "ProfileIconServlet", urlPatterns = {"/profileIcon"})
 public class ProfileIconServlet extends HttpServlet {
+    private static final String EMAIL = "email";
+    private static final String AVATAR_PATH = "avatarPath";
+
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Boolean isUserAuthorized = UserService.getInstance().isUserAuthorized(req);
@@ -31,8 +35,8 @@ public class ProfileIconServlet extends HttpServlet {
     private void passDataToProfileIcon(User userById, HttpServletRequest req) {
         String email = userById.getEmail();
         String avatarPath = userById.getUserAvatar();
-        req.setAttribute("email", email);
-        req.setAttribute("avatarPath", avatarPath);
+        req.setAttribute(EMAIL, email);
+        req.setAttribute(AVATAR_PATH, avatarPath);
     }
 
     @Override

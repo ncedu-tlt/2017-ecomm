@@ -15,6 +15,8 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 @WebServlet(name = "ShoppingCartIconServlet", urlPatterns = {"/shoppingCartIcon"})
 public class ShoppingCartIconServlet extends HttpServlet {
+    private static final String QUANTITY_PRODUCT = "quantityProducts";
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
@@ -37,7 +39,7 @@ public class ShoppingCartIconServlet extends HttpServlet {
         int EMPTY_QUANTITY = 0;
         Boolean isUserAuthorized = UserService.getInstance().isUserAuthorized(req);
         if (!isUserAuthorized) {
-            req.setAttribute("quantityProducts", EMPTY_QUANTITY);
+            req.setAttribute(QUANTITY_PRODUCT, EMPTY_QUANTITY);
         } else {
             long userId = UserService.getInstance().getCurrentUserId(req);
             showQuantityIfNeed(userId, req);
@@ -48,9 +50,9 @@ public class ShoppingCartIconServlet extends HttpServlet {
         int EMPTY_QUANTITY = 0;
         Long quantityProducts = getQuantityProducts(userId);
         if (quantityProducts == null) {
-            req.setAttribute("quantityProducts", EMPTY_QUANTITY);
+            req.setAttribute(QUANTITY_PRODUCT, EMPTY_QUANTITY);
         } else {
-            req.setAttribute("quantityProducts", quantityProducts);
+            req.setAttribute(QUANTITY_PRODUCT, quantityProducts);
         }
     }
 
