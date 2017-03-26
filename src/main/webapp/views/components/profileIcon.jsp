@@ -1,13 +1,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<jsp:include page="/profileIcon"/>
 <div class="ui item">
-    <a href="${pageContext.request.contextPath}/profile" class="circular ui icon button">
-        <c:choose>
-            <c:when test="${userId != null}">
-                <i class="icon user"></i>
-            </c:when>
-            <c:when test="${userId == null}">
+    <c:choose>
+        <c:when test="${userId != null}">
+            <div class="ui labeled">
+                <a href="${pageContext.request.contextPath}/profile" class="ui basic image label">
+                    <img src="${requestScope.avatarPath}">
+                        ${requestScope.email}
+                </a>
+            </div>
+        </c:when>
+        <c:when test="${userId == null}">
+            <a href="${pageContext.request.contextPath}/profile" class="circular ui icon button">
                 <i class="sign in icon"></i>
-            </c:when>
-        </c:choose>
-    </a>
+            </a>
+        </c:when>
+    </c:choose>
 </div>

@@ -1,13 +1,13 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.servlets.services.ShoppingCartService;
+import ru.ncedu.ecomm.servlets.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -35,11 +35,11 @@ public class ShoppingCartIconServlet extends HttpServlet {
 
     private void showQuantity(HttpServletRequest req) throws ServletException, IOException, SQLException {
         int EMPTY_QUANTITY = 0;
-        HttpSession authorization = req.getSession();
-        Long userId = (Long) authorization.getAttribute("userId");
-        if (userId == null) {
+        Boolean isUserAuthorized = UserService.getInstance().isUserAuthorized(req);
+        if (!isUserAuthorized) {
             req.setAttribute("quantityProducts", EMPTY_QUANTITY);
         } else {
+            long userId = UserService.getInstance().getCurrentUserId(req);
             showQuantityIfNeed(userId, req);
         }
     }
