@@ -30,7 +30,7 @@ public class PasswordRecoveryServlet extends HttpServlet {
     private void sendLetterToEmail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String toEmail = req.getParameter("email");
         if (UserValidationUtils.checkEmail(toEmail)) {
-            String answerFromMailService = getAnswerAndUpdateRecoveryHash(toEmail);
+            String answerFromMailService = getAnswerAndUpdateRecoveryHash(toEmail,req);
             req.setAttribute("answer", answerFromMailService);
             req.getRequestDispatcher(Configuration.getProperty("page.passwordRecovery")).forward(req, resp);
         } else {
@@ -41,18 +41,19 @@ public class PasswordRecoveryServlet extends HttpServlet {
     }
 
 
-    private String getTextHtml(String toEmail, String recoveryHash) {
-        return "<p>Please change your password in here:</p>" +
-                "<a href='https://ncedu-ecomm-dev.herokuapp.com/passwordChange?email="
-                + toEmail + "&recoveryHash=" + recoveryHash + "'>Change Password</a>";
-    }
-
-    private String getAnswerAndUpdateRecoveryHash(String toEmail) {
+    private String getAnswerAndUpdateRecoveryHash(String toEmail, HttpServletRequest req) {
         String recoveryHash = PasswordRecoveryService.getInstance().getRecoveryHashByEmail();
-        String textHTML = getTextHtml(toEmail, recoveryHash);
+        String textHTML = getTextHtml(toEmail, recoveryHash, req);
         PasswordRecoveryService.getInstance().addRecoveryHashToUser(toEmail, recoveryHash);
         return SendingMailService.getInstance().sendMail(toEmail, textHTML) ?
                 "Letter with instructions was sent in your email. Please check your post."
                 : "Email address not registered in the database.";
+    }
+
+    private String getTextHtml(String toEmail, String recoveryHash, HttpServletRequest req) {
+        String contextPath = req.getServerName();
+        return "<p>Please change your password in here:</p>" +
+                "<a href='https://"+contextPath+"/passwordChange?email="
+                + toEmail + "&recoveryHash=" + recoveryHash + "'>Change Password</a>";
     }
 }
