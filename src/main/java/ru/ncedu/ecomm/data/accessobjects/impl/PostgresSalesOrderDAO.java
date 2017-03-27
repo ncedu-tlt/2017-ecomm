@@ -202,7 +202,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                              " summ.total\n" +
                              "FROM sales_orders,\n" +
                              " order_statuses, \n " +
-                             " (SELECT SUM(standard_price) as total,\n" +
+                             " (SELECT SUM(order_items.standard_price * order_items.quantity) as total,\n" +
                              " sales_orders.sales_order_id\n " +
                              " FROM order_items,\n " +
                              "sales_orders\n " +
@@ -228,6 +228,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                 salesOrders.add(salesOrder);
 
             }
+            LOG.info(null);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -276,6 +277,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                         .build();
                 orderItems.add(orderItem);
             }
+            LOG.info(null);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
