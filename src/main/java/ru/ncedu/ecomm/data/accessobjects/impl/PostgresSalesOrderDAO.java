@@ -249,8 +249,8 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                              " discount_id,\n" +
                              " COALESCE(" +
                              "NULLIF(imgUrl.value, " +
-                             "'/ecomm/images/defaultimage/image.png'), " +
-                             "'/ecomm/images/defaultimage/image.png') as image\n" +
+                             "'/images/defaultimage/image.png'), " +
+                             "'/images/defaultimage/image.png') as image\n" +
                              "FROM order_items,\n" +
                              " products\n" +
                              " LEFT JOIN\n" +

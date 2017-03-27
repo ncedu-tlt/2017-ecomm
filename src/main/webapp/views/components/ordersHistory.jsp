@@ -18,7 +18,7 @@
                             <c:forEach var="orderItems" items="${orders.getOrderItems()}">
                                 <div class="item">
                                     <div class="ui small image">
-                                        <img src="${orderItems.getImgUrl()}">
+                                        <img src="${pageContext.request.contextPath}${orderItems.getImgUrl()}">
                                     </div>
                                     <div class="middle aligned content">
                                         <div class="left floated header">
