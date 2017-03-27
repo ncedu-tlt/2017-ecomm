@@ -3,17 +3,17 @@ package ru.ncedu.ecomm.data.models;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Discount {
+public class DiscountDAOObject {
     private long discountId;
     private String name;
     private int value;
 
-    public Discount() {
+    public DiscountDAOObject() {
     }
 
-    public Discount(long discountId,
-                    String name,
-                    int value) {
+    public DiscountDAOObject(long discountId,
+                             String name,
+                             int value) {
 
         this.discountId = discountId;
         this.name = name;

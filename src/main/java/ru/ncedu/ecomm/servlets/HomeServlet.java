@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets;
 
-import ru.ncedu.ecomm.data.models.Category;
+import ru.ncedu.ecomm.data.models.CategoryDAOObject;
 import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
 import ru.ncedu.ecomm.servlets.services.ProductViewService;
 
@@ -45,8 +45,8 @@ public class HomeServlet extends HttpServlet {
         request.setAttribute("categoriesForView", categoryViewModels);
         request.getRequestDispatcher("/views/pages/index.jsp").forward(request, response);
     }
-    private List<Category> getCategoryListByRequest(HttpServletRequest request) {
-        List<Category> categories;
+    private List<CategoryDAOObject> getCategoryListByRequest(HttpServletRequest request) {
+        List<CategoryDAOObject> categories;
         String categoryIdByRequest = request.getParameter(PARAMETER_NAME_FOR_CATEGORY_ID);
 
         if (categoryIdByRequest == null || getCategoryId(categoryIdByRequest) == 0) {
@@ -59,13 +59,13 @@ public class HomeServlet extends HttpServlet {
         return categories;
     }
 
-    private List<Category> getCategoriesById(long categoryId) {
+    private List<CategoryDAOObject> getCategoriesById(long categoryId) {
         return getDAOFactory()
                 .getCategoryDAO()
                 .getAllNotEmptyChildrenCategoriesById(categoryId);
     }
 
-    private List<Category> getParentCategory() {
+    private List<CategoryDAOObject> getParentCategory() {
         return getDAOFactory()
                 .getCategoryDAO()
                 .getParentCategories();

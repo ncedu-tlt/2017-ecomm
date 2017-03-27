@@ -1,14 +1,14 @@
 package ru.ncedu.ecomm.data.models;
 
-public class RecomendedProduct {
+public class RecomendedProductDAOObject {
     private long sourceProductId;
     private long targetProductId;
 
-    public RecomendedProduct() {
+    public RecomendedProductDAOObject() {
     }
 
-    public RecomendedProduct(long sourceProductId,
-                             long targetProductId) {
+    public RecomendedProductDAOObject(long sourceProductId,
+                                      long targetProductId) {
         this.sourceProductId = sourceProductId;
         this.targetProductId = targetProductId;
     }

@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets;
 
-import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.data.models.UserDAOObject;
 import ru.ncedu.ecomm.utils.EncryptionUtils;
 
 import javax.servlet.ServletException;
@@ -39,7 +39,7 @@ public class PasswordChangeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User userToRecovery = getUserToRecovery(req);
+        UserDAOObject userToRecovery = getUserToRecovery(req);
         if(checkEmailAndRecoveryHash(userToRecovery) ){
             updatePassword(userToRecovery);
             req.setAttribute(ANSWER, RESULT_SUCCESS);
@@ -51,22 +51,22 @@ public class PasswordChangeServlet extends HttpServlet {
         }
     }
 
-    private boolean checkEmailAndRecoveryHash(User userToRecovery) {
+    private boolean checkEmailAndRecoveryHash(UserDAOObject userToRecovery) {
         String recoveryHash = userToRecovery.getRecoveryHash();
-        User userByEmail = getDAOFactory().getUserDAO().getUserByEmail(userToRecovery.getEmail());
+        UserDAOObject userByEmail = getDAOFactory().getUserDAO().getUserByEmail(userToRecovery.getEmail());
         return recoveryHash.equals(userByEmail.getRecoveryHash());
     }
 
-    private void updatePassword(User userToRecovery){
-        User userWithNewPassword = getDAOFactory().getUserDAO().getUserByEmail(userToRecovery.getEmail());
+    private void updatePassword(UserDAOObject userToRecovery){
+        UserDAOObject userWithNewPassword = getDAOFactory().getUserDAO().getUserByEmail(userToRecovery.getEmail());
         String newPassword = EncryptionUtils.getMd5Digest(userToRecovery.getPassword());
         userWithNewPassword.setPassword(newPassword);
         userWithNewPassword.setRecoveryHash(null);
         getDAOFactory().getUserDAO().updateUser(userWithNewPassword);
     }
 
-    private User getUserToRecovery(HttpServletRequest req) {
-        User userByRecovery = new User();
+    private UserDAOObject getUserToRecovery(HttpServletRequest req) {
+        UserDAOObject userByRecovery = new UserDAOObject();
 
         userByRecovery.setPassword(req.getParameter(PASSWORD));
         userByRecovery.setRecoveryHash(req.getParameter(HIDDEN_HASH));

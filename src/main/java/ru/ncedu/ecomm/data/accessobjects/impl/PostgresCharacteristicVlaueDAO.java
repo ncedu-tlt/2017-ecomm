@@ -1,8 +1,8 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import ru.ncedu.ecomm.data.accessobjects.CharacteristicValueDAO;
-import ru.ncedu.ecomm.data.models.CharacteristicValue;
-import ru.ncedu.ecomm.data.models.builders.CharacteristicValueBuilder;
+import ru.ncedu.ecomm.data.models.CharacteristicValueDAOObject;
+import ru.ncedu.ecomm.data.models.builders.CharacteristicValueDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -14,8 +14,8 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
     private static final Logger LOG = Logger.getLogger(PostgresCharacteristicVlaueDAO.class);
 
     @Override
-    public List<CharacteristicValue> getCharacteristicValues() {
-        List<CharacteristicValue> characteristicValues = new ArrayList<>();
+    public List<CharacteristicValueDAOObject> getCharacteristicValues() {
+        List<CharacteristicValueDAOObject> characteristicValues = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
@@ -26,7 +26,7 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
                             "  value\n" +
                             "FROM public.characteristic_values");
             while (resultSet.next()) {
-                CharacteristicValue characteristicValue = new CharacteristicValueBuilder()
+                CharacteristicValueDAOObject characteristicValue = new CharacteristicValueDAOObjectBuilder()
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
                         .setCharacteristicValue(resultSet.getString("value"))
                         .setProductId(resultSet.getLong("product_id"))
@@ -44,8 +44,8 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
     }
 
     @Override
-    public List<CharacteristicValue> getCharacteristicValuesById(long id) {
-        List<CharacteristicValue> characteristicValuesById = new ArrayList<>();
+    public List<CharacteristicValueDAOObject> getCharacteristicValuesById(long id) {
+        List<CharacteristicValueDAOObject> characteristicValuesById = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -59,7 +59,7 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                CharacteristicValue characteristicValue = new CharacteristicValueBuilder()
+                CharacteristicValueDAOObject characteristicValue = new CharacteristicValueDAOObjectBuilder()
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
                         .setCharacteristicValue(resultSet.getString("value"))
                         .setProductId(resultSet.getLong("product_id"))
@@ -78,8 +78,8 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
     }
 
     @Override
-    public List<CharacteristicValue> getCharacteristicValuesByProductId(long id) {
-        List<CharacteristicValue> characteristicValuesByProductId = new ArrayList<>();
+    public List<CharacteristicValueDAOObject> getCharacteristicValuesByProductId(long id) {
+        List<CharacteristicValueDAOObject> characteristicValuesByProductId = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -93,7 +93,7 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                CharacteristicValue characteristicValue = new CharacteristicValueBuilder()
+                CharacteristicValueDAOObject characteristicValue = new CharacteristicValueDAOObjectBuilder()
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
                         .setCharacteristicValue(resultSet.getString("value"))
                         .setProductId(resultSet.getLong("product_id"))
@@ -112,7 +112,7 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
     }
 
     @Override
-    public CharacteristicValue getCharacteristicValueByIdAndProductId(long productId, long characteristicId) {
+    public CharacteristicValueDAOObject getCharacteristicValueByIdAndProductId(long productId, long characteristicId) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -130,7 +130,7 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
             if (resultSet.next()) {
 
                 LOG.info(null);
-                return new CharacteristicValueBuilder()
+                return new CharacteristicValueDAOObjectBuilder()
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
                         .setCharacteristicValue(resultSet.getString("value"))
                         .setProductId(resultSet.getLong("product_id"))
@@ -147,7 +147,7 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
 
 
     @Override
-    public CharacteristicValue addCharacteristicValue(CharacteristicValue characteristicValue) {
+    public CharacteristicValueDAOObject addCharacteristicValue(CharacteristicValueDAOObject characteristicValue) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -177,7 +177,7 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
     }
 
     @Override
-    public CharacteristicValue updateCharacteristicValue(CharacteristicValue characteristicValue) {
+    public CharacteristicValueDAOObject updateCharacteristicValue(CharacteristicValueDAOObject characteristicValue) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -201,7 +201,7 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
     }
 
     @Override
-    public void deleteCharacteristicValue(CharacteristicValue characteristicValue) {
+    public void deleteCharacteristicValue(CharacteristicValueDAOObject characteristicValue) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "DELETE FROM public.characteristic_values\n" +
@@ -219,8 +219,8 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
         }
     }
 
-    public List<CharacteristicValue> getCharacteristicValuesByIdAndProductsCategoryId(long characteristicId, long categoryId) {
-        List<CharacteristicValue> characteristics = new ArrayList<>();
+    public List<CharacteristicValueDAOObject> getCharacteristicValuesByIdAndProductsCategoryId(long characteristicId, long categoryId) {
+        List<CharacteristicValueDAOObject> characteristics = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -246,7 +246,7 @@ public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                characteristics.add(new CharacteristicValueBuilder()
+                characteristics.add(new CharacteristicValueDAOObjectBuilder()
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
                         .setCharacteristicValue(resultSet.getString("value"))
                         .setProductId(resultSet.getLong("product_id"))

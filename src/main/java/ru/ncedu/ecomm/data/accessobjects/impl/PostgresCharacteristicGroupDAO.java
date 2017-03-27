@@ -1,8 +1,8 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import ru.ncedu.ecomm.data.accessobjects.CharacteristicGroupDAO;
-import ru.ncedu.ecomm.data.models.CharacteristicGroup;
-import ru.ncedu.ecomm.data.models.builders.CharacteristicGroupBuilder;
+import ru.ncedu.ecomm.data.models.CharacteristicGroupDAOObject;
+import ru.ncedu.ecomm.data.models.builders.CharacteristicGroupDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -14,9 +14,9 @@ public class PostgresCharacteristicGroupDAO implements CharacteristicGroupDAO {
     private static final Logger LOG = Logger.getLogger(PostgresCharacteristicGroupDAO.class);
 
     @Override
-    public List<CharacteristicGroup> getCharacteristicGroup() {
+    public List<CharacteristicGroupDAOObject> getCharacteristicGroup() {
 
-        List<CharacteristicGroup> characteristicGroups = new ArrayList<>();
+        List<CharacteristicGroupDAOObject> characteristicGroups = new ArrayList<>();
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(
@@ -26,7 +26,7 @@ public class PostgresCharacteristicGroupDAO implements CharacteristicGroupDAO {
                             "FROM public.characteristic_groups"
             );
             while (resultSet.next()) {
-                CharacteristicGroup characteristicGroup = new CharacteristicGroupBuilder()
+                CharacteristicGroupDAOObject characteristicGroup = new CharacteristicGroupDAOObjectBuilder()
                         .setCharacteristicGroupId(resultSet.getLong("characteristic_group_id"))
                         .setCharacteristicGroupName(resultSet.getString("name"))
                         .build();
@@ -43,7 +43,7 @@ public class PostgresCharacteristicGroupDAO implements CharacteristicGroupDAO {
     }
 
     @Override
-    public CharacteristicGroup getCharacteristicGroupById(long characteristicGroupId) {
+    public CharacteristicGroupDAOObject getCharacteristicGroupById(long characteristicGroupId) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT\n" +
@@ -57,7 +57,7 @@ public class PostgresCharacteristicGroupDAO implements CharacteristicGroupDAO {
             if (resultSet.next()) {
 
                 LOG.info(null);
-                return new CharacteristicGroupBuilder()
+                return new CharacteristicGroupDAOObjectBuilder()
                         .setCharacteristicGroupId(resultSet.getLong("characteristic_group_id"))
                         .setCharacteristicGroupName(resultSet.getString("name"))
                         .build();
@@ -71,7 +71,7 @@ public class PostgresCharacteristicGroupDAO implements CharacteristicGroupDAO {
     }
 
     @Override
-    public CharacteristicGroup addCharacteristicGroup(CharacteristicGroup characteristicGroup) {
+    public CharacteristicGroupDAOObject addCharacteristicGroup(CharacteristicGroupDAOObject characteristicGroup) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -99,7 +99,7 @@ public class PostgresCharacteristicGroupDAO implements CharacteristicGroupDAO {
 
 
     @Override
-    public CharacteristicGroup updateCharacteristicGroup(CharacteristicGroup characteristicGroup) {
+    public CharacteristicGroupDAOObject updateCharacteristicGroup(CharacteristicGroupDAOObject characteristicGroup) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -121,7 +121,7 @@ public class PostgresCharacteristicGroupDAO implements CharacteristicGroupDAO {
     }
 
     @Override
-    public void deleteCharacteristicGroup(CharacteristicGroup characteristicGroup) {
+    public void deleteCharacteristicGroup(CharacteristicGroupDAOObject characteristicGroup) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "DELETE FROM public.characteristic_groups\n" +

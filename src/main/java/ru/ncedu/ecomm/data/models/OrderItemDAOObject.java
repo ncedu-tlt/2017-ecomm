@@ -1,28 +1,23 @@
 package ru.ncedu.ecomm.data.models;
 
-public class OrderItem {
 
+public class OrderItemDAOObject {
     private long productId;
     private long salesOrderId;
     private int quantity;
     private long standardPrice;
-    private String name;
-    private long price;
-    private String imgUrl;
-    private long discount;
 
-    public OrderItem() {
+    public OrderItemDAOObject() {
     }
 
-    public OrderItem(long productId, long salesOrderId, int quantity, long standardPrice, String name, long price, String imgUrl, long discount) {
+    public OrderItemDAOObject(long productId,
+                              long salesOrderId,
+                              int quantity,
+                              long standardPrice) {
         this.productId = productId;
         this.salesOrderId = salesOrderId;
         this.quantity = quantity;
         this.standardPrice = standardPrice;
-        this.name = name;
-        this.price = price;
-        this.imgUrl = imgUrl;
-        this.discount = discount;
     }
 
     public long getProductId() {
@@ -55,37 +50,5 @@ public class OrderItem {
 
     public void setStandardPrice(long standardPrice) {
         this.standardPrice = standardPrice;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public long getPrice() {
-        return price;
-    }
-
-    public void setPrice(long price) {
-        this.price = price;
-    }
-
-    public String getImgUrl() {
-        return imgUrl;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
-
-    public long getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(long discount) {
-        this.discount = discount;
     }
 }

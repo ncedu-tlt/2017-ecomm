@@ -1,14 +1,14 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.RecomendedProduct;
+import ru.ncedu.ecomm.data.models.RecomendedProductDAOObject;
 
 import java.util.List;
 
 public interface RecomendedProductsDAO {
-    List<RecomendedProduct> getRecomendedProducts();
+    List<RecomendedProductDAOObject> getRecomendedProducts();
 
-    RecomendedProduct addRecomendedProduct(RecomendedProduct recomendedProduct);
+    RecomendedProductDAOObject addRecomendedProduct(RecomendedProductDAOObject recomendedProduct);
 
-    void deleteRecomendedProduct(RecomendedProduct recomendedProduct);
+    void deleteRecomendedProduct(RecomendedProductDAOObject recomendedProduct);
 
 }

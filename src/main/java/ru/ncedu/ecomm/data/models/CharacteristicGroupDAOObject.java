@@ -1,14 +1,14 @@
 package ru.ncedu.ecomm.data.models;
 
 
-public class CharacteristicGroup {
+public class CharacteristicGroupDAOObject {
     private long characteristicGroupId;
     private String characteristicGroupName;
 
-    public CharacteristicGroup() {
+    public CharacteristicGroupDAOObject() {
     }
 
-    public CharacteristicGroup(long characteristicGroupId, String characteristicGroupName) {
+    public CharacteristicGroupDAOObject(long characteristicGroupId, String characteristicGroupName) {
         this.characteristicGroupId = characteristicGroupId;
         this.characteristicGroupName = characteristicGroupName;
     }

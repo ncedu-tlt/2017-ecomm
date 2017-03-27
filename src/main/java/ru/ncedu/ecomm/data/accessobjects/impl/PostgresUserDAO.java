@@ -2,8 +2,8 @@ package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.UserDAO;
-import ru.ncedu.ecomm.data.models.User;
-import ru.ncedu.ecomm.data.models.builders.UserBuilder;
+import ru.ncedu.ecomm.data.models.UserDAOObject;
+import ru.ncedu.ecomm.data.models.builders.UserDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -14,8 +14,8 @@ public class PostgresUserDAO implements UserDAO {
     private static final Logger LOG  = Logger.getLogger(PostgresUserDAO.class);
 
     @Override
-    public List<User> getUsers() {
-        List<User> users = new ArrayList<>();
+    public List<UserDAOObject> getUsers() {
+        List<UserDAOObject> users = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
@@ -34,7 +34,7 @@ public class PostgresUserDAO implements UserDAO {
                             "  user_avatar\n" +
                             "FROM users");
             while (resultSet.next()) {
-                User user = new UserBuilder()
+                UserDAOObject user = new UserDAOObjectBuilder()
                         .setUserId(resultSet.getLong("user_id"))
                         .setRoleId(resultSet.getLong("role_id"))
                         .setFirstName(resultSet.getString("first_name"))
@@ -58,7 +58,7 @@ public class PostgresUserDAO implements UserDAO {
     }
 
     @Override
-    public User getUserById(long id) {
+    public UserDAOObject getUserById(long id) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -80,7 +80,7 @@ public class PostgresUserDAO implements UserDAO {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 LOG.info(null);
-                return new UserBuilder()
+                return new UserDAOObjectBuilder()
                         .setUserId(resultSet.getLong("user_id"))
                         .setRoleId(resultSet.getLong("role_id"))
                         .setFirstName(resultSet.getString("first_name"))
@@ -101,7 +101,7 @@ public class PostgresUserDAO implements UserDAO {
     }
 
     @Override
-    public User getUserByEmail(String email) {
+    public UserDAOObject getUserByEmail(String email) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT\n" +
@@ -123,7 +123,7 @@ public class PostgresUserDAO implements UserDAO {
             if (resultSet.next()){
 
                 LOG.info(null);
-                return new UserBuilder()
+                return new UserDAOObjectBuilder()
                         .setUserId(resultSet.getLong("user_id"))
                         .setRoleId(resultSet.getLong("role_id"))
                         .setFirstName(resultSet.getString("first_name"))
@@ -144,8 +144,8 @@ public class PostgresUserDAO implements UserDAO {
     }
 
     @Override
-    public List<User> getUserByRoleId(long roleId) {
-        List<User> users = new ArrayList<>();
+    public List<UserDAOObject> getUserByRoleId(long roleId) {
+        List<UserDAOObject> users = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -167,7 +167,7 @@ public class PostgresUserDAO implements UserDAO {
             statement.setLong(1, roleId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                User user = new UserBuilder()
+                UserDAOObject user = new UserDAOObjectBuilder()
                         .setUserId(resultSet.getLong("user_id"))
                         .setRoleId(resultSet.getLong("role_id"))
                         .setFirstName(resultSet.getString("first_name"))
@@ -191,7 +191,7 @@ public class PostgresUserDAO implements UserDAO {
     }
 
     @Override
-    public User getUserByPassword(String password) {
+    public UserDAOObject getUserByPassword(String password) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT\n" +
@@ -213,7 +213,7 @@ public class PostgresUserDAO implements UserDAO {
             if (resultSet.next()){
 
                 LOG.info(null);
-                return new UserBuilder()
+                return new UserDAOObjectBuilder()
                         .setUserId(resultSet.getLong("user_id"))
                         .setRoleId(resultSet.getLong("role_id"))
                         .setFirstName(resultSet.getString("first_name"))
@@ -235,7 +235,7 @@ public class PostgresUserDAO implements UserDAO {
 
 
     @Override
-    public User addUser(User user) {
+    public UserDAOObject addUser(UserDAOObject user) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -274,7 +274,7 @@ public class PostgresUserDAO implements UserDAO {
     }
 
     @Override
-    public User updateUser(User user) {
+    public UserDAOObject updateUser(UserDAOObject user) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -306,7 +306,7 @@ public class PostgresUserDAO implements UserDAO {
     }
 
     @Override
-    public void deleteUser(User user) {
+    public void deleteUser(UserDAOObject user) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(

@@ -1,16 +1,16 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.data.models.UserDAOObject;
 
 import java.util.List;
 
 public interface UserDAO {
-    List<User> getUsers();
-    User getUserById(long id);
-    User getUserByEmail(String email);
-    User getUserByPassword(String password);
-    List<User> getUserByRoleId(long roleId);
-    User addUser(User user);
-    User updateUser(User user);
-    void deleteUser(User user);
+    List<UserDAOObject> getUsers();
+    UserDAOObject getUserById(long id);
+    UserDAOObject getUserByEmail(String email);
+    UserDAOObject getUserByPassword(String password);
+    List<UserDAOObject> getUserByRoleId(long roleId);
+    UserDAOObject addUser(UserDAOObject user);
+    UserDAOObject updateUser(UserDAOObject user);
+    void deleteUser(UserDAOObject user);
 }

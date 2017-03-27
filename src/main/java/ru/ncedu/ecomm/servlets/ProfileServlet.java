@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
-import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.data.models.UserDAOObject;
 import ru.ncedu.ecomm.servlets.models.EnumRoles;
 import ru.ncedu.ecomm.servlets.services.ProfileService;
 import ru.ncedu.ecomm.servlets.services.UserService;
@@ -50,11 +50,11 @@ public class ProfileServlet extends HttpServlet {
 
     private void createAttributeProfile(HttpServletRequest req) throws ServletException, IOException {
         long userId = UserService.getInstance().getCurrentUserId(req);
-        User userProfile = getDAOFactory().getUserDAO().getUserById(userId);
+        UserDAOObject userProfile = getDAOFactory().getUserDAO().getUserById(userId);
         initAttributesProfileForShow(userProfile, req);
     }
 
-    private void initAttributesProfileForShow(User userProfile, HttpServletRequest req) {
+    private void initAttributesProfileForShow(UserDAOObject userProfile, HttpServletRequest req) {
         req.setAttribute(FIRST_NAME, userProfile.getFirstName());
         req.setAttribute(LAST_NAME, userProfile.getLastName());
         req.setAttribute(EMAIL, userProfile.getEmail());
@@ -66,33 +66,33 @@ public class ProfileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User userForCompare = getUserForCompare(req);
-        User userForChange = initUserForChangeFromRequest(req);
+        UserDAOObject userForCompare = getUserForCompare(req);
+        UserDAOObject userForChange = initUserForChangeFromRequest(req);
         String answer = getAnswerFromProfileService(userForChange, userForCompare);
         req.setAttribute(ANSWER, answer);
         this.doGet(req, resp);
     }
 
-    private User getUserForCompare(HttpServletRequest req) throws ServletException, IOException {
+    private UserDAOObject getUserForCompare(HttpServletRequest req) throws ServletException, IOException {
         long userId = UserService.getInstance().getCurrentUserId(req);
         return  getDAOFactory().getUserDAO().getUserById(userId);
     }
 
-    private User initUserForChangeFromRequest(HttpServletRequest req) {
-        User userForChange = new User();
+    private UserDAOObject initUserForChangeFromRequest(HttpServletRequest req) {
+        UserDAOObject userForChange = new UserDAOObject();
         userForChange = getUserFromRequest(userForChange, req);
 
         return userForChange;
     }
 
-    private String getAnswerFromProfileService(User userForChange, User userForCompare) throws ServletException, IOException {
+    private String getAnswerFromProfileService(UserDAOObject userForChange, UserDAOObject userForCompare) throws ServletException, IOException {
         String resultValidation = getResultValidation(userForChange, userForCompare);
         userForChange = getUserWithoutEmptyEmail(userForChange, userForCompare);
         userForChange = getUserWithCorrectPassword(userForChange, userForCompare);
         return ProfileService.getInstance().getAnswerAccordingValidation(resultValidation, userForChange);
     }
 
-    private User getUserFromRequest(User userForChange, HttpServletRequest req) {
+    private UserDAOObject getUserFromRequest(UserDAOObject userForChange, HttpServletRequest req) {
         userForChange.setRoleId(EnumRoles.USER.getRole());
         userForChange.setFirstName(req.getParameter(FIRST_NAME));
         userForChange.setLastName(req.getParameter(LAST_NAME));
@@ -102,7 +102,7 @@ public class ProfileServlet extends HttpServlet {
         return userForChange;
     }
 
-    private String getResultValidation(User userForChange, User userForCompare) throws ServletException, IOException {
+    private String getResultValidation(UserDAOObject userForChange, UserDAOObject userForCompare) throws ServletException, IOException {
         userForChange = fillingNonEmptyFields(userForChange, userForCompare);
         return ProfileService.getInstance().getResultAfterValidation(userForChange, userForCompare);
     }
@@ -110,21 +110,21 @@ public class ProfileServlet extends HttpServlet {
     /**
      * Заполняем сущность параметрами, которые не вводим в интерфейсе
      */
-    private User fillingNonEmptyFields(User userForChange, User userForCompare) {
+    private UserDAOObject fillingNonEmptyFields(UserDAOObject userForChange, UserDAOObject userForCompare) {
         userForChange.setId(userForCompare.getId());
         userForChange.setPhone(userForCompare.getPhone());
         userForChange.setRegistrationDate(userForCompare.getRegistrationDate());
         return userForChange;
     }
 
-    private User getUserWithoutEmptyEmail(User userForChange, User userForCompare) {
+    private UserDAOObject getUserWithoutEmptyEmail(UserDAOObject userForChange, UserDAOObject userForCompare) {
         if(Objects.equals(userForChange.getEmail(), "")){
             userForChange.setEmail(userForCompare.getEmail());
         }
         return userForChange;
     }
 
-    private User getUserWithCorrectPassword(User userForChange, User userForCompare){
+    private UserDAOObject getUserWithCorrectPassword(UserDAOObject userForChange, UserDAOObject userForCompare){
         if(Objects.equals(userForChange.getPassword(), "")){
             userForChange.setPassword(userForCompare.getPassword());
         }

@@ -1,8 +1,8 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import ru.ncedu.ecomm.data.accessobjects.DiscountDAO;
-import ru.ncedu.ecomm.data.models.Discount;
-import ru.ncedu.ecomm.data.models.builders.DiscountBuilder;
+import ru.ncedu.ecomm.data.models.DiscountDAOObject;
+import ru.ncedu.ecomm.data.models.builders.DiscountDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.Connection;
@@ -17,8 +17,8 @@ public class PostgresDiscountDAO implements DiscountDAO {
     private static final Logger LOG  = Logger.getLogger(PostgresDiscountDAO.class);
 
     @Override
-    public List<Discount> getDiscount() {
-        List<Discount> discounts = new ArrayList<>();
+    public List<DiscountDAOObject> getDiscount() {
+        List<DiscountDAOObject> discounts = new ArrayList<>();
 
         try(Connection connection = DBUtils.getConnection();
             Statement statement = connection.createStatement()){
@@ -31,7 +31,7 @@ public class PostgresDiscountDAO implements DiscountDAO {
                             "FROM public.discount");
 
             while (resultSet.next()) {
-                Discount discount = new DiscountBuilder()
+                DiscountDAOObject discount = new DiscountDAOObjectBuilder()
                         .setDiscountId(resultSet.getLong("discount_id"))
                         .setName(resultSet.getString("name"))
                         .setValue(resultSet.getInt("value"))

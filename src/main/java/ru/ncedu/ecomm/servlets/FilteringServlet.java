@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
-import ru.ncedu.ecomm.data.models.Product;
+import ru.ncedu.ecomm.data.models.ProductDAOObject;
 import ru.ncedu.ecomm.servlets.models.*;
 import ru.ncedu.ecomm.servlets.models.builders.CategoryViewBuilder;
 import ru.ncedu.ecomm.servlets.models.builders.PriceRangeViewModelBuilder;
@@ -96,7 +96,7 @@ public class FilteringServlet extends HttpServlet {
 
     private List<ProductViewModel> getProducts(List<FilterViewModel> filters, PriceRangeViewModel priceRange, long categoryId) {
 
-        List<Product> products = getDAOFactory()
+        List<ProductDAOObject> products = getDAOFactory()
                 .getProductDAO().getFilteredProducts(filters, priceRange,categoryId);
         return ProductViewService.getInstance().getProductsToView(products);
     }

@@ -1,14 +1,14 @@
 package ru.ncedu.ecomm.data.models;
 
-public class Property {
+public class PropertyDAOObject {
 
     private String propertyId;
     private String value;
 
-    public Property() {
+    public PropertyDAOObject() {
     }
 
-    public Property(String id, String value) {
+    public PropertyDAOObject(String id, String value) {
         this.propertyId = id;
         this.value = value;
     }

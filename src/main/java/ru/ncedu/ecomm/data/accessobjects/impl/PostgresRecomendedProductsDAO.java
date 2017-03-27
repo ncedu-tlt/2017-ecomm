@@ -1,8 +1,8 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import ru.ncedu.ecomm.data.accessobjects.RecomendedProductsDAO;
-import ru.ncedu.ecomm.data.models.RecomendedProduct;
-import ru.ncedu.ecomm.data.models.builders.RecomendedProductBuilder;
+import ru.ncedu.ecomm.data.models.RecomendedProductDAOObject;
+import ru.ncedu.ecomm.data.models.builders.RecomendedProductDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -14,8 +14,8 @@ public class PostgresRecomendedProductsDAO implements RecomendedProductsDAO{
     private static final Logger LOG  = Logger.getLogger(PostgresRecomendedProductsDAO.class);
 
     @Override
-    public List<RecomendedProduct> getRecomendedProducts() {
-        List<RecomendedProduct> recomendedProducts = new ArrayList<>();
+    public List<RecomendedProductDAOObject> getRecomendedProducts() {
+        List<RecomendedProductDAOObject> recomendedProducts = new ArrayList<>();
 
         try(Connection connection = DBUtils.getConnection();
             Statement statement = connection.createStatement()) {
@@ -26,7 +26,7 @@ public class PostgresRecomendedProductsDAO implements RecomendedProductsDAO{
                             "FROM public.recommended_products"
             );
             while (resultSet.next()) {
-                RecomendedProduct recomendedProduct = new RecomendedProductBuilder()
+                RecomendedProductDAOObject recomendedProduct = new RecomendedProductDAOObjectBuilder()
                         .setSourceProductId(resultSet.getLong("source_product_id"))
                         .setTargetProductId(resultSet.getLong("target_product_id"))
                         .build();
@@ -43,7 +43,7 @@ public class PostgresRecomendedProductsDAO implements RecomendedProductsDAO{
     }
 
     @Override
-    public RecomendedProduct addRecomendedProduct(RecomendedProduct recomendedProduct) {
+    public RecomendedProductDAOObject addRecomendedProduct(RecomendedProductDAOObject recomendedProduct) {
 
         try(Connection connection = DBUtils.getConnection();
             PreparedStatement statement = connection.prepareStatement(
@@ -65,7 +65,7 @@ public class PostgresRecomendedProductsDAO implements RecomendedProductsDAO{
     }
 
     @Override
-    public void deleteRecomendedProduct(RecomendedProduct recomendedProduct) {
+    public void deleteRecomendedProduct(RecomendedProductDAOObject recomendedProduct) {
 
         try(Connection connection = DBUtils.getConnection();
             PreparedStatement statement = connection.prepareStatement(

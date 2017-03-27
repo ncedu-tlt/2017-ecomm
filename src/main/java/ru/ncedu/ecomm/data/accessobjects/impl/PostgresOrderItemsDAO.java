@@ -1,8 +1,8 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import ru.ncedu.ecomm.data.accessobjects.OrderItemsDAO;
-import ru.ncedu.ecomm.data.models.OrderItem;
-import ru.ncedu.ecomm.data.models.builders.OrderItemBuilder;
+import ru.ncedu.ecomm.data.models.OrderItemDAOObject;
+import ru.ncedu.ecomm.data.models.builders.OrderItemDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -14,9 +14,9 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
     private static final Logger LOG  = Logger.getLogger(PostgresOrderItemsDAO.class);
 
     @Override
-    public List<OrderItem> getOrderItems() {
+    public List<OrderItemDAOObject> getOrderItems() {
 
-        List<OrderItem> orderItems = new ArrayList<>();
+        List<OrderItemDAOObject> orderItems = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
@@ -30,7 +30,7 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
                             "FROM public.order_items");
 
             while (resultSet.next()) {
-                OrderItem orderItem = new OrderItemBuilder()
+                OrderItemDAOObject orderItem = new OrderItemDAOObjectBuilder()
                         .setProductId(resultSet.getLong("product_id"))
                         .setSalesOrederId(resultSet.getLong("sales_order_id"))
                         .setQuantity(resultSet.getInt("quantity"))
@@ -49,8 +49,8 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
     }
 
     @Override
-    public List<OrderItem> getOrderItemsBySalesOrderId(long salesOrderId) {
-        List <OrderItem> orderItemsBySalesOrderId = new ArrayList<>();
+    public List<OrderItemDAOObject> getOrderItemsBySalesOrderId(long salesOrderId) {
+        List <OrderItemDAOObject> orderItemsBySalesOrderId = new ArrayList<>();
         try(Connection connection = DBUtils.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(
                "SELECT\n"+
@@ -63,7 +63,7 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
             preparedStatement.setLong(1, salesOrderId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                OrderItem orderItem = new OrderItemBuilder()
+                OrderItemDAOObject orderItem = new OrderItemDAOObjectBuilder()
                         .setProductId(resultSet.getLong("product_id"))
                         .setSalesOrederId(resultSet.getLong("sales_order_id"))
                         .setQuantity(resultSet.getInt("quantity"))
@@ -81,7 +81,7 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
     }
 
     @Override
-    public OrderItem addOrderItem(OrderItem orderItem) {
+    public OrderItemDAOObject addOrderItem(OrderItemDAOObject orderItem) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "INSERT INTO public.order_items\n" +
@@ -103,7 +103,7 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
     }
 
     @Override
-    public OrderItem updateOrderItem(OrderItem orderItem) {
+    public OrderItemDAOObject updateOrderItem(OrderItemDAOObject orderItem) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -130,8 +130,8 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
     }
 
     @Override
-    public OrderItem getOrderItem(long productId, long salesOrderId) throws SQLException {
-        OrderItem orderItem = new OrderItem();
+    public OrderItemDAOObject getOrderItem(long productId, long salesOrderId) throws SQLException {
+        OrderItemDAOObject orderItem = new OrderItemDAOObject();
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
@@ -147,7 +147,7 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
             preparedStatement.setLong(2, salesOrderId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                orderItem = new OrderItemBuilder()
+                orderItem = new OrderItemDAOObjectBuilder()
                         .setProductId(resultSet.getLong("product_id"))
                         .setSalesOrederId(resultSet.getLong("sales_order_id"))
                         .setQuantity(resultSet.getInt("quantity"))
@@ -164,7 +164,7 @@ public class PostgresOrderItemsDAO implements OrderItemsDAO {
     }
 
     @Override
-    public void deleteOrderItem(OrderItem orderItem) {
+    public void deleteOrderItem(OrderItemDAOObject orderItem) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "DELETE FROM public.order_items\n" +

@@ -1,24 +1,24 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.Characteristic;
+import ru.ncedu.ecomm.data.models.CharacteristicDAOObject;
 
 import java.util.List;
 
 public interface CharacteristicDAO {
-    List<Characteristic> getCharacteristic();
+    List<CharacteristicDAOObject> getCharacteristic();
 
-    List<Characteristic> getCharacteristicByCategoryIdAndGroupId(long categoryId, long groupId);
+    List<CharacteristicDAOObject> getCharacteristicByCategoryIdAndGroupId(long categoryId, long groupId);
 
-    List<Characteristic> getCharacteristicByGroupId(long characteristicGroupId);
+    List<CharacteristicDAOObject> getCharacteristicByGroupId(long characteristicGroupId);
 
-    Characteristic addCharacteristic(Characteristic characteristic);
+    CharacteristicDAOObject addCharacteristic(CharacteristicDAOObject characteristic);
 
-    Characteristic getCharacteristicById(long characteristicId);
+    CharacteristicDAOObject getCharacteristicById(long characteristicId);
 
-    Characteristic updateCharacteristic(Characteristic characteristic);
+    CharacteristicDAOObject updateCharacteristic(CharacteristicDAOObject characteristic);
 
-    void deleteCharacteristic(Characteristic characteristic);
+    void deleteCharacteristic(CharacteristicDAOObject characteristic);
 
-    List<Characteristic> getFilterableCharacteristicsByCategoryId(long categoryId);
+    List<CharacteristicDAOObject> getFilterableCharacteristicsByCategoryId(long categoryId);
 
 }

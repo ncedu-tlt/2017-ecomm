@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets;
 
-import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.data.models.UserDAOObject;
 import ru.ncedu.ecomm.servlets.services.UserService;
 
 import javax.servlet.ServletException;
@@ -28,11 +28,11 @@ public class ProfileIconServlet extends HttpServlet {
 
     private void showProfileIcon(HttpServletRequest req) throws ServletException, IOException {
         long userId = UserService.getInstance().getCurrentUserId(req);
-        User userById = getDAOFactory().getUserDAO().getUserById(userId);
+        UserDAOObject userById = getDAOFactory().getUserDAO().getUserById(userId);
         passDataToProfileIcon(userById, req);
     }
 
-    private void passDataToProfileIcon(User userById, HttpServletRequest req) {
+    private void passDataToProfileIcon(UserDAOObject userById, HttpServletRequest req) {
         String email = userById.getEmail();
         String avatarPath = userById.getUserAvatar();
         req.setAttribute(EMAIL, email);

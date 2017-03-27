@@ -1,8 +1,8 @@
 package ru.ncedu.ecomm.servlets.services;
 
 import ru.ncedu.ecomm.data.DAOFactory;
-import ru.ncedu.ecomm.data.models.Review;
-import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.data.models.ReviewDAOObject;
+import ru.ncedu.ecomm.data.models.UserDAOObject;
 import ru.ncedu.ecomm.servlets.models.ReviewViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.ReviewViewModelBuilder;
 
@@ -26,9 +26,9 @@ public class ReviewService {
         ReviewViewModel reviewViewModel;
 
         LinkedList<ReviewViewModel> reviewsViewModels = new LinkedList<>();
-        List<Review> reviews = getReviewByDAO(productId);
+        List<ReviewDAOObject> reviews = getReviewByDAO(productId);
 
-        for (Review review : reviews) {
+        for (ReviewDAOObject review : reviews) {
 
             if (review != null) {
                 reviewViewModel = getReviewModel(review, productId);
@@ -39,7 +39,7 @@ public class ReviewService {
         return reviewsViewModels;
     }
 
-    public ReviewViewModel getReviewModel(Review review, long productId) {
+    public ReviewViewModel getReviewModel(ReviewDAOObject review, long productId) {
         return new ReviewViewModelBuilder()
                 .setUserId(review.getUserId())
                 .setUserName(getUserNameByUserId(review.getUserId()))
@@ -53,27 +53,27 @@ public class ReviewService {
 
 
     private String getUserAvatarLinkByUserId(long userId) {
-        User user = getUserById(userId);
+        UserDAOObject user = getUserById(userId);
 
         return user != null ? user.getUserAvatar() : null;
     }
 
     private String getUserNameByUserId(long userId) {
-        User user = getUserById(userId);
+        UserDAOObject user = getUserById(userId);
 
         return user != null ? UserService
                 .getInstance()
                 .getUserName(user) : null;
     }
 
-    private User getUserById(long userId) {
+    private UserDAOObject getUserById(long userId) {
         return DAOFactory
                 .getDAOFactory()
                 .getUserDAO()
                 .getUserById(userId);
     }
 
-    private List<Review> getReviewByDAO(long productId) {
+    private List<ReviewDAOObject> getReviewByDAO(long productId) {
         return DAOFactory
                 .getDAOFactory()
                 .getReviewDAO()

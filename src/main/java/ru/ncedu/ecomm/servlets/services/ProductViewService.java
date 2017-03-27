@@ -1,9 +1,9 @@
 package ru.ncedu.ecomm.servlets.services;
 
 import ru.ncedu.ecomm.data.DAOFactory;
-import ru.ncedu.ecomm.data.models.Category;
-import ru.ncedu.ecomm.data.models.CharacteristicValue;
-import ru.ncedu.ecomm.data.models.Product;
+import ru.ncedu.ecomm.data.models.CategoryDAOObject;
+import ru.ncedu.ecomm.data.models.CharacteristicValueDAOObject;
+import ru.ncedu.ecomm.data.models.ProductDAOObject;
 import ru.ncedu.ecomm.data.models.Rating;
 import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
 import ru.ncedu.ecomm.servlets.models.ProductViewModel;
@@ -46,11 +46,11 @@ public class ProductViewService {
         return bestOffersCategory;
     }
 
-    public List<CategoryViewModel> getCategoriesById(List<Category> categories) {
+    public List<CategoryViewModel> getCategoriesById(List<CategoryDAOObject> categories) {
 
         List<CategoryViewModel> categoriesById = new ArrayList<>();
 
-        for (Category category : categories) {
+        for (CategoryDAOObject category : categories) {
 
             CategoryViewModel categoryByRequest = new CategoryViewBuilder()
                     .setId(category.getCategoryId())
@@ -74,7 +74,7 @@ public class ProductViewService {
         }
     }
 
-    private List<Product> getProductsById(long categoryId) {
+    private List<ProductDAOObject> getProductsById(long categoryId) {
         if (categoryId == CATEGORY_ID_FOR_BEST_OFFERS) {
             return getDAOFactory().getProductDAO()
                     .getBestOffersProducts();
@@ -84,7 +84,7 @@ public class ProductViewService {
         }
     }
 
-    private CharacteristicValue getImageUrl(long productId) {
+    private CharacteristicValueDAOObject getImageUrl(long productId) {
         return getDAOFactory()
                 .getCharacteristicValueDAO()
                 .getCharacteristicValueByIdAndProductId(productId,
@@ -92,7 +92,7 @@ public class ProductViewService {
     }
 
     List<ProductViewModel> getProductModelByOrderId(long orderId) {
-        List<Product> productForBuild = DAOFactory.getDAOFactory()
+        List<ProductDAOObject> productForBuild = DAOFactory.getDAOFactory()
                 .getProductDAO()
                 .getProductByOrderId(orderId);
 
@@ -111,15 +111,15 @@ public class ProductViewService {
                 .getDiscountPrice(discountId, price);
     }
 
-    public List<ProductViewModel> getProductsToView(List<Product> products) {
+    public List<ProductViewModel> getProductsToView(List<ProductDAOObject> products) {
 
         List<ProductViewModel> productsView = new ArrayList<>();
 
         ProductViewModel itemForView;
         Rating productAverageRating;
-        CharacteristicValue characteristicValue;
+        CharacteristicValueDAOObject characteristicValue;
 
-        for (Product product : products) {
+        for (ProductDAOObject product : products) {
             int productRating = 0;
 
             String imageUrl = DEFAULT_IMAGE_URL;
@@ -156,14 +156,14 @@ public class ProductViewService {
         return productsView;
     }
 
-    private String getImageUrlByCharacteristicList(CharacteristicValue characteristicValue) {
+    private String getImageUrlByCharacteristicList(CharacteristicValueDAOObject characteristicValue) {
         String imageURL = characteristicValue.getCharacteristicValue();
         String[] links = imageURL.trim().split(",");
 
         return links[0];
     }
 
-    private List<Product> getProductAllChildrenCategory(long categoryId) {
+    private List<ProductDAOObject> getProductAllChildrenCategory(long categoryId) {
         return DAOFactory
                 .getDAOFactory()
                 .getProductDAO()

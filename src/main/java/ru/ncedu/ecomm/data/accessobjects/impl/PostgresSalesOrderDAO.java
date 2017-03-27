@@ -2,12 +2,12 @@ package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.SalesOrdersDAO;
+import ru.ncedu.ecomm.data.models.SalesOrderDAOObject;
+import ru.ncedu.ecomm.data.models.builders.SalesOrderDAOObjectBuilder;
+import ru.ncedu.ecomm.data.models.OrderItem;
 import ru.ncedu.ecomm.data.models.SalesOrder;
+import ru.ncedu.ecomm.data.models.builders.OrderItemBuilder;
 import ru.ncedu.ecomm.data.models.builders.SalesOrderBuilder;
-import ru.ncedu.ecomm.servlets.models.OrderItemViewModel;
-import ru.ncedu.ecomm.servlets.models.SalesOrderViewModel;
-import ru.ncedu.ecomm.servlets.models.builders.OrderItemViewBuilder;
-import ru.ncedu.ecomm.servlets.models.builders.SalesOrderViewBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -17,8 +17,8 @@ import java.util.List;
 public class PostgresSalesOrderDAO implements SalesOrdersDAO {
     private static final Logger LOG  = Logger.getLogger(PostgresSalesOrderDAO.class);
     @Override
-    public List<SalesOrder> getSalesOrders() {
-        List<SalesOrder> salesOrders = new ArrayList<>();
+    public List<SalesOrderDAOObject> getSalesOrders() {
+        List<SalesOrderDAOObject> salesOrders = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
@@ -32,7 +32,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
                             "order_status_id\n" +
                             "FROM PUBLIC.sales_orders");
             while (resultSet.next()) {
-                SalesOrder salesOrder = new SalesOrderBuilder()
+                SalesOrderDAOObject salesOrder = new SalesOrderDAOObjectBuilder()
                         .setSalesOrderId(resultSet.getLong("sales_order_id"))
                         .setUserId(resultSet.getLong("user_id"))
                         .setCreationDate(resultSet.getDate("creation_date"))
@@ -52,7 +52,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
     }
 
     @Override
-    public SalesOrder getSalesOrderById(long id) {
+    public SalesOrderDAOObject getSalesOrderById(long id) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT\n" +
@@ -69,7 +69,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 LOG.info(null);
-                return new SalesOrderBuilder()
+                return new SalesOrderDAOObjectBuilder()
                         .setSalesOrderId(resultSet.getLong("sales_order_id"))
                         .setUserId(resultSet.getLong("user_id"))
                         .setCreationDate(resultSet.getDate("creation_date"))
@@ -86,7 +86,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
     }
 
     @Override
-    public SalesOrder getSalesOrderByOrderStatusId(long statusId, long userId) {
+    public SalesOrderDAOObject getSalesOrderByOrderStatusId(long statusId, long userId) {
 
         try (Connection connection = DBUtils.getConnection();
         PreparedStatement statement = connection.prepareStatement(
@@ -104,7 +104,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
             statement.setLong(2, userId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()){
-                return new SalesOrderBuilder()
+                return new SalesOrderDAOObjectBuilder()
                         .setUserId(resultSet.getLong("user_id"))
                         .setSalesOrderId(resultSet.getLong("sales_order_id"))
                         .setCreationDate(resultSet.getDate("creation_date"))
@@ -121,8 +121,8 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
     }
 
     @Override
-    public List<SalesOrder> getSalesOrderByOrderUserId(long userId) {
-        List<SalesOrder> salesOrders = new ArrayList<>();
+    public List<SalesOrderDAOObject> getSalesOrderByOrderUserId(long userId) {
+        List<SalesOrderDAOObject> salesOrders = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -138,7 +138,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
             statement.setLong(1, userId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
-                SalesOrder salesOrder = new SalesOrderBuilder()
+                SalesOrderDAOObject salesOrder = new SalesOrderDAOObjectBuilder()
                         .setUserId(resultSet.getLong("user_id"))
                         .setSalesOrderId(resultSet.getLong("sales_order_id"))
                         .setCreationDate(resultSet.getDate("creation_date"))
@@ -156,8 +156,8 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
     }
 
     @Override
-    public List<SalesOrder> getSalesOrderByOrderStatusId(long statusId) {
-        List<SalesOrder> salesOrders = new ArrayList<>();
+    public List<SalesOrderDAOObject> getSalesOrderByOrderStatusId(long statusId) {
+        List<SalesOrderDAOObject> salesOrders = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -172,7 +172,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
             statement.setLong(1, statusId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
-                SalesOrder salesOrder = new SalesOrderBuilder()
+                SalesOrderDAOObject salesOrder = new SalesOrderDAOObjectBuilder()
                         .setUserId(resultSet.getLong("user_id"))
                         .setSalesOrderId(resultSet.getLong("sales_order_id"))
                         .setCreationDate(resultSet.getDate("creation_date"))
@@ -189,8 +189,8 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
     }
 
     @Override
-    public List<SalesOrderViewModel> getSalesOrderToOrderHistory(long userId) {
-        List<SalesOrderViewModel> salesOrders = new ArrayList<>();
+    public List<SalesOrder> getSalesOrderToOrderHistory(long userId) {
+        List<SalesOrder> salesOrders = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -216,7 +216,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
             statement.setLong(1, userId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                SalesOrderViewModel salesOrder = new SalesOrderViewBuilder()
+                SalesOrder salesOrder = new SalesOrderBuilder()
                         .setUserId(resultSet.getLong("user_id"))
                         .setSalesOrderId(resultSet.getLong("sales_order_id"))
                         .setCreationDate(resultSet.getDate("creation_date"))
@@ -236,8 +236,8 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
     }
 
     @Override
-    public List<OrderItemViewModel> getOrderItemsToSalesOrder(long salesOrderId) throws SQLException {
-        List<OrderItemViewModel> orderItems = new ArrayList<>();
+    public List<OrderItem> getOrderItemsToSalesOrder(long salesOrderId) throws SQLException {
+        List<OrderItem> orderItems = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -266,7 +266,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
             statement.setLong(1, salesOrderId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                OrderItemViewModel orderItem = new OrderItemViewBuilder()
+                OrderItem orderItem = new OrderItemBuilder()
                         .setProductId(resultSet.getLong("product_id"))
                         .setQuantity(resultSet.getInt("quantity"))
                         .setName(resultSet.getString("name"))
@@ -283,7 +283,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
     }
 
     @Override
-    public SalesOrder addSalesOrder(SalesOrder salesOrder) {
+    public SalesOrderDAOObject addSalesOrder(SalesOrderDAOObject salesOrder) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "INSERT INTO public.sales_orders\n" +
@@ -315,7 +315,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
     }
 
     @Override
-    public SalesOrder updateSalesOrder(SalesOrder salesOrder) {
+    public SalesOrderDAOObject updateSalesOrder(SalesOrderDAOObject salesOrder) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "UPDATE public.sales_orders\n" +
@@ -343,7 +343,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
     }
 
     @Override
-    public void deleteSalesOrder(SalesOrder salesOrder) {
+    public void deleteSalesOrder(SalesOrderDAOObject salesOrder) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "DELETE FROM public.sales_orders\n" +

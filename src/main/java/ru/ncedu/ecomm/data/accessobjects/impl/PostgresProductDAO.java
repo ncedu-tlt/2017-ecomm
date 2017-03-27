@@ -1,8 +1,8 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import ru.ncedu.ecomm.data.accessobjects.ProductDAO;
-import ru.ncedu.ecomm.data.models.Product;
-import ru.ncedu.ecomm.data.models.builders.ProductBuilder;
+import ru.ncedu.ecomm.data.models.ProductDAOObject;
+import ru.ncedu.ecomm.data.models.builders.ProductDAOObjectBuilder;
 import ru.ncedu.ecomm.servlets.models.FilterValueViewModel;
 import ru.ncedu.ecomm.servlets.models.FilterViewModel;
 import ru.ncedu.ecomm.servlets.models.PriceRangeViewModel;
@@ -20,8 +20,8 @@ public class PostgresProductDAO implements ProductDAO {
     private static final Logger LOG  = Logger.getLogger(PostgresProductDAO.class);
 
     @Override
-    public List<Product> getProducts() {
-        List<Product> products = new ArrayList<>();
+    public List<ProductDAOObject> getProducts() {
+        List<ProductDAOObject> products = new ArrayList<>();
 
 
         try (Connection connection = DBUtils.getConnection();
@@ -38,7 +38,7 @@ public class PostgresProductDAO implements ProductDAO {
                             "FROM public.products");
 
             while (resultSet.next()) {
-                Product product = new ProductBuilder()
+                ProductDAOObject product = new ProductDAOObjectBuilder()
                         .setProductId(resultSet.getLong("product_id"))
                         .setCategoryId(resultSet.getLong("category_id"))
                         .setName(resultSet.getString("name"))
@@ -60,7 +60,7 @@ public class PostgresProductDAO implements ProductDAO {
     }
 
     @Override
-    public Product addProduct(Product product) {
+    public ProductDAOObject addProduct(ProductDAOObject product) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -95,7 +95,7 @@ public class PostgresProductDAO implements ProductDAO {
     }
 
     @Override
-    public Product updateProduct(Product product) {
+    public ProductDAOObject updateProduct(ProductDAOObject product) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -125,7 +125,7 @@ public class PostgresProductDAO implements ProductDAO {
     }
 
     @Override
-    public void deleteProduct(Product product) {
+    public void deleteProduct(ProductDAOObject product) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -143,7 +143,7 @@ public class PostgresProductDAO implements ProductDAO {
     }
 
     @Override
-    public Product getProductById(long id) {
+    public ProductDAOObject getProductById(long id) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -164,7 +164,7 @@ public class PostgresProductDAO implements ProductDAO {
             if (resultSet.next()) {
 
                 LOG.info(null);
-                return new ProductBuilder()
+                return new ProductDAOObjectBuilder()
                         .setProductId(resultSet.getLong("product_id"))
                         .setCategoryId(resultSet.getLong("category_id"))
                         .setName(resultSet.getString("name"))
@@ -182,8 +182,8 @@ public class PostgresProductDAO implements ProductDAO {
     }
 
     @Override
-    public List<Product> getProductsByCategoryId(long categoryId) {
-        List<Product> products = new ArrayList<>();
+    public List<ProductDAOObject> getProductsByCategoryId(long categoryId) {
+        List<ProductDAOObject> products = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -203,7 +203,7 @@ public class PostgresProductDAO implements ProductDAO {
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Product product = new ProductBuilder()
+                ProductDAOObject product = new ProductDAOObjectBuilder()
                         .setProductId(resultSet.getLong("product_id"))
                         .setCategoryId(resultSet.getLong("category_id"))
                         .setName(resultSet.getString("name"))
@@ -223,8 +223,8 @@ public class PostgresProductDAO implements ProductDAO {
     }
 
     @Override
-    public List<Product> getProductAllChildrenCategory(long categoryId) {
-        List<Product> products = new ArrayList<>();
+    public List<ProductDAOObject> getProductAllChildrenCategory(long categoryId) {
+        List<ProductDAOObject> products = new ArrayList<>();
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
 
@@ -262,7 +262,7 @@ public class PostgresProductDAO implements ProductDAO {
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Product product = new ProductBuilder()
+                ProductDAOObject product = new ProductDAOObjectBuilder()
                         .setProductId(resultSet.getLong("product_id"))
                         .setCategoryId(resultSet.getLong("category_id"))
                         .setName(resultSet.getString("name"))
@@ -283,8 +283,8 @@ public class PostgresProductDAO implements ProductDAO {
     }
 
     @Override
-    public List<Product> getBestOffersProducts() {
-        List<Product> products = new ArrayList<>();
+    public List<ProductDAOObject> getBestOffersProducts() {
+        List<ProductDAOObject> products = new ArrayList<>();
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT\n" +
@@ -303,7 +303,7 @@ public class PostgresProductDAO implements ProductDAO {
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Product product = new ProductBuilder()
+                ProductDAOObject product = new ProductDAOObjectBuilder()
                         .setProductId(resultSet.getLong("product_id"))
                         .setCategoryId(resultSet.getLong("category_id"))
                         .setName(resultSet.getString("name"))
@@ -323,8 +323,8 @@ public class PostgresProductDAO implements ProductDAO {
         return products;
     }
 
-    public List<Product> searchProductsByName(String name) {
-        List<Product> products = new ArrayList<>();
+    public List<ProductDAOObject> searchProductsByName(String name) {
+        List<ProductDAOObject> products = new ArrayList<>();
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT *\n" +
@@ -335,7 +335,7 @@ public class PostgresProductDAO implements ProductDAO {
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Product product = new ProductBuilder()
+                ProductDAOObject product = new ProductDAOObjectBuilder()
                         .setProductId(resultSet.getLong("product_id"))
                         .setCategoryId(resultSet.getLong("category_id"))
                         .setName(resultSet.getString("name"))
@@ -396,8 +396,8 @@ public class PostgresProductDAO implements ProductDAO {
      * Return filtered products by category, subcategories and price range
      */
 
-    public List<Product> getFilteredProducts(List<FilterViewModel> filters, PriceRangeViewModel priceRange, long categoryId) {
-        List<Product> products = new ArrayList<>();
+    public List<ProductDAOObject> getFilteredProducts(List<FilterViewModel> filters, PriceRangeViewModel priceRange, long categoryId) {
+        List<ProductDAOObject> products = new ArrayList<>();
 
         String query = "SELECT * FROM products\n" +
                 "WHERE category_id IN (\n" +
@@ -451,7 +451,7 @@ public class PostgresProductDAO implements ProductDAO {
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                products.add(new ProductBuilder()
+                products.add(new ProductDAOObjectBuilder()
                         .setProductId(resultSet.getLong("product_id"))
                         .setCategoryId(resultSet.getLong("category_id"))
                         .setName(resultSet.getString("name"))
@@ -470,8 +470,8 @@ public class PostgresProductDAO implements ProductDAO {
     }
 
     @Override
-    public List<Product> getProductByOrderId(long orderId) {
-        List<Product> products = new ArrayList<>();
+    public List<ProductDAOObject> getProductByOrderId(long orderId) {
+        List<ProductDAOObject> products = new ArrayList<>();
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT\n" +
@@ -491,7 +491,7 @@ public class PostgresProductDAO implements ProductDAO {
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Product product = new ProductBuilder()
+                ProductDAOObject product = new ProductDAOObjectBuilder()
                         .setProductId(resultSet.getLong("product_id"))
                         .setCategoryId(resultSet.getLong("category_id"))
                         .setName(resultSet.getString("name"))

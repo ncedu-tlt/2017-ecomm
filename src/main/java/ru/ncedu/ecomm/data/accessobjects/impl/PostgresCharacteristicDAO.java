@@ -1,8 +1,8 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import ru.ncedu.ecomm.data.accessobjects.CharacteristicDAO;
-import ru.ncedu.ecomm.data.models.Characteristic;
-import ru.ncedu.ecomm.data.models.builders.CharacteristicBuilder;
+import ru.ncedu.ecomm.data.models.CharacteristicDAOObject;
+import ru.ncedu.ecomm.data.models.builders.CharacteristicDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -14,8 +14,8 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
     private static final Logger LOG = Logger.getLogger(PostgresCharacteristicDAO.class);
 
     @Override
-    public List<Characteristic> getCharacteristic() {
-        List<Characteristic> characteristics = new ArrayList<>();
+    public List<CharacteristicDAOObject> getCharacteristic() {
+        List<CharacteristicDAOObject> characteristics = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
@@ -28,7 +28,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
                             "FROM public.characteristics"
             );
             while (resultSet.next()) {
-                Characteristic characteristic = new CharacteristicBuilder()
+                CharacteristicDAOObject characteristic = new CharacteristicDAOObjectBuilder()
                         .setCharacteristicGroupId(resultSet.getLong("characteristic_group_id"))
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
                         .setCharacteristicName(resultSet.getString("name"))
@@ -47,8 +47,8 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
     }
 
     @Override
-    public List<Characteristic> getCharacteristicByGroupId(long characteristicGroupId) {
-        List<Characteristic> characteristics = new ArrayList<>();
+    public List<CharacteristicDAOObject> getCharacteristicByGroupId(long characteristicGroupId) {
+        List<CharacteristicDAOObject> characteristics = new ArrayList<>();
 
         try(Connection connection = DBUtils.getConnection();
             PreparedStatement statement = connection.prepareStatement(
@@ -67,7 +67,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()){
-                Characteristic characteristic = new CharacteristicBuilder()
+                CharacteristicDAOObject characteristic = new CharacteristicDAOObjectBuilder()
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
                         .setCharacteristicName(resultSet.getString("name"))
                         .setCharacteristicGroupId(resultSet.getLong("characteristic_group_id"))
@@ -87,8 +87,8 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
     }
 
     @Override
-    public List<Characteristic> getCharacteristicByCategoryIdAndGroupId(long categoryId, long groupId) {
-        List<Characteristic> characteristics = new ArrayList<>();
+    public List<CharacteristicDAOObject> getCharacteristicByCategoryIdAndGroupId(long categoryId, long groupId) {
+        List<CharacteristicDAOObject> characteristics = new ArrayList<>();
 
         try(Connection connection = DBUtils.getConnection();
             PreparedStatement statement = connection.prepareStatement(
@@ -108,7 +108,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()){
-                Characteristic characteristic = new CharacteristicBuilder()
+                CharacteristicDAOObject characteristic = new CharacteristicDAOObjectBuilder()
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
                         .setCharacteristicName(resultSet.getString("name"))
                         .setCharacteristicGroupId(resultSet.getLong("characteristic_group_id"))
@@ -128,7 +128,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
     }
 
     @Override
-    public Characteristic addCharacteristic(Characteristic characteristic) {
+    public CharacteristicDAOObject addCharacteristic(CharacteristicDAOObject characteristic) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -161,7 +161,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
     }
 
     @Override
-    public Characteristic getCharacteristicById(long characteristicId) {
+    public CharacteristicDAOObject getCharacteristicById(long characteristicId) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -180,7 +180,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
             if (resultSet.next()) {
 
                 LOG.info(null);
-                return new CharacteristicBuilder()
+                return new CharacteristicDAOObjectBuilder()
                         .setCharacteristicGroupId(resultSet.getLong("characteristic_group_id"))
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
                         .setCharacteristicName(resultSet.getString("name"))
@@ -196,7 +196,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
     }
 
     @Override
-    public Characteristic updateCharacteristic(Characteristic characteristic) {
+    public CharacteristicDAOObject updateCharacteristic(CharacteristicDAOObject characteristic) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -222,7 +222,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
     }
 
     @Override
-    public void deleteCharacteristic(Characteristic characteristic) {
+    public void deleteCharacteristic(CharacteristicDAOObject characteristic) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -239,8 +239,8 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
         }
     }
 
-    public List<Characteristic> getFilterableCharacteristicsByCategoryId(long categoryId) {
-        List<Characteristic> characteristics = new ArrayList<>();
+    public List<CharacteristicDAOObject> getFilterableCharacteristicsByCategoryId(long categoryId) {
+        List<CharacteristicDAOObject> characteristics = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -265,7 +265,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                characteristics.add(new CharacteristicBuilder()
+                characteristics.add(new CharacteristicDAOObjectBuilder()
                         .setCharacteristicGroupId(resultSet.getLong("characteristic_group_id"))
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
                         .setCharacteristicName(resultSet.getString("name"))

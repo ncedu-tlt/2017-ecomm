@@ -1,8 +1,8 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import ru.ncedu.ecomm.data.accessobjects.RoleDAO;
-import ru.ncedu.ecomm.data.models.Role;
-import ru.ncedu.ecomm.data.models.builders.RoleBuilder;
+import ru.ncedu.ecomm.data.models.RoleDAOObject;
+import ru.ncedu.ecomm.data.models.builders.RoleDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -14,8 +14,8 @@ public class PostgresRoleDAO implements RoleDAO {
     private static final Logger LOG  = Logger.getLogger(PostgresRoleDAO.class);
 
     @Override
-    public List<Role> getRoles() {
-        List<Role> roles = new ArrayList<>();
+    public List<RoleDAOObject> getRoles() {
+        List<RoleDAOObject> roles = new ArrayList<>();
 
         try(Connection connection = DBUtils.getConnection();
             Statement statement = connection.createStatement()) {
@@ -26,7 +26,7 @@ public class PostgresRoleDAO implements RoleDAO {
                             "  name\n" +
                             "FROM roles");
             while (resultSet.next()) {
-                Role role = new RoleBuilder()
+                RoleDAOObject role = new RoleDAOObjectBuilder()
                         .setId(resultSet.getLong("role_id"))
                         .setName(resultSet.getString("name"))
                         .build();
@@ -45,7 +45,7 @@ public class PostgresRoleDAO implements RoleDAO {
     }
 
     @Override
-    public Role getRoleById(long id) {
+    public RoleDAOObject getRoleById(long id) {
 
         try(Connection connection = DBUtils.getConnection();
             PreparedStatement statement = connection.prepareStatement(
@@ -60,7 +60,7 @@ public class PostgresRoleDAO implements RoleDAO {
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                Role role = new RoleBuilder()
+                RoleDAOObject role = new RoleDAOObjectBuilder()
                         .setName(resultSet.getString("name"))
                         .setId(resultSet.getLong("role_id"))
                         .build();

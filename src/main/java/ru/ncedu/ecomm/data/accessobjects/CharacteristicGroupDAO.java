@@ -1,17 +1,17 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.CharacteristicGroup;
+import ru.ncedu.ecomm.data.models.CharacteristicGroupDAOObject;
 
 import java.util.List;
 
 public interface CharacteristicGroupDAO {
-    List<CharacteristicGroup> getCharacteristicGroup();
+    List<CharacteristicGroupDAOObject> getCharacteristicGroup();
 
-    CharacteristicGroup getCharacteristicGroupById(long characteristicGroupId);
+    CharacteristicGroupDAOObject getCharacteristicGroupById(long characteristicGroupId);
 
-    CharacteristicGroup addCharacteristicGroup(CharacteristicGroup characteristicGroup);
+    CharacteristicGroupDAOObject addCharacteristicGroup(CharacteristicGroupDAOObject characteristicGroup);
 
-    CharacteristicGroup updateCharacteristicGroup(CharacteristicGroup characteristicGroup);
+    CharacteristicGroupDAOObject updateCharacteristicGroup(CharacteristicGroupDAOObject characteristicGroup);
 
-    void deleteCharacteristicGroup(CharacteristicGroup characteristicGroup);
+    void deleteCharacteristicGroup(CharacteristicGroupDAOObject characteristicGroup);
 }

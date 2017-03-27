@@ -1,46 +1,46 @@
 package ru.ncedu.ecomm.data.models.builders;
-import ru.ncedu.ecomm.data.models.Category;
-public class CategoryBuilder {
+import ru.ncedu.ecomm.data.models.CategoryDAOObject;
+public class CategoryDAOObjectBuilder {
 
     private long categoryId;
     private long parentId;
     private String name;
     private String description;
 
-    public CategoryBuilder(){
+    public CategoryDAOObjectBuilder(){
     }
 
-    public CategoryBuilder(long categoryId) {
+    public CategoryDAOObjectBuilder(long categoryId) {
         this.categoryId = categoryId;
     }
 
-    public CategoryBuilder setCategoryId(long categoryId) {
+    public CategoryDAOObjectBuilder setCategoryId(long categoryId) {
       this.categoryId = categoryId;
 
         return this;
     }
 
-    public CategoryBuilder setParentId(long parentId){
+    public CategoryDAOObjectBuilder setParentId(long parentId){
       this.parentId = parentId;
 
         return this;
     }
 
-    public CategoryBuilder setName(String name ){
+    public CategoryDAOObjectBuilder setName(String name ){
        this.name = name;
 
         return this;
     }
 
-    public CategoryBuilder setDescription(String description) {
+    public CategoryDAOObjectBuilder setDescription(String description) {
         this.description = description;
 
         return this;
     }
 
-    public Category build(){
+    public CategoryDAOObject build(){
 
-        return new Category(
+        return new CategoryDAOObject(
                 categoryId,
                 parentId,
                 name,

@@ -2,9 +2,9 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.DAOFactory;
-import ru.ncedu.ecomm.data.models.SalesOrder;
+import ru.ncedu.ecomm.data.models.SalesOrderDAOObject;
 import ru.ncedu.ecomm.servlets.models.EnumOrderStatus;
-import ru.ncedu.ecomm.servlets.models.SalesOrderViewModel;
+import ru.ncedu.ecomm.data.models.SalesOrder;
 import ru.ncedu.ecomm.servlets.services.ShoppingCartService;
 import ru.ncedu.ecomm.servlets.services.UserService;
 
@@ -52,7 +52,7 @@ public class CartServlet extends HttpServlet {
     private void showSalesOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             long userId = UserService.getInstance().getCurrentUserId(request);
-            SalesOrderViewModel salesOrder = ShoppingCartService.getInstance()
+            SalesOrder salesOrder = ShoppingCartService.getInstance()
                     .getSalesOrderModel(EnumOrderStatus.ENTERING.getStatus(), userId);
             request.setAttribute("salesOrder", salesOrder);
             request.getRequestDispatcher(Configuration.getProperty("page.cart")).forward(request, response);
@@ -105,13 +105,13 @@ public class CartServlet extends HttpServlet {
 
     private void setOrderStatusId(long userId) throws SQLException {
         long salesOrderId = ShoppingCartService.getInstance().getSalesOrderId(userId);
-        SalesOrder salesOrder = DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderById(salesOrderId);
+        SalesOrderDAOObject salesOrder = DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderById(salesOrderId);
         salesOrder.setOrderStatusId(EnumOrderStatus.SUBMITTED.getStatus());
         DAOFactory.getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
     }
 
     private void setLimitInDataBase(BigDecimal limit, long salesOrderId) {
-        SalesOrder salesOrder = DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderById(salesOrderId);
+        SalesOrderDAOObject salesOrder = DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderById(salesOrderId);
         salesOrder.setLimit(limit);
         int compare = salesOrder.getLimit().compareTo(COMPARE_DECIMAL);
         if (compare >= 0) {

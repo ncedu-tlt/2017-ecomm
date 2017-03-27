@@ -2,9 +2,9 @@ package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import ru.ncedu.ecomm.data.accessobjects.ReviewsDAO;
 import ru.ncedu.ecomm.data.models.Rating;
-import ru.ncedu.ecomm.data.models.Review;
+import ru.ncedu.ecomm.data.models.ReviewDAOObject;
 import ru.ncedu.ecomm.data.models.builders.RatingBuilder;
-import ru.ncedu.ecomm.data.models.builders.ReviewBuilder;
+import ru.ncedu.ecomm.data.models.builders.ReviewDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -16,8 +16,8 @@ public class PostgresReviewsDAO implements ReviewsDAO {
     private static final Logger LOG  = Logger.getLogger(PostgresReviewsDAO.class);
 
     @Override
-    public List<Review> getReviews() {
-        List<Review> reviews = new ArrayList<>();
+    public List<ReviewDAOObject> getReviews() {
+        List<ReviewDAOObject> reviews = new ArrayList<>();
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(
@@ -30,7 +30,7 @@ public class PostgresReviewsDAO implements ReviewsDAO {
                             "FROM public.reviews");
 
             while (resultSet.next()) {
-                Review review = new ReviewBuilder()
+                ReviewDAOObject review = new ReviewDAOObjectBuilder()
                         .setCreationDate(resultSet.getDate("creation_date"))
                         .setDescription(resultSet.getString("description"))
                         .setProductId(resultSet.getLong("product_id"))
@@ -50,7 +50,7 @@ public class PostgresReviewsDAO implements ReviewsDAO {
     }
 
     @Override
-    public Review addReviews(Review review) {
+    public ReviewDAOObject addReviews(ReviewDAOObject review) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "INSERT INTO public.reviews\n" +
@@ -77,7 +77,7 @@ public class PostgresReviewsDAO implements ReviewsDAO {
     }
 
     @Override
-    public Review updateReviews(Review review) {
+    public ReviewDAOObject updateReviews(ReviewDAOObject review) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -104,7 +104,7 @@ public class PostgresReviewsDAO implements ReviewsDAO {
     }
 
     @Override
-    public Review userReviewByUserIdAndProductId(long productId, long userId) {
+    public ReviewDAOObject userReviewByUserIdAndProductId(long productId, long userId) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -127,7 +127,7 @@ public class PostgresReviewsDAO implements ReviewsDAO {
             if (resultSet.next()) {
 
                 LOG.info(null);
-                return new ReviewBuilder()
+                return new ReviewDAOObjectBuilder()
                         .setCreationDate(resultSet.getDate("creation_date"))
                         .setDescription(resultSet.getString("description"))
                         .setProductId(resultSet.getLong("product_id"))
@@ -143,7 +143,7 @@ public class PostgresReviewsDAO implements ReviewsDAO {
     }
 
     @Override
-    public void deleteReviews(Review review) {
+    public void deleteReviews(ReviewDAOObject review) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -164,8 +164,8 @@ public class PostgresReviewsDAO implements ReviewsDAO {
     }
 
     @Override
-    public List<Review> getReviewsByProductId(long productId) {
-        List<Review> reviews = new ArrayList<>();
+    public List<ReviewDAOObject> getReviewsByProductId(long productId) {
+        List<ReviewDAOObject> reviews = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -182,7 +182,7 @@ public class PostgresReviewsDAO implements ReviewsDAO {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                Review review = new ReviewBuilder()
+                ReviewDAOObject review = new ReviewDAOObjectBuilder()
                         .setDescription(resultSet.getString("description"))
                         .setCreationDate(resultSet.getDate("creation_date"))
                         .setRating(resultSet.getInt("raiting"))
@@ -203,8 +203,8 @@ public class PostgresReviewsDAO implements ReviewsDAO {
     }
 
     @Override
-    public List<Review> getReviewsByUserId(long userId) {
-        List<Review> reviews = new ArrayList<>();
+    public List<ReviewDAOObject> getReviewsByUserId(long userId) {
+        List<ReviewDAOObject> reviews = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -221,7 +221,7 @@ public class PostgresReviewsDAO implements ReviewsDAO {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                Review review = new ReviewBuilder()
+                ReviewDAOObject review = new ReviewDAOObjectBuilder()
                         .setDescription(resultSet.getString("description"))
                         .setCreationDate(resultSet.getDate("creation_date"))
                         .setRating(resultSet.getInt("raiting"))

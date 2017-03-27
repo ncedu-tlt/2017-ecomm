@@ -1,9 +1,7 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.OrderStatus;
-
-import java.util.List;
+import ru.ncedu.ecomm.data.models.OrderStatusDAOObject;
 
 public interface OrderSratusDAO {
-    OrderStatus getOrdersStatusById(long OrderStatusId);
+    OrderStatusDAOObject getOrdersStatusById(long OrderStatusId);
 }

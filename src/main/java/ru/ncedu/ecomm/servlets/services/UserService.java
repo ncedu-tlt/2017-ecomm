@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets.services;
 
-import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.data.models.UserDAOObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +43,7 @@ public class UserService {
         return Long.parseLong(session.getAttribute("userId").toString());
     }
 
-    public String getUserName(User user) {
+    public String getUserName(UserDAOObject user) {
         String userName;
 
         if (nameIsEmpty(user.getFirstName()) && nameIsEmpty(user.getLastName())) {

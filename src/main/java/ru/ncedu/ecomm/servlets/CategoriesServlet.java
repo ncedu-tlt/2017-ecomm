@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets;
 
-import ru.ncedu.ecomm.data.models.Category;
+import ru.ncedu.ecomm.data.models.CategoryDAOObject;
 import ru.ncedu.ecomm.servlets.models.CategoryHierarchyViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.CategoryHierarchyViewBuilder;
 
@@ -19,9 +19,9 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 public class CategoriesServlet extends HttpServlet {
 
     private List<CategoryHierarchyViewModel> getSubcategoriesViewByParentID(long id){
-        List<Category> categories = getDAOFactory().getCategoryDAO().getCategoriesByParentId(id);
+        List<CategoryDAOObject> categories = getDAOFactory().getCategoryDAO().getCategoriesByParentId(id);
         List<CategoryHierarchyViewModel> subcategories = new ArrayList<>();
-        for (Category category : categories) {
+        for (CategoryDAOObject category : categories) {
             subcategories.add(new CategoryHierarchyViewBuilder()
                     .setId(category.getCategoryId())
                     .setName(category.getName())
@@ -32,10 +32,10 @@ public class CategoriesServlet extends HttpServlet {
     }
 
     private void process(HttpServletRequest request) {
-        List<Category> categories = getDAOFactory().getCategoryDAO().getCategories();
+        List<CategoryDAOObject> categories = getDAOFactory().getCategoryDAO().getCategories();
         List<CategoryHierarchyViewModel> parentCategories = new ArrayList<>();
 
-        for (Category category : categories) {
+        for (CategoryDAOObject category : categories) {
             if (category.getParentId() == 0) {
                 List<CategoryHierarchyViewModel> subcategories = getSubcategoriesViewByParentID(category.getCategoryId());
 

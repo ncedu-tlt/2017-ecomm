@@ -1,8 +1,8 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import ru.ncedu.ecomm.data.accessobjects.CategoryDAO;
-import ru.ncedu.ecomm.data.models.Category;
-import ru.ncedu.ecomm.data.models.builders.CategoryBuilder;
+import ru.ncedu.ecomm.data.models.CategoryDAOObject;
+import ru.ncedu.ecomm.data.models.builders.CategoryDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -14,8 +14,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
     private static final Logger LOG = Logger.getLogger(PostgresCategoryDAO.class);
 
     @Override
-    public List<Category> getCategories() {
-        List<Category> categories = new ArrayList<>();
+    public List<CategoryDAOObject> getCategories() {
+        List<CategoryDAOObject> categories = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
@@ -29,7 +29,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
                             "ORDER BY category_id ASC"
             );
             while (resultSet.next()) {
-                Category category = new CategoryBuilder()
+                CategoryDAOObject category = new CategoryDAOObjectBuilder()
                         .setCategoryId(resultSet.getLong("category_id"))
                         .setParentId(resultSet.getLong("parent_id"))
                         .setName(resultSet.getString("name"))
@@ -48,8 +48,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
     }
 
     @Override
-    public List<Category> getAllNotEmptyCategories() {
-        List<Category> categories = new ArrayList<>();
+    public List<CategoryDAOObject> getAllNotEmptyCategories() {
+        List<CategoryDAOObject> categories = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
@@ -84,7 +84,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
                             "  req.parent_id ASC"
             );
             while (resultSet.next()) {
-                Category category = new CategoryBuilder()
+                CategoryDAOObject category = new CategoryDAOObjectBuilder()
                         .setCategoryId(resultSet.getLong("category_id"))
                         .setParentId(resultSet.getLong("parent_id"))
                         .setName(resultSet.getString("name"))
@@ -103,7 +103,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
     }
 
     @Override
-    public Category addCategory(Category category) {
+    public CategoryDAOObject addCategory(CategoryDAOObject category) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -133,7 +133,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
     }
 
     @Override
-    public Category updateCategory(Category category) {
+    public CategoryDAOObject updateCategory(CategoryDAOObject category) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -161,7 +161,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
     }
 
     @Override
-    public void deleteCategory(Category category) {
+    public void deleteCategory(CategoryDAOObject category) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -180,7 +180,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
     }
 
     @Override
-    public Category getCategoryById(long id) {
+    public CategoryDAOObject getCategoryById(long id) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -199,7 +199,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
             if (resultSet.next()) {
 
                 LOG.info(null);
-                return new CategoryBuilder()
+                return new CategoryDAOObjectBuilder()
                         .setCategoryId(resultSet.getLong("category_id"))
                         .setParentId(resultSet.getLong("parent_id"))
                         .setName(resultSet.getString("name"))
@@ -213,8 +213,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
         return null;
     }
 
-    public List<Category> getParentCategories() {
-        List<Category> categories = new ArrayList<>();
+    public List<CategoryDAOObject> getParentCategories() {
+        List<CategoryDAOObject> categories = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
@@ -229,7 +229,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
                             "ORDER BY category_id ASC"
             );
             while (resultSet.next()) {
-                Category category = new CategoryBuilder()
+                CategoryDAOObject category = new CategoryDAOObjectBuilder()
                         .setCategoryId(resultSet.getLong("category_id"))
                         .setParentId(resultSet.getLong("parent_id"))
                         .setName(resultSet.getString("name"))
@@ -249,8 +249,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
 
     @Override
-    public List<Category> getAllNotEmptyChildrenCategoriesById(long categoryId) {
-        List<Category> categories = new ArrayList<>();
+    public List<CategoryDAOObject> getAllNotEmptyChildrenCategoriesById(long categoryId) {
+        List<CategoryDAOObject> categories = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -288,7 +288,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Category category = new CategoryBuilder()
+                CategoryDAOObject category = new CategoryDAOObjectBuilder()
                         .setCategoryId(resultSet.getLong("category_id"))
                         .setParentId(resultSet.getLong("parent_id"))
                         .setName(resultSet.getString("name"))
@@ -307,8 +307,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
     }
 
     @Override
-    public List<Category> getCategoriesByParentId(long parentId) {
-        List<Category> categories = new ArrayList<>();
+    public List<CategoryDAOObject> getCategoriesByParentId(long parentId) {
+        List<CategoryDAOObject> categories = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -326,7 +326,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Category category = new CategoryBuilder()
+                CategoryDAOObject category = new CategoryDAOObjectBuilder()
                         .setCategoryId(resultSet.getLong("category_id"))
                         .setParentId(resultSet.getLong("parent_id"))
                         .setName(resultSet.getString("name"))
@@ -345,8 +345,8 @@ public class PostgresCategoryDAO implements CategoryDAO {
     }
 
     @Override
-    public List<Category> getCategoriesByHierarchy(long categoryId) {
-        List<Category> categories = new ArrayList<>();
+    public List<CategoryDAOObject> getCategoriesByHierarchy(long categoryId) {
+        List<CategoryDAOObject> categories = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -386,7 +386,7 @@ public class PostgresCategoryDAO implements CategoryDAO {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
 
-                Category category = new CategoryBuilder()
+                CategoryDAOObject category = new CategoryDAOObjectBuilder()
                         .setCategoryId(resultSet.getLong("category_id"))
                         .setParentId(resultSet.getLong("parent_id"))
                         .setName(resultSet.getString("name"))

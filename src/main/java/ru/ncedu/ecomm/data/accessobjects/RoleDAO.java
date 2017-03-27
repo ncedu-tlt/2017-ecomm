@@ -1,13 +1,13 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.Role;
+import ru.ncedu.ecomm.data.models.RoleDAOObject;
 
 import java.util.List;
 
 public interface RoleDAO {
 
-    List<Role> getRoles();
+    List<RoleDAOObject> getRoles();
 
-    Role getRoleById(long id);
+    RoleDAOObject getRoleById(long id);
 
 }

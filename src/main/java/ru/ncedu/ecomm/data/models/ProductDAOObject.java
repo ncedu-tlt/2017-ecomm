@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.data.models;
 
 
-public class Product {
+public class ProductDAOObject {
     private long productId;
     private long categoryId;
     private String name;
@@ -9,15 +9,15 @@ public class Product {
     private long discountId;
     private long price;
 
-    public Product() {
+    public ProductDAOObject() {
     }
 
-    public Product(long productId,
-                   long categoryId,
-                   String name,
-                   String description,
-                   long discountId,
-                   long price) {
+    public ProductDAOObject(long productId,
+                            long categoryId,
+                            String name,
+                            String description,
+                            long discountId,
+                            long price) {
 
         this.productId = productId;
         this.categoryId = categoryId;
@@ -27,35 +27,35 @@ public class Product {
         this.price = price;
     }
 
-    public Product(long productId) {
+    public ProductDAOObject(long productId) {
         this.productId = productId;
     }
 
-    public Product(long productId, String name) {
+    public ProductDAOObject(long productId, String name) {
         this.productId = productId;
         this.name = name;
     }
 
-    public Product(long productId, String name, long categoryId) {
+    public ProductDAOObject(long productId, String name, long categoryId) {
         this.productId = productId;
         this.name = name;
         this.categoryId = categoryId;
     }
 
-    public Product(long categoryId, String name, String description) {
+    public ProductDAOObject(long categoryId, String name, String description) {
         this.categoryId = categoryId;
         this.name = name;
         this.description = description;
     }
 
-    public Product(long productId, String name, long categoryId, String description) {
+    public ProductDAOObject(long productId, String name, long categoryId, String description) {
         this.productId = productId;
         this.name = name;
         this.categoryId = categoryId;
         this.description = description;
     }
 
-    public Product(Product product) {
+    public ProductDAOObject(ProductDAOObject product) {
         this(product.getId(), product.getName(),
                 product.getCategoryId(), product.getDescription());
     }

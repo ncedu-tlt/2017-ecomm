@@ -1,8 +1,8 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import ru.ncedu.ecomm.data.accessobjects.PropertyDAO;
-import ru.ncedu.ecomm.data.models.Property;
-import ru.ncedu.ecomm.data.models.builders.PropertyBuilder;
+import ru.ncedu.ecomm.data.models.PropertyDAOObject;
+import ru.ncedu.ecomm.data.models.builders.PropertyDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -15,8 +15,8 @@ public class PostgresPropertyDAO implements PropertyDAO {
     private static final Logger LOG  = Logger.getLogger(PostgresPropertyDAO.class);
 
     @Override
-    public List<Property> getProperties() {
-        List<Property> properties = new ArrayList<>();
+    public List<PropertyDAOObject> getProperties() {
+        List<PropertyDAOObject> properties = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              Statement statement = connection.createStatement()) {
@@ -27,7 +27,7 @@ public class PostgresPropertyDAO implements PropertyDAO {
                             "  value\n" +
                             "FROM properties");
             while (resultSet.next()) {
-                Property property = new PropertyBuilder()
+                PropertyDAOObject property = new PropertyDAOObjectBuilder()
                         .setPropertyId(resultSet.getString("property_id"))
                         .setValue(resultSet.getString("value"))
                         .build();
@@ -44,7 +44,7 @@ public class PostgresPropertyDAO implements PropertyDAO {
     }
 
     @Override
-    public Property getPropertyById(String id) {
+    public PropertyDAOObject getPropertyById(String id) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -60,7 +60,7 @@ public class PostgresPropertyDAO implements PropertyDAO {
             if (resultSet.next()) {
 
                 LOG.info(null);
-                return new PropertyBuilder()
+                return new PropertyDAOObjectBuilder()
                         .setPropertyId(resultSet.getString("property_id"))
                         .setValue(resultSet.getString("value"))
                         .build();
@@ -74,7 +74,7 @@ public class PostgresPropertyDAO implements PropertyDAO {
     }
 
     @Override
-    public Property addProperty(Property property) {
+    public PropertyDAOObject addProperty(PropertyDAOObject property) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -97,7 +97,7 @@ public class PostgresPropertyDAO implements PropertyDAO {
     }
 
     @Override
-    public void deleteProperty(Property property) {
+    public void deleteProperty(PropertyDAOObject property) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -115,7 +115,7 @@ public class PostgresPropertyDAO implements PropertyDAO {
     }
 
     @Override
-    public Property updateProperty(Property property) {
+    public PropertyDAOObject updateProperty(PropertyDAOObject property) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(

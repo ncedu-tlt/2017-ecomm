@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
-import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.data.models.UserDAOObject;
 import ru.ncedu.ecomm.utils.EncryptionUtils;
 
 import javax.servlet.ServletException;
@@ -34,7 +34,7 @@ public class LoginServlet extends HttpServlet {
         String password = req.getParameter("password");
         HttpSession session = req.getSession();
         String passwordDigest = EncryptionUtils.getMd5Digest(password);
-        User user = getDAOFactory().getUserDAO().getUserByEmail(email);
+        UserDAOObject user = getDAOFactory().getUserDAO().getUserByEmail(email);
         if (user != null && user.getPassword().equals(passwordDigest)) {
             session.setAttribute("userId", user.getId());
             session.setAttribute("userRoleId", user.getRoleId());

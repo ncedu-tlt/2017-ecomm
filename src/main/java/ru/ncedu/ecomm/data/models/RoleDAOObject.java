@@ -1,14 +1,14 @@
 package ru.ncedu.ecomm.data.models;
 
-public class Role {
+public class RoleDAOObject {
 
     private long id;
     private String name;
 
-    public Role() {
+    public RoleDAOObject() {
     }
 
-    public Role(long id, String name) {
+    public RoleDAOObject(long id, String name) {
         this.id = id;
         this.name = name;
     }

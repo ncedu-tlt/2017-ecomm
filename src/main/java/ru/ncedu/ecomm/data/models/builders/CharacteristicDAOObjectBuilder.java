@@ -1,40 +1,40 @@
 package ru.ncedu.ecomm.data.models.builders;
 
 
-import ru.ncedu.ecomm.data.models.Characteristic;
+import ru.ncedu.ecomm.data.models.CharacteristicDAOObject;
 
-public class CharacteristicBuilder {
+public class CharacteristicDAOObjectBuilder {
     private long characteristicId;
     private long categoryId;
     private String characteristicName;
     private long characteristicGroupId;
 
-    public CharacteristicBuilder(){
+    public CharacteristicDAOObjectBuilder(){
 
     }
-    public CharacteristicBuilder setCharacteristicId(long characteristicId){
+    public CharacteristicDAOObjectBuilder setCharacteristicId(long characteristicId){
         this.characteristicId = characteristicId;
 
         return this;
     }
-    public CharacteristicBuilder setCategoryId(long categoryId){
+    public CharacteristicDAOObjectBuilder setCategoryId(long categoryId){
         this.categoryId = categoryId;
 
         return this;
     }
-    public CharacteristicBuilder setCharacteristicName(String characteristicName){
+    public CharacteristicDAOObjectBuilder setCharacteristicName(String characteristicName){
         this.characteristicName = characteristicName;
 
         return this;
     }
-    public CharacteristicBuilder setCharacteristicGroupId(long characteristicGroupId){
+    public CharacteristicDAOObjectBuilder setCharacteristicGroupId(long characteristicGroupId){
         this.characteristicGroupId = characteristicGroupId;
 
         return this;
     }
 
-    public Characteristic build(){
-        return new Characteristic(
+    public CharacteristicDAOObject build(){
+        return new CharacteristicDAOObject(
                 characteristicId,
                 categoryId,
                 characteristicName,

@@ -1,8 +1,5 @@
 package ru.ncedu.ecomm.servlets.models;
 
-import ru.ncedu.ecomm.data.models.CharacteristicGroup;
-import ru.ncedu.ecomm.data.models.Review;
-
 import java.util.List;
 
 public class ProductDetailsModel {

@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
-import ru.ncedu.ecomm.data.models.Category;
-import ru.ncedu.ecomm.data.models.Product;
+import ru.ncedu.ecomm.data.models.CategoryDAOObject;
+import ru.ncedu.ecomm.data.models.ProductDAOObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,12 +17,12 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 public class BreadcrumbsServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Category> categories;
+        List<CategoryDAOObject> categories;
 
         if (!request.getParameter("product_id").isEmpty()) { //TODO: camelCase, имя параметра в константу
             long productId = Long.parseLong(request.getParameter("product_id"));
             if (productId != 0) {
-                Product product = getDAOFactory().getProductDAO().getProductById(productId);
+                ProductDAOObject product = getDAOFactory().getProductDAO().getProductById(productId);
                 request.setAttribute("product", product);
                 if(product != null) {
                     categories = getDAOFactory().getCategoryDAO().getCategoriesByHierarchy(product.getCategoryId());

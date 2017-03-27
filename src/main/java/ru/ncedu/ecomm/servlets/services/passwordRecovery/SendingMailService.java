@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets.services.passwordRecovery;
 
 import ru.ncedu.ecomm.Configuration;
-import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.data.models.UserDAOObject;
 import ru.ncedu.ecomm.utils.UserValidationUtils;
 
 import javax.mail.*;
@@ -40,7 +40,7 @@ public class SendingMailService {
     }
 
     private boolean searchMailInDatabase(String toEmail) {
-        User userByEmail = getDAOFactory().getUserDAO().getUserByEmail(toEmail);
+        UserDAOObject userByEmail = getDAOFactory().getUserDAO().getUserByEmail(toEmail);
         return userByEmail != null;
     }
 

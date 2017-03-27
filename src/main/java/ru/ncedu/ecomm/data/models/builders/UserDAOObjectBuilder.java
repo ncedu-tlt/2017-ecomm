@@ -1,10 +1,10 @@
 package ru.ncedu.ecomm.data.models.builders;
 
-import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.data.models.UserDAOObject;
 
 import java.sql.Date;
 
-public class UserBuilder {
+public class UserDAOObjectBuilder {
     private long userId;
     private long roleId;
     private String firstName;
@@ -16,72 +16,72 @@ public class UserBuilder {
     private String recoveryHash;
     private String userAvatar;
 
-    public UserBuilder() {
+    public UserDAOObjectBuilder() {
 
     }
 
-    public UserBuilder setUserAvatar(String userAvatar) {
+    public UserDAOObjectBuilder setUserAvatar(String userAvatar) {
         this.userAvatar = userAvatar;
 
         return this;
     }
 
-    public UserBuilder setUserId(long userId) {
+    public UserDAOObjectBuilder setUserId(long userId) {
         this.userId = userId;
 
         return this;
     }
 
-    public UserBuilder setRoleId(long roleId) {
+    public UserDAOObjectBuilder setRoleId(long roleId) {
         this.roleId = roleId;
 
         return this;
     }
 
-    public UserBuilder setFirstName(String firstName) {
+    public UserDAOObjectBuilder setFirstName(String firstName) {
         this.firstName = firstName;
 
         return this;
     }
 
-    public UserBuilder setLastName(String lastName) {
+    public UserDAOObjectBuilder setLastName(String lastName) {
         this.lastName = lastName;
 
         return this;
     }
 
-    public UserBuilder setPassword(String password) {
+    public UserDAOObjectBuilder setPassword(String password) {
         this.password = password;
 
         return this;
     }
 
-    public UserBuilder setPhone(String phone) {
+    public UserDAOObjectBuilder setPhone(String phone) {
         this.phone = phone;
 
         return this;
     }
 
-    public UserBuilder setEmail(String email) {
+    public UserDAOObjectBuilder setEmail(String email) {
         this.email = email;
 
         return this;
     }
 
-    public UserBuilder setRegistrationDate(Date registrationDate) {
+    public UserDAOObjectBuilder setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
 
         return this;
     }
 
-    public UserBuilder setRecoveryHash(String recoveryHash){
+    public UserDAOObjectBuilder setRecoveryHash(String recoveryHash){
         this.recoveryHash = recoveryHash;
 
         return this;
     }
 
-    public User build() {
-        return new User(
+    public UserDAOObject build() {
+        return new UserDAOObject(
                 userId,
                 roleId,
                 firstName,

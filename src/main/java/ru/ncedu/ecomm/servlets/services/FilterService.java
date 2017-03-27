@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets.services;
 
-import ru.ncedu.ecomm.data.models.Characteristic;
-import ru.ncedu.ecomm.data.models.CharacteristicValue;
+import ru.ncedu.ecomm.data.models.CharacteristicDAOObject;
+import ru.ncedu.ecomm.data.models.CharacteristicValueDAOObject;
 import ru.ncedu.ecomm.servlets.models.FilterValueViewModel;
 import ru.ncedu.ecomm.servlets.models.FilterViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.FilterViewModelBuilder;
@@ -25,11 +25,11 @@ public class FilterService {
     public List<FilterViewModel> getFilters(long categoryId) {
 
         List<FilterViewModel> filters = new ArrayList<>();
-        List<Characteristic> filterableCharacteristics = getDAOFactory()
+        List<CharacteristicDAOObject> filterableCharacteristics = getDAOFactory()
                 .getChracteristicDAO()
                 .getFilterableCharacteristicsByCategoryId(categoryId);
 
-        for (Characteristic characteristic : filterableCharacteristics) {
+        for (CharacteristicDAOObject characteristic : filterableCharacteristics) {
             filters.add(new FilterViewModelBuilder()
                     .setId(characteristic.getCharacteristicId())
                     .setName(characteristic.getCharacteristicName())
@@ -40,12 +40,12 @@ public class FilterService {
     }
 
     private List<FilterValueViewModel> getValues(long characteristicId, long categoryId) {
-        List<CharacteristicValue> characteristicValues =
+        List<CharacteristicValueDAOObject> characteristicValues =
                 getDAOFactory().getCharacteristicValueDAO()
                         .getCharacteristicValuesByIdAndProductsCategoryId(characteristicId, categoryId);
         List<FilterValueViewModel> values = new ArrayList<>();
 
-        for (CharacteristicValue characteristicValue : characteristicValues) {
+        for (CharacteristicValueDAOObject characteristicValue : characteristicValues) {
             values.add(new FilterValueViewModel(
                     characteristicValue.getCharacteristicValue(),false));
         }

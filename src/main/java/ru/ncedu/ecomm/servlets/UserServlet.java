@@ -2,8 +2,8 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.DAOFactory;
-import ru.ncedu.ecomm.data.models.Role;
-import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.data.models.RoleDAOObject;
+import ru.ncedu.ecomm.data.models.UserDAOObject;
 import ru.ncedu.ecomm.servlets.models.EnumRoles;
 import ru.ncedu.ecomm.servlets.models.UserViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.UserViewModelBuilder;
@@ -53,10 +53,10 @@ public class UserServlet extends HttpServlet {
     private List<UserViewModel> getUserToView() {
 
         List<UserViewModel> userViewModels = new ArrayList<>();
-        List<User> users = DAOFactory.getDAOFactory().getUserDAO().getUsers();
+        List<UserDAOObject> users = DAOFactory.getDAOFactory().getUserDAO().getUsers();
         UserViewModel userViewModel;
 
-        for (User user : users) {
+        for (UserDAOObject user : users) {
 
             userViewModel = new UserViewModelBuilder()
                     .setId(user.getId())
@@ -71,7 +71,7 @@ public class UserServlet extends HttpServlet {
     }
 
     private String getRolesbyId(long id) {
-        Role role = DAOFactory.getDAOFactory().getRoleDAO().getRoleById(id);
+        RoleDAOObject role = DAOFactory.getDAOFactory().getRoleDAO().getRoleById(id);
         return role.getName();
     }
 }

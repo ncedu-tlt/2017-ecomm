@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets.services;
 
-import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.data.models.UserDAOObject;
 import ru.ncedu.ecomm.utils.EncryptionUtils;
 import ru.ncedu.ecomm.utils.UserValidationUtils;
 
@@ -23,7 +23,7 @@ public class ProfileService {
         return instance;
     }
 
-    public String getAnswerAccordingValidation(String resultValidation, User userForChange) {
+    public String getAnswerAccordingValidation(String resultValidation, UserDAOObject userForChange) {
         String result = null;
         switch (resultValidation) {
             case "Success":
@@ -48,14 +48,14 @@ public class ProfileService {
         return result;
     }
 
-    private String getResultAfterUpdate(User userForChange) {
+    private String getResultAfterUpdate(UserDAOObject userForChange) {
         if (updateUser(userForChange) != null)
             return "Success";
         else
             return "ErrorUpdate";
     }
 
-    private User updateUser(User userByChange) {
+    private UserDAOObject updateUser(UserDAOObject userByChange) {
         if (userByChange == null) {
             return null;
         } else {
@@ -63,7 +63,7 @@ public class ProfileService {
         }
     }
 
-    public String getResultAfterValidation(User userForChange, User userForCompare) {
+    public String getResultAfterValidation(UserDAOObject userForChange, UserDAOObject userForCompare) {
         if (!isEmailCorrect(userForChange.getEmail()))
             return "ErrorInputEmail";
         if (!isNewEmailDiffers(userForChange.getEmail()))
@@ -88,13 +88,13 @@ public class ProfileService {
 
     private boolean isNewEmailDiffers(String newEmail) {
         if(!Objects.equals(newEmail, "")) {
-            User userByEmail = getDAOFactory().getUserDAO().getUserByEmail(newEmail);
+            UserDAOObject userByEmail = getDAOFactory().getUserDAO().getUserByEmail(newEmail);
             return userByEmail == null;
         }
         return true;
     }
 
-    private boolean isPasswordCorrect(String password, User userForCompare) {
+    private boolean isPasswordCorrect(String password, UserDAOObject userForCompare) {
         if (!Objects.equals(password, "")) {
             if (!UserValidationUtils.checkPassword(password) && !isNewPasswordDiffers(password, userForCompare))
                 return false;
@@ -102,7 +102,7 @@ public class ProfileService {
         return true;
     }
 
-    private boolean isNewPasswordDiffers(String newPassword, User userForCompare) {
+    private boolean isNewPasswordDiffers(String newPassword, UserDAOObject userForCompare) {
         String newPasswordHash = EncryptionUtils.getMd5Digest(newPassword);
         String oldPassword = userForCompare.getPassword();
         return !(oldPassword.equals(newPasswordHash));

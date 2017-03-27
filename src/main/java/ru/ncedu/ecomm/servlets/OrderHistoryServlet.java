@@ -2,7 +2,7 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.DAOFactory;
-import ru.ncedu.ecomm.servlets.models.SalesOrderViewModel;
+import ru.ncedu.ecomm.data.models.SalesOrder;
 import ru.ncedu.ecomm.servlets.services.UserService;
 
 import javax.servlet.ServletException;
@@ -36,7 +36,7 @@ public class OrderHistoryServlet extends HttpServlet {
         long userId = UserService.getInstance().getCurrentUserId(req);
 
 
-        List<SalesOrderViewModel> orderHistory = DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderToOrderHistory(userId);
+        List<SalesOrder> orderHistory = DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderToOrderHistory(userId);
 
 
         req.setAttribute("orderHistory", orderHistory);

@@ -1,31 +1,31 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
+import ru.ncedu.ecomm.data.models.SalesOrderDAOObject;
+import ru.ncedu.ecomm.data.models.OrderItem;
 import ru.ncedu.ecomm.data.models.SalesOrder;
-import ru.ncedu.ecomm.servlets.models.OrderItemViewModel;
-import ru.ncedu.ecomm.servlets.models.SalesOrderViewModel;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public interface SalesOrdersDAO {
-    List<SalesOrder> getSalesOrders();
+    List<SalesOrderDAOObject> getSalesOrders();
 
-    SalesOrder getSalesOrderById(long id);
+    SalesOrderDAOObject getSalesOrderById(long id);
 
-    SalesOrder getSalesOrderByOrderStatusId(long statusId, long userId);
+    SalesOrderDAOObject getSalesOrderByOrderStatusId(long statusId, long userId);
 
-    List<SalesOrder> getSalesOrderByOrderUserId(long userId);
+    List<SalesOrderDAOObject> getSalesOrderByOrderUserId(long userId);
 
-    List<SalesOrder> getSalesOrderByOrderStatusId(long statusId);
+    List<SalesOrderDAOObject> getSalesOrderByOrderStatusId(long statusId);
 
-    SalesOrder addSalesOrder(SalesOrder salesOrder);
+    SalesOrderDAOObject addSalesOrder(SalesOrderDAOObject salesOrder);
 
-    SalesOrder updateSalesOrder(SalesOrder salesOrder);
+    SalesOrderDAOObject updateSalesOrder(SalesOrderDAOObject salesOrder);
 
-    void deleteSalesOrder(SalesOrder salesOrder);
+    void deleteSalesOrder(SalesOrderDAOObject salesOrder);
 
 
-    List<SalesOrderViewModel> getSalesOrderToOrderHistory(long userId);
+    List<SalesOrder> getSalesOrderToOrderHistory(long userId);
 
-    List<OrderItemViewModel> getOrderItemsToSalesOrder(long salesOrderId) throws SQLException;
+    List<OrderItem> getOrderItemsToSalesOrder(long salesOrderId) throws SQLException;
 }

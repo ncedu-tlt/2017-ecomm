@@ -1,8 +1,8 @@
 package ru.ncedu.ecomm.data.models.builders;
 
-import ru.ncedu.ecomm.data.models.Product;
+import ru.ncedu.ecomm.data.models.ProductDAOObject;
 
-public class ProductBuilder {
+public class ProductDAOObjectBuilder {
     private long productId;
     private long categoryId;
     private String name;
@@ -10,48 +10,48 @@ public class ProductBuilder {
     private long discountId;
     private long price;
 
-    public ProductBuilder() {
+    public ProductDAOObjectBuilder() {
 
     }
 
-    public ProductBuilder setProductId(long productId) {
+    public ProductDAOObjectBuilder setProductId(long productId) {
         this.productId = productId;
 
         return this;
     }
 
-    public ProductBuilder setCategoryId(long categoryId) {
+    public ProductDAOObjectBuilder setCategoryId(long categoryId) {
         this.categoryId = categoryId;
 
         return this;
     }
 
-    public ProductBuilder setName(String name) {
+    public ProductDAOObjectBuilder setName(String name) {
         this.name = name;
 
         return this;
     }
 
-    public ProductBuilder setDescription(String description) {
+    public ProductDAOObjectBuilder setDescription(String description) {
         this.description = description;
 
         return this;
     }
 
-    public ProductBuilder setDiscountId(long discountId) {
+    public ProductDAOObjectBuilder setDiscountId(long discountId) {
         this.discountId = discountId;
 
         return this;
     }
 
-    public ProductBuilder setPrice(long price) {
+    public ProductDAOObjectBuilder setPrice(long price) {
         this.price = price;
 
         return this;
     }
 
-    public Product build() {
-        return new Product(
+    public ProductDAOObject build() {
+        return new ProductDAOObject(
                 productId,
                 categoryId,
                 name,

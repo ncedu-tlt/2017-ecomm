@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets.services.passwordRecovery;
 
-import ru.ncedu.ecomm.data.models.User;
+import ru.ncedu.ecomm.data.models.UserDAOObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ public class PasswordRecoveryService {
     }
 
     public void addRecoveryHashToUser(String email, String recoveryHash) {
-        User user = getDAOFactory().getUserDAO().getUserByEmail(email);
+        UserDAOObject user = getDAOFactory().getUserDAO().getUserByEmail(email);
         user.setRecoveryHash(recoveryHash);
         getDAOFactory().getUserDAO().updateUser(user);
     }

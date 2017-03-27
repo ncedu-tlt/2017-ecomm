@@ -1,24 +1,24 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.CharacteristicValue;
+import ru.ncedu.ecomm.data.models.CharacteristicValueDAOObject;
 
 import java.util.List;
 
 public interface CharacteristicValueDAO {
-    List<CharacteristicValue> getCharacteristicValues();
+    List<CharacteristicValueDAOObject> getCharacteristicValues();
 
-    List<CharacteristicValue> getCharacteristicValuesById(long id);
+    List<CharacteristicValueDAOObject> getCharacteristicValuesById(long id);
 
-    List<CharacteristicValue> getCharacteristicValuesByProductId(long productId);
+    List<CharacteristicValueDAOObject> getCharacteristicValuesByProductId(long productId);
 
-    CharacteristicValue getCharacteristicValueByIdAndProductId(long productId, long characteristicId);
+    CharacteristicValueDAOObject getCharacteristicValueByIdAndProductId(long productId, long characteristicId);
 
-    CharacteristicValue addCharacteristicValue(CharacteristicValue characteristicValue);
+    CharacteristicValueDAOObject addCharacteristicValue(CharacteristicValueDAOObject characteristicValue);
 
-    CharacteristicValue updateCharacteristicValue(CharacteristicValue characteristicValue);
+    CharacteristicValueDAOObject updateCharacteristicValue(CharacteristicValueDAOObject characteristicValue);
 
-    void deleteCharacteristicValue(CharacteristicValue characteristicValue);
+    void deleteCharacteristicValue(CharacteristicValueDAOObject characteristicValue);
 
-    List<CharacteristicValue> getCharacteristicValuesByIdAndProductsCategoryId(long characteristicId, long categoryId);
+    List<CharacteristicValueDAOObject> getCharacteristicValuesByIdAndProductsCategoryId(long characteristicId, long categoryId);
 
     }

@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Predicate;
 
 import static ru.ncedu.ecomm.servlets.services.ProductViewService.CHARACTERISTIC_ID_FOR_IMAGE_URL;
 import static ru.ncedu.ecomm.servlets.services.ProductViewService.DEFAULT_IMAGE_URL;
@@ -55,7 +54,7 @@ public class ProductServlet extends HttpServlet {
 
         if (httpSession.getAttribute("userId") != null && !hasReview) {
 
-            Review thisUserReview = DAOFactory.getDAOFactory()
+            ReviewDAOObject thisUserReview = DAOFactory.getDAOFactory()
                     .getReviewDAO()
                     .userReviewByUserIdAndProductId(productId, userIdBySession);
 
@@ -93,7 +92,7 @@ public class ProductServlet extends HttpServlet {
     }
 
     private boolean userBySessionReviewInspection(long userIdBySession, long productId) {
-        Review reviewBySession = DAOFactory.getDAOFactory()
+        ReviewDAOObject reviewBySession = DAOFactory.getDAOFactory()
                 .getReviewDAO()
                 .userReviewByUserIdAndProductId(productId, userIdBySession);
 
@@ -102,7 +101,7 @@ public class ProductServlet extends HttpServlet {
 
     private ProductDetailsModel getProductToView(long productId) {
 
-        Product productForBuilding = getProductForBuild(productId);
+        ProductDAOObject productForBuilding = getProductForBuild(productId);
         Rating avergeRating = getAvergeRating(productId);
 
         ProductDetailsModel productDetailsModel = new ProductDetailsModelBuilder()
@@ -150,7 +149,7 @@ public class ProductServlet extends HttpServlet {
                 .getAverageRatingByProductId(productId);
     }
 
-    private Product getProductForBuild(long productId) {
+    private ProductDAOObject getProductForBuild(long productId) {
         return DAOFactory
                 .getDAOFactory()
                 .getProductDAO()
@@ -162,9 +161,9 @@ public class ProductServlet extends HttpServlet {
         CharacteristicGroupModel characteristicGroupModel;
 
         List<CharacteristicGroupModel> characteristicGroupModels = new ArrayList<>();
-        List<CharacteristicGroup> characteristicGroups = getCharacteristicGroup();
+        List<CharacteristicGroupDAOObject> characteristicGroups = getCharacteristicGroup();
 
-        for (CharacteristicGroup characteristicGroup : characteristicGroups) {
+        for (CharacteristicGroupDAOObject characteristicGroup : characteristicGroups) {
 
             characteristicGroupModel = new CharacteristicGroupModelBuilder()
                     .setCharacteristicGroupName(characteristicGroup.getCharacteristicGroupName())
@@ -183,7 +182,7 @@ public class ProductServlet extends HttpServlet {
         return characteristicGroupModels;
     }
 
-    private List<CharacteristicGroup> getCharacteristicGroup() {
+    private List<CharacteristicGroupDAOObject> getCharacteristicGroup() {
         return DAOFactory
                 .getDAOFactory()
                 .getCharacteristicGroupDAO()
@@ -193,7 +192,7 @@ public class ProductServlet extends HttpServlet {
     private List<String> getImageLinkByProductId(long productId) {
         List<String> imagesList = new ArrayList<>();
 
-        CharacteristicValue characteristicValue = DAOFactory
+        CharacteristicValueDAOObject characteristicValue = DAOFactory
                 .getDAOFactory()
                 .getCharacteristicValueDAO()
                 .getCharacteristicValueByIdAndProductId(
@@ -216,10 +215,10 @@ public class ProductServlet extends HttpServlet {
     private List<CharacteristicModel> getCharacteristicModelByGroup(long characteristicGroupId, long productId) {
 
         List<CharacteristicModel> characteristicModels = new ArrayList<>();
-        List<Characteristic> characteristics = getCharacteristicsByGroupId(characteristicGroupId);
-        List<CharacteristicValue> characteristicValues = getCharacteristicValuesByProductId(productId);
+        List<CharacteristicDAOObject> characteristics = getCharacteristicsByGroupId(characteristicGroupId);
+        List<CharacteristicValueDAOObject> characteristicValues = getCharacteristicValuesByProductId(productId);
 
-        for (Characteristic characteristic : characteristics) {
+        for (CharacteristicDAOObject characteristic : characteristics) {
             CharacteristicModel characteristicModel = getCharacteristicModel(
                     characteristic,
                     characteristicValues
@@ -235,12 +234,12 @@ public class ProductServlet extends HttpServlet {
 
 
     private CharacteristicModel getCharacteristicModel(
-            Characteristic characteristic,
-            List<CharacteristicValue> characteristicValues) {
+            CharacteristicDAOObject characteristic,
+            List<CharacteristicValueDAOObject> characteristicValues) {
 
         CharacteristicModel characteristicModel = null;
 
-        for (CharacteristicValue characteristicValue : characteristicValues) {
+        for (CharacteristicValueDAOObject characteristicValue : characteristicValues) {
             if (characteristic.getCharacteristicId() == characteristicValue.getCharacteristicId()) {
                 characteristicModel = new CharacteristicModelBuilder()
                         .setName(characteristic.getCharacteristicName())
@@ -253,14 +252,14 @@ public class ProductServlet extends HttpServlet {
         return characteristicModel;
     }
 
-    private List<Characteristic> getCharacteristicsByGroupId(long characteristicGroupId) {
+    private List<CharacteristicDAOObject> getCharacteristicsByGroupId(long characteristicGroupId) {
         return DAOFactory
                 .getDAOFactory()
                 .getChracteristicDAO()
                 .getCharacteristicByGroupId(characteristicGroupId);
     }
 
-    private List<CharacteristicValue> getCharacteristicValuesByProductId(long productId) {
+    private List<CharacteristicValueDAOObject> getCharacteristicValuesByProductId(long productId) {
         return DAOFactory
                 .getDAOFactory()
                 .getCharacteristicValueDAO()

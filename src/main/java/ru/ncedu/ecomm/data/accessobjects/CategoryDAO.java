@@ -1,28 +1,28 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.Category;
+import ru.ncedu.ecomm.data.models.CategoryDAOObject;
 
 import java.util.List;
 
 public interface CategoryDAO {
 
-    List<Category> getCategories();
+    List<CategoryDAOObject> getCategories();
 
-    Category addCategory(Category category);
+    CategoryDAOObject addCategory(CategoryDAOObject category);
 
-    Category updateCategory(Category category);
+    CategoryDAOObject updateCategory(CategoryDAOObject category);
 
-    void deleteCategory(Category category);
+    void deleteCategory(CategoryDAOObject category);
 
-    Category getCategoryById(long id);
+    CategoryDAOObject getCategoryById(long id);
 
-    List<Category> getCategoriesByParentId(long parentId);
+    List<CategoryDAOObject> getCategoriesByParentId(long parentId);
 
-    List<Category> getAllNotEmptyChildrenCategoriesById(long categoryId);
+    List<CategoryDAOObject> getAllNotEmptyChildrenCategoriesById(long categoryId);
 
-    List<Category> getAllNotEmptyCategories();
+    List<CategoryDAOObject> getAllNotEmptyCategories();
 
-    List<Category> getParentCategories();
+    List<CategoryDAOObject> getParentCategories();
 
-    List<Category> getCategoriesByHierarchy(long parentId);
+    List<CategoryDAOObject> getCategoriesByHierarchy(long parentId);
 }

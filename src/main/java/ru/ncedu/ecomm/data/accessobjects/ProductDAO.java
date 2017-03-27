@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.Product;
+import ru.ncedu.ecomm.data.models.ProductDAOObject;
 import ru.ncedu.ecomm.servlets.models.FilterViewModel;
 import ru.ncedu.ecomm.servlets.models.PriceRangeViewModel;
 
@@ -8,27 +8,27 @@ import java.util.List;
 
 public interface ProductDAO {
 
-    List<Product> getProducts();
+    List<ProductDAOObject> getProducts();
 
-    Product addProduct(Product product);
+    ProductDAOObject addProduct(ProductDAOObject product);
 
-    Product updateProduct(Product product);
+    ProductDAOObject updateProduct(ProductDAOObject product);
 
-    void deleteProduct(Product product);
+    void deleteProduct(ProductDAOObject product);
 
-    Product getProductById(long id);
+    ProductDAOObject getProductById(long id);
 
-    List<Product> getProductsByCategoryId(long categoryId);
+    List<ProductDAOObject> getProductsByCategoryId(long categoryId);
 
-    List<Product> getBestOffersProducts();
+    List<ProductDAOObject> getBestOffersProducts();
 
-    List<Product> getProductAllChildrenCategory(long categoryId);
+    List<ProductDAOObject> getProductAllChildrenCategory(long categoryId);
 
-    List<Product> searchProductsByName(String name);
+    List<ProductDAOObject> searchProductsByName(String name);
 
     PriceRangeViewModel getProductsPriceRangeByCategoryId(long categoryId);
 
-    List<Product> getFilteredProducts(List<FilterViewModel> filters, PriceRangeViewModel priceRange, long categoryId);
+    List<ProductDAOObject> getFilteredProducts(List<FilterViewModel> filters, PriceRangeViewModel priceRange, long categoryId);
 
-    List<Product> getProductByOrderId(long orderId);
+    List<ProductDAOObject> getProductByOrderId(long orderId);
 }

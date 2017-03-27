@@ -2,7 +2,7 @@ package ru.ncedu.ecomm.data.models;
 
 import java.sql.Date;
 
-public class User {
+public class UserDAOObject {
     private long id;
     private long roleId;
     private String firstName;
@@ -14,19 +14,19 @@ public class User {
     private String recoveryHash;
     private String userAvatar;
 
-    public User() {
+    public UserDAOObject() {
     }
 
-    public User(long id,
-                long roleId,
-                String firstName,
-                String lastName,
-                String password,
-                String phone,
-                String email,
-                Date registrationDate,
-                String recoveryHash,
-                String userAvatar) {
+    public UserDAOObject(long id,
+                         long roleId,
+                         String firstName,
+                         String lastName,
+                         String password,
+                         String phone,
+                         String email,
+                         Date registrationDate,
+                         String recoveryHash,
+                         String userAvatar) {
 
         this.id = id;
         this.roleId = roleId;

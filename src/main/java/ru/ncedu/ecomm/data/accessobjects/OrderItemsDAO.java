@@ -1,22 +1,22 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.OrderItem;
+import ru.ncedu.ecomm.data.models.OrderItemDAOObject;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public interface OrderItemsDAO {
-    List<OrderItem> getOrderItems();
+    List<OrderItemDAOObject> getOrderItems();
 
-    List<OrderItem> getOrderItemsBySalesOrderId(long salesOrderId);
+    List<OrderItemDAOObject> getOrderItemsBySalesOrderId(long salesOrderId);
 
-    OrderItem addOrderItem(OrderItem orderItem);
+    OrderItemDAOObject addOrderItem(OrderItemDAOObject orderItem);
 
-    OrderItem updateOrderItem(OrderItem orderItem);
+    OrderItemDAOObject updateOrderItem(OrderItemDAOObject orderItem);
 
-    OrderItem getOrderItem(long productId, long salesOrderId) throws SQLException;
+    OrderItemDAOObject getOrderItem(long productId, long salesOrderId) throws SQLException;
 
-    void deleteOrderItem(OrderItem orderItem);
+    void deleteOrderItem(OrderItemDAOObject orderItem);
 
     long getQuantityBySalesOrderId(long salesOrderId);
 

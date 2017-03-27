@@ -1,18 +1,18 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.Property;
+import ru.ncedu.ecomm.data.models.PropertyDAOObject;
 import java.util.List;
 
 public interface PropertyDAO {
 
-    List<Property> getProperties();
+    List<PropertyDAOObject> getProperties();
 
-    Property getPropertyById(String id);
+    PropertyDAOObject getPropertyById(String id);
 
-    Property addProperty(Property property);
+    PropertyDAOObject addProperty(PropertyDAOObject property);
 
-    void deleteProperty(Property property);
+    void deleteProperty(PropertyDAOObject property);
 
-    Property updateProperty(Property property);
+    PropertyDAOObject updateProperty(PropertyDAOObject property);
 
 }

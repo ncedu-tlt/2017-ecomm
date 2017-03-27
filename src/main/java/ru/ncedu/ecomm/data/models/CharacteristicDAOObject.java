@@ -1,15 +1,15 @@
 package ru.ncedu.ecomm.data.models;
 
-public class Characteristic {
+public class CharacteristicDAOObject {
     private long characteristicId;
     private long categoryId;
     private String characteristicName;
     private long characteristicGroupId;
 
-    public Characteristic(long characteristicId,
-                          long categoryId,
-                          String characteristicName,
-                          long characteristicGroupId) {
+    public CharacteristicDAOObject(long characteristicId,
+                                   long categoryId,
+                                   String characteristicName,
+                                   long characteristicGroupId) {
 
         this.characteristicId = characteristicId;
         this.categoryId = categoryId;
@@ -17,7 +17,7 @@ public class Characteristic {
         this.characteristicGroupId = characteristicGroupId;
     }
 
-    public Characteristic() {
+    public CharacteristicDAOObject() {
 
     }
 

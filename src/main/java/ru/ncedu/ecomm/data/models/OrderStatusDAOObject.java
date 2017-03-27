@@ -1,17 +1,17 @@
 package ru.ncedu.ecomm.data.models;
 
 
-public class OrderStatus {
+public class OrderStatusDAOObject {
     private long orderStatusId;
     private String name;
 
-    public OrderStatus(long orderStatusId,
-                       String name) {
+    public OrderStatusDAOObject(long orderStatusId,
+                                String name) {
         this.orderStatusId = orderStatusId;
         this.name = name;
     }
 
-    public OrderStatus() {
+    public OrderStatusDAOObject() {
     }
 
     public long getOrderStatusId() {

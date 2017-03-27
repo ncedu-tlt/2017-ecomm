@@ -1,8 +1,8 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
-import ru.ncedu.ecomm.data.models.User;
-import ru.ncedu.ecomm.data.models.builders.UserBuilder;
+import ru.ncedu.ecomm.data.models.UserDAOObject;
+import ru.ncedu.ecomm.data.models.builders.UserDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.UserValidationUtils;
 import ru.ncedu.ecomm.utils.EncryptionUtils;
 
@@ -62,7 +62,7 @@ public class RegistrationServlet extends HttpServlet {
         }
 
         String hashPassword = EncryptionUtils.getMd5Digest(req.getParameter(PASSWORD));
-        User user = new UserBuilder()
+        UserDAOObject user = new UserDAOObjectBuilder()
                 .setEmail(req.getParameter(EMAIL))
                 .setPassword(hashPassword)
                 .setRoleId(ROLE_USER)

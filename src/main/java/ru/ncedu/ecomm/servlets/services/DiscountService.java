@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets.services;
 
-import ru.ncedu.ecomm.data.models.Discount;
+import ru.ncedu.ecomm.data.models.DiscountDAOObject;
 
 import java.util.List;
 
@@ -25,11 +25,11 @@ public class DiscountService {
     }
 
     private int getDiscountValue(long discountId) {
-        List<Discount> allDiscountValues = getDAOFactory()
+        List<DiscountDAOObject> allDiscountValues = getDAOFactory()
                 .getDiscountDAO()
                 .getDiscount();
 
-        for (Discount discount : allDiscountValues) {
+        for (DiscountDAOObject discount : allDiscountValues) {
             if (discount.getDiscountId() == discountId) {
                 return discount.getValue();
             }

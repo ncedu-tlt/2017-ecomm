@@ -18,49 +18,49 @@ public class RestService {
     @GET
     @Path("/discounts")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Discount> getDiscount() {
+    public List<DiscountDAOObject> getDiscount() {
         return getDAOFactory().getDiscountDAO().getDiscount();
     }
 
     @GET
     @Path("/roles")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Role> getRoles() {
+    public List<RoleDAOObject> getRoles() {
         return getDAOFactory().getRoleDAO().getRoles();
     }
 
     @GET
     @Path("/roles/{roleId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Role getRole(@PathParam("roleId") long roleId) {
+    public RoleDAOObject getRole(@PathParam("roleId") long roleId) {
         return getDAOFactory().getRoleDAO().getRoleById(roleId);
     }
 
     @GET
     @Path("/categories")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Category> getCategories() {
+    public List<CategoryDAOObject> getCategories() {
         return getDAOFactory().getCategoryDAO().getCategories();
     }
 
     @GET
     @Path("/categories/notempty")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Category> getNotEmptyCategories() {
+    public List<CategoryDAOObject> getNotEmptyCategories() {
         return getDAOFactory().getCategoryDAO().getAllNotEmptyCategories();
     }
 
     @GET
     @Path("/categories/{categoryId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Category getCategoryById(@PathParam("categoryId") long categoryId) {
+    public CategoryDAOObject getCategoryById(@PathParam("categoryId") long categoryId) {
         return getDAOFactory().getCategoryDAO().getCategoryById(categoryId);
     }
 
     @GET
     @Path("/categories/getallchild/{categoryId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Category> getAllChildrenCategory(@PathParam("categoryId") long categoryId) {
+    public List<CategoryDAOObject> getAllChildrenCategory(@PathParam("categoryId") long categoryId) {
         return getDAOFactory().getCategoryDAO().getAllNotEmptyChildrenCategoriesById(categoryId);
     }
 
@@ -68,7 +68,7 @@ public class RestService {
     @Path("/categories")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Category updateCategory(Category category) {
+    public CategoryDAOObject updateCategory(CategoryDAOObject category) {
         return getDAOFactory().getCategoryDAO().updateCategory(category);
     }
 
@@ -84,35 +84,35 @@ public class RestService {
     @Path("/categories")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Category addCategory(Category category) {
+    public CategoryDAOObject addCategory(CategoryDAOObject category) {
         return getDAOFactory().getCategoryDAO().addCategory(category);
     }
 
     @GET
     @Path("/categories/parent/{parentCategoryId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Category> getCategoryByParent(@PathParam("parentCategoryId") long parentCategoryId) {
+    public List<CategoryDAOObject> getCategoryByParent(@PathParam("parentCategoryId") long parentCategoryId) {
         return getDAOFactory().getCategoryDAO().getCategoriesByParentId(parentCategoryId);
     }
 
     @GET
     @Path("/properties")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Property> getProperties() {
+    public List<PropertyDAOObject> getProperties() {
         return getDAOFactory().getPropertyDAO().getProperties();
     }
 
     @GET
     @Path("/properties/{propertyId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Property getProperties(@PathParam("propertyId") String propertyId) {
+    public PropertyDAOObject getProperties(@PathParam("propertyId") String propertyId) {
         return getDAOFactory().getPropertyDAO().getPropertyById(propertyId);
     }
     @POST
     @Path("/properties")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Property addProperty(Property property) {
+    public PropertyDAOObject addProperty(PropertyDAOObject property) {
         return getDAOFactory().getPropertyDAO().addProperty(property);
     }
     @DELETE
@@ -126,7 +126,7 @@ public class RestService {
     @Path("/properties")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Property updateProperty(Property property) {
+    public PropertyDAOObject updateProperty(PropertyDAOObject property) {
         return getDAOFactory().getPropertyDAO().updateProperty(property);
     }
 
@@ -134,28 +134,28 @@ public class RestService {
     @GET
     @Path("/users")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<User> getUsers() {
+    public List<UserDAOObject> getUsers() {
         return getDAOFactory().getUserDAO().getUsers();
     }
 
     @GET
     @Path("/users/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public User getUserById(@PathParam("userId") long userId) {
+    public UserDAOObject getUserById(@PathParam("userId") long userId) {
         return getDAOFactory().getUserDAO().getUserById(userId);
     }
 
     @GET
     @Path("/users/role/{roleId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<User> getUserByRoleId(@PathParam("roleId") long roleId) {
+    public List<UserDAOObject> getUserByRoleId(@PathParam("roleId") long roleId) {
         return getDAOFactory().getUserDAO().getUserByRoleId(roleId);
     }
 
     @GET
     @Path("/users/password/{password}")
     @Produces(MediaType.APPLICATION_JSON)
-    public User getUserByPassword(@PathParam("password") String password){
+    public UserDAOObject getUserByPassword(@PathParam("password") String password){
         return getDAOFactory().getUserDAO().getUserByPassword(password);
     }
 
@@ -163,7 +163,7 @@ public class RestService {
     @Path("/users")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public User addUser(User user) {
+    public UserDAOObject addUser(UserDAOObject user) {
         return getDAOFactory().getUserDAO().addUser(user);
     }
 
@@ -171,7 +171,7 @@ public class RestService {
     @Path("/users")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public User updateUser(User user) {
+    public UserDAOObject updateUser(UserDAOObject user) {
         return getDAOFactory().getUserDAO().updateUser(user);
     }
 
@@ -186,7 +186,7 @@ public class RestService {
     @GET
     @Path("/salesorder")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<SalesOrder> getSalesOrders() {
+    public List<SalesOrderDAOObject> getSalesOrders() {
         return getDAOFactory().getSalesOrderDAO().getSalesOrders();
     }
 
@@ -194,21 +194,21 @@ public class RestService {
     @Path("/salesorder")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public SalesOrder addSalesOrder(SalesOrder salesOrder) {
+    public SalesOrderDAOObject addSalesOrder(SalesOrderDAOObject salesOrder) {
         return getDAOFactory().getSalesOrderDAO().addSalesOrder(salesOrder);
     }
 
     @GET
     @Path("/salesorder/{salesOrderId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public SalesOrder getSalesOrderById(@PathParam("salesOrderId") long salesOrderId) {
+    public SalesOrderDAOObject getSalesOrderById(@PathParam("salesOrderId") long salesOrderId) {
         return getDAOFactory().getSalesOrderDAO().getSalesOrderById(salesOrderId);
     }
 
     @GET
     @Path("/salesorder/orderstatus/{salesOrderStatusId}/{salesOrderUserId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public SalesOrder getSalesOrderByOrderStatusId(@PathParam("salesOrderStatusId") long salesOrderStatusId, @PathParam("salesOrderUserId") long salesOrderUserId){
+    public SalesOrderDAOObject getSalesOrderByOrderStatusId(@PathParam("salesOrderStatusId") long salesOrderStatusId, @PathParam("salesOrderUserId") long salesOrderUserId){
         return getDAOFactory().getSalesOrderDAO().getSalesOrderByOrderStatusId(salesOrderStatusId, salesOrderUserId);
     }
 
@@ -224,21 +224,21 @@ public class RestService {
     @Path("/salesorder")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public SalesOrder updateSalesOrder(SalesOrder salesOrder) {
+    public SalesOrderDAOObject updateSalesOrder(SalesOrderDAOObject salesOrder) {
         return getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
     }
 
     @GET
     @Path("/characteristicvalue")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<CharacteristicValue> getCharacteristicValue() {
+    public List<CharacteristicValueDAOObject> getCharacteristicValue() {
         return getDAOFactory().getCharacteristicValueDAO().getCharacteristicValues();
     }
 
     @GET
     @Path("/characteristicvalue/{characteristicvalue}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<CharacteristicValue> getCharacteristicValueById(
+    public List<CharacteristicValueDAOObject> getCharacteristicValueById(
             @PathParam("characteristicvalue") long characteristicvalue) {
         return getDAOFactory().getCharacteristicValueDAO().getCharacteristicValuesById(characteristicvalue);
     }
@@ -246,7 +246,7 @@ public class RestService {
     @GET
     @Path("/characteristicvalue/byproduct/{productid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<CharacteristicValue> getCharacteristicValueByProductId(@PathParam("productid") long productid) {
+    public List<CharacteristicValueDAOObject> getCharacteristicValueByProductId(@PathParam("productid") long productid) {
         return getDAOFactory().getCharacteristicValueDAO().getCharacteristicValuesByProductId(productid);
     }
 
@@ -254,7 +254,7 @@ public class RestService {
     @Path("/characteristicvalue")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public CharacteristicValue addCharacteristicValue(CharacteristicValue characteristicValue) {
+    public CharacteristicValueDAOObject addCharacteristicValue(CharacteristicValueDAOObject characteristicValue) {
         return getDAOFactory().getCharacteristicValueDAO().addCharacteristicValue(characteristicValue);
     }
 
@@ -262,21 +262,21 @@ public class RestService {
     @Path("/characteristicvalue")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public CharacteristicValue updateCharacteristicValue(CharacteristicValue characteristicValue) {
+    public CharacteristicValueDAOObject updateCharacteristicValue(CharacteristicValueDAOObject characteristicValue) {
         return getDAOFactory().getCharacteristicValueDAO().updateCharacteristicValue(characteristicValue);
     }
 
     @GET
     @Path("/product")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Product> getProducts() {
+    public List<ProductDAOObject> getProducts() {
         return getDAOFactory().getProductDAO().getProducts();
     }
 
     @GET
     @Path("/product/{productid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Product getProductById(
+    public ProductDAOObject getProductById(
             @PathParam("productid") long productid) {
         return getDAOFactory().getProductDAO().getProductById(productid);
     }
@@ -285,7 +285,7 @@ public class RestService {
     @GET
     @Path("/product/orderId/{orderId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Product> getProductByOrderId(
+    public List<ProductDAOObject> getProductByOrderId(
             @PathParam("orderId") long orderId) {
         return getDAOFactory().getProductDAO().getProductByOrderId(orderId);
     }
@@ -295,7 +295,7 @@ public class RestService {
     @GET
     @Path("/product/category/{categoryId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Product> getProductByCategoryId(
+    public List<ProductDAOObject> getProductByCategoryId(
             @PathParam("categoryId") long categoryId) {
         return getDAOFactory().getProductDAO().getProductsByCategoryId(categoryId);
     }
@@ -304,7 +304,7 @@ public class RestService {
     @Path("/product")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Product addProduct(Product product) {
+    public ProductDAOObject addProduct(ProductDAOObject product) {
         return getDAOFactory().getProductDAO().addProduct(product);
     }
 
@@ -312,7 +312,7 @@ public class RestService {
     @Path("/product")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Product updateProduct(Product product) {
+    public ProductDAOObject updateProduct(ProductDAOObject product) {
         return getDAOFactory().getProductDAO().updateProduct(product);
     }
 
@@ -327,7 +327,7 @@ public class RestService {
     @GET
     @Path("/reviews")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Review> getReviews() {
+    public List<ReviewDAOObject> getReviews() {
         return getDAOFactory().getReviewDAO().getReviews();
     }
 
@@ -341,14 +341,14 @@ public class RestService {
     @GET
     @Path("/reviews/byuserid/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Review> getReviewsByUserId(@PathParam("userId") long userId) {
+    public List<ReviewDAOObject> getReviewsByUserId(@PathParam("userId") long userId) {
         return getDAOFactory().getReviewDAO().getReviewsByUserId(userId);
     }
 
     @GET
     @Path("/reviews/byproductid/{productId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Review> getReviewsByProductId(@PathParam("productId") long productId) {
+    public List<ReviewDAOObject> getReviewsByProductId(@PathParam("productId") long productId) {
         return getDAOFactory().getReviewDAO().getReviewsByProductId(productId);
     }
 
@@ -356,7 +356,7 @@ public class RestService {
     @Path("/reviews")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Review addReview(Review review) {
+    public ReviewDAOObject addReview(ReviewDAOObject review) {
         return getDAOFactory().getReviewDAO().addReviews(review);
     }
 
@@ -364,20 +364,20 @@ public class RestService {
     @Path("/reviews")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Review updateReview(Review review) {
+    public ReviewDAOObject updateReview(ReviewDAOObject review) {
         return getDAOFactory().getReviewDAO().updateReviews(review);
     }
 
     @GET
     @Path("/characteristicgroup")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<CharacteristicGroup> getCharacteristicGroup() {
+    public List<CharacteristicGroupDAOObject> getCharacteristicGroup() {
         return getDAOFactory().getCharacteristicGroupDAO().getCharacteristicGroup();
     }
     @GET
     @Path("/characteristicgroup/{characteristicgroupbyid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public CharacteristicGroup getCharacteristicGroupById(
+    public CharacteristicGroupDAOObject getCharacteristicGroupById(
             @PathParam("characteristicgroupbyid") long characteristicgroupbyid) {
         return getDAOFactory().getCharacteristicGroupDAO().getCharacteristicGroupById(characteristicgroupbyid);
     }
@@ -385,14 +385,14 @@ public class RestService {
     @Path("/characteristicgroup")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public CharacteristicGroup addCharacteristicGroup(CharacteristicGroup characteristicGroup) {
+    public CharacteristicGroupDAOObject addCharacteristicGroup(CharacteristicGroupDAOObject characteristicGroup) {
         return getDAOFactory().getCharacteristicGroupDAO().addCharacteristicGroup(characteristicGroup);
     }
     @PUT
     @Path("/characteristicgroup")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public CharacteristicGroup updateCharacteristicGroup(CharacteristicGroup characteristicGroup) {
+    public CharacteristicGroupDAOObject updateCharacteristicGroup(CharacteristicGroupDAOObject characteristicGroup) {
         return getDAOFactory().getCharacteristicGroupDAO().updateCharacteristicGroup(characteristicGroup);
     }
     @DELETE
@@ -405,13 +405,13 @@ public class RestService {
     @GET
     @Path("/characteristic")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Characteristic> getCharacteristic() {
+    public List<CharacteristicDAOObject> getCharacteristic() {
         return getDAOFactory().getChracteristicDAO().getCharacteristic();
     }
     @GET
     @Path("/characteristic/{categoryId}/{groupId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Characteristic> getCharacteristicByCategoryIdAndGroupId(
+    public List<CharacteristicDAOObject> getCharacteristicByCategoryIdAndGroupId(
             @PathParam("categoryId") long categoryId,
             @PathParam("groupId") long groupId
     ) {
@@ -426,14 +426,14 @@ public class RestService {
     @GET
     @Path("/characteristic/groupId/{characteristicGroupId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Characteristic> getCharacteristicByGroupId(
+    public List<CharacteristicDAOObject> getCharacteristicByGroupId(
             @PathParam("characteristicGroupId") long characteristicGroupId) {
         return getDAOFactory().getChracteristicDAO().getCharacteristicByGroupId(characteristicGroupId);
     }
     @GET
     @Path("/characteristic/{characteristic}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Characteristic getCharacteristicById(
+    public CharacteristicDAOObject getCharacteristicById(
             @PathParam("characteristic") long characteristic) {
         return getDAOFactory().getChracteristicDAO().getCharacteristicById(characteristic);
     }
@@ -441,14 +441,14 @@ public class RestService {
     @Path("/characteristic")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Characteristic addCharacteristic(Characteristic characteristic) {
+    public CharacteristicDAOObject addCharacteristic(CharacteristicDAOObject characteristic) {
         return getDAOFactory().getChracteristicDAO().addCharacteristic(characteristic);
     }
     @PUT
     @Path("/characteristic")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Characteristic updateCharacteristic(Characteristic characteristic) {
+    public CharacteristicDAOObject updateCharacteristic(CharacteristicDAOObject characteristic) {
         return getDAOFactory().getChracteristicDAO().updateCharacteristic(characteristic);
     }
     @DELETE
@@ -461,14 +461,14 @@ public class RestService {
     @GET
     @Path("/orderitems")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<OrderItem> getOrderItems() {
+    public List<OrderItemDAOObject> getOrderItems() {
         return getDAOFactory().getOrderItemsDAO().getOrderItems();
     }
 
     @GET
     @Path("/orderitems/{salesOrderId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<OrderItem> getSalesOrderByUserId(@PathParam("salesOrderId") long salesOrderId){
+    public List<OrderItemDAOObject> getSalesOrderByUserId(@PathParam("salesOrderId") long salesOrderId){
         return getDAOFactory().getOrderItemsDAO().getOrderItemsBySalesOrderId(salesOrderId);
     }
 
@@ -476,47 +476,47 @@ public class RestService {
     @Path("/orderitems")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public OrderItem addOrderItem(OrderItem orderItem) {
+    public OrderItemDAOObject addOrderItem(OrderItemDAOObject orderItem) {
         return getDAOFactory().getOrderItemsDAO().addOrderItem(orderItem);
     }
     @PUT
     @Path("/orderitems")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public OrderItem updateOrderItem(OrderItem orderItem) {
+    public OrderItemDAOObject updateOrderItem(OrderItemDAOObject orderItem) {
         return getDAOFactory().getOrderItemsDAO().updateOrderItem(orderItem);
     }
     @DELETE
     @Path("/orderitems")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteOrderItem(OrderItem orderItem) {
+    public Response deleteOrderItem(OrderItemDAOObject orderItem) {
         getDAOFactory().getOrderItemsDAO().deleteOrderItem(orderItem);
         return Response.ok().build();
     }
     @GET
     @Path("/orderstatus/{oderStatusId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public OrderStatus getOrderStatusById(
+    public OrderStatusDAOObject getOrderStatusById(
             @PathParam("oderStatusId") long oderStatusId) {
         return getDAOFactory().getOrderStatusDAO().getOrdersStatusById(oderStatusId);
     }
     @GET
     @Path("/recomendedproduct")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<RecomendedProduct> getRecomendedProducts() {
+    public List<RecomendedProductDAOObject> getRecomendedProducts() {
         return getDAOFactory().getRecomendedProductsDAO().getRecomendedProducts();
     }
     @POST
     @Path("/recomendedproduct")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public RecomendedProduct getRecomendedProducts(RecomendedProduct recomendedProduct) {
+    public RecomendedProductDAOObject getRecomendedProducts(RecomendedProductDAOObject recomendedProduct) {
         return getDAOFactory().getRecomendedProductsDAO().addRecomendedProduct(recomendedProduct);
     }
     @DELETE
     @Path("/recomendedproduct")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteRecomendedProduct(RecomendedProduct recomendedProduct) {
+    public Response deleteRecomendedProduct(RecomendedProductDAOObject recomendedProduct) {
         getDAOFactory().getRecomendedProductsDAO().deleteRecomendedProduct(recomendedProduct);
         return Response.ok().build();
     }
