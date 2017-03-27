@@ -22,9 +22,9 @@
                                     </div>
                                     <div class="middle aligned content">
                                         <div class="left floated header">
-                                                ${orderItems.getName()}
+                                            <a href="${pageContext.request.contextPath}/product?product_id=${orderItems.productId}">${orderItems.getName()}</a>
                                         </div>
-                                        <div class="extra">
+                                        <div class="extra ui header">
                                             <div class="ui right floated header">
                                                 $${orderItems.getPrice()}
                                             </div>
