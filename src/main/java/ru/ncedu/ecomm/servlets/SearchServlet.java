@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.DAOFactory;
-import ru.ncedu.ecomm.data.models.Product;
+import ru.ncedu.ecomm.data.models.ProductDAOObject;
 import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.CategoryViewBuilder;
 import ru.ncedu.ecomm.servlets.services.ProductViewService;
@@ -21,7 +21,7 @@ public class SearchServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String query = request.getParameter("search");
 
-        List<Product> products = DAOFactory.getDAOFactory().getProductDAO().searchProductsByName(query);
+        List<ProductDAOObject> products = DAOFactory.getDAOFactory().getProductDAO().searchProductsByName(query);
         List<CategoryViewModel> categoryViewModels = new ArrayList<>();
 
         categoryViewModels.add(new CategoryViewBuilder()
