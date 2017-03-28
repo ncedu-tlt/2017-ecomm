@@ -5,7 +5,8 @@
     var ELEMENTS = {
         RECOVERY_FORM: '.jsPasswordRecoveryForm',
         SEND_TO_EMAIL_BTN: '.jsSendToEmailBtn',
-        DIMMER: '.jsDimmerPasswordRecovery'
+        DIMMER: '.jsDimmerPasswordRecovery',
+        CLOSE_MESSAGE: '.jsMessageFromServlet .jsCloseMessageFromServlet'
     };
 
     var RecoveryComponent = frm.inheritance.inherits(frm.components.Component, {
@@ -31,6 +32,8 @@
                     }
                 });
             this.content.find(ELEMENTS.SEND_TO_EMAIL_BTN).on('click', this.showDimmerIfFormValid.bind(this));
+            var jsMessage = this.content.find(ELEMENTS.CLOSE_MESSAGE);
+            this.content.find(jsMessage).on('click', this.closeMessage.bind(jsMessage));
         },
         showDimmerIfFormValid: function () {
             var isValid = this.content.find(ELEMENTS.RECOVERY_FORM).form('is valid');
@@ -44,6 +47,11 @@
             jsDimmer.dimmer({
                 closable: false
             });
+        },
+        closeMessage: function() {
+            $(this)
+                .closest('.jsMessageFromServlet')
+                .transition('fade');
         }
     });
 

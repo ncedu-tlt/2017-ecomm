@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <div class="container jsRecoveryComponent main-content">
-    <div class="ui two column centered grid">
+    <div class="ui three column centered grid">
         <div class="column">
             <h2 class="ui center aligned icon header">
                 <i class="circular unlock icon"></i>
@@ -11,7 +11,7 @@
                     We will send you further instructions to the provided email address
                 </p>
             </div>
-            <div class="ui three column center aligned grid">
+            <div class="ui two column center aligned grid">
                 <div class="column">
                     <form class="ui equal dividing width form jsPasswordRecoveryForm" method="post"
                           action="${pageContext.request.contextPath}/recovery">
@@ -24,13 +24,14 @@
                         </button>
                     </form>
                 </div>
+                <c:set var="request" scope="session" value="${requestScope.answer}"/>
+                <c:if test="${request != null}">
+                    <div class="ui warning message jsMessageFromServlet">
+                        <i class="close icon jsCloseMessageFromServlet"></i>
+                        <p>${requestScope.answer}</p>
+                    </div>
+                </c:if>
             </div>
-            <c:set var="request" scope="session" value="${requestScope.answer}"/>
-            <c:if test="${request != null}">
-                <div class="ui message warning">
-                    <p>${requestScope.answer}</p>
-                </div>
-            </c:if>
         </div>
     </div>
     <div class="ui page dimmer jsDimmerPasswordRecovery">
