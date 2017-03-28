@@ -5,11 +5,11 @@
 <div class="ui item jsShoppingCartIconComponent jsShoppingCartComponent" id="shoppingCartTopPanel">
     <button onclick="window.location.href = '${pageContext.request.contextPath}/cart'" class="circular ui icon button">
         <i class="icon shop"></i>
+        <c:if test="${requestScope.quantityProducts > 0}">
             <div class="floating ui circular teal label jsShoppingCartIcon" id="shoppingCartIcon">
-                <c:if test="${requestScope.quantityProducts > 0}">
                     ${requestScope.quantityProducts}
-                </c:if>
             </div>
+        </c:if>
     </button>
     <div class="ui page dimmer jsDimmerAdd">
         <div class="content">
