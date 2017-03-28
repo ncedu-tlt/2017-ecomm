@@ -11,19 +11,16 @@
                     We will send you further instructions to the provided email address
                 </p>
             </div>
-            <div class="ui three column centered grid">
+            <div class="ui three column center aligned grid">
                 <div class="column">
-                    <form class="ui form jsPasswordRecoveryForm" method="post"
+                    <form class="ui equal dividing width form jsPasswordRecoveryForm" method="post"
                           action="${pageContext.request.contextPath}/recovery">
                         <div class="field">
                             <input type="text" name="email" placeholder="Email">
                         </div>
                         <div class="ui error message"></div>
-                        <button class="ui fluid animated primary button">
-                            <div class="visible content">Send</div>
-                            <div class="hidden content">
-                                <i class="mail outline icon"></i>
-                            </div>
+                        <button class="ui primary button jsSendToEmailBtn">
+                            <div class="content">Send mail</div>
                         </button>
                     </form>
                 </div>
@@ -34,6 +31,11 @@
                     <p>${requestScope.answer}</p>
                 </div>
             </c:if>
+        </div>
+    </div>
+    <div class="ui page dimmer jsDimmerPasswordRecovery">
+        <div class="content">
+            <div class="ui text loader">Sending letter</div>
         </div>
     </div>
 </div>
