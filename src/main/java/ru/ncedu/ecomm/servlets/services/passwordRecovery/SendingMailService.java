@@ -1,15 +1,11 @@
 package ru.ncedu.ecomm.servlets.services.passwordRecovery;
 
 import ru.ncedu.ecomm.Configuration;
-import ru.ncedu.ecomm.data.models.UserDAOObject;
-import ru.ncedu.ecomm.utils.UserValidationUtils;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
-
-import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 public class SendingMailService {
     private final Properties SERVER_PROPERTIES = configServerForSend();
@@ -35,23 +31,10 @@ public class SendingMailService {
         return serverProperties;
     }
 
-    public boolean sendMail(String toEmail, String textHtml) {
-        return UserValidationUtils.checkEmail(toEmail) && searchMailInDatabase(toEmail) && sendLetterToUser(toEmail, textHtml);
-    }
-
-    private boolean searchMailInDatabase(String toEmail) {
-        UserDAOObject userByEmail = getDAOFactory().getUserDAO().getUserByEmail(toEmail);
-        return userByEmail != null;
-    }
-
-    private boolean sendLetterToUser(String toEmail, String textHtml) {
-        return sendMessageWithMimeMessage(toEmail, textHtml);
-    }
-
-    private boolean sendMessageWithMimeMessage(String toEmail, String textHtml) {
+    boolean isSentLetterToEmail(String toEmail, String textHtml) {
         Session session = getSession();
         MimeMessage message = new MimeMessage(session);
-        return setMimeMessage(message, toEmail, textHtml) && sendToTransport(message);
+        return setMimeMessage(message, toEmail, textHtml) && isSentMessage(message);
     }
 
     private boolean setMimeMessage(MimeMessage message, String toEmail, String textHtml) {
@@ -67,7 +50,7 @@ public class SendingMailService {
         }
     }
 
-    private boolean sendToTransport(MimeMessage message) {
+    private boolean isSentMessage(MimeMessage message) {
         try {
             Transport.send(message);
             return true;
@@ -76,7 +59,7 @@ public class SendingMailService {
         }
     }
 
-    public Session getSession() {
+    private Session getSession() {
         String username = Configuration.getProperty("mail.username");
         String password = Configuration.getProperty("mail.password");
         return Session.getDefaultInstance(SERVER_PROPERTIES, new Authenticator() {
