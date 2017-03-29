@@ -3,7 +3,6 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.servlets.services.passwordRecovery.PasswordRecoveryService;
-import ru.ncedu.ecomm.servlets.services.passwordRecovery.SendingMailService;
 import ru.ncedu.ecomm.utils.UserValidationUtils;
 
 import javax.servlet.ServletException;
@@ -32,31 +31,24 @@ public class PasswordRecoveryServlet extends HttpServlet {
 
     private void sendLetterToEmail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String toEmail = req.getParameter(EMAIL);
-        if (UserValidationUtils.checkEmail(toEmail)) {
-            String answerFromMailService = getAnswerAndUpdateRecoveryHash(toEmail,req);
-            req.setAttribute(ANSWER, answerFromMailService);
-            req.getRequestDispatcher(Configuration.getProperty("page.passwordRecovery")).forward(req, resp);
-        } else {
-            String answerError = "Incorrect email! Please try enter other email";
-            req.setAttribute(ANSWER, answerError);
-            req.getRequestDispatcher(Configuration.getProperty("page.passwordRecovery")).forward(req, resp);
+        if (!UserValidationUtils.checkEmail(toEmail)) {
+            actionOnErrorCheckEmail(req, resp);
+        }
+        else{
+            actionAfterSendingMail(req, resp, toEmail);
         }
     }
 
-
-    private String getAnswerAndUpdateRecoveryHash(String toEmail, HttpServletRequest req) {
-        String recoveryHash = PasswordRecoveryService.getInstance().getRecoveryHashByEmail();
-        String textHTML = getTextHtml(toEmail, recoveryHash, req);
-        PasswordRecoveryService.getInstance().addRecoveryHashToUser(toEmail, recoveryHash);
-        return SendingMailService.getInstance().sendMail(toEmail, textHTML) ?
-                "Letter with instructions was sent in your email. Please check your post."
-                : "Email address not registered in the database.";
+    private void actionOnErrorCheckEmail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String answerError = "Incorrect email! Please try enter other email";
+        req.setAttribute(ANSWER, answerError);
+        req.getRequestDispatcher(Configuration.getProperty("page.passwordRecovery")).forward(req, resp);
     }
 
-    private String getTextHtml(String toEmail, String recoveryHash, HttpServletRequest req) {
+    private void actionAfterSendingMail(HttpServletRequest req, HttpServletResponse resp, String toEmail) throws ServletException, IOException {
         String contextPath = req.getServerName();
-        return "<p>Please change your password in here:</p>" +
-                "<a href='https://"+contextPath+"/passwordChange?email="
-                + toEmail + "&recoveryHash=" + recoveryHash + "'>Change Password</a>";
+        String answerFromMailService = PasswordRecoveryService.getInstance().getAnswer(toEmail, contextPath);
+        req.setAttribute(ANSWER, answerFromMailService);
+        req.getRequestDispatcher(Configuration.getProperty("page.passwordRecovery")).forward(req, resp);
     }
 }

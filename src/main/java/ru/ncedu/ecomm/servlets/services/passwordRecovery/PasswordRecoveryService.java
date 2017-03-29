@@ -21,22 +21,23 @@ public class PasswordRecoveryService {
         return instance;
     }
 
-    public String getRecoveryHashByEmail() {
-        return createRecoveryHash();
+    public String getAnswer(String toEmail, String contextPath){
+        UserDAOObject userByEmail = getDAOFactory().getUserDAO().getUserByEmail(toEmail);
+        if(userByEmail == null)
+            return "ErrorEmailNotFound";
+        sendingLetterToEmail(userByEmail);
+        return sendMailToUser(userByEmail, contextPath);
     }
 
-    private String createRecoveryHash() {
-        List<Integer> uniqueHash = new ArrayList<>();
-        addHashToCollection(uniqueHash);
-        return getHash(uniqueHash);
+    private void sendingLetterToEmail(UserDAOObject userByEmail) {
+        String recoveryHash = getCreatedRecoveryHash();
+        userByEmail.setRecoveryHash(recoveryHash);
     }
 
-    private String getHash(List<Integer> uniqueHash) {
-        String recoveryHash = "";
-        for (Integer hash : uniqueHash) {
-            recoveryHash += hash;
-        }
-        return recoveryHash;
+    private String getCreatedRecoveryHash() {
+        List<Integer> uniqueHashCollection = new ArrayList<>();
+        addHashToCollection(uniqueHashCollection);
+        return getHashFromCollection(uniqueHashCollection);
     }
 
     private void addHashToCollection(List<Integer> uniqueHash) {
@@ -48,9 +49,31 @@ public class PasswordRecoveryService {
         }
     }
 
-    public void addRecoveryHashToUser(String email, String recoveryHash) {
-        UserDAOObject user = getDAOFactory().getUserDAO().getUserByEmail(email);
+    private String getHashFromCollection(List<Integer> uniqueHashCollection) {
+        StringBuilder recoveryHash = new StringBuilder();
+        recoveryHash.append("");
+        for (Integer hash : uniqueHashCollection) {
+            recoveryHash.append(hash);
+        }
+        return recoveryHash.toString();
+    }
+
+    private String sendMailToUser(UserDAOObject user, String contextPath) {
+        String textHTML = getTextHtml(user.getEmail(), user.getRecoveryHash(), contextPath);
+        PasswordRecoveryService.getInstance().addRecoveryHashToUser(user, user.getRecoveryHash());
+        return SendingMailService.getInstance().isSentLetterToEmail(user.getEmail(), textHTML) ?
+                "SuccessSend"
+                : "ErrorSend";
+    }
+
+    private void addRecoveryHashToUser(UserDAOObject user, String recoveryHash) {
         user.setRecoveryHash(recoveryHash);
         getDAOFactory().getUserDAO().updateUser(user);
+    }
+
+    private String getTextHtml(String toEmail, String recoveryHash, String contextPath) {
+        return "<p>Please change your password in here:</p>" +
+                "<a href='https://" + contextPath + "/passwordChange?email="
+                + toEmail + "&recoveryHash=" + recoveryHash + "'>Change Password</a>";
     }
 }
