@@ -23,14 +23,37 @@
                             <div class="content">Send mail</div>
                         </button>
                     </form>
+                    <c:set var="request" scope="session" value="${requestScope.answer}"/>
+                    <c:choose>
+                        <c:when test='${requestScope.answer == "SuccessSend"}'>
+                            <div class="ui positive message jsMessageFromServlet">
+                                <i class="close icon jsCloseMessageFromServlet"></i>
+                                <div class="header">
+                                    Success!
+                                </div>
+                                <p>Letter with instructions was sent in your email. Please check your post.</p>
+                            </div>
+                        </c:when>
+                        <c:when test='${requestScope.answer == "ErrorSend"}'>
+                            <div class="ui negative message jsMessageFromServlet">
+                                <i class="close icon jsCloseMessageFromServlet"></i>
+                                <div class="header">
+                                    Error!
+                                </div>
+                                <p>Could not send message to email. Please try again later.</p>
+                            </div>
+                        </c:when>
+                        <c:when test='${requestScope.answer == "ErrorEmailNotFound"}'>
+                            <div class="ui warning message jsMessageFromServlet">
+                                <i class="close icon jsCloseMessageFromServlet"></i>
+                                <div class="header">
+                                    Error!
+                                </div>
+                                <p>Email address not registered in the database.</p>
+                            </div>
+                        </c:when>
+                    </c:choose>
                 </div>
-                <c:set var="request" scope="session" value="${requestScope.answer}"/>
-                <c:if test="${request != null}">
-                    <div class="ui warning message jsMessageFromServlet">
-                        <i class="close icon jsCloseMessageFromServlet"></i>
-                        <p>${requestScope.answer}</p>
-                    </div>
-                </c:if>
             </div>
         </div>
     </div>
