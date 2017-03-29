@@ -52,6 +52,15 @@
                                 <p>Email address not registered in the database.</p>
                             </div>
                         </c:when>
+                        <c:when test='${requestScope.answer == "ErrorInputEmail"}'>
+                            <div class="ui warning message jsMessageFromServlet">
+                                <i class="close icon jsCloseMessageFromServlet"></i>
+                                <div class="header">
+                                    Error!
+                                </div>
+                                <p>Email address not registered in the database.</p>
+                            </div>
+                        </c:when>
                     </c:choose>
                 </div>
             </div>
