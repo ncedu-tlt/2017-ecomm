@@ -5,7 +5,7 @@
 <div class="ui item jsShoppingCartIconComponent jsShoppingCartComponent" id="shoppingCartTopPanel">
     <a href="${pageContext.request.contextPath}/cart" class="circular ui icon button">
         <i class="icon shop"></i>
-        <div class="floating ui circular teal label jsShoppingCartIcon">
+        <div class="floating ui circular teal label jsShoppingCartIcon hidden">
             ${requestScope.quantityProducts}
         </div>
     </a>

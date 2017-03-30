@@ -9,13 +9,13 @@
 
     var ShoppingCartIconComponent = frm.inheritance.inherits(frm.components.Component, {
         init: function () {
-            this.hideIconIfNeed();
+            this.showIconIfNeed();
             frm.events.on('addToCart', this.ajaxRequest.bind(this));
         },
-        hideIconIfNeed: function() {
+        showIconIfNeed: function() {
             var cartIcon = this.content.find(ELEMENTS.SHOPPING_CART_ICON);
-            if (cartIcon.text().trim() == '0') {
-                cartIcon.hide();
+            if (cartIcon.text().trim() != '0') {
+                cartIcon.removeClass('hidden');
             }
         },
         ajaxRequest: function (productIdParam) {
