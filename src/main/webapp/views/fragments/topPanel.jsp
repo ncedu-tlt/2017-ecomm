@@ -8,7 +8,7 @@
 --%>
 
 
-<div class="ui menu main-content">
+<div class="ui menu">
     <div class="ui container">
         <a class="header item" href="${pageContext.request.contextPath}/home">Shop</a>
         <c:import url="../components/categories.jsp"/>

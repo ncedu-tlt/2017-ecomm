@@ -19,8 +19,10 @@
     <c:import url="../fragments/head.jsp"/>
 </head>
 <body>
+<div class="jsIndexMainWrapper">
     <c:import url="../fragments/topPanel.jsp"/>
     <c:import url="../components/productList.jsp"/>
     <c:import url="../components/companyInfo.jsp"/>
+</div>
 </body>
 </html>

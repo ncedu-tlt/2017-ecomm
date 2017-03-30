@@ -5,7 +5,7 @@
         <c:when test="${userId != null}">
             <div class="ui labeled">
                 <a href="${pageContext.request.contextPath}/profile" class="ui basic image label">
-                    <img src="${pageContext.request.contextPath}${requestScope.avatarPath}">
+                    <img src="${requestScope.avatarPath}">
                         ${requestScope.email}
                 </a>
             </div>

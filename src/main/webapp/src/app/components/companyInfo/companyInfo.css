@@ -1,0 +1,11 @@
+.footerCompanyInfo{
+    width:100%;
+    position:absolute;
+    bottom:0;
+    left:0;
+    margin-left:0;
+}
+
+.jsCompanyInfoDivider{
+    width:90%;
+}

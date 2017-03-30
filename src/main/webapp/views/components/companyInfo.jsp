@@ -7,8 +7,8 @@
     <jsp:param name="socialsUrlId" value="google+Url"/>
     <jsp:param name="socialsUrlId" value="vkUrl"/>
 </jsp:include>
-<div class="ui divider"></div>
-<div class="ui grid one column center aligned container footerCompanyInfo">
+<div class="ui grid one column center aligned footerCompanyInfo">
+    <div class="ui divider jsCompanyInfoDivider"></div>
     <div class="column">
         <p>
             <c:set var="socialsUrl" value="${requestScope.companyInfo.getSocials()}"/>

@@ -1,4 +1,4 @@
-<div class="ui two column centered grid">
+<div class="ui two column centered grid main-content">
     <div class="ui pagination text menu">
         <a class="item">1</a>
         <a class="item">2</a>
