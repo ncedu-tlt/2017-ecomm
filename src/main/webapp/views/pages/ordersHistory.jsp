@@ -20,14 +20,14 @@
     <c:import url="../fragments/head.jsp"/>
 </head>
 <body>
+<div class="jsIndexMainWrapper">
+    <c:import url="../fragments/topPanel.jsp"/>
 
-<c:import url="../fragments/topPanel.jsp"/>
+    <c:import url="../components/dashboardMenu.jsp"/>
 
-<c:import url="../components/dashboardMenu.jsp"/>
+    <c:import url="../components/ordersHistory.jsp"/>
 
-<c:import url="../components/ordersHistory.jsp"/>
-
-<c:import url="../components/companyInfo.jsp"/>
-
+    <c:import url="../components/companyInfo.jsp"/>
+</div>
 </body>
 </html>

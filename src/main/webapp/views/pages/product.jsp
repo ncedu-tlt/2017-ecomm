@@ -21,16 +21,16 @@
     <c:import url="../fragments/head.jsp"/>
 </head>
 <body>
+<div class="jsIndexMainWrapper">
+    <c:import url="../fragments/topPanel.jsp"/>
 
-<c:import url="../fragments/topPanel.jsp"/>
+    <c:import url="../components/breadcrumbs.jsp"/>
 
-<c:import url="../components/breadcrumbs.jsp"/>
+    <c:import url="../components/productDetails.jsp"/>
 
-<c:import url="../components/productDetails.jsp"/>
+    <c:import url="../components/reviews.jsp"/>
 
-<c:import url="../components/reviews.jsp"/>
-
-<c:import url="../components/companyInfo.jsp"/>
-
+    <c:import url="../components/companyInfo.jsp"/>
+</div>
 </body>
 </html>

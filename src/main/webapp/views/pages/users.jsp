@@ -21,10 +21,12 @@
     <c:import url="../fragments/head.jsp"/>
 </head>
 <body>
-<c:import url="../fragments/topPanel.jsp"/>
-<c:import url="../components/dashboardMenu.jsp"/>
-<c:import url="../components/userList.jsp"/>
-<c:import url="../components/pagination.jsp"/>
-<c:import url="../components/companyInfo.jsp"/>
+<div class="jsIndexMainWrapper">
+    <c:import url="../fragments/topPanel.jsp"/>
+    <c:import url="../components/dashboardMenu.jsp"/>
+    <c:import url="../components/userList.jsp"/>
+    <c:import url="../components/pagination.jsp"/>
+    <c:import url="../components/companyInfo.jsp"/>
+</div>
 </body>
 </html>

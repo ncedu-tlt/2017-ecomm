@@ -2,3 +2,13 @@
     heigth:80%;
     padding-bottom:130px;
 }
+
+html, body{
+    margin:0;
+    padding:0;
+    height:100%;
+}
+.jsIndexMainWrapper{
+    min-height:100%;
+    position:relative;
+}
