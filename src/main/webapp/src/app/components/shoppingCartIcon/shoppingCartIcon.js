@@ -9,12 +9,19 @@
 
     var ShoppingCartIconComponent = frm.inheritance.inherits(frm.components.Component, {
         init: function () {
+            this.hideIconIfNeed();
             frm.events.on('addToCart', this.ajaxRequest.bind(this));
+        },
+        hideIconIfNeed: function() {
+            var cartIcon = this.content.find(ELEMENTS.SHOPPING_CART_ICON);
+            if (cartIcon.text().trim() == '0') {
+                cartIcon.hide();
+            }
         },
         ajaxRequest: function (productIdParam) {
             var jsDimmer = this.dimmerInit();
             $.ajax({
-                url: this.params.baseIconUrl + '/addToShoppingCart',
+                url: this.params.addToCartUrl,
                 beforeSend: this.dimmerToggle(jsDimmer),
                 type: 'POST',
                 data: {productId: productIdParam},
@@ -33,12 +40,10 @@
             return jsDimmer;
         },
         dimmerToggle: function (jsDimmer) {
-            console.log('call');
             if (!jsDimmer.dimmer('is active'))
                 jsDimmer.dimmer('show');
             else
                 jsDimmer.dimmer('hide');
-
         },
         displayQuantity: function (result) {
             var shoppingCartIcon = this.content.find(ELEMENTS.SHOPPING_CART_ICON);
@@ -46,7 +51,7 @@
             shoppingCartIcon.transition('jiggle');
         },
         errorAction: function () {
-            window.location.href = this.params.baseIconUrl + '/login';
+            window.location.href = this.params.loginUrl;
         }
     });
 
