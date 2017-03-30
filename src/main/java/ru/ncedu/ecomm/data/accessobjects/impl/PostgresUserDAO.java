@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PostgresUserDAO implements UserDAO {
-    private static final Logger LOG  = Logger.getLogger(PostgresUserDAO.class);
+    private static final Logger LOG = Logger.getLogger(PostgresUserDAO.class);
 
     @Override
     public List<UserDAOObject> getUsers() {
@@ -120,7 +120,7 @@ public class PostgresUserDAO implements UserDAO {
 
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()){
+            if (resultSet.next()) {
 
                 LOG.info(null);
                 return new UserDAOObjectBuilder()
@@ -210,7 +210,50 @@ public class PostgresUserDAO implements UserDAO {
 
             statement.setString(1, password);
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()){
+            if (resultSet.next()) {
+
+                LOG.info(null);
+                return new UserDAOObjectBuilder()
+                        .setUserId(resultSet.getLong("user_id"))
+                        .setRoleId(resultSet.getLong("role_id"))
+                        .setFirstName(resultSet.getString("first_name"))
+                        .setLastName(resultSet.getString("last_name"))
+                        .setPassword(resultSet.getString("password"))
+                        .setPhone(resultSet.getString("phone"))
+                        .setEmail(resultSet.getString("email"))
+                        .setRecoveryHash(resultSet.getString("recovery_hash"))
+                        .setRegistrationDate(resultSet.getDate("registration_date"))
+                        .setUserAvatar(resultSet.getString("user_avatar"))
+                        .build();
+            }
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    @Override
+    public UserDAOObject getUserByRecoveryHash(String recoveryHash) {
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT\n" +
+                             "  user_id,\n" +
+                             "  role_id,\n" +
+                             "  first_name,\n" +
+                             "  last_name,\n" +
+                             "  password,\n" +
+                             "  phone,\n" +
+                             "  email,\n" +
+                             "  recovery_hash,\n" +
+                             "  registration_date,\n" +
+                             "  user_avatar\n" +
+                             "FROM users\n" +
+                             "WHERE recovery_hash = ?")) {
+
+            statement.setString(1, recoveryHash);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
 
                 LOG.info(null);
                 return new UserDAOObjectBuilder()

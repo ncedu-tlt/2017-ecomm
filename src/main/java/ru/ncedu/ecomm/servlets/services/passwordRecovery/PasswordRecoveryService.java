@@ -10,31 +10,44 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 public class PasswordRecoveryService {
 
-    private PasswordRecoveryService(){}
+    private PasswordRecoveryService() {
+    }
 
     private static PasswordRecoveryService instance;
 
-    public static synchronized PasswordRecoveryService getInstance(){
-        if(instance == null){
+    public static synchronized PasswordRecoveryService getInstance() {
+        if (instance == null) {
             instance = new PasswordRecoveryService();
         }
         return instance;
     }
 
-    public String getAnswer(String toEmail, String contextPath){
+    public String getAnswer(String toEmail, String contextPath) {
         UserDAOObject userByEmail = getDAOFactory().getUserDAO().getUserByEmail(toEmail);
-        if(userByEmail == null)
+        if (userByEmail == null)
             return "ErrorEmailNotFound";
         sendingLetterToEmail(userByEmail);
         return sendMailToUser(userByEmail, contextPath);
     }
 
     private void sendingLetterToEmail(UserDAOObject userByEmail) {
-        String recoveryHash = getCreatedRecoveryHash();
+        String recoveryHash = getRecoveryHashAfterChecking();
         userByEmail.setRecoveryHash(recoveryHash);
     }
 
-    private String getCreatedRecoveryHash() {
+    private String getRecoveryHashAfterChecking() {
+        String recoveryHash = generateRecoveryHash();
+        UserDAOObject userByHash = getDAOFactory().getUserDAO()
+                .getUserByRecoveryHash(recoveryHash);
+        while(userByHash != null){
+            recoveryHash = generateRecoveryHash();
+            userByHash = getDAOFactory().getUserDAO()
+                    .getUserByRecoveryHash(recoveryHash);
+        }
+        return recoveryHash;
+    }
+
+    private String generateRecoveryHash() {
         List<Integer> uniqueHashCollection = new ArrayList<>();
         addHashToCollection(uniqueHashCollection);
         return getHashFromCollection(uniqueHashCollection);

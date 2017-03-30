@@ -9,6 +9,7 @@ public interface UserDAO {
     UserDAOObject getUserById(long id);
     UserDAOObject getUserByEmail(String email);
     UserDAOObject getUserByPassword(String password);
+    UserDAOObject getUserByRecoveryHash(String recoveryHash);
     List<UserDAOObject> getUserByRoleId(long roleId);
     UserDAOObject addUser(UserDAOObject user);
     UserDAOObject updateUser(UserDAOObject user);
