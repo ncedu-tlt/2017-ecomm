@@ -6,38 +6,34 @@
         SHOPPING_CART_ICON: '.jsShoppingCartIcon',
         DIMMER: '.jsDimmerAdd'
     };
-
     var ShoppingCartIconComponent = frm.inheritance.inherits(frm.components.Component, {
         init: function () {
+            var jsDimmer = this.content.find(ELEMENTS.DIMMER);
+            this.dimmerConfig(jsDimmer);
             this.showIconIfNeed();
-            frm.events.on('addToCart', this.ajaxRequest.bind(this));
+            frm.events.on('addToCart', this.sendRequest.bind(this, jsDimmer));
         },
-        showIconIfNeed: function() {
+        showIconIfNeed: function () {
             var cartIcon = this.content.find(ELEMENTS.SHOPPING_CART_ICON);
             if (cartIcon.text().trim() != '0') {
                 cartIcon.removeClass('hidden');
             }
         },
-        ajaxRequest: function (productIdParam) {
-            var jsDimmer = this.dimmerInit();
+        sendRequest: function (jsDimmer, productIdParam) {
             $.ajax({
                 url: this.params.addToCartUrl,
-                beforeSend: this.dimmerToggle(jsDimmer),
                 type: 'POST',
+                beforeSend: this.dimmerToggle(jsDimmer),
                 data: {productId: productIdParam},
-                success: function (result) {
-                    this.displayQuantity(result);
-                    setTimeout(this.dimmerToggle(jsDimmer), 1000);
-                }.bind(this),
-                error: this.errorAction.bind(this)
+                success: this.displayQuantity.bind(this),
+                error: this.redirectToLogin.bind(this),
+                complete: setTimeout(this.dimmerToggle, 1000, jsDimmer)
             });
         },
-        dimmerInit: function () {
-            var jsDimmer = this.content.find(ELEMENTS.DIMMER);
+        dimmerConfig: function (jsDimmer) {
             jsDimmer.dimmer({
                 closable: false
             });
-            return jsDimmer;
         },
         dimmerToggle: function (jsDimmer) {
             if (!jsDimmer.dimmer('is active'))
@@ -48,9 +44,9 @@
         displayQuantity: function (result) {
             var shoppingCartIcon = this.content.find(ELEMENTS.SHOPPING_CART_ICON);
             shoppingCartIcon.text(result);
-            shoppingCartIcon.transition('jiggle');
+            shoppingCartIcon.transition('pulse');
         },
-        errorAction: function () {
+        redirectToLogin: function () {
             window.location.href = this.params.loginUrl;
         }
     });
