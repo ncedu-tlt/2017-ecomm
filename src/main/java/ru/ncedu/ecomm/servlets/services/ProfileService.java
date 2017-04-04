@@ -14,6 +14,15 @@ public class ProfileService {
     private ProfileService() {
     }
 
+    private final static String SUCCESS = "Success";
+    private final static String ERROR_UPDATE = "ErrorUpdate";
+    private final static String ERROR_INPUT_EMAIL = "ErrorInputEmail";
+    private final static String ERROR_DIFFERS_EMAIL = "ErrorDiffersEmail";
+    private final static String ERROR_INPUT_PASSWORD = "ErrorInputPassword";
+    private final static String ERROR_INPUT_PHONE = "ErrorInputPhone";
+    private final static String ERROR_INPUT_FIRST_NAME = "ErrorInputFirstName";
+    private final static String ERROR_INPUT_LAST_NAME = "ErrorInputLastName";
+
     private static ProfileService instance;
 
     public static synchronized ProfileService getInstance() {
@@ -26,26 +35,26 @@ public class ProfileService {
     public String getAnswerAccordingValidation(String resultValidation, UserDAOObject userForChange) {
         String result = null;
         switch (resultValidation) {
-            case "Success":
+            case SUCCESS:
                 result = getResultAfterUpdate(userForChange);
                 break;
-            case "ErrorInputEmail":
-                result = "ErrorInputEmail";
+            case ERROR_INPUT_EMAIL:
+                result = ERROR_INPUT_EMAIL;
                 break;
-            case "ErrorDiffersEmail":
-                result = "ErrorDiffersEmail";
+            case ERROR_DIFFERS_EMAIL:
+                result = ERROR_DIFFERS_EMAIL;
                 break;
-            case "ErrorInputPassword":
-                result = "ErrorInputPassword";
+            case ERROR_INPUT_PASSWORD:
+                result = ERROR_INPUT_PASSWORD;
                 break;
-            case "ErrorInputPhone":
-                result = "ErrorInputPhone";
+            case ERROR_INPUT_PHONE:
+                result = ERROR_INPUT_PHONE;
                 break;
-            case "ErrorInputFirstName":
-                result = "ErrorInputFirstName";
+            case ERROR_INPUT_FIRST_NAME:
+                result = ERROR_INPUT_FIRST_NAME;
                 break;
-            case "ErrorInputLastName":
-                result = "ErrorInputLastName";
+            case ERROR_INPUT_LAST_NAME:
+                result = ERROR_INPUT_LAST_NAME;
                 break;
         }
         return result;
@@ -53,9 +62,9 @@ public class ProfileService {
 
     private String getResultAfterUpdate(UserDAOObject userForChange) {
         if (updateUser(userForChange) != null)
-            return "Success";
+            return SUCCESS;
         else
-            return "ErrorUpdate";
+            return ERROR_UPDATE;
     }
 
     private UserDAOObject updateUser(UserDAOObject userByChange) {
@@ -68,19 +77,19 @@ public class ProfileService {
 
     public String getResultAfterValidation(UserDAOObject userForChange, UserDAOObject userForCompare) {
         if (!isEmailCorrect(userForChange.getEmail()))
-            return "ErrorInputEmail";
+            return ERROR_INPUT_EMAIL;
         if (!isNewEmailDiffers(userForChange.getEmail(), userForCompare.getEmail()))
-            return "ErrorDiffersEmail";
+            return ERROR_DIFFERS_EMAIL;
         if (!isPasswordCorrect(userForChange.getPassword(), userForCompare))
-            return "ErrorInputPassword";
+            return ERROR_INPUT_PASSWORD;
         if (!isPhoneCorrect(userForChange.getPhone()))
-            return "ErrorInputPhone";
+            return ERROR_INPUT_PHONE;
         if (!isFirstNameCorrect(userForChange.getFirstName()))
-            return "ErrorInputFirstName";
+            return ERROR_INPUT_FIRST_NAME;
         if (!isLastNameCorrect(userForChange.getLastName()))
-            return "ErrorInputLastName";
+            return ERROR_INPUT_LAST_NAME;
 
-        return "Success";
+        return SUCCESS;
     }
 
     private boolean isEmailCorrect(String email) {
