@@ -7,6 +7,7 @@ public class UserValidationUtils {
     private static final String CHECK_EMAIL = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
     private static final String CHECK_PASSWORD = "(?=.*[1-9a-zа-яёA-ZА-ЯЁ@$_]).{3,20}";
     private static final String CHECK_NAME = "^[а-яА-ЯёЁa-zA-Z][а-яА-ЯёЁa-zA-Z0-9-_\\.]{1,20}$";
+    private static final String CHECK_PHONE = "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$";
 
     public static boolean checkEmail(String email) {
         Pattern patternEmailValidation = Pattern.compile(CHECK_EMAIL
@@ -25,6 +26,12 @@ public class UserValidationUtils {
     public static boolean checkName(String name) {
         Pattern pattern = Pattern.compile(CHECK_NAME);
         Matcher matcher = pattern.matcher(name);
+        return matcher.matches();
+    }
+
+    public static boolean checkPhone(String phone){
+        Pattern pattern = Pattern.compile(CHECK_PHONE);
+        Matcher matcher = pattern.matcher(phone);
         return matcher.matches();
     }
 }

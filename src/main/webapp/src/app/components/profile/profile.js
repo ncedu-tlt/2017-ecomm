@@ -2,36 +2,38 @@
 
     var frm = window.frm;
 
-    //noinspection JSAnnotator
+    var ELEMENTS = {
+        PROFILE_FORM: '.jsProfileForm',
+        PASSWORD_FIELDS: '.jsPasswordFields',
+        SEND_PROFILE_BTN: '.jsSendFormProfileBtn',
+        PASSWORD_BTN: '.jsPasswordShowBtn',
+        CLOSE_MESSAGE_WITH_ICON: '.jsMessageFromServlet .jsIconCloseMessageFromServlet',
+        CLOSE_MESSAGE: '.jsMessageFromServlet',
+        DIMMER: '.jsDimmerProfile'
+    };
+
+    var TRANSITION = {
+        HIDE: 'hide',
+        FLIP: 'vertical flip',
+        FADE: 'fade',
+        SHOW: 'show'
+    };
+
+    var EVENTS = {
+        CLICK: 'click'
+    };
+
+    var DIMMER = {
+        SHOW: 'show'
+    };
+
+    var CONDITIONS = {
+        IS_VALID: 'is valid'
+    };
+
     var ProfileComponent = frm.inheritance.inherits(frm.components.Component, {
-        showDimmerIfFormValid: function () {
-            var isValid = this.content.find('.jsProfileForm').form('is valid');
-            if (isValid) {
-                var jsDimmer = this.content.find('.jsDimmerProfile');
-                this.dimmerConfig(jsDimmer);
-                jsDimmer.dimmer('show');
-            }
-            else {
-                this.content.find('.jsPasswordField').transition('show');
-            }
-        },
-        dimmerConfig: function (jsDimmer) {
-            jsDimmer.dimmer({
-                closable: false
-            });
-        },
-        showPasswordField: function () {
-            this.content.find('.jsPasswordField')
-                .transition('vertical flip');
-        },
-        showLabels: function () {
-            this.content.find('.jsLabelProfile')
-                .transition('fade up');
-        },
         init: function () {
-            this.content.find('.jsLabelProfile').transition('hide');
-            this.content.find('.jsPasswordField').transition('hide');
-            this.content.find('.jsProfileForm').form({
+            this.content.find(ELEMENTS.PROFILE_FORM).form({
                 inline: true,
                 on: 'blur',
                 fields: {
@@ -65,6 +67,13 @@
                             }
                         ]
                     },
+                    phone: {
+                        identifier: 'phone',
+                        optional: true,
+                        rules: [{
+                            type: 'regExp[/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/]'
+                        }]
+                    },
                     passwordConfirm: {
                         identifier: 'passwordConfirm',
                         depends: 'password',
@@ -82,15 +91,41 @@
                 }
             });
             //listeners
-            this.content.find('.jsSendFormProfileBtn').on('click', this.showDimmerIfFormValid.bind(this));
-            this.content.find('.jsPasswordCall').on('click', this.showPasswordField.bind(this));
-            this.content.find('.jsVisible').on('click', this.showLabels.bind(this));
-            this.content.find('.jsMessageFromServlet .jsCloseMessageFromServlet')
-                .on('click', function () {
-                    $(this)
-                        .closest('.jsMessageFromServlet')
-                        .transition('fade');
-                });
+            this.content.find(ELEMENTS.SEND_PROFILE_BTN)
+                .on(EVENTS.CLICK, this.showDimmerIfFormValid.bind(this));
+
+            this.content.find(ELEMENTS.PASSWORD_BTN)
+                .on(EVENTS.CLICK, this.showPasswordField.bind(this));
+
+            var jsMessage = this.content.find(ELEMENTS.CLOSE_MESSAGE_WITH_ICON);
+            this.content.find(jsMessage)
+                .on(EVENTS.CLICK, this.closeMessage.bind(jsMessage));
+        },
+        showDimmerIfFormValid: function () {
+            var isValid = this.content.find(ELEMENTS.PROFILE_FORM)
+                .form(CONDITIONS.IS_VALID);
+            if (isValid) {
+                var jsDimmer = this.content.find(ELEMENTS.DIMMER);
+                this.dimmerConfig(jsDimmer);
+                jsDimmer.dimmer(DIMMER.SHOW);
+            }
+            else
+                this.content.find(ELEMENTS.PASSWORD_FIELDS)
+                    .transition(TRANSITION.SHOW);
+        },
+        dimmerConfig: function (jsDimmer) {
+            jsDimmer.dimmer({
+                closable: false
+            });
+        },
+        showPasswordField: function () {
+            this.content.find(ELEMENTS.PASSWORD_FIELDS)
+                .transition(TRANSITION.FLIP);
+        },
+        closeMessage: function () {
+            $(this)
+                .closest(ELEMENTS.CLOSE_MESSAGE)
+                .transition(TRANSITION.FADE);
         }
     });
 

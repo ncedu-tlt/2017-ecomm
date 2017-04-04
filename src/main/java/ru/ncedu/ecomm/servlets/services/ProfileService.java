@@ -38,6 +38,9 @@ public class ProfileService {
             case "ErrorInputPassword":
                 result = "ErrorInputPassword";
                 break;
+            case "ErrorInputPhone":
+                result = "ErrorInputPhone";
+                break;
             case "ErrorInputFirstName":
                 result = "ErrorInputFirstName";
                 break;
@@ -66,10 +69,12 @@ public class ProfileService {
     public String getResultAfterValidation(UserDAOObject userForChange, UserDAOObject userForCompare) {
         if (!isEmailCorrect(userForChange.getEmail()))
             return "ErrorInputEmail";
-        if (!isNewEmailDiffers(userForChange.getEmail()))
+        if (!isNewEmailDiffers(userForChange.getEmail(), userForCompare.getEmail()))
             return "ErrorDiffersEmail";
         if (!isPasswordCorrect(userForChange.getPassword(), userForCompare))
             return "ErrorInputPassword";
+        if (!isPhoneCorrect(userForChange.getPhone()))
+            return "ErrorInputPhone";
         if (!isFirstNameCorrect(userForChange.getFirstName()))
             return "ErrorInputFirstName";
         if (!isLastNameCorrect(userForChange.getLastName()))
@@ -86,8 +91,8 @@ public class ProfileService {
         return true;
     }
 
-    private boolean isNewEmailDiffers(String newEmail) {
-        if(!Objects.equals(newEmail, "")) {
+    private boolean isNewEmailDiffers(String newEmail, String oldEmail) {
+        if (!Objects.equals(newEmail, "") && !Objects.equals(newEmail, oldEmail)) {
             UserDAOObject userByEmail = getDAOFactory().getUserDAO().getUserByEmail(newEmail);
             return userByEmail == null;
         }
@@ -97,6 +102,14 @@ public class ProfileService {
     private boolean isPasswordCorrect(String password, UserDAOObject userForCompare) {
         if (!Objects.equals(password, "")) {
             if (!UserValidationUtils.checkPassword(password) && !isNewPasswordDiffers(password, userForCompare))
+                return false;
+        }
+        return true;
+    }
+
+    private boolean isPhoneCorrect(String phone) {
+        if (!Objects.equals(phone, "")) {
+            if (!UserValidationUtils.checkPhone(phone))
                 return false;
         }
         return true;

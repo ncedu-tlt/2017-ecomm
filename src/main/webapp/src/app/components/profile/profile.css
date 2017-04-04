@@ -1,3 +1,7 @@
-.jsPasswordField{
+.jsProfileComponent{
+    margin-top:30px !important;
+}
+
+.jsPasswordFields{
     display: none;
 }

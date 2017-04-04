@@ -27,13 +27,15 @@ public class ProfileServlet extends HttpServlet {
     private static final String AVATAR = "avatar";
     private static final String PASSWORD = "password";
     private static final String ANSWER = "answer";
+    private static final String PROFILE_REDIRECT = Configuration.getProperty("page.profile");
+    private static final String LOGIN_REDIRECT = Configuration.getProperty("page.login");
 
 
     //show profile
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         showProfile(req, resp);
-        req.getRequestDispatcher(Configuration.getProperty("page.profile")).forward(req, resp);
+        req.getRequestDispatcher(PROFILE_REDIRECT).forward(req, resp);
     }
 
     private void showProfile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -44,7 +46,7 @@ public class ProfileServlet extends HttpServlet {
     private void redirectIfUserNotAuthorized(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Boolean isUserAuthorized = UserService.getInstance().isUserAuthorized(req);
         if (!isUserAuthorized) {
-            req.getRequestDispatcher(Configuration.getProperty("page.login")).forward(req, resp);
+            req.getRequestDispatcher(LOGIN_REDIRECT).forward(req, resp);
         }
     }
 
@@ -97,6 +99,7 @@ public class ProfileServlet extends HttpServlet {
         userForChange.setFirstName(req.getParameter(FIRST_NAME));
         userForChange.setLastName(req.getParameter(LAST_NAME));
         userForChange.setEmail(req.getParameter(EMAIL));
+        userForChange.setPhone(req.getParameter(PHONE));
         userForChange.setPassword(req.getParameter(PASSWORD));
 
         return userForChange;
@@ -112,7 +115,6 @@ public class ProfileServlet extends HttpServlet {
      */
     private UserDAOObject fillingNonEmptyFields(UserDAOObject userForChange, UserDAOObject userForCompare) {
         userForChange.setId(userForCompare.getId());
-        userForChange.setPhone(userForCompare.getPhone());
         userForChange.setRegistrationDate(userForCompare.getRegistrationDate());
         return userForChange;
     }
