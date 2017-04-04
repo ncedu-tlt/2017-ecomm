@@ -14,8 +14,6 @@
   ],
   "dependencies": {
     "jquery": "^3.1.1",
-    "semantic": "semantic-ui#^2.2.6",
-    "angular": "^1.6.2",
-    "angular-component-router": "^0.2.1"
+    "semantic": "semantic-ui#^2.2.6"
   }
 }

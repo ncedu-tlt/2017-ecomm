@@ -1,9 +1,9 @@
 module.exports = {
     entry: {
-        app: './src/management-v2/index.ts'
+        app: './src/management/index.ts'
     },
     output: {
-        filename: './dist/management-v2/js/[name].js'
+        filename: './dist/management/js/[name].js'
     },
     module: {
         loaders: [

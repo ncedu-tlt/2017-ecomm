@@ -26,16 +26,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>management-v2</servlet-name>
-        <jsp-file>/management-v2.jsp</jsp-file>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>management-v2</servlet-name>
-        <url-pattern>/management-v2</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>jersey-servlet</servlet-name>
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>

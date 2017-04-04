@@ -8,10 +8,11 @@
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "lib": [ "es2015", "dom" ]
   },
   "include": [
-    "src/management-v2/**/*.ts"
+    "src/management/**/*.ts"
   ],
   "exclude": [
     "node_modules"
