@@ -9,10 +9,10 @@ var webpack = require('webpack');
 var webpackConfig = require('./webpack.config');
 
 //--------------------------------------------------
-//--------------- Shop Tasks - Start ---------------
+//-------------- Vendor Tasks - Start --------------
 //--------------------------------------------------
 
-gulp.task('shop-js-libs', function () {
+gulp.task('vendor-js', function () {
     var files = [
         './bower_components/jquery/dist/jquery.min.js',
         './bower_components/semantic/dist/semantic.js'
@@ -22,8 +22,42 @@ gulp.task('shop-js-libs', function () {
         .pipe(uglify())
         .pipe(concat('vendor.js'))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('./dist/shop/js'));
+        .pipe(gulp.dest('./dist/vendor'));
 });
+
+gulp.task('vendor-themes', function () {
+    var files = [
+        './bower_components/semantic/dist/themes/default/**/*'
+    ];
+    return gulp.src(files)
+        .pipe(gulp.dest('./dist/vendor/themes/default'));
+});
+
+gulp.task('vendor-css', ['vendor-themes'], function () {
+    var files = [
+        './bower_components/semantic/dist/semantic.css'
+    ];
+    return gulp.src(files)
+        .pipe(sourcemaps.init())
+        .pipe(concat('vendor.css'))
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('./dist/vendor'));
+});
+
+gulp.task('build-vendor', [
+    'vendor-js',
+    'vendor-css'
+]);
+
+//--------------------------------------------------
+//--------------- Vendor Tasks - End ---------------
+//--------------------------------------------------
+
+
+
+//--------------------------------------------------
+//--------------- Shop Tasks - Start ---------------
+//--------------------------------------------------
 
 gulp.task('shop-js-framework', function () {
     var files = [
@@ -49,24 +83,6 @@ gulp.task('shop-js', function () {
         .pipe(gulp.dest('./dist/shop/js'));
 });
 
-gulp.task('shop-copy-themes', function () {
-    var files = [
-        './bower_components/semantic/dist/themes/default/**/*'
-    ];
-    return gulp.src(files)
-        .pipe(gulp.dest('./dist/shop/css/themes/default'));
-});
-
-gulp.task('shop-css-libs', ['shop-copy-themes'], function () {
-    var files = [
-        './bower_components/semantic/dist/semantic.css'
-    ];
-    return gulp.src(files)
-        .pipe(sourcemaps.init())
-        .pipe(concat('vendor.css'))
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('./dist/shop/css'));
-});
 
 gulp.task('shop-css', function () {
     var files = [
@@ -81,10 +97,8 @@ gulp.task('shop-css', function () {
 });
 
 gulp.task('build-shop', [
-    'shop-js-libs',
     'shop-js-framework',
     'shop-js',
-    'shop-css-libs',
     'shop-css'
 ]);
 
@@ -113,6 +127,7 @@ gulp.task('build-management', function(callback) {
 //--------------------------------------------------
 
 gulp.task('build', [
+    'build-vendor',
     'build-shop',
     'build-management'
 ]);

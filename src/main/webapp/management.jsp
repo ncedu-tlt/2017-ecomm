@@ -6,6 +6,8 @@
     <title>Management</title>
     <script>var contextPath = '${pageContext.request.contextPath}'</script>
     <base href="${pageContext.request.contextPath}/management"/>
+    <link rel="stylesheet" href="./dist/vendor/vendor.css" type="text/css"/>
+    <script src="./dist/vendor/vendor.js" type="text/javascript"></script>
     <script src="./dist/management/js/app.js" defer></script>
 </head>
 <body>
