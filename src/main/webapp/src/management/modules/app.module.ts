@@ -3,6 +3,7 @@ import {NgModule} from "@angular/core";
 import {FormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {NgSemanticModule} from "ng-semantic";
+import {TreeModule} from "angular-tree-component";
 
 import {RoutingModule} from "./routing.module";
 
@@ -27,7 +28,8 @@ import {UsersService} from "../services/users.service";
         FormsModule,
         HttpModule,
         RoutingModule,
-        NgSemanticModule
+        NgSemanticModule,
+        TreeModule
     ],
     providers: [
         UsersService
