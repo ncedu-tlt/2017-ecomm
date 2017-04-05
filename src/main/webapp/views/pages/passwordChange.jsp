@@ -19,7 +19,7 @@
     <c:import url="../fragments/head.jsp"/>
 </head>
 <body>
-<div class="jsIndexMainWrapper">
+<div class="jsMainWrapper">
     <c:import url="../fragments/topPanel.jsp"/>
 
     <c:import url="../components/passwordChange.jsp"/>

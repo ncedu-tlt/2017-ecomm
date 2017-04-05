@@ -22,7 +22,7 @@
     <c:import url="../fragments/head.jsp"/>
 </head>
 <body>
-<div class="jsIndexMainWrapper">
+<div class="jsMainWrapper">
     <div class="pusher">
         <c:import url="../fragments/topPanel.jsp"/>
 

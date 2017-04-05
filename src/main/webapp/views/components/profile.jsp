@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div class="ui two column centered grid jsProfileComponent main-content">
+<div class="ui two column centered grid jsProfileComponent">
     <div class="column">
         <div class="ui grid">
             <div class="four wide column">

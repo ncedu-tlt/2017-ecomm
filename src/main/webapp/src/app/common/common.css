@@ -1,6 +1,5 @@
 .main-content{
-    heigth:80%;
-    padding-bottom:130px;
+    min-height:81% !important;
 }
 
 html, body{
@@ -9,6 +8,5 @@ html, body{
     height:100%;
 }
 .jsMainWrapper{
-    min-height:100%;
-    position:relative;
+    height:100%;
 }
