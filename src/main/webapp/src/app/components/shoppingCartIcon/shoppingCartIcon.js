@@ -22,12 +22,11 @@
         TRANSITION_PULSE: 'pulse',
         HIDDEN_CLASS: 'hidden'
     };
-
+    var jsDimmer;
     var ShoppingCartIconComponent = frm.inheritance.inherits(frm.components.Component, {
         init: function () {
-            var jsDimmer = this.content.find(ELEMENTS.DIMMER);
-            this.dimmerConfig(jsDimmer);
-            frm.events.on(EVENTS.ADD_TO_CART, this.sendRequest.bind(this, jsDimmer));
+            this.initDimer();
+            frm.events.on(EVENTS.ADD_TO_CART, this.sendRequest.bind(this));
         },
         showIconIfNeed: function () {
             var cartIcon = this.content.find(ELEMENTS.SHOPPING_CART_ICON);
@@ -35,23 +34,25 @@
                 cartIcon.removeClass(DISPLAY.HIDDEN_CLASS);
             }
         },
-        sendRequest: function (jsDimmer, productIdParam) {
+        sendRequest: function (productIdParam) {
             $.ajax({
                 url: this.params.addToCartUrl,
                 type: 'POST',
-                beforeSend: this.dimmerToggle(jsDimmer),
+                beforeSend: this.dimmerToggle,
                 data: {productId: productIdParam},
                 success: this.displayQuantity.bind(this),
                 error: this.redirectToLogin.bind(this),
-                complete: setTimeout(this.dimmerToggle, 1000, jsDimmer)
+                complete: setTimeout(this.dimmerToggle, 1000)
             });
         },
-        dimmerConfig: function (jsDimmer) {
-            jsDimmer.dimmer({
+        initDimer: function () {
+            var dimmer = this.content.find(ELEMENTS.DIMMER);
+            dimmer.dimmer({
                 closable: false
             });
+            jsDimmer = dimmer;
         },
-        dimmerToggle: function (jsDimmer) {
+        dimmerToggle: function () {
             if (!jsDimmer.dimmer(CONDITIONS.IS_ACTIVE))
                 jsDimmer.dimmer(DISPLAY.SHOW);
             else
