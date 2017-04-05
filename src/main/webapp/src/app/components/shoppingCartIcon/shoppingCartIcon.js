@@ -6,17 +6,33 @@
         SHOPPING_CART_ICON: '.jsShoppingCartIcon',
         DIMMER: '.jsDimmerAdd'
     };
+
+    var EVENTS = {
+        ADD_TO_CART: 'addToCart'
+    };
+
+    var CONDITIONS = {
+        IS_ACTIVE: 'is active',
+        EMPTY_QUANTITY: '0'
+    };
+
+    var DISPLAY = {
+        SHOW: 'show',
+        HIDE: 'hide',
+        TRANSITION_PULSE: 'pulse',
+        HIDDEN_CLASS: 'hidden'
+    };
+
     var ShoppingCartIconComponent = frm.inheritance.inherits(frm.components.Component, {
         init: function () {
             var jsDimmer = this.content.find(ELEMENTS.DIMMER);
             this.dimmerConfig(jsDimmer);
-            this.showIconIfNeed();
-            frm.events.on('addToCart', this.sendRequest.bind(this, jsDimmer));
+            frm.events.on(EVENTS.ADD_TO_CART, this.sendRequest.bind(this, jsDimmer));
         },
         showIconIfNeed: function () {
             var cartIcon = this.content.find(ELEMENTS.SHOPPING_CART_ICON);
-            if (cartIcon.text().trim() != '0') {
-                cartIcon.removeClass('hidden');
+            if (cartIcon.text().trim() != CONDITIONS.EMPTY_QUANTITY) {
+                cartIcon.removeClass(DISPLAY.HIDDEN_CLASS);
             }
         },
         sendRequest: function (jsDimmer, productIdParam) {
@@ -36,15 +52,16 @@
             });
         },
         dimmerToggle: function (jsDimmer) {
-            if (!jsDimmer.dimmer('is active'))
-                jsDimmer.dimmer('show');
+            if (!jsDimmer.dimmer(CONDITIONS.IS_ACTIVE))
+                jsDimmer.dimmer(DISPLAY.SHOW);
             else
-                jsDimmer.dimmer('hide');
+                jsDimmer.dimmer(DISPLAY.HIDE);
         },
         displayQuantity: function (result) {
             var shoppingCartIcon = this.content.find(ELEMENTS.SHOPPING_CART_ICON);
             shoppingCartIcon.text(result);
-            shoppingCartIcon.transition('pulse');
+            this.showIconIfNeed();
+            shoppingCartIcon.transition(DISPLAY.TRANSITION_PULSE);
         },
         redirectToLogin: function () {
             window.location.href = this.params.loginUrl;

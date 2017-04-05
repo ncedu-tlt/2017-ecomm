@@ -5,7 +5,8 @@
 <div class="ui item jsShoppingCartIconComponent jsShoppingCartComponent" id="shoppingCartTopPanel">
     <a href="${pageContext.request.contextPath}/cart" class="circular ui icon button">
         <i class="icon shop"></i>
-        <div class="floating ui circular teal label jsShoppingCartIcon hidden">
+        <c:set var="quantity" scope="session" value="${requestScope.quantityProducts}"/>
+        <div class="floating ui circular teal label jsShoppingCartIcon ${quantity == 0 ? 'hidden': ''}">
             ${requestScope.quantityProducts}
         </div>
     </a>

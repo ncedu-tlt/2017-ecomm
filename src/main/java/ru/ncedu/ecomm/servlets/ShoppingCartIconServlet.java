@@ -21,7 +21,7 @@ public class ShoppingCartIconServlet extends HttpServlet {
     private static final String LOGIN_URL = "loginURL";
     private static final String ADD_TO_CART_SERVLET = Configuration.getProperty("servlet.addToShoppingCart");
     private static final String LOGIN_SERVLET = Configuration.getProperty("servlet.login");
-
+    private static final int EMPTY_QUANTITY = 0;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -48,16 +48,14 @@ public class ShoppingCartIconServlet extends HttpServlet {
             showQuantityIfNeed(userId, req);
         }
         else {
-            long emptyQuantity = 0;
-            setAttributesToRequest(req, emptyQuantity);
+            setAttributesToRequest(req, EMPTY_QUANTITY);
         }
     }
 
     private void showQuantityIfNeed(Long userId, HttpServletRequest req) throws SQLException {
         Long quantityProducts = getQuantityProducts(userId);
         if (quantityProducts == null) {
-            long emptyQuantity = 0;
-            setAttributesToRequest(req, emptyQuantity);
+            setAttributesToRequest(req, EMPTY_QUANTITY);
         } else {
             setAttributesToRequest(req, quantityProducts);
         }

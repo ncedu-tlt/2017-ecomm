@@ -26,6 +26,8 @@ public class ShoppingCartService {
     private ShoppingCartService() {
     }
 
+    private final static int MIN_QUANTITY = 1;
+
     private static ShoppingCartService instance;
 
     public static synchronized ShoppingCartService getInstance() {
@@ -95,8 +97,7 @@ public class ShoppingCartService {
             addNewOrderItem(productId, salesOrderId);
         } else {
             try {
-                int INPUT_QUANTITY_CHANGE = 1;
-                changeQuantityOrderItem(orderItemBySalesOrderId, INPUT_QUANTITY_CHANGE, true);
+                changeQuantityOrderItem(orderItemBySalesOrderId, MIN_QUANTITY, true);
             } catch (NullPointerException e) {
                 throw new RuntimeException(e);
             }
@@ -178,12 +179,10 @@ public class ShoppingCartService {
     }
 
     private OrderItemDAOObject addToOrderItem(long productId, long salesOrderId) throws SQLException {
-        int minQuantity = 1;
-
         OrderItemDAOObject orderItem = new OrderItemDAOObject();
         orderItem.setProductId(productId);
         orderItem.setSalesOrderId(salesOrderId);
-        orderItem.setQuantity(minQuantity);
+        orderItem.setQuantity(MIN_QUANTITY);
         orderItem.setStandardPrice(getPrice(productId));
 
         return orderItem;
