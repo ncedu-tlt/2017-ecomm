@@ -32,42 +32,28 @@ public class PasswordRecoveryServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        sendLetterToEmail(req, resp);
+        if (UserValidationUtils.checkEmail(req.getParameter(EMAIL)))
+            sendLetterToEmail(req, resp);
+        else {
+            req.setAttribute(ANSWER, ERROR_INPUT_EMAIL);
+            req.getRequestDispatcher(RECOVERY_REDIRECT).forward(req, resp);
+        }
     }
 
     private void sendLetterToEmail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String toEmail = req.getParameter(EMAIL);
-        if (!UserValidationUtils.checkEmail(toEmail)) {
-            actionOnErrorCheckEmail(req, resp);
-        }
-        else{
-            actionAfterSendingMail(req, resp, toEmail);
-        }
-    }
-
-    private void actionOnErrorCheckEmail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute(ANSWER, ERROR_INPUT_EMAIL);
-        req.getRequestDispatcher(RECOVERY_REDIRECT).forward(req, resp);
-    }
-
-    private void actionAfterSendingMail(HttpServletRequest req, HttpServletResponse resp, String toEmail) throws ServletException, IOException {
-        UserDAOObject userByEmail = getDAOFactory().getUserDAO().getUserByEmail(toEmail);
-        if(userByEmail == null)
-            actionOnErrorInputEmail(req, resp);
-        else {
-            actionForSendingLetterToEmail(req, resp, userByEmail);
+        UserDAOObject userByEmail = getDAOFactory().getUserDAO().getUserByEmail(req.getParameter(EMAIL));
+        if (userByEmail == null) {
+            req.setAttribute(ANSWER, ERROR_EMAIL_FOUND);
+            req.getRequestDispatcher(RECOVERY_REDIRECT).forward(req, resp);
+        } else {
+            outputSuccessSendMail(req, resp, userByEmail);
         }
     }
 
-    private void actionOnErrorInputEmail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute(ANSWER, ERROR_EMAIL_FOUND);
-        req.getRequestDispatcher(RECOVERY_REDIRECT).forward(req, resp);
-    }
-
-    private void actionForSendingLetterToEmail(HttpServletRequest req, HttpServletResponse resp, UserDAOObject userByEmail) throws ServletException, IOException {
-        String contextPath = req.getServerName();
-        String answerFromMailService = PasswordRecoveryService.getInstance().getAnswer(userByEmail.getEmail(), contextPath);
-        req.setAttribute(ANSWER, answerFromMailService);
+    private void outputSuccessSendMail(HttpServletRequest req, HttpServletResponse resp, UserDAOObject userByEmail) throws ServletException, IOException {
+        String resultSendMailToUser = PasswordRecoveryService.getInstance()
+                .sendMailToUser(userByEmail.getEmail(), req.getContextPath());
+        req.setAttribute(ANSWER, resultSendMailToUser);
         req.getRequestDispatcher(RECOVERY_REDIRECT).forward(req, resp);
     }
 }

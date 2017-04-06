@@ -7,21 +7,26 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-public class SendingMailService {
-    private final Properties SERVER_PROPERTIES = configServerForSend();
+public class SendMailService {
 
-    private SendingMailService(){
+    private final Properties SERVER_PROPERTIES = configServer();
+    private final static String MAIL_USERNAME = Configuration.getProperty("mail.username");
+    private final static String MAIL_PASSWORD = Configuration.getProperty("mail.password");
+    private final static String SUBJECT_LETTER = "Password Recovery";
+    private final static String MAIL_TYPE = "text/html; charset=utf-8";
+
+    private SendMailService(){
     }
 
-    private static SendingMailService instance;
-    public static synchronized SendingMailService getInstance(){
+    private static SendMailService instance;
+    public static synchronized SendMailService getInstance(){
         if(instance == null){
-            instance = new SendingMailService();
+            instance = new SendMailService();
         }
         return instance;
     }
 
-    private Properties configServerForSend() {
+    private Properties configServer() {
         Properties serverProperties = System.getProperties();
         serverProperties.setProperty("mail.smtp.auth", "true");
         serverProperties.setProperty("mail.smtp.starttls.enable", "true");
@@ -38,12 +43,11 @@ public class SendingMailService {
     }
 
     private boolean setMimeMessage(MimeMessage message, String toEmail, String textHtml) {
-        String subjectLetter = "Password Recovery";
         try{
-            message.setFrom(new InternetAddress(Configuration.getProperty("mail.username")));
+            message.setFrom(new InternetAddress(MAIL_USERNAME));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
-            message.setSubject(subjectLetter);
-            message.setContent(textHtml, "text/html; charset=utf-8");
+            message.setSubject(SUBJECT_LETTER);
+            message.setContent(textHtml, MAIL_TYPE);
             return true;
         } catch (MessagingException e) {
             return false;
@@ -60,12 +64,10 @@ public class SendingMailService {
     }
 
     private Session getSession() {
-        String username = Configuration.getProperty("mail.username");
-        String password = Configuration.getProperty("mail.password");
         return Session.getDefaultInstance(SERVER_PROPERTIES, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
+                return new PasswordAuthentication(MAIL_USERNAME, MAIL_PASSWORD);
             }
         });
     }

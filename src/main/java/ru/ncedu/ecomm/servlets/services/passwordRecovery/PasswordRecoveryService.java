@@ -10,6 +10,12 @@ import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 public class PasswordRecoveryService {
 
+    private final static String ERROR_FOUND_EMAIL = "ErrorEmailNotFound";
+    private final static String SUCCESS_SEND = "SuccessSend";
+    private final static String ERROR_SEND = "ErrorSend";
+    private final static int MAX_HASH = 10;
+    private final static int MAX_NUMBER = 9;
+
     private PasswordRecoveryService() {
     }
 
@@ -22,28 +28,22 @@ public class PasswordRecoveryService {
         return instance;
     }
 
-    public String getAnswer(String toEmail, String contextPath) {
+    public String sendMailToUser(String toEmail, String contextPath) {
         UserDAOObject userByEmail = getDAOFactory().getUserDAO().getUserByEmail(toEmail);
         if (userByEmail == null)
-            return "ErrorEmailNotFound";
-        sendingLetterToEmail(userByEmail);
+            return ERROR_FOUND_EMAIL;
+        userByEmail.setRecoveryHash(getRecoveryHash());
         return sendMailToUser(userByEmail, contextPath);
     }
 
-    private void sendingLetterToEmail(UserDAOObject userByEmail) {
-        String recoveryHash = getRecoveryHashAfterChecking();
-        userByEmail.setRecoveryHash(recoveryHash);
-    }
 
-    private String getRecoveryHashAfterChecking() {
-        String recoveryHash = generateRecoveryHash();
-        UserDAOObject userByHash = getDAOFactory().getUserDAO()
-                .getUserByRecoveryHash(recoveryHash);
-        while(userByHash != null){
+    private String getRecoveryHash() {
+        String recoveryHash;
+        UserDAOObject userByHash;
+        do {
             recoveryHash = generateRecoveryHash();
-            userByHash = getDAOFactory().getUserDAO()
-                    .getUserByRecoveryHash(recoveryHash);
-        }
+            userByHash = getDAOFactory().getUserDAO().getUserByRecoveryHash(recoveryHash);
+        } while (userByHash != null);
         return recoveryHash;
     }
 
@@ -54,8 +54,6 @@ public class PasswordRecoveryService {
     }
 
     private void addHashToCollection(List<Integer> uniqueHash) {
-        final int MAX_HASH = 10;
-        final int MAX_NUMBER = 9;
         Random random = new Random();
         while (uniqueHash.size() < MAX_HASH) {
             uniqueHash.add(random.nextInt(MAX_NUMBER));
@@ -63,9 +61,8 @@ public class PasswordRecoveryService {
     }
 
     private String getHashFromCollection(List<Integer> uniqueHashCollection) {
-        StringBuilder recoveryHash = new StringBuilder();
-        recoveryHash.append("");
-        for (Integer hash : uniqueHashCollection) {
+        StringBuilder recoveryHash = new StringBuilder(MAX_HASH);
+        for (int hash : uniqueHashCollection) {
             recoveryHash.append(hash);
         }
         return recoveryHash.toString();
@@ -73,15 +70,10 @@ public class PasswordRecoveryService {
 
     private String sendMailToUser(UserDAOObject user, String contextPath) {
         String textHTML = getTextHtml(user.getEmail(), user.getRecoveryHash(), contextPath);
-        PasswordRecoveryService.getInstance().addRecoveryHashToUser(user, user.getRecoveryHash());
-        return SendingMailService.getInstance().isSentLetterToEmail(user.getEmail(), textHTML) ?
-                "SuccessSend"
-                : "ErrorSend";
-    }
-
-    private void addRecoveryHashToUser(UserDAOObject user, String recoveryHash) {
-        user.setRecoveryHash(recoveryHash);
         getDAOFactory().getUserDAO().updateUser(user);
+        return SendMailService.getInstance().isSentLetterToEmail(user.getEmail(), textHTML) ?
+                SUCCESS_SEND
+                : ERROR_SEND;
     }
 
     private String getTextHtml(String toEmail, String recoveryHash, String contextPath) {
