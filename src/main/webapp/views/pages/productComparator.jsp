@@ -22,7 +22,7 @@
 <div class="jsMainWrapper">
     <c:import url="../fragments/topPanel.jsp"/>
 
-    <c:import url="../components/compare.jsp"/>
+    <c:import url="../components/productComparator.jsp"/>
 
     <c:import url="../components/companyInfo.jsp"/>
 </div>

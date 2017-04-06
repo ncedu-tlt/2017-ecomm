@@ -15,7 +15,7 @@
         <div class="ui item right">
             <c:import url="../components/search.jsp"/>
             <c:import url="../components/profileIcon.jsp"/>
-            <c:import url="../components/compareIcon.jsp"/>
+            <c:import url="../components/productComparatorIcon.jsp"/>
             <c:import url="../components/shoppingCartIcon.jsp"/>
             <c:import url="../components/logoutIcon.jsp"/>
         </div>

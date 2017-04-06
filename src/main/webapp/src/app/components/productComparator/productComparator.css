@@ -1,0 +1,10 @@
+.ui.column.centered.grid.massive.rating.centered-rating {
+    text-align: center;
+}
+.centered-button {
+    text-align: center;
+}
+.ui.grid.centered.container.gap {
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+}
