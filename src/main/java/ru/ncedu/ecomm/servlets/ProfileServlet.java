@@ -2,7 +2,6 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.models.UserDAOObject;
-import ru.ncedu.ecomm.servlets.models.EnumRoles;
 import ru.ncedu.ecomm.servlets.services.ProfileService;
 import ru.ncedu.ecomm.servlets.services.UserService;
 import ru.ncedu.ecomm.utils.EncryptionUtils;
@@ -26,10 +25,12 @@ public class ProfileServlet extends HttpServlet {
     private static final String PHONE = "phone";
     private static final String AVATAR = "avatar";
     private static final String PASSWORD = "password";
+    private static final String OLD_PASSWORD = "oldPassword";
     private static final String ANSWER = "answer";
+    private static final String SUCCESS = "Success";
     private static final String PROFILE_REDIRECT = Configuration.getProperty("page.profile");
     private static final String LOGIN_REDIRECT = Configuration.getProperty("page.login");
-
+    private static final String ERROR_INPUT_OLD_PASSWORD = "ErrorInputOldPassword";
 
     //show profile
     @Override
@@ -61,53 +62,66 @@ public class ProfileServlet extends HttpServlet {
         req.setAttribute(LAST_NAME, userProfile.getLastName());
         req.setAttribute(EMAIL, userProfile.getEmail());
         req.setAttribute(PHONE, userProfile.getPhone());
-        req.setAttribute(AVATAR, userProfile.getUserAvatar());
+        req.setAttribute(AVATAR, req.getContextPath() + userProfile.getUserAvatar());
     }
 
     //profile change
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserDAOObject userForCompare = getUserForCompare(req);
-        UserDAOObject userForChange = initUserForChangeFromRequest(req);
-        String answer = getAnswerFromProfileService(userForChange, userForCompare);
-        req.setAttribute(ANSWER, answer);
-        this.doGet(req, resp);
+        UserDAOObject userForChange = getUserFromRequest(req, userForCompare);
+        if (userForChange == null) {
+            req.setAttribute(ANSWER, ERROR_INPUT_OLD_PASSWORD);
+            this.doGet(req, resp);
+        } else {
+            String validationMessage = getValidationMessage(userForChange, userForCompare);
+            req.setAttribute(ANSWER, validationMessage);
+            this.doGet(req, resp);
+        }
     }
 
     private UserDAOObject getUserForCompare(HttpServletRequest req) throws ServletException, IOException {
         long userId = UserService.getInstance().getCurrentUserId(req);
-        return  getDAOFactory().getUserDAO().getUserById(userId);
+        return getDAOFactory().getUserDAO().getUserById(userId);
     }
 
-    private UserDAOObject initUserForChangeFromRequest(HttpServletRequest req) {
+
+    private UserDAOObject getUserFromRequest(HttpServletRequest req, UserDAOObject oldUser) {
         UserDAOObject userForChange = new UserDAOObject();
-        userForChange = getUserFromRequest(userForChange, req);
 
-        return userForChange;
-    }
-
-    private String getAnswerFromProfileService(UserDAOObject userForChange, UserDAOObject userForCompare) throws ServletException, IOException {
-        String resultValidation = getResultValidation(userForChange, userForCompare);
-        userForChange = getUserWithoutEmptyEmail(userForChange, userForCompare);
-        userForChange = getUserWithCorrectPassword(userForChange, userForCompare);
-        return ProfileService.getInstance().getAnswerAccordingValidation(resultValidation, userForChange);
-    }
-
-    private UserDAOObject getUserFromRequest(UserDAOObject userForChange, HttpServletRequest req) {
-        userForChange.setRoleId(EnumRoles.USER.getRole());
+        userForChange.setRoleId(oldUser.getRoleId());
         userForChange.setFirstName(req.getParameter(FIRST_NAME));
         userForChange.setLastName(req.getParameter(LAST_NAME));
         userForChange.setEmail(req.getParameter(EMAIL));
         userForChange.setPhone(req.getParameter(PHONE));
-        userForChange.setPassword(req.getParameter(PASSWORD));
-
+        if (isPasswordChecked(req, oldUser))
+            userForChange.setPassword(req.getParameter(PASSWORD));
+        else
+            return null;
         return userForChange;
+    }
+
+    private boolean isPasswordChecked(HttpServletRequest req, UserDAOObject oldUser) {
+        if(!Objects.equals(req.getParameter(PASSWORD), "")) {
+            String enteredPasswordHash = EncryptionUtils.getMd5Digest(req.getParameter(OLD_PASSWORD));
+            return Objects.equals(enteredPasswordHash, oldUser.getPassword());
+        }
+        return true;
+    }
+
+    private String getValidationMessage(UserDAOObject userForChange, UserDAOObject userForCompare) throws ServletException, IOException {
+        String resultValidation = getResultValidation(userForChange, userForCompare);
+        if (Objects.equals(resultValidation, SUCCESS)) {
+            userForChange = setEmailFieldEmpty(userForChange, userForCompare);
+            userForChange = setCorrectPassword(userForChange, userForCompare);
+            return ProfileService.getInstance().getAnswerAccordingValidation(resultValidation, userForChange);
+        } else
+            return resultValidation;
     }
 
     private String getResultValidation(UserDAOObject userForChange, UserDAOObject userForCompare) throws ServletException, IOException {
         userForChange = fillingNonEmptyFields(userForChange, userForCompare);
-        return ProfileService.getInstance().getResultAfterValidation(userForChange, userForCompare);
+        return ProfileService.getInstance().getResultValidation(userForChange, userForCompare);
     }
 
     /**
@@ -119,18 +133,17 @@ public class ProfileServlet extends HttpServlet {
         return userForChange;
     }
 
-    private UserDAOObject getUserWithoutEmptyEmail(UserDAOObject userForChange, UserDAOObject userForCompare) {
-        if(Objects.equals(userForChange.getEmail(), "")){
+    private UserDAOObject setEmailFieldEmpty(UserDAOObject userForChange, UserDAOObject userForCompare) {
+        if (Objects.equals(userForChange.getEmail(), "")) {
             userForChange.setEmail(userForCompare.getEmail());
         }
         return userForChange;
     }
 
-    private UserDAOObject getUserWithCorrectPassword(UserDAOObject userForChange, UserDAOObject userForCompare){
-        if(Objects.equals(userForChange.getPassword(), "")){
+    private UserDAOObject setCorrectPassword(UserDAOObject userForChange, UserDAOObject userForCompare) {
+        if (Objects.equals(userForChange.getPassword(), ""))
             userForChange.setPassword(userForCompare.getPassword());
-        }
-        else{
+        else {
             String passwordWithoutHash = userForChange.getPassword();
             userForChange.setPassword(EncryptionUtils.getMd5Digest(passwordWithoutHash));
         }

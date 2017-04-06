@@ -26,19 +26,6 @@ public class ProfileIconServlet extends HttpServlet {
         }
     }
 
-    private void showProfileIcon(HttpServletRequest req) throws ServletException, IOException {
-        long userId = UserService.getInstance().getCurrentUserId(req);
-        UserDAOObject userById = getDAOFactory().getUserDAO().getUserById(userId);
-        passDataToProfileIcon(userById, req);
-    }
-
-    private void passDataToProfileIcon(UserDAOObject userById, HttpServletRequest req) {
-        String email = userById.getEmail();
-        String avatarPath = userById.getUserAvatar();
-        req.setAttribute(EMAIL, email);
-        req.setAttribute(AVATAR_PATH, avatarPath);
-    }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
@@ -46,5 +33,17 @@ public class ProfileIconServlet extends HttpServlet {
         } catch (ServletException | IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void showProfileIcon(HttpServletRequest req) throws ServletException, IOException {
+        long userId = UserService.getInstance().getCurrentUserId(req);
+        UserDAOObject userById = getDAOFactory().getUserDAO().getUserById(userId);
+        transferDataToProfileIcon(userById, req);
+    }
+
+    private void transferDataToProfileIcon(UserDAOObject userById, HttpServletRequest req) {
+        String avatarPath = req.getContextPath()+userById.getUserAvatar();
+        req.setAttribute(EMAIL, userById.getEmail());
+        req.setAttribute(AVATAR_PATH, avatarPath);
     }
 }

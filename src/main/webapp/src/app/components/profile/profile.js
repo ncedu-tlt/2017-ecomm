@@ -59,7 +59,6 @@
                     },
                     email: {
                         identifier: 'email',
-                        optional: true,
                         rules: [
                             {
                                 type: 'email',
@@ -85,6 +84,16 @@
                             {
                                 type: 'match[password]',
                                 prompt: 'Mismatched password'
+                            }
+                        ]
+                    },
+                    passwordOld: {
+                        identifier: 'oldPassword',
+                        depends: 'passwordConfirm',
+                        rules: [
+                            {
+                                type: 'length[4]',
+                                prompt: 'Please enter your old password'
                             }
                         ]
                     }

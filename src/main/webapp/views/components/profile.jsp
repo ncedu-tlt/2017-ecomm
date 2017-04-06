@@ -66,6 +66,11 @@
                             <input type="password" name="passwordConfirm" placeholder="Current Password"
                                    id="passwordConfirm" class="jsPasswordConfirm jsProfileTextParam">
                         </div>
+                        <div class="field jsPasswordFields">
+                            <label for="passwordConfirm">Old password:</label>
+                            <input type="password" name="oldPassword" placeholder="Old Password"
+                                   id="oldPassword" class="jsOldPassword jsProfileTextParam">
+                        </div>
                         <button class="ui primary button jsSendFormProfileBtn">
                             <div class="content">Save</div>
                         </button>
@@ -154,6 +159,15 @@
                                         Profile change error!
                                     </div>
                                     <p>Please try again later.</p>
+                                </div>
+                            </c:when>
+                            <c:when test='${answer == "ErrorInputOldPassword"}'>
+                                <div class="ui negative message jsMessageFromServlet">
+                                    <i class="close icon jsIconCloseMessageFromServlet"></i>
+                                    <div class="header">
+                                        Error entering old password!
+                                    </div>
+                                    <p>Please enter a valid password.</p>
                                 </div>
                             </c:when>
                         </c:choose>

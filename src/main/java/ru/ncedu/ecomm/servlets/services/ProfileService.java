@@ -36,7 +36,7 @@ public class ProfileService {
         String result = null;
         switch (resultValidation) {
             case SUCCESS:
-                result = getResultAfterUpdate(userForChange);
+                result = getResultUpdate(userForChange);
                 break;
             case ERROR_INPUT_EMAIL:
                 result = ERROR_INPUT_EMAIL;
@@ -60,7 +60,7 @@ public class ProfileService {
         return result;
     }
 
-    private String getResultAfterUpdate(UserDAOObject userForChange) {
+    private String getResultUpdate(UserDAOObject userForChange) {
         if (updateUser(userForChange) != null)
             return SUCCESS;
         else
@@ -75,7 +75,7 @@ public class ProfileService {
         }
     }
 
-    public String getResultAfterValidation(UserDAOObject userForChange, UserDAOObject userForCompare) {
+    public String getResultValidation(UserDAOObject userForChange, UserDAOObject userForCompare) {
         if (!isEmailCorrect(userForChange.getEmail()))
             return ERROR_INPUT_EMAIL;
         if (!isNewEmailDiffers(userForChange.getEmail(), userForCompare.getEmail()))
@@ -84,9 +84,9 @@ public class ProfileService {
             return ERROR_INPUT_PASSWORD;
         if (!isPhoneCorrect(userForChange.getPhone()))
             return ERROR_INPUT_PHONE;
-        if (!isFirstNameCorrect(userForChange.getFirstName()))
+        if (!isNameCorrect(userForChange.getFirstName()))
             return ERROR_INPUT_FIRST_NAME;
-        if (!isLastNameCorrect(userForChange.getLastName()))
+        if (!isNameCorrect(userForChange.getLastName()))
             return ERROR_INPUT_LAST_NAME;
 
         return SUCCESS;
@@ -130,18 +130,9 @@ public class ProfileService {
         return !(oldPassword.equals(newPasswordHash));
     }
 
-    private boolean isFirstNameCorrect(String firstName) {
-        if (!Objects.equals(firstName, "") && firstName != null) {
-            if (!UserValidationUtils.checkName(firstName)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean isLastNameCorrect(String lastName) {
-        if (!Objects.equals(lastName, "") && lastName != null) {
-            if (!UserValidationUtils.checkName(lastName)) {
+    private boolean isNameCorrect(String name){
+        if (!Objects.equals(name, "") && name != null) {
+            if (!UserValidationUtils.checkName(name)) {
                 return false;
             }
         }
