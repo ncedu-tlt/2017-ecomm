@@ -2,7 +2,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/shoppingCartIcon"/>
-<div class="ui item jsShoppingCartIconComponent jsShoppingCartComponent" id="shoppingCartTopPanel">
+<div class="ui item jsShoppingCartIconComponent" id="shoppingCartTopPanel">
     <a href="${pageContext.request.contextPath}/cart" class="circular ui icon button">
         <i class="icon shop"></i>
         <c:set var="quantity" scope="session" value="${requestScope.quantityProducts}"/>

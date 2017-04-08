@@ -22,7 +22,9 @@
         TRANSITION_PULSE: 'pulse',
         HIDDEN_CLASS: 'hidden'
     };
+
     var jsDimmer;
+
     var ShoppingCartIconComponent = frm.inheritance.inherits(frm.components.Component, {
         init: function () {
             this.initDimer();
@@ -42,7 +44,7 @@
                 data: {productId: productIdParam},
                 success: this.displayQuantity.bind(this),
                 error: this.redirectToLogin.bind(this),
-                complete: setTimeout(this.dimmerToggle, 1000)
+                complete: this.dimmerToggle
             });
         },
         initDimer: function () {
