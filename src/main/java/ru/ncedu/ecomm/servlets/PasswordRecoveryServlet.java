@@ -51,16 +51,13 @@ public class PasswordRecoveryServlet extends HttpServlet {
     }
 
     private void outputSuccessSendMail(HttpServletRequest req, HttpServletResponse resp, UserDAOObject userByEmail) throws ServletException, IOException {
-        String contextPath = getContextPath(req);
         String resultSendMailToUser = PasswordRecoveryService.getInstance()
-                .sendMailToUser(userByEmail.getEmail(), contextPath);
+                .sendMailToUser(userByEmail.getEmail(), getContextPath(req));
         req.setAttribute(ANSWER, resultSendMailToUser);
         req.getRequestDispatcher(RECOVERY_REDIRECT).forward(req, resp);
     }
 
     private String getContextPath(HttpServletRequest req){
-        String scheme = req.getScheme();
-        String host = req.getHeader("Host");
-        return scheme + "://" + host;
+        return req.getScheme() + "://" + req.getHeader("Host");
     }
 }
