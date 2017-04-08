@@ -78,7 +78,7 @@ public class PasswordRecoveryService {
 
     private String getTextHtml(String toEmail, String recoveryHash, String contextPath) {
         return "<p>Please change your password in here:</p>" +
-                "<a href='https://" + contextPath + "/passwordChange?email="
+                "<a href='" + contextPath + "/passwordChange?email="
                 + toEmail + "&recoveryHash=" + recoveryHash + "'>Change Password</a>";
     }
 }
