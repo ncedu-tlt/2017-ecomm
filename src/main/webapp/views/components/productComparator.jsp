@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div class="ui container main-content">
+<div class="ui container main-content jsProductComparator">
 
     <div class="ui grid centered container gap">
         <h2 class="ui center aligned header horizontal divider">
@@ -127,3 +127,8 @@
     </div>
 </div>
 
+<script>
+    window.frm.components.init('productComparator', '.jsProductComparator', {
+        addToCompareUrl: '${requestScope.addToCartURL}'
+    });
+</script>
