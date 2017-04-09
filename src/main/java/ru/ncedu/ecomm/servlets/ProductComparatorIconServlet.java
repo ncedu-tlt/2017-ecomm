@@ -11,11 +11,15 @@ import java.io.IOException;
 public class ProductComparatorIconServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+        addToCompare(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        addToCompare(req, resp);
+    }
+
+    private void addToCompare(HttpServletRequest req, HttpServletResponse resp) {
+
     }
 }
