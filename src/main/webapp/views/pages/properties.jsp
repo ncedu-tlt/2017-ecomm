@@ -11,8 +11,7 @@
 <body>
 
 <c:import url="../fragments/topPanel.jsp"/>
-<c:import url="../components/properties.jsp"/>
-<c:import url="../components/pagination.jsp"/>
+<c:import url="../components/properties/properties.jsp"/>
 <c:import url="../components/companyInfo.jsp"/>
 
 
