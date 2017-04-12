@@ -76,23 +76,22 @@ INSERT INTO characteristics(
 	(1, 'Images', 1, false);
 	
 	
-INSERT INTO products(
-	category_id, name, description, discount_id, price)
-	VALUES (2, 'HP - ENVY x360', 'HP ENVY x360 Convertible 2-in-1 Laptop: Bring versatility to your computing with this HP convertible laptop. The Intel Core i5 processor provides powerful performance when using your favorite programs and apps, and the 1TB hard drive lets you store plenty of digital files. This HP convertible laptop rotates a full 360 degrees for customized viewing of the 15.6-inch screen.', 1, 799.99),
-	(2, 'Apple - MacBook Pro', 'The new MacBook Pro is faster and more powerful than before, yet remarkably thinner and lighter.? It has the brightest, most colorful Mac notebook display ever. And it introduces the revolutionary Touch Bar�a Multi-Touch� enabled strip of glass built into the keyboard for instant access to what you want to do, when you want to do it. The new MacBook Pro is built on groundbreaking ideas. And it�s ready for yours.', 1, 1999.99),
-	(2, 'Samsung - Chromebook 3', 'Samsung Chromebook 3: Unleash the power of modern computing with this Samsung Chromebook laptop. It has all the space you need with the 11.6-inch screen, which ensures portability, and 4GB of RAM and an Intel Celeron processor lets you complete basic office tasks all day long. The 16GB storage capacity means this Samsung Chromebook laptop can store files and programs for offline use.', 1, 179.00),
-	(3, 'iBUYPOWER - Desktop', 'iBuyPower Desktop: Play hard with this iBUYPOWER gaming PC. With a 3.4GHz Intel i7 quad-core processor, 16GB of RAM and an NVIDIA GeForce 3GB graphics card, this machine can handle the most demanding adventures. This iBUYPOWER gaming PC has a 1TB SATA III hard drive and 120GB solid-state drive to provide ample file storage.', 1, 949.99),
-	(3, 'Apple - iMac�', 'iMac features a gorgeous widescreen display, powerful Intel� processors, superfast graphics, and more. All in a stunningly thin enclosure thats only 5 mm thin at its edge.', 5, 1299.99),
-	(3, 'Dell - Inspiron', 'Dell Inspiron All-In-One Computer: Glide your fingertips across the 23.8" touch screen to adjust music and video playback, surf the Web and play games, all in 1920 x 1080 resolution. Built-in Wi-Fi provides easy access to streaming entertainment.', 7, 649.99),
-	(4, 'Samsung - Galaxy Tab A (2016)', 'Boost productivity with this Samsung Galaxy Tab A tablet. The 7-inch touch display provides the ideal compromise between portability and functionality, while the 8GB of internal memory lets you take photos, games, music and movies with you. The 4,000 mAh battery in this Samsung Galaxy Tab A delivers plenty of juice to get you through the day.', 1, 89.99),
-	(4, 'Apple - iPad Air 2', 'The thinnest iPad ever is also the most capable. Its loaded with advanced technologies, including the Touch ID fingerprint sensor.', 2, 399.99),
-	(4, 'DigiLand - Tablet', 'DigiLand Tablet: Stay connected wherever you go with this 8" tablet. Windows 10 makes Web navigation a snap, and you can house plenty of photos, music and documents with 32GB of storage space. Plus, snap clear photos of events with 2.0MP front- and rear-facing cameras.', 1, 79.99),
-	(6, 'Sony - PlayStation 4 Pro', 'PS4 Pro gets you closer to your game. Heighten your experiences. Enrich your adventures. Let the super-charged PS4 Pro lead the way.', 4, 399.99),
-	(6, 'Microsoft - Xbox One S', 'Own the Xbox One S Battlefield� 1 Bundle (500GB), featuring 4K Blu-ray�, 4K video streaming, High Dynamic Range, a full game download of Battlefield� 1, and one month of EA Access.', 7, 299.99),
-	(7, 'Final Fantasy XV Day One Edition', 'Final Fantasy XV Day One Edition - PlayStation 4', 1, 59.99),
-	(7, 'Battlefield 1', 'Battlefield 1 - PlayStation 4', 1, 59.99),
-	(7, 'Battlefield 1', 'Battlefield 1 - Xbox One', 1, 59.99),
-	(7, 'Call of Duty: Infinite Warfare', 'Call of Duty: Infinite Warfare - Xbox One', 1, 59.99);
+INSERT INTO products (product_id, category_id, name, description, discount_id, price)
+VALUES (2, 2, 'Apple - MacBook Pro', 'The new MacBook Pro is faster and more powerful than before, yet remarkably thinner and lighter.¹ It has the brightest, most colorful Mac notebook display ever. And it introduces the revolutionary Touch Bar—a Multi-Touch– enabled strip of glass built into the keyboard for instant access to what you want to do, when you want to do it. The new MacBook Pro is built on groundbreaking ideas. And it’s ready for yours.', 1, 1999.99),
+(5, 3, 'Apple - iMac®', 'iMac features a gorgeous widescreen display, powerful Intel® processors, superfast graphics, and more. All in a stunningly thin enclosure thats only 5 mm thin at its edge.', 1, 1299.99),
+(6, 3, 'Dell - Inspiron', 'Dell Inspiron All-In-One Computer: Glide your fingertips across the 23.8" touch screen to adjust music and video playback, surf the Web and play games, all in 1920 x 1080 resolution. Built-in Wi-Fi provides easy access to streaming entertainment.', 1, 649.99),
+(8, 4, 'Apple - iPad Air 2', 'The thinnest iPad ever is also the most capable. Its loaded with advanced technologies, including the Touch ID fingerprint sensor.', 1, 399.99),
+(9, 4, 'DigiLand - Tablet', 'DigiLand Tablet: Stay connected wherever you go with this 8" tablet. Windows 10 makes Web navigation a snap, and you can house plenty of photos, music and documents with 32GB of storage space. Plus, snap clear photos of events with 2.0MP front- and rear-facing cameras.', 1, 79.99),
+(11, 6, 'Microsoft - Xbox One S', 'Own the Xbox One S Battlefield™ 1 Bundle (500GB), featuring 4K Blu-ray™, 4K video streaming, High Dynamic Range, a full game download of Battlefield™ 1, and one month of EA Access.', 1, 299.99),
+(12, 7, 'Final Fantasy XV Day One Edition', 'Final Fantasy XV Day One Edition - PlayStation 4', 1, 59.99),
+(14, 7, 'Battlefield 1', 'Battlefield 1 - Xbox One', 1, 59.99),
+(15, 7, 'Call of Duty: Infinite Warfare', 'Call of Duty: Infinite Warfare - Xbox One', 1, 59.99),
+(3, 2, 'Samsung - Chromebook 3', 'Samsung Chromebook 3: Unleash the power of modern computing with this Samsung Chromebook laptop. It has all the space you need with the 11.6-inch screen, which ensures portability, and 4GB of RAM and an Intel Celeron processor lets you complete basic office tasks all day long. The 16GB storage capacity means this Samsung Chromebook laptop can store files and programs for offline use.', 2, 179.00),
+(4, 3, 'iBUYPOWER - Desktop', 'iBuyPower Desktop: Play hard with this iBUYPOWER gaming PC. With a 3.4GHz Intel i7 quad-core processor, 16GB of RAM and an NVIDIA GeForce 3GB graphics card, this machine can handle the most demanding adventures. This iBUYPOWER gaming PC has a 1TB SATA III hard drive and 120GB solid-state drive to provide ample file storage.', 5, 949.99),
+(7, 4, 'Samsung - Galaxy Tab A (2016)', 'Boost productivity with this Samsung Galaxy Tab A tablet. The 7-inch touch display provides the ideal compromise between portability and functionality, while the 8GB of internal memory lets you take photos, games, music and movies with you. The 4,000 mAh battery in this Samsung Galaxy Tab A delivers plenty of juice to get you through the day.', 8, 89.99),
+(10, 6, 'Sony - PlayStation 4 Pro', 'PS4 Pro gets you closer to your game. Heighten your experiences. Enrich your adventures. Let the super-charged PS4 Pro lead the way.', 9, 399.99),
+(13, 7, 'Battlefield 1', 'Battlefield 1 - PlayStation 4', 4, 59.99),
+(1, 2, 'HP - ENVY x360', 'HP ENVY x360 Convertible 2-in-1 Laptop: Bring versatility to your computing with this HP convertible laptop. The Intel Core i5 processor provides powerful performance when using your favorite programs and apps, and the 1TB hard drive lets you store plenty of digital files. This HP convertible laptop rotates a full 360 degrees for customized viewing of the 15.6-inch screen.', 9, 799.00);
 	
 INSERT INTO characteristic_values(
 	characteristic_id, product_id, value)
@@ -311,67 +310,43 @@ INSERT INTO users(user_id,
 (78, 3, 'Alexf', 'Mikles', 172615877915217560892406575915100721237, NULL, 'admin@gmail.comd', '2017-02-21', NULL, '/images/useravatars/unknownuser/unknownuser.png'),
 (79, 3, 'Alex', 'Syrus', 172615877915217560892406575915100721237, NULL, 'lordever@mail.ru', '2017-02-25', NULL, '/images/useravatars/unknownuser/unknownuser.png');
 
-INSERT INTO reviews(
-	product_id, user_id, description, creation_date, raiting)
-	VALUES (1, 3, 'Good notepad', current_timestamp, 2),
-	(1, 4, 'Bad notepad, not working', current_timestamp, 2),
-	
-	(2, 3, 'Good iPad', current_timestamp, 5),
-	(2, 4, 'Bad notepad, not working iPad', current_timestamp, 3),
-	
-	(3, 3, 'Good notepad', current_timestamp, 4),
-	(3, 4, 'Bad notepad, not working', current_timestamp, 4),
-	
-	(4, 3, 'Nice PC', current_timestamp, 2),
-	(4, 4, 'Bad PC, very big price', current_timestamp, 1),
-	
-	(5, 3, 'Nice Mac', current_timestamp, 3),
-	(5, 4, 'Bad Mac, i hate him', current_timestamp, 1),
-	
-	(6, 3, 'Nice PC', current_timestamp, 4),
-	(6, 4, 'Bad PC, so many lags', current_timestamp, 2),
-	
-	(7, 3, 'Nice tablet', current_timestamp, 5),
-	(7, 4, 'Bad tablet, Samsung bad company', current_timestamp, 2),
-	
-	(8, 3, 'Nice tablet', current_timestamp, 2),
-	(8, 4, 'Bad tablet, i dont like apple production', current_timestamp, 1),
-	
-	(9, 3, 'This tablet not interesting', current_timestamp, 5),
-	(9, 4, 'Nice tablet, ill like this price', current_timestamp, 3),
-	
-	(10, 3, 'This console the best, thanks Sony', current_timestamp, 4),
-	(10, 4, 'Sony, can only product TV', current_timestamp, 2),
-	
-	(11, 3, 'I dont like Microsoft', current_timestamp, 5),
-	(11, 4, 'I dont have money, then console is bad', current_timestamp, 1),
-	
-	(12, 3, 'Nice Game, I liked', current_timestamp, 4),
-	(12, 4, 'Bad game, I didnt have console', current_timestamp, 2),
-	
-	(13, 3, 'Nice Game, I liked', current_timestamp, 4),
-	(13, 4, 'Bad game, I didnt have console', current_timestamp, 2),
-	
-	(14, 3, 'Nice Game, I liked', current_timestamp, 2),
-	(14, 4, 'Bad game, I didnt have console', current_timestamp, 2),
-	
-	(15, 3, 'Nice Game, I liked', current_timestamp, 5),
-	(15, 4, 'Bad game, I didnt have console', current_timestamp, 2),
-(2,	35,	'It is a long established fact that a reader will be distracted by the ' ||
- 'readable content of a page when looking at its layout. The point of using ' ||
-  'Lorem Ipsum is that it has a more-or-less normal distribution of letters, as' ||
-   ' opposed to using Content here, content here, making it look like readable English. Many' ||
-    ' desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, a' ||
-     'nd a search for lorem ipsum will uncover many web sites still in their infancy. Various vers' ||
-      'ions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).ready for yours.',	'2017-02-22',	5),
-(1,	78,	'so good',	'2017-02-23',	4),
-(1,	69,	'It is ideal notebook!',	'2017-02-27',	5),
-(1,	35,	'213',	'2017-02-27',	5),
-(7,	35,	'Boost productivity with this Samsung Galaxy Tab A tablet. The 7-inch touch display provides ' ||
- 'the ideal compromise between portability and functionality, while the 8GB of internal' ||
-  ' memory lets you take photos, games, music and movies with you. The 4,000 mAh battery in this' ||
-   ' Samsung Galaxy Tab A delivers plenty of juice to get you through the day.',	'2017-02-10',	5),
-(1,	37,	'	','2017-02-21',	2);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (1, 37, 'gfdgdfgd', '2017-03-06', 2);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (2, 35, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using ''Content here, content here'', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for ''lorem ipsum'' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).ready for yours.', '2017-02-22', 5);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (1, 78, 'so good', '2017-02-23', 4);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (1, 69, 'It''s ideal notebook!', '2017-02-27', 5);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (1, 4, 'Bad notepad, not working', '2016-12-05', 2);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (4, 4, 'Bad PC, very big price', '2016-12-05', 1);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (5, 4, 'Bad Mac, i hate him', '2016-12-05', 1);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (6, 4, 'Bad PC, so many lags', '2016-12-05', 2);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (7, 4, 'Bad tablet, Samsung bad company', '2016-12-05', 2);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (8, 4, 'Bad tablet, i dont like apple production', '2016-12-05', 1);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (10, 4, 'Sony, can only product TV', '2016-12-05', 2);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (11, 4, 'I dont have money, then console is bad', '2016-12-05', 1);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (12, 4, 'Bad game, I didnt have console', '2016-12-05', 2);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (13, 4, 'Bad game, I didnt have console', '2016-12-05', 2);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (14, 4, 'Bad game, I didnt have console', '2016-12-05', 2);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (15, 4, 'Bad game, I didnt have console', '2016-12-05', 2);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (5, 3, 'Nice Mac', '2016-12-05', 5);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (4, 3, 'Nice PC', '2016-12-05', 5);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (8, 3, 'Nice tablet', '2016-12-05', 5);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (2, 3, 'Good iPad', '2016-12-05', 5);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (10, 3, 'This console the best, thanks Sony', '2016-12-05', 5);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (9, 4, 'Nice tablet, ill like this price', '2016-12-05', 4);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (12, 3, 'Nice Game, I liked', '2016-12-05', 3);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (1, 3, 'Good notepad', '2016-12-05', 4);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (14, 3, 'Nice Game, I liked', '2016-12-05', 3);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (15, 3, 'Nice Game, I liked', '2016-12-05', 3);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (13, 3, 'Nice Game, I liked', '2016-12-05', 3);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (7, 3, 'Nice tablet', '2016-12-05', 2);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (3, 3, 'Good notepad', '2016-12-05', 2);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (6, 3, 'Nice PC', '2016-12-05', 3);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (9, 3, 'This tablet not interesting', '2016-12-05', 3);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (11, 3, 'I dont like Microsoft', '2016-12-05', 3);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (3, 4, 'Bad notepad, not working', '2016-12-05', 3);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (2, 4, 'Bad notepad, not working iPad', '2016-12-05', 2);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (1, 5, 'Very Good NoteBook.', '2016-12-05', 5);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (1, 35, 't is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using ''Content here, content here'', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for ''lorem ipsum'' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).', '2017-03-07', 5);
+INSERT INTO public.reviews (product_id, user_id, description, creation_date, raiting) VALUES (7, 35, 'Boost productivity with this Samsung Galaxy Tab A tablet. The 7-inch touch display provides the ideal compromise between portability and functionality, while the 8GB of internal memory lets you take photos, games, music and movies with you. The 4,000 mAh battery in this Samsung Galaxy Tab A delivers plenty of juice to get you through the day.', '2017-02-10', 5);
 	
 INSERT INTO sales_orders (sales_order_id, user_id, creation_date, "limit", order_status_id) VALUES (159, 41, '2017-02-20', 0.00, 1),
  (158, 41, '2017-02-20', null, 1),
