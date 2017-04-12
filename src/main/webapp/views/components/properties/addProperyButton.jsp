@@ -3,12 +3,14 @@
 <div class="row jsRowVal">
 
     <div class="three wide column jsPropertyId">
-        <input class="jsInputPropertyId" type="text" value="${property.getID()}">
+      <!--  <input class="jsInputPropertyId" type="text" value="${property.getID()}"> -->
+        <input class="jsInputPropertyId" type="text">
     </div>
 
     <div class="thirteen wide column jsPropertyValue">
 
-        <input class="jsInputPropertyValue" type="text" value="${property.getValue()}">
+     <!--   <input class="jsInputPropertyValue" type="text" value="${property.getValue()}"> -->
+        <input class="jsInputPropertyValue" type="text">
 
         <div class="ui right floated small buttons jsPanelButton">
             <button class="ui button jsCancelButton">Cancel</button>

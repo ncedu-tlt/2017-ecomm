@@ -47,7 +47,7 @@
 
             removeButton.click(function () {
                 var $this = $(this);
-                var text = $this.closest('.jsTableValue').find('.jsVisible').text();
+                var text = $this.find('.jsVisible').text();
                 var id = $this.closest('.jsTableValue').find('.jsPropertyId').text();
                 $.post(globalUrlTest + '/properties',{valueText: text, propertyId: id, action: 'remove'}, function (data) {
                     $this.html(data);
@@ -57,10 +57,8 @@
 
             addButton.click(function () {
 
-                var $this = $(this);
-                var text = $this.closest('.jsPropertyValue').text();
-                var id = $this.closest('.jsPropertyId').text();
-                $.post(globalUrlTest + '/properties',{valueText: text, propertyId: id, action: 'add'}, function (data) {
+               
+                $.post(globalUrlTest + '/properties',{ action: 'add'}, function (data) {
                     $this.html(data);
                 });
             });
@@ -68,7 +66,7 @@
             saveRow.click(function () {
                 var $this = $(this);
                 var text = $this.closest('.jsRowVal').find('.jsInputPropertyValue').text();
-                var id = $this.closest('.jsRowVal').find('.jsPropertyId').text();
+                var id = $this.closest('.jsRowVal').find('.jsInputPropertyId').text();
                 $.post(globalUrlTest + '/properties',{valueText: text, propertyId: id, action: 'saveRow'}, function (data) {
                     $this.html(data);
                 });

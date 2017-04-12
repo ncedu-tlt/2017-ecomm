@@ -126,17 +126,8 @@ public class PropertyServlet extends HttpServlet {
 
 
     private void addNewPropertyToDAO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getParameter("valueText") != null){
-            Property property = new PropertyBuilder()
-                    .setPropertyId(request.getParameter("propertyId"))
-                    .setValue(request.getParameter("valueText"))
-                    .build();
 
-            DAOFactory.getDAOFactory().getPropertyDAO().addProperty(property);
-            //request.setAttribute("property" ,property );
-            redirectToPage(request, response, Configuration.getProperty("page.addProperty"));
-
-        }
+        redirectToPage(request, response, Configuration.getProperty("page.addProperty"));
     }
     private void editProperty(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         Property property = new PropertyBuilder()
