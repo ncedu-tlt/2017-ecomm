@@ -23,48 +23,42 @@
         HIDDEN_CLASS: 'hidden'
     };
 
-    var jsDimmer;
 
     var ShoppingCartIconComponent = frm.inheritance.inherits(frm.components.Component, {
         init: function () {
-            this.initDimer();
+            this.jsDimmer = this.content.find(ELEMENTS.DIMMER).dimmer({
+                closable: false
+            });
             frm.events.on(EVENTS.ADD_TO_CART, this.sendRequest.bind(this));
-        },
-        showIconIfNeed: function () {
-            var cartIcon = this.content.find(ELEMENTS.SHOPPING_CART_ICON);
-            if (cartIcon.text().trim() != CONDITIONS.EMPTY_QUANTITY) {
-                cartIcon.removeClass(DISPLAY.HIDDEN_CLASS);
-            }
         },
         sendRequest: function (productIdParam) {
             $.ajax({
                 url: this.params.addToCartUrl,
+                beforeSend: this.showDimmer.bind(this),
                 type: 'POST',
-                beforeSend: this.dimmerToggle,
                 data: {productId: productIdParam},
                 success: this.displayQuantity.bind(this),
-                error: this.redirectToLogin.bind(this),
-                complete: this.dimmerToggle
+                complete: this.hideDimmer.bind(this),
+                error: this.redirectToLogin.bind(this)
             });
         },
-        initDimer: function () {
-            var dimmer = this.content.find(ELEMENTS.DIMMER);
-            dimmer.dimmer({
-                closable: false
-            });
-            jsDimmer = dimmer;
+        showDimmer: function() {
+            this.jsDimmer.dimmer(DISPLAY.SHOW);
         },
-        dimmerToggle: function () {
-            if (!jsDimmer.dimmer(CONDITIONS.IS_ACTIVE))
-                jsDimmer.dimmer(DISPLAY.SHOW);
-            else
-                jsDimmer.dimmer(DISPLAY.HIDE);
+        hideDimmer: function() {
+            this.jsDimmer.dimmer(DISPLAY.HIDE);
         },
         displayQuantity: function (result) {
             var shoppingCartIcon = this.content.find(ELEMENTS.SHOPPING_CART_ICON);
             shoppingCartIcon.text(result);
             this.showIconIfNeed();
             shoppingCartIcon.transition(DISPLAY.TRANSITION_PULSE);
+        },
+        showIconIfNeed: function () {
+            var cartIcon = this.content.find(ELEMENTS.SHOPPING_CART_ICON);
+            if (cartIcon.text().trim() != CONDITIONS.EMPTY_QUANTITY) {
+                cartIcon.removeClass(DISPLAY.HIDDEN_CLASS);
+            }
         },
         redirectToLogin: function () {
             window.location.href = this.params.loginUrl;
