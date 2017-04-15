@@ -5,5 +5,4 @@ import {Component} from "@angular/core";
     templateUrl: 'navigation.component.html'
 })
 export class NavigationComponent {
-
 }

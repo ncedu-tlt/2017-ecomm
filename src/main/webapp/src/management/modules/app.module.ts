@@ -12,6 +12,7 @@ import {NavigationComponent} from "../components/navigation/navigation.component
 import {UsersListComponent} from "../components/users-list/users-list.component";
 import {DataTableComponent} from "../components/data-table/data-table.component";
 import {UserDetailsComponent} from "../components/user-details/user-details.component";
+import {TopMenuComponent} from "../components/top-menu/top-menu.component";
 
 import {UsersService} from "../services/users.service";
 
@@ -21,7 +22,8 @@ import {UsersService} from "../services/users.service";
         NavigationComponent,
         UsersListComponent,
         DataTableComponent,
-        UserDetailsComponent
+        UserDetailsComponent,
+        TopMenuComponent
     ],
     imports: [
         BrowserModule,

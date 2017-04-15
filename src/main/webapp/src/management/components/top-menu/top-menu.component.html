@@ -1,0 +1,5 @@
+<sm-menu title="Admin Management" class="inverted teal">
+    <sm-menu class="menu right secondary">
+        <a [routerLink]="item.route" sm-item *ngFor="let item of items" [icon]="item.icon">{{item.title}}</a>
+    </sm-menu>
+</sm-menu>

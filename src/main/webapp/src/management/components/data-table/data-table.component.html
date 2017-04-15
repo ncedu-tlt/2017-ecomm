@@ -1,4 +1,4 @@
-<table>
+<table class="ui selectable celled table">
     <thead>
     <tr>
         <th *ngFor="let column of model.columns">
@@ -7,7 +7,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let row of model.data" (click)="onSelect(row)">
+    <tr [class.active]="row === selectedRow" *ngFor="let row of model.data" (click)="onSelect(row)">
         <td *ngFor="let column of model.columns">
             {{getValue(row, column.key)}}
         </td>
