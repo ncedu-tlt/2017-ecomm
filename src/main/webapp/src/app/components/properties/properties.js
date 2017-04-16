@@ -8,67 +8,85 @@
 
         init: function () {
             var tableValue = this.content.find('.jsTableValue');
+            var edit = this.content.find('.jsEdit');
             var globalUrlTest = this.params.propertiesUrl;
             var panelButton = this.content.find('.jsPanelButton');
             var saveButton = panelButton.find('.jsSaveButton');
             var cancelButton = panelButton.find('.jsCancelButton');
-            var removeButton = panelButton.find('.jsRemoveLineButton');
+            var removeButton = this.content.find('.jsRemoveLineButton');
             var addButton = this.content.find('.jsAddButton');
             var saveRow = this.content.find('.jsSaveRow');
 
 
-            tableValue.click(function () {
+            edit.click(function () {
                 var $this = $(this);
-                var text = $this.find('.jsVisible').text();
-                var id = $this.find('.jsPropertyId').text();
+                var root = $this.closest('.jsTableValue');
+                var text = root.find('.jsVisible').text();
+                var id = root.find('.jsPropertyId').text();
+
                 $.post(globalUrlTest + '/properties',{propertyId: id, valueText: text, action: 'edit'}, function (data) {
-                    $this.html(data);
+                    root.append(data);
+                    $this.hide();
+
+
+                var cancelBut =  this.content.find('.jsCancelButton');
+
+
+                cancelBut.click(function () {
+                    var inputText = this.closest('.jsProperty');
+                    edit.show();
+                    inputText.remove();
+
+
+                });
+
                 });
             });
+
 
             saveButton.click(function () {
                 var $this = $(this);
-                var text = $this.find('.jsText').text();
-                var id = $this.find('.jsPropertId').text();
+                var root = $this.closest('.jsProperty');
+                var text = root.find('.jsPropertVal').text();
+                var id = root.find('.jsPropertId').text();
+
                 $.post(globalUrlTest + '/properties',{valueText: text, propertyId: id, action: 'save'}, function (data) {
-                    $this.html(data);
+                    root.append(data);
+
+
                 });
 
             });
-
-            cancelButton.click(function () {
-                var $this = $(this);
-                var id = $this.find('.jsPropertId').text();
-                //var text = $this.find('.jsPropertVal').text();
-                $.post(globalUrlTest + '/properties',{propertyId: id/*, valueText: text*/,action: 'cancel'}, function (data) {
-                    $this.html(data);
-                });
-            });
+            
+            
 
             removeButton.click(function () {
                 var $this = $(this);
-                var text = $this.find('.jsVisible').text();
-                var id = $this.closest('.jsTableValue').find('.jsPropertyId').text();
-                $.post(globalUrlTest + '/properties',{valueText: text, propertyId: id, action: 'remove'}, function (data) {
-                    $this.html(data);
+                var root = $this.closest('.jsTableValue');
+                var text = root.find('.jsVisible').text();
+                var id = root.find('.jsPropertyId').text();
+
+                $.post(globalUrlTest + '/properties',{valueText: text, propertyId: id, action: 'remove'}, function () {
+                    root.html("")
                 });
             });
 
 
             addButton.click(function () {
-
-               
+                var root = $this.closest('.jsTable');
                 $.post(globalUrlTest + '/properties',{ action: 'add'}, function (data) {
-                    $this.html(data);
+                    root.append(data);
                 });
             });
 
             saveRow.click(function () {
                 var $this = $(this);
-                var text = $this.closest('.jsRowVal').find('.jsInputPropertyValue').text();
-                var id = $this.closest('.jsRowVal').find('.jsInputPropertyId').text();
+                var root = $this.closest('.jsRowVal');
+                var text = root.find('.jsInputPropertyValue').text();
+                var id = root.find('.jsInputPropertyId').text();
                 $.post(globalUrlTest + '/properties',{valueText: text, propertyId: id, action: 'saveRow'}, function (data) {
                     $this.html(data);
+
                 });
 
             });

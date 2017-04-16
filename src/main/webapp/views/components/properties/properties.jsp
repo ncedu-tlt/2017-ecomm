@@ -5,7 +5,7 @@
     <div class="ui hidden divider"></div>
 
 
-    <div class="ui celled grid">
+    <div class="ui celled grid jsTable">
 
         <div class="row">
             <div class="three wide column"><h3>Properties</h3></div>
@@ -13,11 +13,13 @@
         </div>
 
         <c:forEach var="property" items="${requestScope.properties}">
+
             <div class="row jsTableValue">
-                <div class="three wide column jsPropertyId">
+
+                <div class="three wide column jsPropertyId jsEdit">
                         ${property.getId()}
                 </div>
-                <div class="thirteen wide column jsVisible">
+                <div class="thirteen wide column jsVisible jsEdit">
 
                         ${property.getValue()}
 
@@ -27,7 +29,6 @@
                 </div>
 
             </div>
-
 
         </c:forEach>
     </div>

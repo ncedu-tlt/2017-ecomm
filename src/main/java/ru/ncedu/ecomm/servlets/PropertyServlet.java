@@ -74,10 +74,6 @@ public class PropertyServlet extends HttpServlet {
                     updateValueInDAO(request, response);
                     break;
                 }
-                case "cancel":{
-                    cancelButton(request,response);
-                    break;
-                }
                 case "edit": {
                     editProperty(request, response);
                     break;
@@ -92,36 +88,41 @@ public class PropertyServlet extends HttpServlet {
 
 
     private void updateValueInDAO(HttpServletRequest request, HttpServletResponse response) {
-        if ( request.getParameter("valueText") != null ) {
-            Property property = new PropertyBuilder()
-                    .setPropertyId(request.getParameter("propertyId"))
-                    .setValue(request.getParameter("valueText"))
-                    .build();
+        String propertyId = request.getParameter("propertyId");
+        propertyId.replaceAll("\\p{Cntrl}", " ");
+        String newPropertyId = propertyId.trim();
+
+        String propertyVal = request.getParameter("valueText");
+        propertyVal.replaceAll("\\p{Cntrl}", " ");
+        String newPropertyVal = propertyVal.trim();
+
+        Property property = new PropertyBuilder()
+                .setPropertyId(newPropertyId)
+                .setValue(newPropertyVal)
+                .build();
+
 
             DAOFactory.getDAOFactory().getPropertyDAO().updateProperty(property);
             redirectToPage(request, response, Configuration.getProperty("servlet.properties"));
-        }
-    }
-
-    private void cancelButton(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-
-        String propertyId = request.getParameter("propertyId");
-        Property property = DAOFactory.getDAOFactory().getPropertyDAO().getPropertyById(propertyId);
-
-        request.setAttribute("property" ,property );
-       // redirectToPage(request, response, Configuration.getProperty("page.showNewProperty"));
-        request.getRequestDispatcher(Configuration.getProperty("page.showNewProperty")).forward(request, response);
 
     }
+
+
 
     private void removePropertyFromDAO(HttpServletRequest request, HttpServletResponse response){
+        String propertyId = request.getParameter("propertyId");
+        String newPropertyId = propertyId.replaceAll("\\p{Cntrl}", "");
+
+
+        String propertyVal = request.getParameter("valueText");
+        String newPropertyVal = propertyVal.replaceAll("\\p{Cntrl}", " ");
+
         Property property = new PropertyBuilder()
-                .setPropertyId(request.getParameter("propertyId"))
-                .setValue(request.getParameter("valueText"))
+                .setPropertyId(newPropertyId)
+                .setValue(newPropertyVal)
                 .build();
 
         DAOFactory.getDAOFactory().getPropertyDAO().deleteProperty(property);
-        redirectToPage(request, response, Configuration.getProperty("servlet.properties"));
     }
 
 
