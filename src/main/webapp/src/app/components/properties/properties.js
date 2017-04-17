@@ -11,8 +11,6 @@
             var edit = this.content.find('.jsEdit');
             var globalUrlTest = this.params.propertiesUrl;
             var panelButton = this.content.find('.jsPanelButton');
-            var saveButton = panelButton.find('.jsSaveButton');
-            var cancelButton = panelButton.find('.jsCancelButton');
             var removeButton = this.content.find('.jsRemoveLineButton');
             var addButton = this.content.find('.jsAddButton');
             var saveRow = this.content.find('.jsSaveRow');
@@ -28,52 +26,46 @@
                     root.append(data);
                     $this.hide();
 
+                    var cancelButton = root.find('.jsCancelButton');
 
-                var cancelBut =  this.content.find('.jsCancelButton');
+                    cancelButton.click(function () {
+                        var inputText = this.closest('.jsProperty');
+                        inputText.remove();
+                        $this.show();
+                    });
 
+                    var saveButton = root.find('.jsSaveButton');
+                    saveButton.click(function () {
+                        var $this = $(this);
+                        var root = $this.closest('.jsProperty');
+                        var id = root.find('.jsPropertId').val();
+                        var text = root.find('.jsPropertVal').val();
 
-                cancelBut.click(function () {
-                    var inputText = this.closest('.jsProperty');
-                    edit.show();
-                    inputText.remove();
+                        $.post(globalUrlTest + '/properties',{propertyId: id, valueText: text, action: 'save'}, function (data) {
+                            //root.remove();
+                            root.append(data);
 
-
-                });
+                        });
+                    });
 
                 });
             });
-
-
-            saveButton.click(function () {
-                var $this = $(this);
-                var root = $this.closest('.jsProperty');
-                var text = root.find('.jsPropertVal').text();
-                var id = root.find('.jsPropertId').text();
-
-                $.post(globalUrlTest + '/properties',{valueText: text, propertyId: id, action: 'save'}, function (data) {
-                    root.append(data);
-
-
-                });
-
-            });
-            
-            
 
             removeButton.click(function () {
                 var $this = $(this);
                 var root = $this.closest('.jsTableValue');
-                var text = root.find('.jsVisible').text();
                 var id = root.find('.jsPropertyId').text();
+                var text = root.find('.jsVisible').text();
 
-                $.post(globalUrlTest + '/properties',{valueText: text, propertyId: id, action: 'remove'}, function () {
+                $.post(globalUrlTest + '/properties',{propertyId: id, valueText: text, action: 'remove'}, function () {
                     root.html("")
                 });
             });
 
-
             addButton.click(function () {
+                var $this = $(this);
                 var root = $this.closest('.jsTable');
+                //var root = this.content.find('.jsTable');
                 $.post(globalUrlTest + '/properties',{ action: 'add'}, function (data) {
                     root.append(data);
                 });
@@ -84,9 +76,9 @@
                 var root = $this.closest('.jsRowVal');
                 var text = root.find('.jsInputPropertyValue').text();
                 var id = root.find('.jsInputPropertyId').text();
+
                 $.post(globalUrlTest + '/properties',{valueText: text, propertyId: id, action: 'saveRow'}, function (data) {
                     $this.html(data);
-
                 });
 
             });
@@ -97,5 +89,7 @@
     frm.components.register('PropertiesComponent', PropertiesComponent);
 
 })(jQuery, window);
+
+
 
 

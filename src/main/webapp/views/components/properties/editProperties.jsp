@@ -6,7 +6,7 @@
 
 <div class="${propertyValue == null ? "three" : "thirteen"} wide column jsProperty">
 
-    <div class="ui fluid action transparent input jsId">
+    <div class="ui fluid action transparent input jsInput">
         <c:if test="${propertyValue != null}" >
             <input class="jsPropertId" type="hidden" value="${propertyID}">
             <input class="jsPropertVal" type="text" value="${propertyValue}">

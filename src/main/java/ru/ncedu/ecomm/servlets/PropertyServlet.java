@@ -88,8 +88,10 @@ public class PropertyServlet extends HttpServlet {
 
 
     private void updateValueInDAO(HttpServletRequest request, HttpServletResponse response) {
+
         String propertyId = request.getParameter("propertyId");
         propertyId.replaceAll("\\p{Cntrl}", " ");
+        //propertyId.replaceAll("\n|\r\n", " ");
         String newPropertyId = propertyId.trim();
 
         String propertyVal = request.getParameter("valueText");
@@ -101,9 +103,9 @@ public class PropertyServlet extends HttpServlet {
                 .setValue(newPropertyVal)
                 .build();
 
-
             DAOFactory.getDAOFactory().getPropertyDAO().updateProperty(property);
-            redirectToPage(request, response, Configuration.getProperty("servlet.properties"));
+            //redirectToPage(request, response, Configuration.getProperty("servlet.properties"));
+            redirectToPage(request, response, Configuration.getProperty("page.showNewProperty"));
 
     }
 
@@ -112,7 +114,7 @@ public class PropertyServlet extends HttpServlet {
     private void removePropertyFromDAO(HttpServletRequest request, HttpServletResponse response){
         String propertyId = request.getParameter("propertyId");
         String newPropertyId = propertyId.replaceAll("\\p{Cntrl}", "");
-
+        //propertyId.replaceAll("\n|\r\n", "");
 
         String propertyVal = request.getParameter("valueText");
         String newPropertyVal = propertyVal.replaceAll("\\p{Cntrl}", " ");
@@ -128,8 +130,10 @@ public class PropertyServlet extends HttpServlet {
 
     private void addNewPropertyToDAO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        redirectToPage(request, response, Configuration.getProperty("page.addProperty"));
+        //redirectToPage(request, response, Configuration.getProperty("page.addProperty"));
+        request.getRequestDispatcher(Configuration.getProperty("page.addProperty")).forward(request, response);
     }
+
     private void editProperty(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         Property property = new PropertyBuilder()
                 .setPropertyId(request.getParameter("propertyId"))
@@ -152,10 +156,12 @@ public class PropertyServlet extends HttpServlet {
 
 
 
-
-
-
-
 }
+
+
+
+
+
+
 
 
