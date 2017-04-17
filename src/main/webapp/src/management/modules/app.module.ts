@@ -16,7 +16,7 @@ import {TopMenuComponent} from "../components/top-menu/top-menu.component";
 import {CharGroupListComponent} from "../components/char-group-list/char-group-list.component";
 
 import {UsersService} from "../services/users.service";
-import {CharGroupService} from "../services/charGroup.service";
+import {CharGroupService} from "../services/char-group.service";
 
 @NgModule({
     declarations: [

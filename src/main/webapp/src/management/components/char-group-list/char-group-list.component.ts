@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import TableModel from "../data-table/models/table.model";
 import CharGroupModel from "../../models/char-group.model";
-import {CharGroupService} from "../../services/charGroup.service";
+import {CharGroupService} from "../../services/char-group.service";
 
 @Component({
     selector: 'nc-charGroup-list',
