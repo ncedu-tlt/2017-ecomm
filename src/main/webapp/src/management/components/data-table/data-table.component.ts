@@ -20,8 +20,6 @@ export class DataTableComponent {
     onSelect(row: any): void {
         this.onSelectEmitter.emit(row);
         this.selectedRow = row;
-        console.log(row.email);
-        console.log(row.id);
     }
 
     getValue(row: any, keyString: string): any {

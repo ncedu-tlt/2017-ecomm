@@ -13,8 +13,10 @@ import {UsersListComponent} from "../components/users-list/users-list.component"
 import {DataTableComponent} from "../components/data-table/data-table.component";
 import {UserDetailsComponent} from "../components/user-details/user-details.component";
 import {TopMenuComponent} from "../components/top-menu/top-menu.component";
+import {CharGroupListComponent} from "../components/char-group-list/char-group-list.component";
 
 import {UsersService} from "../services/users.service";
+import {CharGroupService} from "../services/charGroup.service";
 
 @NgModule({
     declarations: [
@@ -23,7 +25,8 @@ import {UsersService} from "../services/users.service";
         UsersListComponent,
         DataTableComponent,
         UserDetailsComponent,
-        TopMenuComponent
+        TopMenuComponent,
+        CharGroupListComponent
     ],
     imports: [
         BrowserModule,
@@ -34,7 +37,8 @@ import {UsersService} from "../services/users.service";
         TreeModule
     ],
     providers: [
-        UsersService
+        UsersService,
+        CharGroupService
     ],
     bootstrap: [RootComponent]
 })
