@@ -2,9 +2,9 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.DAOFactory;
+import ru.ncedu.ecomm.data.models.SalesOrder;
 import ru.ncedu.ecomm.data.models.SalesOrderDAOObject;
 import ru.ncedu.ecomm.servlets.models.EnumOrderStatus;
-import ru.ncedu.ecomm.data.models.SalesOrder;
 import ru.ncedu.ecomm.servlets.services.ShoppingCartService;
 import ru.ncedu.ecomm.servlets.services.UserService;
 
@@ -22,11 +22,23 @@ import static ru.ncedu.ecomm.utils.RedirectUtil.redirectToPage;
 @WebServlet(name = "CartServlet", urlPatterns = {"/cart"})
 public class CartServlet extends HttpServlet {
 
+    private final String INPUT_LIMIT = "inputLimit";
     private final BigDecimal COMPARE_DECIMAL = new BigDecimal("0.00");
+    private final String SALES_ORDER = "salesOrder";
+    private final String SUBMIT_BUTTON = "submitButton";
+    private final String PRODUCT_ID = "productId";
+    private final String SALES_ORDER_ID = "salesOrderId";
+    private final String INPUT = "input";
+    private final String DELETE = "delete";
+    private final String EMPTY_CART = "emptyCart";
+    private final String CHECKOUT = "checkout";
+
+
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Boolean userInSystem = UserService.getInstance().isUserAuthorized(req);
+        boolean userInSystem = UserService.getInstance().isUserAuthorized(req);
         if (!userInSystem) {
             redirectToPage(req, resp, Configuration.getProperty("servlet.login"));
         }else {
@@ -42,8 +54,9 @@ public class CartServlet extends HttpServlet {
     private void updateSalesOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         long userId = UserService.getInstance().getCurrentUserId(request);
         try {
-            actionsInShoppingCart(request, response, userId);
+            processActions(request, response, userId);
             setQuantityInDataBase(request);
+            setLimitInDataBase(request);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -54,51 +67,37 @@ public class CartServlet extends HttpServlet {
             long userId = UserService.getInstance().getCurrentUserId(request);
             SalesOrder salesOrder = ShoppingCartService.getInstance()
                     .getSalesOrderModel(EnumOrderStatus.ENTERING.getStatus(), userId);
-            request.setAttribute("salesOrder", salesOrder);
+            request.setAttribute(SALES_ORDER, salesOrder);
             request.getRequestDispatcher(Configuration.getProperty("page.cart")).forward(request, response);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private void actionsInShoppingCart(HttpServletRequest request, HttpServletResponse response, long userId) throws SQLException {
+    private void processActions(HttpServletRequest request, HttpServletResponse response, long userId) throws SQLException {
         try {
-            if (request.getParameter("submitButton") != null) {
-                switch (request.getParameter("submitButton")) {
-                    case "delete": {
+            if (request.getParameter(SUBMIT_BUTTON) != null) {
+                switch (request.getParameter(SUBMIT_BUTTON)) {
+                    case DELETE: {
                         ShoppingCartService.getInstance().deletedProductsInOrderItem(
-                                Long.parseLong(request.getParameter("productId")),
-                                Long.parseLong(request.getParameter("salesOrderId")));
+                                Long.parseLong(request.getParameter(PRODUCT_ID)),
+                                Long.parseLong(request.getParameter(SALES_ORDER_ID)));
                         showSalesOrder(request, response);
                         break;
                     }
-                    case "quantity": {
-                        updateQuantity(request);
-                        showSalesOrder(request, response);
-                        break;
-                    }
-                    case "emptyCart": {
+                    case EMPTY_CART: {
                         ShoppingCartService.getInstance().deletedAllProductsInOrderItemDataBase(userId);
                         showSalesOrder(request, response);
                         break;
                     }
-                    case "apply": {
-                        setLimitInDataBase(
-                                BigDecimal.valueOf(Long.parseLong(request.getParameter("limitInput"))),
-                                Long.parseLong(request.getParameter("salesOrderId")));
-                        showSalesOrder(request, response);
-                        break;
-                    }
-                    case "checkout": {
+                    case CHECKOUT: {
                         setOrderStatusId(userId);
                         redirectToPage(request, response, Configuration.getProperty("page.submitOrder"));
                         break;
                     }
                 }
             }
-        } catch (NumberFormatException e) {
-            request.setAttribute("exception", "Unknown format");
-        } catch (IOException | ServletException e) {
+        } catch (NumberFormatException | IOException | ServletException e) {
             e.printStackTrace();
         }
     }
@@ -110,34 +109,27 @@ public class CartServlet extends HttpServlet {
         DAOFactory.getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
     }
 
-    private void setLimitInDataBase(BigDecimal limit, long salesOrderId) {
-        SalesOrderDAOObject salesOrder = DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderById(salesOrderId);
-        salesOrder.setLimit(limit);
+    private void setLimitInDataBase(HttpServletRequest request){
+        BigDecimal inputLimit = BigDecimal.valueOf(Long.parseLong(request.getParameter(INPUT_LIMIT)));
+        long sales = Long.parseLong(request.getParameter(SALES_ORDER_ID));
+        SalesOrderDAOObject salesOrder = DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderById(sales);
+        salesOrder.setLimit(inputLimit);
         int compare = salesOrder.getLimit().compareTo(COMPARE_DECIMAL);
-        if (compare >= 0) {
+        if (compare > 0) {
+            DAOFactory.getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
+        }
+        else if (compare == 0) {
+            salesOrder.setLimit(null);
             DAOFactory.getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
         }
     }
 
     private void setQuantityInDataBase(HttpServletRequest request) throws SQLException {
-        if (request.getParameter("input") != null) {
-            int input = Integer.parseInt(request.getParameter("input"));
-            long product = Long.parseLong(request.getParameter("product"));
-            long sales = Long.parseLong(request.getParameter("salesOrder"));
+        if (request.getParameter(INPUT) != null) {
+            int input = Integer.parseInt(request.getParameter(INPUT));
+            long product = Long.parseLong(request.getParameter(PRODUCT_ID));
+            long sales = Long.parseLong(request.getParameter(SALES_ORDER_ID));
             ShoppingCartService.getInstance().updateQuantity(sales, input, product);
-        }
-    }
-
-    private void updateQuantity(HttpServletRequest request) throws SQLException {
-        if (Integer.parseInt(request.getParameter("quantityValue")) >= 1) {
-            ShoppingCartService.getInstance().updateQuantity(
-                    Long.parseLong(request.getParameter("salesOrderId")),
-                    Integer.parseInt(request.getParameter("quantityValue")),
-                    Long.parseLong(request.getParameter("productId")));
-        } else {
-            ShoppingCartService.getInstance().deletedProductsInOrderItem(
-                    Long.parseLong(request.getParameter("productId")),
-                    Long.parseLong(request.getParameter("salesOrderId")));
         }
     }
 }

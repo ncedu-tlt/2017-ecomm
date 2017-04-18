@@ -7,74 +7,71 @@
         TIMEOUT: 5000,
 
         init: function () {
+
             this.content.find('.jsItemOrder .jsLeft').on('click', this.onMinusClick.bind(this));
 
             this.content.find('.jsItemOrder .jsRight').on('click', this.onPlusClick.bind(this));
 
             this.content.find('.jsItemOrder .jsInput').on('keyup', this.onInputWrite.bind(this));
+
+            this.content.find('.jsLimitInputClass .jsLimitInput').on('keyup', this.onInputLimit.bind(this));
+            
+            this.content.find('.jsPrint').on('click', this.onPrint);
+
+            this.content.find('.jsInputClass').form(
+                {
+                    fields: {
+                        quantityValue: {
+                            rules: [{type: 'integer[1..999999999]', prompt: 'Please enter a number'},
+                                {type: 'empty', prompt: 'Please enter a number'}]
+                        }
+                    }
+
+                })
+            ;
+            this.content.find('.jsLimitInputClass').form(
+                {
+                    fields: {
+                        limitInput: {
+                            rules: [{type: 'integer[0..999999999]', prompt: 'Please enter a number'},
+                                {type: 'empty', prompt: 'Please enter a number'}]
+                        }
+                    }
+                }
+            );
         },
 
-        onMinusClick: function (event) {
+        onInputWrite: function (operation) {
             var eventFind = $(event.currentTarget);
-            var amount = this.content.find('.jsAmount');
-            var input = eventFind.closest('.description').find('.jsInput');
-            var price = eventFind.closest('.description').find('.jsPrice');
-            var standardPrice = eventFind.closest('.description').find('.jsStandardPrice');
-            var product = eventFind.closest('.description').find('.jsProductId');
-            var salesOrder = eventFind.closest('.description').find('.jsSalesOrderId');
-            var globalUrl = this.params.shoppingCartUrl;
-            var inputCount = parseInt(input.val());
-            if (inputCount > 1) {
-                amount.text(parseInt(amount.text()) - parseInt(standardPrice.val()));
-                inputCount = inputCount <= 1 ? 1 : inputCount - 1;
-                price.text(parseInt(standardPrice.val()) * inputCount);
-                input.val(inputCount);
-                clearTimeout(this.clear);
-                this.clear = this.timeOut(globalUrl, input, parseInt(product.val()), parseInt(salesOrder.val()));
-            }
-        },
-
-        onPlusClick: function (event) {
-            var eventFind = $(event.currentTarget);
-            var input = eventFind.closest('.description').find('.jsInput');
-            var price = eventFind.closest('.description').find('.jsPrice');
-            var standardPrice = eventFind.closest('.description').find('.jsStandardPrice');
-            var amount = this.content.find('.jsAmount');
-            var product = eventFind.closest('.description').find('.jsProductId');
-            var salesOrder = eventFind.closest('.description').find('.jsSalesOrderId');
-            var globalUrl = this.params.shoppingCartUrl;
-            if (parseInt(input.val()) >= 1) {
-                input.val(parseInt(input.val()) + 1);
-                price.text(parseInt(standardPrice.val()) * parseInt(input.val()));
-                amount.text(parseInt(amount.text()) + parseInt(standardPrice.val()));
-            }
-            clearTimeout(this.clear);
-            this.clear = this.timeOut(globalUrl, input, parseInt(product.val()), parseInt(salesOrder.val()));
-        },
-
-        onInputWrite: function (event) {
-            var eventFind = $(event.currentTarget);
-            var input = eventFind.val();
+            var input = eventFind.closest('.jsInputClass').find('.jsInput');
+            var inputValue = +input.val();
             var price = eventFind.closest('.description').find('.jsPrice');
             var standardPrice = eventFind.closest('.description').find('.jsStandardPrice');
             var amount = this.content.find('.jsAmount');
             var globalPrice = this.content.find('.jsItemOrder .jsPrice');
             var product = eventFind.closest('.description').find('.jsProductId');
-            var salesOrder = eventFind.closest('.description').find('.jsSalesOrderId');
-            var globalUrl = this.params.shoppingCartUrl;
-            if (parseInt(input) > 0) {
-                price.text(parseInt(standardPrice.val()) * parseInt(input));
-                amount.text(this.sumAllPrice(globalPrice));
-                input = eventFind;
+            var salesOrder = this.content.find('.jsSalesOrderId');
+            var warningMassage = this.content.find('.jsExceedingTheLimit');
+            var limitInput = this.content.find('.jsLimitInput');
+            var limitInputValue = +limitInput.val() || 0;
+            switch(operation){
+                case 'plus':
+                    ++inputValue;
+                    break;
+                case 'minus':
+                    inputValue = (inputValue <= 1 ? 1 : inputValue - 1);
+                    break;
+                case 'limit':
+                    this.limitTimeOut(this.params.shoppingCartUrl, limitInputValue, parseInt(salesOrder.val()));
+                    break;
             }
-            clearTimeout(this.clear);
-            this.clear = this.timeOut(globalUrl, input, parseInt(product.val()), parseInt(salesOrder.val()));
-        },
-
-        timeOut: function (globalUrl, input, productId, salesOrderId) {
-            setTimeout(function () {
-                $.post(globalUrl, {input: input.val(), product: productId, salesOrder: salesOrderId});
-            }, this.TIMEOUT);
+            if (inputValue > 0) {
+                input.val(inputValue);
+                price.text(parseInt(standardPrice.val()) * inputValue);
+                amount.text(this.sumAllPrice(globalPrice));
+                this.timeOut(this.params.shoppingCartUrl, inputValue, parseInt(salesOrder.val()), parseInt(product.val()));
+            }
+            this.warningMassage(amount, limitInputValue, warningMassage);
         },
 
         sumAllPrice: function (globalPrice) {
@@ -89,7 +86,49 @@
             }
             priceArray.length = 0;
             return amountSum;
-        }
+        },
+
+        onPlusClick: function () {
+            var mathOperation = 'plus';
+            this.onInputWrite(mathOperation);
+        },
+
+        onMinusClick: function () {
+            var mathOperation = 'minus';
+            this.onInputWrite(mathOperation);
+        },
+
+        onInputLimit: function () {
+            var operation = 'limit';
+            this.onInputWrite(operation);
+        },
+
+        timeOut: function (globalUrl, input, salesOrderId, productId) {
+            clearTimeout(this.timer);
+            this.timer = setTimeout(function () {
+                $.post(globalUrl, {input: input, salesOrderId: salesOrderId, productId: productId});
+            }, this.TIMEOUT);
+        },
+
+        limitTimeOut: function (globalUrl, inputLimit, salesOrderId) {
+            clearTimeout(this.timer);
+            this.timer = setTimeout(function () {
+                $.post(globalUrl, {inputLimit: inputLimit, salesOrderId: salesOrderId});
+            }, this.TIMEOUT);
+        },
+
+        warningMassage: function (amount, limitInput, warningMassage) {
+            if (parseInt(amount.text()) > limitInput && limitInput !== 0) {
+                warningMassage.show();
+            } else {
+                warningMassage.hide();
+            }
+        },
+
+        onPrint: function () {
+            window.print();
+            void 0;
+        },
     });
     frm.components.register('ShoppingCartComponent', ShoppingCartComponent);
 

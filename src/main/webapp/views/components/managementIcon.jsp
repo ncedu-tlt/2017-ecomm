@@ -2,7 +2,6 @@
 <jsp:include page="/profileIcon"/>
 <c:if test="${userRoleId == 1}">
     <div class="ui item">
-
         <a href="${pageContext.request.contextPath}/management" class="circular ui icon button">
             <i class="settings icon"></i>
         </a>
