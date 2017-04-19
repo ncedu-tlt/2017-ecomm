@@ -23,7 +23,6 @@ import static ru.ncedu.ecomm.utils.RedirectUtil.redirectToPage;
 public class CartServlet extends HttpServlet {
 
     private static final String INPUT_LIMIT = "inputLimit";
-    private static final BigDecimal COMPARE_DECIMAL = new BigDecimal("0.00");
     private static final String SALES_ORDER = "salesOrder";
     private static final String ACTION = "action";
     private static final String PRODUCT_ID = "productId";
@@ -34,6 +33,7 @@ public class CartServlet extends HttpServlet {
     private static final String CHECKOUT = "checkout";
     private static final String SAVE_LIMIT = "saveLimit";
     private static final String SAVE_QUANTITY = "saveQuantity";
+    private static final String SHOPPING_CART_URL = "shoppingCartUrl";
 
 
     @Override
@@ -66,7 +66,7 @@ public class CartServlet extends HttpServlet {
             long userId = UserService.getInstance().getCurrentUserId(request);
             SalesOrder salesOrder = ShoppingCartService.getInstance()
                     .getSalesOrderModel(EnumOrderStatus.ENTERING.getStatus(), userId);
-            request.setAttribute("shoppingCartUrl", shoppingCartUrl);
+            request.setAttribute(SHOPPING_CART_URL, shoppingCartUrl);
             request.setAttribute(SALES_ORDER, salesOrder);
             request.getRequestDispatcher(Configuration.getProperty("page.cart")).forward(request, response);
         } catch (SQLException e) {
@@ -105,7 +105,7 @@ public class CartServlet extends HttpServlet {
                     }
                 }
             }
-        } catch (NumberFormatException | IOException | ServletException e) {
+        } catch (IOException | ServletException e) {
             e.printStackTrace();
         }
     }
@@ -122,7 +122,7 @@ public class CartServlet extends HttpServlet {
         long sales = Long.parseLong(request.getParameter(SALES_ORDER_ID));
         SalesOrderDAOObject salesOrder = DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderById(sales);
         salesOrder.setLimit(inputLimit);
-        int compare = salesOrder.getLimit().compareTo(COMPARE_DECIMAL);
+        int compare = salesOrder.getLimit().compareTo(BigDecimal.ZERO);
         if (compare > 0) {
             DAOFactory.getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
         } else if (compare == 0) {

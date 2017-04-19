@@ -17,7 +17,7 @@
             this.content.find('.jsItemOrder .jsInput').on('keyup', this.onInputWrite.bind(this));
 
             this.content.find('.jsLimitInputClass .jsLimitInput').on('keyup', this.onInputLimit.bind(this));
-            
+
             this.content.find('.jsPrint').on('click', this.onPrint);
 
             this.content.find('.jsInputClass').form(
@@ -130,7 +130,6 @@
 
         onPrint: function () {
             window.print();
-            void 0;
         }
     });
     frm.components.register('ShoppingCartComponent', ShoppingCartComponent);

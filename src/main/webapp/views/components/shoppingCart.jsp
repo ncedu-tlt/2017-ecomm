@@ -81,14 +81,15 @@
                                     Limit:
                                 </div>
                                 <div class="ui left labeled button" tabindex="0">
-                                    <input type="number" min="0" class="ui basic right pointing label jsLimitInput" name="limitInput"
+                                    <input type="number" min="0" class="ui basic right pointing label jsLimitInput"
+                                           name="limitInput"
                                            value="${salesOrder.getLimit()}">
                                 </div>
                             </div>
                         </div>
                         <div class="ui message warning jsExceedingTheLimit"
                             ${salesOrder.getLimit() > salesOrder.getTotalAmount() ? 'hidden': '' ||
-                             salesOrder.getLimit() == null ? 'hidden': ''}>
+                                    salesOrder.getLimit() == null ? 'hidden': ''}>
                             <i class="close icon"></i>
                             <div class="header">
                                 <p>Total price, exceeds limit value!</p>
@@ -103,7 +104,7 @@
                 </div>
                 <div class="ui grid hide">
                     <div class="eight wide column jsPrint">
-                            <button class="ui secondary basic button" type="button">PRINT</button>
+                        <button class="ui secondary basic button" type="button">PRINT</button>
                     </div>
                     <form method="post" action="cart" class="eight wide column">
                         <button class="ui secondary basic right floated button" name="action" value="checkout">
