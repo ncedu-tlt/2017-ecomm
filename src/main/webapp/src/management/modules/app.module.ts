@@ -17,6 +17,7 @@ import {CharGroupListComponent} from "../components/char-group-list/char-group-l
 
 import {UsersService} from "../services/users.service";
 import {CharGroupService} from "../services/char-group.service";
+import {StartPageComponent} from "../components/start_page/start-page.component";
 
 @NgModule({
     declarations: [
@@ -26,7 +27,8 @@ import {CharGroupService} from "../services/char-group.service";
         DataTableComponent,
         UserDetailsComponent,
         TopMenuComponent,
-        CharGroupListComponent
+        CharGroupListComponent,
+        StartPageComponent
     ],
     imports: [
         BrowserModule,
