@@ -24,10 +24,9 @@ export class UsersListComponent implements OnInit {
         ]
     };
 
-    constructor(
-        private usersService: UsersService,
-        private router: Router
-    ) { }
+    constructor(private usersService: UsersService,
+                private router: Router) {
+    }
 
     ngOnInit(): void {
         this.usersService.getUsers().then(users => this.model.data = users);
