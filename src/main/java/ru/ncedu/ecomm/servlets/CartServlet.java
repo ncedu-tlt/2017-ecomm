@@ -22,18 +22,18 @@ import static ru.ncedu.ecomm.utils.RedirectUtil.redirectToPage;
 @WebServlet(name = "CartServlet", urlPatterns = {"/cart"})
 public class CartServlet extends HttpServlet {
 
-    private final String INPUT_LIMIT = "inputLimit";
-    private final BigDecimal COMPARE_DECIMAL = new BigDecimal("0.00");
-    private final String SALES_ORDER = "salesOrder";
-    private final String SUBMIT_BUTTON = "submitButton";
-    private final String PRODUCT_ID = "productId";
-    private final String SALES_ORDER_ID = "salesOrderId";
-    private final String INPUT = "input";
-    private final String DELETE = "delete";
-    private final String EMPTY_CART = "emptyCart";
-    private final String CHECKOUT = "checkout";
-
-
+    private static final String INPUT_LIMIT = "inputLimit";
+    private static final BigDecimal COMPARE_DECIMAL = new BigDecimal("0.00");
+    private static final String SALES_ORDER = "salesOrder";
+    private static final String ACTION = "action";
+    private static final String PRODUCT_ID = "productId";
+    private static final String SALES_ORDER_ID = "salesOrderId";
+    private static final String INPUT = "input";
+    private static final String DELETE = "delete";
+    private static final String EMPTY_CART = "emptyCart";
+    private static final String CHECKOUT = "checkout";
+    private static final String SAVE_LIMIT = "saveLimit";
+    private static final String SAVE_QUANTITY = "saveQuantity";
 
 
     @Override
@@ -41,7 +41,7 @@ public class CartServlet extends HttpServlet {
         boolean userInSystem = UserService.getInstance().isUserAuthorized(req);
         if (!userInSystem) {
             redirectToPage(req, resp, Configuration.getProperty("servlet.login"));
-        }else {
+        } else {
             showSalesOrder(req, resp);
         }
     }
@@ -55,8 +55,6 @@ public class CartServlet extends HttpServlet {
         long userId = UserService.getInstance().getCurrentUserId(request);
         try {
             processActions(request, response, userId);
-            setQuantityInDataBase(request);
-            setLimitInDataBase(request);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -64,9 +62,11 @@ public class CartServlet extends HttpServlet {
 
     private void showSalesOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            String shoppingCartUrl = request.getContextPath() + Configuration.getProperty("servlet.cart");
             long userId = UserService.getInstance().getCurrentUserId(request);
             SalesOrder salesOrder = ShoppingCartService.getInstance()
                     .getSalesOrderModel(EnumOrderStatus.ENTERING.getStatus(), userId);
+            request.setAttribute("shoppingCartUrl", shoppingCartUrl);
             request.setAttribute(SALES_ORDER, salesOrder);
             request.getRequestDispatcher(Configuration.getProperty("page.cart")).forward(request, response);
         } catch (SQLException e) {
@@ -76,8 +76,8 @@ public class CartServlet extends HttpServlet {
 
     private void processActions(HttpServletRequest request, HttpServletResponse response, long userId) throws SQLException {
         try {
-            if (request.getParameter(SUBMIT_BUTTON) != null) {
-                switch (request.getParameter(SUBMIT_BUTTON)) {
+            if (request.getParameter(ACTION) != null) {
+                switch (request.getParameter(ACTION)) {
                     case DELETE: {
                         ShoppingCartService.getInstance().deletedProductsInOrderItem(
                                 Long.parseLong(request.getParameter(PRODUCT_ID)),
@@ -95,6 +95,14 @@ public class CartServlet extends HttpServlet {
                         redirectToPage(request, response, Configuration.getProperty("page.submitOrder"));
                         break;
                     }
+                    case SAVE_LIMIT: {
+                        setLimitInDataBase(request);
+                        break;
+                    }
+                    case SAVE_QUANTITY: {
+                        setQuantityInDataBase(request);
+                        break;
+                    }
                 }
             }
         } catch (NumberFormatException | IOException | ServletException e) {
@@ -109,7 +117,7 @@ public class CartServlet extends HttpServlet {
         DAOFactory.getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
     }
 
-    private void setLimitInDataBase(HttpServletRequest request){
+    private void setLimitInDataBase(HttpServletRequest request) {
         BigDecimal inputLimit = BigDecimal.valueOf(Long.parseLong(request.getParameter(INPUT_LIMIT)));
         long sales = Long.parseLong(request.getParameter(SALES_ORDER_ID));
         SalesOrderDAOObject salesOrder = DAOFactory.getDAOFactory().getSalesOrderDAO().getSalesOrderById(sales);
@@ -117,8 +125,7 @@ public class CartServlet extends HttpServlet {
         int compare = salesOrder.getLimit().compareTo(COMPARE_DECIMAL);
         if (compare > 0) {
             DAOFactory.getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
-        }
-        else if (compare == 0) {
+        } else if (compare == 0) {
             salesOrder.setLimit(null);
             DAOFactory.getDAOFactory().getSalesOrderDAO().updateSalesOrder(salesOrder);
         }

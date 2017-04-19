@@ -5,6 +5,8 @@
     var ShoppingCartComponent = frm.inheritance.inherits(frm.components.Component, {
 
         TIMEOUT: 5000,
+        SAVE_LIMIT: 'saveLimit',
+        SAVE_QUANTITY: 'saveQuantity',
 
         init: function () {
 
@@ -54,7 +56,7 @@
             var warningMassage = this.content.find('.jsExceedingTheLimit');
             var limitInput = this.content.find('.jsLimitInput');
             var limitInputValue = +limitInput.val() || 0;
-            switch(operation){
+            switch (operation) {
                 case 'plus':
                     ++inputValue;
                     break;
@@ -62,14 +64,15 @@
                     inputValue = (inputValue <= 1 ? 1 : inputValue - 1);
                     break;
                 case 'limit':
-                    this.limitTimeOut(this.params.shoppingCartUrl, limitInputValue, parseInt(salesOrder.val()));
+                    this.updateLimit(this.params.shoppingCartUrl, limitInputValue, parseInt(salesOrder.val()), this.SAVE_LIMIT);
                     break;
             }
             if (inputValue > 0) {
                 input.val(inputValue);
                 price.text(parseInt(standardPrice.val()) * inputValue);
                 amount.text(this.sumAllPrice(globalPrice));
-                this.timeOut(this.params.shoppingCartUrl, inputValue, parseInt(salesOrder.val()), parseInt(product.val()));
+                this.updateQuantity(this.params.shoppingCartUrl, inputValue, parseInt(salesOrder.val()),
+                    parseInt(product.val()), this.SAVE_QUANTITY);
             }
             this.warningMassage(amount, limitInputValue, warningMassage);
         },
@@ -103,17 +106,17 @@
             this.onInputWrite(operation);
         },
 
-        timeOut: function (globalUrl, input, salesOrderId, productId) {
+        updateQuantity: function (globalUrl, input, salesOrderId, productId, action) {
             clearTimeout(this.timer);
             this.timer = setTimeout(function () {
-                $.post(globalUrl, {input: input, salesOrderId: salesOrderId, productId: productId});
+                $.post(globalUrl, {input: input, salesOrderId: salesOrderId, productId: productId, action: action});
             }, this.TIMEOUT);
         },
 
-        limitTimeOut: function (globalUrl, inputLimit, salesOrderId) {
+        updateLimit: function (globalUrl, inputLimit, salesOrderId, action) {
             clearTimeout(this.timer);
             this.timer = setTimeout(function () {
-                $.post(globalUrl, {inputLimit: inputLimit, salesOrderId: salesOrderId});
+                $.post(globalUrl, {inputLimit: inputLimit, salesOrderId: salesOrderId, action: action});
             }, this.TIMEOUT);
         },
 
@@ -128,7 +131,7 @@
         onPrint: function () {
             window.print();
             void 0;
-        },
+        }
     });
     frm.components.register('ShoppingCartComponent', ShoppingCartComponent);
 

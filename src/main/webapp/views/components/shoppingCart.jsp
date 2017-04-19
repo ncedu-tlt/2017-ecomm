@@ -53,7 +53,7 @@
                                         <input name="salesOrderId" type="hidden"
                                                value="${itemOrder.getSalesOrderId()}">
                                         <button class="circular right floated ui icon button middle aligned"
-                                                name="submitButton" type="submit" value="delete">
+                                                name="action" type="submit" value="delete">
                                             <i class="icon remove"></i>
                                         </button>
                                         <h2 class="ui header right floated center middle aligned jsPrice">
@@ -69,7 +69,7 @@
                 </div>
                 <div class="ui section divider"></div>
                 <form method="post" action="cart" class="ui grid seven column row">
-                    <button class="ui secondary basic right floated button column hide" name="submitButton"
+                    <button class="ui secondary basic right floated button column hide" name="action"
                             type="submit" value="emptyCart">EMPTY CART
                     </button>
                 </form>
@@ -106,7 +106,7 @@
                             <button class="ui secondary basic button" type="button">PRINT</button>
                     </div>
                     <form method="post" action="cart" class="eight wide column">
-                        <button class="ui secondary basic right floated button" name="submitButton" value="checkout">
+                        <button class="ui secondary basic right floated button" name="action" value="checkout">
                             CHECKOUT
                         </button>
                     </form>
@@ -118,6 +118,6 @@
 
 <script>
     window.frm.components.init('ShoppingCartComponent', '.jsShoppingCartComponent', {
-        shoppingCartUrl: '${pageContext.request.contextPath}' + '/cart'
+        shoppingCartUrl: '${requestScope.shoppingCartUrl}'
     });
 </script>
