@@ -5,11 +5,11 @@ import {UserDetailsComponent} from "../components/user-details/user-details.comp
 import {CharGroupListComponent} from "../components/char-group-list/char-group-list.component";
 
 const routes: Routes = [
-    { path: '', redirectTo: '/users', pathMatch: 'full' },
+    { path: '', redirectTo: '/index', pathMatch: 'full' },
     { path: 'users',  component: UsersListComponent },
     { path: 'user/:id', component: UserDetailsComponent },
     { path: 'charGroup', component: CharGroupListComponent },
-    { path: '**', redirectTo: '/users' }
+    { path: '**', redirectTo: '/index' }
 ];
 
 @NgModule({

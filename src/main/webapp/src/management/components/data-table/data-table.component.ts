@@ -9,7 +9,7 @@ import UserModel from "../../models/user.model";
 })
 export class DataTableComponent {
 
-    private selectedRow: UserModel;
+    private selectedRow: any;
 
     @Input()
     model: TableModel;
@@ -17,9 +17,15 @@ export class DataTableComponent {
     @Output('select')
     onSelectEmitter = new EventEmitter<any>();
 
-    onSelect(row: any): void {
-        this.onSelectEmitter.emit(row);
-        this.selectedRow = row;
+    onSelect(row: HTMLTableRowElement, data: any): void {
+        if (data === this.selectedRow) {
+            row.classList.remove('active');
+            this.selectedRow = null;
+        }
+        else {
+            this.onSelectEmitter.emit(data);
+            this.selectedRow = data;
+        }
     }
 
     getValue(row: any, keyString: string): any {

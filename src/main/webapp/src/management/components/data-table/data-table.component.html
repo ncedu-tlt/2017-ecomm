@@ -1,16 +1,21 @@
-<table class="ui selectable celled table">
-    <thead>
-    <tr>
-        <th *ngFor="let column of model.columns">
-            {{column.name}}
-        </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr [class.active]="row === selectedRow" *ngFor="let row of model.data" (click)="onSelect(row)">
-        <td *ngFor="let column of model.columns">
-            {{getValue(row, column.key)}}
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="ui center aligned container">
+    <table class="ui selectable celled teal table">
+        <thead>
+        <tr>
+            <th *ngFor="let column of model.columns">
+                {{column.name}}
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr [class.active]="data === selectedRow"
+            *ngFor="let data of model.data"
+            (click)="onSelect(row, data)"
+            #row>
+            <td *ngFor="let column of model.columns">
+                {{getValue(data, column.key)}}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

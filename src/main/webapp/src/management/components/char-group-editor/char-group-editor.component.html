@@ -1,0 +1,23 @@
+<div class="ui container right aligned jsCharGroupEditor">
+    <button (click)="myPopup.show($event, {position: 'top center'})" class="ui primary button">
+        New group
+    </button>
+    <button class="ui yellow button">
+        Edit
+    </button>
+    <button (click)="onDelete($event)" class="ui red button">
+        Delete
+    </button>
+</div>
+
+<div class="ui container left aligned">
+    <sm-popup #myPopup>
+        <sm-input class="left labeled" [(model)]="model" label="Char group:" placeholder="Enter new group..." #groupName></sm-input>
+        <sm-button class="positive jsAddNewGroupBtn"
+                   (click)="onAddition(groupName.value); myPopup.hide()"
+                   icon="checkmark"
+                   [style.marginTop]="'10px'">
+            Add new group
+        </sm-button>
+    </sm-popup>
+</div>
