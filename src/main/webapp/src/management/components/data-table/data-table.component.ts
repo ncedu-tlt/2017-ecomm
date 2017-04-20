@@ -1,11 +1,15 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
 import TableModel from "./models/table.model";
+import UserModel from "../../models/user.model";
 
 @Component({
     selector: 'nc-data-table',
-    templateUrl: 'data-table.component.html'
+    templateUrl: 'data-table.component.html',
+    styleUrls: ['data-table.component.css']
 })
 export class DataTableComponent {
+
+    private selectedRow: any;
 
     @Input()
     model: TableModel;
@@ -13,8 +17,15 @@ export class DataTableComponent {
     @Output('select')
     onSelectEmitter = new EventEmitter<any>();
 
-    onSelect(row: any): void {
-        this.onSelectEmitter.emit(row);
+    onSelect(row: HTMLTableRowElement, data: any): void {
+        if (data === this.selectedRow) {
+            row.classList.remove('active');
+            this.selectedRow = null;
+        }
+        else {
+            this.onSelectEmitter.emit(data);
+            this.selectedRow = data;
+        }
     }
 
     getValue(row: any, keyString: string): any {

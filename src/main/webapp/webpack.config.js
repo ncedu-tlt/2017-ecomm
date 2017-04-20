@@ -1,4 +1,20 @@
-var webpack = require('webpack');
+const webpack = require('webpack');
+
+const developmentMode = process.env.DEVELOPMENT_MODE === 'true';
+
+const devTool = developmentMode ? 'cheap-module-eval-source-map' : 'source-map';
+
+const productionPlugins = [
+    new webpack.optimize.UglifyJsPlugin({
+        compress: { warnings: false }
+    })
+];
+
+var plugins = [];
+
+if (!developmentMode) {
+    plugins = plugins.concat(productionPlugins);
+}
 
 module.exports = {
     entry: {
@@ -20,13 +36,9 @@ module.exports = {
             }
         ]
     },
-    plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            compress: { warnings: false }
-        })
-    ],
+    plugins: plugins,
     resolve: {
         extensions: ['.js', '.ts']
     },
-    devtool: 'source-map'
+    devtool: devTool
 };

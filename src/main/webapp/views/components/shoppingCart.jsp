@@ -6,7 +6,8 @@
     </h3>
     <div class="ui divided items">
         <c:choose>
-            <c:when test="${salesOrder == null || salesOrder.getOrderItems().isEmpty()}">
+            <c:when test="${salesOrder == null || salesOrder.getOrderItems().isEmpty() ||
+            salesOrder.getOrderItems() == null}">
                 <div class="ui icon message hide">
                     <i class="in cart icon"></i>
                     <div class="content">
@@ -34,16 +35,15 @@
                                     <p>Quantity:</p>
                                 </div>
                                 <div class="description">
-                                    <form method="post" action="cart" class="ui input">
+                                    <form class="ui input jsInputClass">
                                         <input class="jsProductId" name="productId" type="hidden"
                                                value="${itemOrder.getProductId()}">
                                         <input class="jsSalesOrderId" name="salesOrderId" type="hidden"
                                                value="${itemOrder.getSalesOrderId()}">
                                         <input class="jsStandardPrice" name="standardPrice" type="hidden"
                                                value="${itemOrder.getStandardPrice()}">
-                                        <input name="submitButton" type="hidden" value="quantity">
                                         <button class="ui left attached button jsLeft" type="button">-</button>
-                                        <input type="number" name="quantityValue" class="jsInput"
+                                        <input type="number" min="1" name="quantityValue" class="jsInput"
                                                value="${itemOrder.getQuantity()}">
                                         <button class="ui right attached button jsRight" type="button">+</button>
                                     </form>
@@ -53,7 +53,7 @@
                                         <input name="salesOrderId" type="hidden"
                                                value="${itemOrder.getSalesOrderId()}">
                                         <button class="circular right floated ui icon button middle aligned"
-                                                name="submitButton" type="submit" value="delete">
+                                                name="action" type="submit" value="delete">
                                             <i class="icon remove"></i>
                                         </button>
                                         <h2 class="ui header right floated center middle aligned jsPrice">
@@ -69,35 +69,32 @@
                 </div>
                 <div class="ui section divider"></div>
                 <form method="post" action="cart" class="ui grid seven column row">
-                    <button class="ui secondary basic right floated button column hide" name="submitButton"
+                    <button class="ui secondary basic right floated button column hide" name="action"
                             type="submit" value="emptyCart">EMPTY CART
                     </button>
                 </form>
                 <div class="ui grid">
-                    <form method="post" action="cart" class="eight wide column">
-                        <input name="salesOrderId" type="hidden" value="${salesOrder.getSalesOrderId()}">
+                    <form class="eight wide column jsLimitInputClass">
                         <div class="item">
                             <div class="inline field hide">
                                 <div class="ui right pointing label big">
                                     Limit:
                                 </div>
                                 <div class="ui left labeled button" tabindex="0">
-                                    <input type="number" class="ui basic right pointing label" name="limitInput"
+                                    <input type="number" min="0" class="ui basic right pointing label jsLimitInput"
+                                           name="limitInput"
                                            value="${salesOrder.getLimit()}">
-                                    <button class="ui button" name="submitButton" type="submit" value="apply">APPLY
-                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <c:if test="${salesOrder.getLimit() < salesOrder.getTotalAmount() && salesOrder.getLimit() > 0
-                            && salesOrder.getLimit() != 0.00}">
-                            <div class="ui message warning hide">
-                                <i class="close icon"></i>
-                                <div class="header">
-                                    <p>Total price, exceeds limit value!</p>
-                                </div>
+                        <div class="ui message warning jsExceedingTheLimit"
+                            ${salesOrder.getLimit() > salesOrder.getTotalAmount() ? 'hidden': '' ||
+                                    salesOrder.getLimit() == null ? 'hidden': ''}>
+                            <i class="close icon"></i>
+                            <div class="header">
+                                <p>Total price, exceeds limit value!</p>
                             </div>
-                        </c:if>
+                        </div>
                     </form>
                     <div class="eight wide column">
                         <h3 class="ui grey header right floated bottom jsAmount">
@@ -106,13 +103,11 @@
                     </div>
                 </div>
                 <div class="ui grid hide">
-                    <div class="eight wide column">
-                        <a href='javascript:window.print(); void 0;'>
-                            <button class="ui secondary basic button" type="button">PRINT</button>
-                        </a>
+                    <div class="eight wide column jsPrint">
+                        <button class="ui secondary basic button" type="button">PRINT</button>
                     </div>
                     <form method="post" action="cart" class="eight wide column">
-                        <button class="ui secondary basic right floated button" name="submitButton" value="checkout">
+                        <button class="ui secondary basic right floated button" name="action" value="checkout">
                             CHECKOUT
                         </button>
                     </form>
@@ -124,6 +119,6 @@
 
 <script>
     window.frm.components.init('ShoppingCartComponent', '.jsShoppingCartComponent', {
-        shoppingCartUrl: '${pageContext.request.contextPath}' + '/cart'
+        shoppingCartUrl: '${requestScope.shoppingCartUrl}'
     });
 </script>
