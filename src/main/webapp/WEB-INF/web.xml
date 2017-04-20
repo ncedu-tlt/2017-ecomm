@@ -16,16 +16,6 @@
     </welcome-file-list>
 
     <servlet>
-        <servlet-name>management</servlet-name>
-        <jsp-file>/management.jsp</jsp-file>
-    </servlet>
-    
-    <servlet-mapping>
-        <servlet-name>management</servlet-name>
-        <url-pattern>/management</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>jersey-servlet</servlet-name>
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
