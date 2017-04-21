@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import static ru.ncedu.ecomm.utils.RedirectUtil.redirectToPage;
 
@@ -87,26 +88,31 @@ public class PropertyServlet extends HttpServlet {
     }
 
 
-    private void updateValueInDAO(HttpServletRequest request, HttpServletResponse response) {
+    private void updateValueInDAO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        String field  = request.getParameter("field");
         String propertyId = request.getParameter("propertyId");
-        propertyId.replaceAll("\\p{Cntrl}", " ");
-        //propertyId.replaceAll("\n|\r\n", " ");
+        propertyId.replaceAll("\\p{Cntrl}", "");
         String newPropertyId = propertyId.trim();
 
         String propertyVal = request.getParameter("valueText");
-        propertyVal.replaceAll("\\p{Cntrl}", " ");
+        propertyVal.replaceAll("\\p{Cntrl}", "");
         String newPropertyVal = propertyVal.trim();
+
 
         Property property = new PropertyBuilder()
                 .setPropertyId(newPropertyId)
                 .setValue(newPropertyVal)
                 .build();
 
-            DAOFactory.getDAOFactory().getPropertyDAO().updateProperty(property);
-            //redirectToPage(request, response, Configuration.getProperty("servlet.properties"));
-            redirectToPage(request, response, Configuration.getProperty("page.showNewProperty"));
+        DAOFactory.getDAOFactory().getPropertyDAO().updateProperty(property);
 
+        request.setAttribute("property" ,property);
+        request.setAttribute("field" ,field );
+        redirectToPage(request, response, Configuration.getProperty("page.showChangeValue"));
+
+
+       // }
     }
 
 
@@ -114,7 +120,7 @@ public class PropertyServlet extends HttpServlet {
     private void removePropertyFromDAO(HttpServletRequest request, HttpServletResponse response){
         String propertyId = request.getParameter("propertyId");
         String newPropertyId = propertyId.replaceAll("\\p{Cntrl}", "");
-        //propertyId.replaceAll("\n|\r\n", "");
+
 
         String propertyVal = request.getParameter("valueText");
         String newPropertyVal = propertyVal.replaceAll("\\p{Cntrl}", " ");
@@ -129,18 +135,26 @@ public class PropertyServlet extends HttpServlet {
 
 
     private void addNewPropertyToDAO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        //redirectToPage(request, response, Configuration.getProperty("page.addProperty"));
-        request.getRequestDispatcher(Configuration.getProperty("page.addProperty")).forward(request, response);
-    }
-
-    private void editProperty(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         Property property = new PropertyBuilder()
                 .setPropertyId(request.getParameter("propertyId"))
                 .setValue(request.getParameter("valueText"))
                 .build();
 
         request.setAttribute("property" ,property );
+        redirectToPage(request, response, Configuration.getProperty("page.addProperty"));
+        //request.getRequestDispatcher(Configuration.getProperty("page.addProperty")).forward(request, response);
+    }
+
+    private void editProperty(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        String field  = request.getParameter("field");
+        Property property = new PropertyBuilder()
+                .setPropertyId(request.getParameter("propertyId"))
+                .setValue(request.getParameter("valueText"))
+                .build();
+
+        request.setAttribute("property" ,property );
+        request.setAttribute("field" ,field );
         request.getRequestDispatcher(Configuration.getProperty("page.editProperty")).forward(request, response);
     }
 
@@ -157,11 +171,4 @@ public class PropertyServlet extends HttpServlet {
 
 
 }
-
-
-
-
-
-
-
 
