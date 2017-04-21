@@ -15,11 +15,18 @@ export class CharGroupEditorComponent{
     @Output('deleteGroup') deleteGroup = new EventEmitter<any>();
 
     onAddition(): void{
-        console.log(this.model);
         this.addGroup.emit(this.model);
     }
 
     onDelete(): void{
         this.deleteGroup.emit();
+    }
+
+    showPopup(event: any, myPopup: any):void{
+        myPopup.show(event, {position: 'top center'})
+    }
+
+    hidePopup(myPopup: any):void{
+        myPopup.hide()
     }
 }
