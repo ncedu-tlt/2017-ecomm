@@ -313,8 +313,10 @@
                           gwt-maven-plugin documentation at codehaus.org -->
                         <configuration>
                             <runTarget>/catalog</runTarget>
+                            <runTarget>/test</runTarget>
                             <modules>
                                 <module>ru.ncedu.ecomm.gwt.ProductCatalog</module>
+                                <module>ru.ncedu.ecomm.gwt.Test</module>
                             </modules>
                         </configuration>
                     </plugin>
