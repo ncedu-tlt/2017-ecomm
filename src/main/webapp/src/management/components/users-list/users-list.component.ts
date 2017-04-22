@@ -10,16 +10,26 @@ import {UsersService} from "../../services/users.service";
 })
 export class UsersListComponent implements OnInit {
 
+    userModel: UserModel;
+
     model: TableModel = {
         data: [],
         columns: [
             {
-                name: 'ID',
-                key: 'id'
+                name: 'Name',
+                key: 'firstName'
+            },
+            {
+                name: 'Role',
+                key: 'roleId',
             },
             {
                 name: 'Email',
                 key: 'email'
+            },
+            {
+                name: 'Registration Date',
+                key: 'registrationDate'
             }
         ]
     };
@@ -33,7 +43,13 @@ export class UsersListComponent implements OnInit {
     }
 
     onSelect(user: UserModel): void {
-        this.router.navigate(['/user', user.id]);
+        this.userModel = user;
     }
 
+    onDelete(user: UserModel): void {
+        this.usersService.deleteUser(user.id).then(() => {
+            this.model.data = this.model.data.filter(getUser => getUser !== user);
+            if(this.userModel === user){this.userModel = null;}
+        })
+    }
 }

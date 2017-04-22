@@ -32,7 +32,8 @@ public class PostgresUserDAO implements UserDAO {
                             "  registration_date," +
                             "  recovery_hash," +
                             "  user_avatar\n" +
-                            "FROM users");
+                            "FROM users\n" +
+                            "ORDER BY user_id ASC");
             while (resultSet.next()) {
                 UserDAOObject user = new UserDAOObjectBuilder()
                         .setUserId(resultSet.getLong("user_id"))
