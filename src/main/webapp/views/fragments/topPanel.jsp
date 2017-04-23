@@ -8,7 +8,7 @@
 --%>
 
 
-<div class="ui menu">
+<div class="ui menu jsTopPanel">
     <div class="ui container">
         <a class="header item" href="${pageContext.request.contextPath}/home">Shop</a>
         <c:import url="../components/categories.jsp"/>
@@ -22,3 +22,8 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    window.frm.components.init('topPanelComponent', '.jsTopPanel', {
+        addToCompareUrl: '${requestScope.addToCartURL}'
+    });
+</script>

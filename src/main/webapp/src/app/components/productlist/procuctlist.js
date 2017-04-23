@@ -32,7 +32,6 @@
                 frm.events.fire(EVENTS.ADD_TO_COMPARE, productId);
             });
         }
-
     });
 
     frm.components.register('ProductListComponent', ProductListComponent);

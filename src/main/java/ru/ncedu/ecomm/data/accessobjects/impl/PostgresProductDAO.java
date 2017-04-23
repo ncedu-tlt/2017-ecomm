@@ -3,10 +3,10 @@ package ru.ncedu.ecomm.data.accessobjects.impl;
 import ru.ncedu.ecomm.data.accessobjects.ProductDAO;
 import ru.ncedu.ecomm.data.models.ProductDAOObject;
 import ru.ncedu.ecomm.data.models.builders.ProductDAOObjectBuilder;
-import ru.ncedu.ecomm.servlets.models.FilterValueViewModel;
-import ru.ncedu.ecomm.servlets.models.FilterViewModel;
-import ru.ncedu.ecomm.servlets.models.PriceRangeViewModel;
+import ru.ncedu.ecomm.servlets.models.*;
+import ru.ncedu.ecomm.servlets.models.builders.CharacteristicGroupModelBuilder;
 import ru.ncedu.ecomm.servlets.models.builders.PriceRangeViewModelBuilder;
+import ru.ncedu.ecomm.servlets.models.builders.ProductDetailsModelBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -390,6 +390,135 @@ public class PostgresProductDAO implements ProductDAO {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    @Override
+    public ProductDetailsModel getFullProductById(long productId) {
+        ProductDetailsModel product = null;
+        List<CharacteristicGroupModel> characteristics = getCharacteristicsForProductById(productId);
+
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT\n" +
+                             "  (SELECT avg(r.raiting)\n" +
+                             "   FROM reviews r\n" +
+                             "   WHERE r.product_id = p.product_id)                                 AS rating,\n" +
+                             "  p.category_id,\n" +
+                             "  p.product_id,\n" +
+                             "  p.price,\n" +
+                             "  (p.price - (p.price * (SELECT d.value\n" +
+                             "                         FROM discount d\n" +
+                             "                         WHERE p.discount_id = d.discount_id)) / 100) AS discount,\n" +
+                             "  p.name,\n" +
+                             "  p.description\n" +
+                             "\n" +
+                             "FROM products p\n" +
+                             "WHERE product_id = ?;")) {
+
+            statement.setLong(1, productId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                LOG.info(null);
+                product = new ProductDetailsModelBuilder()
+                        .setCategoryId(resultSet.getLong("category_id"))
+                        .setRating(resultSet.getInt("rating"))
+                        .setId(resultSet.getLong("product_id"))
+                        .setPrice(resultSet.getLong("price"))
+                        .setDiscount(resultSet.getLong("discount"))
+                        .setName(resultSet.getString("name"))
+                        .setDescription(resultSet.getString("description"))
+                        .setCharacteristicGroupModels(characteristics)
+                        .build();
+            }
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return product;
+    }
+
+    private List<CharacteristicGroupModel> getCharacteristicsForProductById(long productId) {
+        List <CharacteristicGroupModel> characteristicsForProduct = new ArrayList<>();
+
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT\n" +
+                             "  cg.characteristic_group_id,\n" +
+                             "  cg.name\n" +
+                             "FROM characteristic_groups cg\n" +
+                             "  LEFT JOIN characteristics c ON c.characteristic_group_id = cg.characteristic_group_id\n" +
+                             "WHERE c.category_id =\n" +
+                             "      (WITH RECURSIVE rec(category_id, parent_id)\n" +
+                             "      AS\n" +
+                             "      (\n" +
+                             "        SELECT\n" +
+                             "          category_id,\n" +
+                             "          parent_id\n" +
+                             "        FROM categories\n" +
+                             "        WHERE categories.parent_id IS NULL\n" +
+                             "        UNION ALL\n" +
+                             "        SELECT\n" +
+                             "          categories.category_id,\n" +
+                             "          categories.parent_id\n" +
+                             "        FROM categories, rec\n" +
+                             "        WHERE categories.parent_id = rec.category_id\n" +
+                             "      )\n" +
+                             "      SELECT parent_id\n" +
+                             "      FROM rec\n" +
+                             "      WHERE category_id = (SELECT category_id\n" +
+                             "                           FROM products\n" +
+                             "                           WHERE product_id = ?))\n" +
+                             "GROUP BY cg.characteristic_group_id;")) {
+
+            statement.setLong(1, productId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                CharacteristicGroupModel characteristicGroup = new CharacteristicGroupModelBuilder()
+                        .setCharacteristicGroupName(resultSet.getString("name"))
+                        .setCharacteristics(getCharacteristicsByGroupId(productId, resultSet.getLong("characteristic_group_id")))
+                        .build();
+
+                characteristicsForProduct.add(characteristicGroup);
+            }
+
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return characteristicsForProduct;
+    }
+
+    private List<CharacteristicModel> getCharacteristicsByGroupId(long productId, long characteristic_group_id) {
+        List <CharacteristicModel> characteristicsValueForProduct = new ArrayList<>();
+
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT\n" +
+                             "  c.name,\n" +
+                             "  cv.value\n" +
+                             "FROM characteristic_groups cg\n" +
+                             "  LEFT JOIN characteristics c ON c.characteristic_group_id = cg.characteristic_group_id\n" +
+                             "  LEFT JOIN characteristic_values cv ON c.characteristic_id = cv.characteristic_id\n" +
+                             "WHERE cv.product_id = ?\n" +
+                             "      AND c.characteristic_group_id = ?;")) {
+
+            statement.setLong(1, productId);
+            statement.setLong(2, characteristic_group_id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+
+                CharacteristicModel characteristicModel = new CharacteristicModel();
+                characteristicModel.setName(resultSet.getString("name"));
+                characteristicModel.setValue(resultSet.getString("value"));
+
+                characteristicsValueForProduct.add(characteristicModel);
+            }
+
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return characteristicsValueForProduct;
     }
 
     /**

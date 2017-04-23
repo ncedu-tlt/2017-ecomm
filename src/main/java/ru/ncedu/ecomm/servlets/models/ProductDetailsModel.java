@@ -3,6 +3,7 @@ package ru.ncedu.ecomm.servlets.models;
 import java.util.List;
 
 public class ProductDetailsModel {
+    private long categoryId;
     private int rating;
     private long id;
     private long price;
@@ -19,6 +20,7 @@ public class ProductDetailsModel {
     }
 
     public ProductDetailsModel(int rating,
+                               long categoryId,
                                long id,
                                long price,
                                long discount,
@@ -27,6 +29,7 @@ public class ProductDetailsModel {
                                List<CharacteristicGroupModel> characteristicGroupModels,
                                List<String> imagesList) {
         this.rating = rating;
+        this.categoryId = categoryId;
         this.id = id;
         this.price = price;
         this.discount = discount;
@@ -34,6 +37,14 @@ public class ProductDetailsModel {
         this.description = description;
         this.characteristicGroupModels = characteristicGroupModels;
         this.imagesList = imagesList;
+    }
+
+    public long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public int getRating() {

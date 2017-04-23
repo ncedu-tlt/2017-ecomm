@@ -15,7 +15,7 @@
     };
     var EVENTS = {
         CLICK: 'click',
-        ADD_TO_CART:'addToCart',
+        ADD_TO_CART: 'addToCart',
         ADD_TO_COMPARE: 'addToCompare'
     };
     var STATES = {
@@ -58,20 +58,19 @@
                 }
             });
 
-            this.content.find(ELEMENTS.ADD_TO_CART).on(EVENTS.CLICK, function() {
+            this.content.find(ELEMENTS.ADD_TO_CART).on(EVENTS.CLICK, function () {
                 var productId = $(this).val();
                 frm.events.fire(EVENTS.ADD_TO_CART, productId);
             });
 
-            this.content.find(ELEMENTS.ADD_TO_COMPARE).on(EVENTS.CLICK, function() {
+            this.content.find(ELEMENTS.ADD_TO_COMPARE).on(EVENTS.CLICK, function () {
                 var productId = $(this).val();
                 frm.events.fire(EVENTS.ADD_TO_COMPARE, productId);
             });
         }
+});
 
+frm.components.register('productDetails', ProductComponent);
 
-    });
-
-    frm.components.register('productDetails', ProductComponent);
-
-})(jQuery, window);
+})
+(jQuery, window);

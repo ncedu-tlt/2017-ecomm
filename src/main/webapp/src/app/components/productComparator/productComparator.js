@@ -1,6 +1,10 @@
 (function ($, window) {
 
     var frm = window.frm;
+    var ELEMENTS = {
+        PRODUCT_RATING: '.jsCompareProductRating'
+    };
+
     var ProductComparator = frm.inheritance.inherits(frm.components.Component, {
 
         /**
@@ -8,6 +12,7 @@
          */
         init: function () {
 
+            this.content.find(ELEMENTS.PRODUCT_RATING).rating({initialRating: 2, maxRating: 5}).rating('disable');
         }
 
 

@@ -6,11 +6,14 @@ import ru.ncedu.ecomm.data.models.CharacteristicValueDAOObject;
 import ru.ncedu.ecomm.data.models.ProductDAOObject;
 import ru.ncedu.ecomm.data.models.Rating;
 import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
+import ru.ncedu.ecomm.servlets.models.CharacteristicGroupModel;
+import ru.ncedu.ecomm.servlets.models.ProductDetailsModel;
 import ru.ncedu.ecomm.servlets.models.ProductViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.CategoryViewBuilder;
 import ru.ncedu.ecomm.servlets.models.builders.ProductItemsViewBuilder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
@@ -168,5 +171,27 @@ public class ProductViewService {
                 .getDAOFactory()
                 .getProductDAO()
                 .getProductAllChildrenCategory(categoryId);
+    }
+
+    public ProductDetailsModel getFullProductById(long productId) {
+        ProductDetailsModel product = DAOFactory
+                .getDAOFactory()
+                .getProductDAO()
+                .getFullProductById(productId);
+
+        List<CharacteristicGroupModel> productChars = product.getCharacteristicGroupModels();
+        if (productChars.size() != 0) {
+            List<CharacteristicGroupModel> productsCharsToRemove = new ArrayList<>();
+
+            for (CharacteristicGroupModel characteristicGroupModel : product.getCharacteristicGroupModels()) {
+                if (characteristicGroupModel.getCharacteristics().isEmpty()) {
+                    productsCharsToRemove.add(characteristicGroupModel);
+                }
+            }
+            if (productsCharsToRemove.size() != 0) {
+                productChars.removeAll(productsCharsToRemove);
+            }
+        }
+        return product;
     }
 }

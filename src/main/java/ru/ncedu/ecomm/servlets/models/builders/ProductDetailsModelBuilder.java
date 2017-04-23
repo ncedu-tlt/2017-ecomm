@@ -8,6 +8,7 @@ import java.util.List;
 public class ProductDetailsModelBuilder {
 
     private int rating;
+    private long categoryId;
     private long id;
     private long price;
     private long discount;
@@ -50,6 +51,11 @@ public class ProductDetailsModelBuilder {
 
         return this;
     }
+    public ProductDetailsModelBuilder setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
+
+        return this;
+    }
 
     public ProductDetailsModelBuilder setDescription(String description) {
         this.description = description;
@@ -72,6 +78,7 @@ public class ProductDetailsModelBuilder {
     public ProductDetailsModel build(){
         return new ProductDetailsModel(
                 rating,
+                categoryId,
                 id,
                 price,
                 discount,

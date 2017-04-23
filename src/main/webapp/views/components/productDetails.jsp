@@ -43,7 +43,7 @@
                 <button name="productId" value="${browseProduct.getId()}" class="ui button jsAddToCart">ADD TO CART</button>
             </div>
             <div class="column right aligned container">
-                <div class="ui button jsAddToCompare" name="productId" value="${browseProduct.getId()}" tabindex="0">COMPARE</div>
+                <button class="ui button jsAddToCompare" name="productId" value="${browseProduct.getId()}" tabindex="0">COMPARE</button>
             </div>
         </div>
         <div class="ui one column grid">
