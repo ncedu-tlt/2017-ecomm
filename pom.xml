@@ -115,13 +115,15 @@
                         node/,
                         node_modules/,
                         bower_components/,
-                        app/,
+                        src/,
                         .eslintignore,
                         .eslintrc.json,
                         bower.json,
                         gulpfile.js,
                         package.json,
-                        semantic.json
+                        tsconfig.json,
+                        webpack.config.js,
+                        management.html
                     </warSourceExcludes>
                 </configuration>
             </plugin>
