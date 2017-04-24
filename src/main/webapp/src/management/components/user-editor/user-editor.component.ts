@@ -22,4 +22,5 @@ export class UserEditorComponent implements OnInit {
             .switchMap((params: Params) => this.usersService.getUser(+params['id']))
             .subscribe(user => this.user = user);
     }
+
 }
