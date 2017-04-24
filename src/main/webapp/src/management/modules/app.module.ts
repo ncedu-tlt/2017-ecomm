@@ -31,7 +31,6 @@ import {UserDetailsComponent} from "../components/user-details/user-details.comp
         TopMenuComponent,
         CharGroupListComponent,
         CharGroupEditorComponent,
-
     ],
     imports: [
         BrowserModule,

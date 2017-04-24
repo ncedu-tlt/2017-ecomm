@@ -20,4 +20,5 @@ const ROUTES: Routes = [
     imports: [ RouterModule.forRoot(ROUTES, {useHash: true}) ],
     exports: [ RouterModule ]
 })
+
 export class RoutingModule {}
