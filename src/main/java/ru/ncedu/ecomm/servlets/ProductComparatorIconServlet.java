@@ -2,6 +2,8 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.servlets.models.ProductDetailsModel;
+import ru.ncedu.ecomm.servlets.models.ProductViewModel;
+import ru.ncedu.ecomm.servlets.services.ProductConversionService;
 import ru.ncedu.ecomm.servlets.services.ProductViewService;
 
 import javax.servlet.ServletException;
@@ -63,7 +65,7 @@ public class ProductComparatorIconServlet extends HttpServlet {
 
     private void updateQuantity(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession();
-        List<ProductDetailsModel> productToCompareList;
+        List<ProductViewModel> productToCompareList;
 
         boolean isnNotRepeat;
         long productId = Long.parseLong(req.getParameter(PRODUCT_ID_PARAMETER));
@@ -72,7 +74,7 @@ public class ProductComparatorIconServlet extends HttpServlet {
             productToCompareList = new ArrayList<>();
         } else {
 
-            productToCompareList = (List<ProductDetailsModel>) session.getAttribute("compareList");
+            productToCompareList = (List<ProductViewModel>) session.getAttribute("compareList");
             if (productToCompareList.size() > MAX_SIZE) {
                 productToCompareList = clearList(productToCompareList);
 
@@ -80,7 +82,12 @@ public class ProductComparatorIconServlet extends HttpServlet {
         }
 
         if (productToCompareList.size() < MAX_SIZE) {
-            ProductDetailsModel productToCompare = findAndAddProduct(productId);
+            ProductDetailsModel baseProduct = findAndAddProduct(productId);
+
+            ProductViewModel productToCompare = ProductConversionService
+                    .getInstance()
+                    .converProductDitailsToProductViewModel(baseProduct);
+
             isnNotRepeat = checkProductCategoryRepeat(productToCompare, productToCompareList);
 
             if (isnNotRepeat) {
@@ -95,9 +102,10 @@ public class ProductComparatorIconServlet extends HttpServlet {
         redirectToPage(req, resp, Configuration.getProperty("components.blockForProductComparator"));
 
     }
-    private boolean checkProductCategoryRepeat(ProductDetailsModel productToCompare, List<ProductDetailsModel> productToCompareList) {
-        for (ProductDetailsModel productDetailsModel : productToCompareList) {
-            if (productDetailsModel.getId() == productToCompare.getId() || productDetailsModel.getCategoryId() != productToCompare.getCategoryId() ){
+
+    private boolean checkProductCategoryRepeat(ProductViewModel productToCompare, List<ProductViewModel> productToCompareList) {
+        for (ProductViewModel productViewModel : productToCompareList) {
+            if (productViewModel.getId() == productToCompare.getId() || productViewModel.getCategoryId() != productToCompare.getCategoryId()) {
                 return false;
             }
         }
@@ -109,8 +117,8 @@ public class ProductComparatorIconServlet extends HttpServlet {
     }
 
 
-    private List<ProductDetailsModel> clearList(List<ProductDetailsModel> productsToClear) {
-        List<ProductDetailsModel> productToRemove = new ArrayList<>();
+    private List<ProductViewModel> clearList(List<ProductViewModel> productsToClear) {
+        List<ProductViewModel> productToRemove = new ArrayList<>();
 
         for (int count = 0; count < productsToClear.size(); count++) {
             if (count > (MAX_SIZE - 1)) {
@@ -121,5 +129,4 @@ public class ProductComparatorIconServlet extends HttpServlet {
         productsToClear.removeAll(productToRemove);
         return productsToClear;
     }
-
 }

@@ -1,132 +1,66 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+
 <div class="ui container main-content jsProductComparator">
+    <div class="ui segments">
+        <div class="ui grid centered container gap">
+            <h2 class="ui center aligned header horizontal divider">
+                Compare
+            </h2>
 
-    <div class="ui grid centered container gap">
-        <h2 class="ui center aligned header horizontal divider">
-            Compare
-        </h2>
-        <div class="four wide column">
-            <img class="ui fluid image" src="${pageContext.request.contextPath}/images/defaultimage/image.png">
-            <h3 class="ui center aligned header">
-                <a>
-                    item
-                </a>
-            </h3>
-            <div class="ui grid centered container">
-                <div class="ui column centered grid massive rating disabled centered-rating" data-max-rating="5">
-                    <i class="icon active"></i>
-                    <i class="icon active"></i>
-                    <i class="icon active"></i>
-                    <i class="icon"></i>
-                    <i class="icon"></i>
-                </div>
-            </div>
+            <c:if test='${sessionScope == null || sessionScope.compareList == null}'>
+                <h2 class="ui center aligned icon header">
+                    <i class="circular ban icon"></i>
+                    No more products to compare...
+                </h2>
 
-            <h3 class="ui center aligned header">
-                <b>$100</b>
-            </h3>
-            <div class="centered-button">
-                <div class="ui buttons">
-                    <button class="ui labeled icon blue button">Add to cart</button>
-                    <button class="ui icon red button"><i class="remove icon"></i></button>
-                </div>
-            </div>
-        </div>
-        <div class="four wide column">
-            <img class="ui fluid image" src="${pageContext.request.contextPath}/images/defaultimage/image.png">
-            <h3 class="ui center aligned header">
-                <a>
-                    item
-                </a>
-            </h3>
-            <div class="ui grid centered container">
-                <div class="ui column centered grid massive rating disabled centered-rating" data-max-rating="5">
-                    <i class="icon active"></i>
-                    <i class="icon active"></i>
-                    <i class="icon active"></i>
-                    <i class="icon"></i>
-                    <i class="icon"></i>
-                </div>
-            </div>
+            </c:if>
+            <c:if test='${sessionScope.compareList != null}'>
 
-            <h3 class="ui center aligned header">
-                <b>$100</b>
-            </h3>
-            <div class="centered-button">
-                <div class="ui buttons">
-                    <button class="ui labeled icon blue button">Add to cart</button>
-                    <button class="ui icon red button"><i class="remove icon"></i></button>
-                </div>
-            </div>
-        </div>
-        <div class="four wide column">
-            <img class="ui fluid image" src="${pageContext.request.contextPath}/images/defaultimage/image.png">
-            <h3 class="ui center aligned header">
-                <a>
-                    item
-                </a>
-            </h3>
-            <div class="ui grid centered container">
-                <div class="ui column centered grid massive rating disabled centered-rating" data-max-rating="5">
-                    <i class="icon active"></i>
-                    <i class="icon active"></i>
-                    <i class="icon active"></i>
-                    <i class="icon"></i>
-                    <i class="icon"></i>
-                </div>
-            </div>
+                <c:set var="compareList" value="${sessionScope.compareList}"/>
 
-            <h3 class="ui center aligned header">
-                <b>$100</b>
-            </h3>
-            <div class="centered-button">
-                <div class="ui buttons">
-                    <button class="ui labeled icon blue button">Add to cart</button>
-                    <button class="ui icon red button"><i class="remove icon"></i></button>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="column">
-                <button class="ui icon right floated red button">Clear all<i class="remove icon"></i></button>
-            </div>
-        </div>
-
-        <h4 class="ui horizontal divider header">
-            <i class="bar chart icon"></i>
-            Specifications
-        </h4>
-        <div>
-            <table class="ui definition table">
-                <tbody>
-                <tr>
-                    <td class="two wide column">Characteristic group:</td>
-                </tr>
-                <tr>
-                    <td>characteristic</td>
-                    <td>text</td>
-                    <td>text</td>
-                    <td>text</td>
-                </tr>
-                <tr>
-                    <td>characteristic</td>
-                    <td>text</td>
-                    <td>text</td>
-                    <td>text</td>
-                </tr>
-                <tr>
-                    <td>characteristic</td>
-                    <td>text</td>
-                    <td>text</td>
-                    <td>text</td>
-                </tr>
-                </tbody>
-            </table>
+                <c:forEach var="product" items="${compareList}">
+                    <c:set var="image" value="${product.imageUrl}"/>
+                    <div class="four wide column">
+                        <img class="ui fluid image"
+                             src="${pageContext.request.contextPath}/${image != null ? image : "/images/defaultimage/image.png"}">
+                        <h3 class="ui center aligned header">
+                            <a>
+                                    ${product.name}
+                            </a>
+                        </h3>
+                        <div class="ui grid centered container">
+                            <div class="ui column centered grid massive rating disabled centered-rating jsCompareProductRating"
+                                 data-rating="${product.rating}">
+                            </div>
+                        </div>
+                        <h3 class="ui center aligned header">
+                            <c:if test='${product.discount != product.price}'>
+                                <b style="text-decoration: line-through;">$${product.price}</b>
+                                <a style="margin-left: .2em"
+                                   href="${pageContext.request.contextPath}/product?product_id=${product.id}"
+                                   class="ui red large label">
+                                    $${product.discount}
+                                </a>
+                            </c:if>
+                            <c:if test='${product.discount == product.price}'>
+                                <b>$${product.price}</b>
+                            </c:if>
+                        </h3>
+                        <div class="centered-button">
+                            <div class="ui buttons">
+                                <button class="ui labeled icon blue button" value="${product.id}">Add to cart</button>
+                                <button class="ui icon red button" value="${product.id}"><i class="remove icon"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+            </c:if>
         </div>
     </div>
 </div>
-
 <script>
     window.frm.components.init('productComparator', '.jsProductComparator', {
         addToCompareUrl: '${requestScope.addToCartURL}'

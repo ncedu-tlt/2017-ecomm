@@ -6,11 +6,9 @@
 
 
         init: function () {
-            var $this = $(this.content);
-            var body = $this.closest('body');
 
-            $this.sticky({
-                context: body
+            this.content.sticky({
+                context: 'body'
             });
         }
 
