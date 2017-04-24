@@ -86,7 +86,7 @@ public class ProductComparatorIconServlet extends HttpServlet {
 
             ProductViewModel productToCompare = ProductConversionService
                     .getInstance()
-                    .converProductDitailsToProductViewModel(baseProduct);
+                    .convertProductDetailsToProductViewModel(baseProduct);
 
             isnNotRepeat = checkProductCategoryRepeat(productToCompare, productToCompareList);
 

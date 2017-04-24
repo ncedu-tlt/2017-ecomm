@@ -23,7 +23,7 @@ public class ProductConversionService {
     }
 
 
-    public ProductViewModel converProductDitailsToProductViewModel(ProductDetailsModel productDetailsModel){
+    public ProductViewModel convertProductDetailsToProductViewModel(ProductDetailsModel productDetailsModel){
         return new ProductItemsViewBuilder()
                 .setProductId(productDetailsModel.getId())
                 .setDiscount(productDetailsModel.getDiscount())
