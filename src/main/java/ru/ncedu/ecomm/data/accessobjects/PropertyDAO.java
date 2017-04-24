@@ -15,4 +15,7 @@ public interface PropertyDAO {
 
     Property updateProperty(Property property);
 
+    Property updateValueProperty(Property property);
+
+    Property updateIdProperty(Property property);
 }

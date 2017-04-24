@@ -134,4 +134,46 @@ public class PostgresPropertyDAO implements PropertyDAO {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public Property updateValueProperty(Property property) {
+
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "UPDATE properties\n" +
+                             "SET value = ?\n" +
+                             "WHERE property_id = ?")) {
+            statement.setString(1, property.getValue());
+            statement.setString(2, property.getId());
+            statement.execute();
+
+            LOG.info(null);
+            return property;
+
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Property updateIdProperty(Property property) {
+
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "UPDATE properties\n" +
+                             "SET property_id = ?\n" +
+                             "WHERE value = ?")) {
+            statement.setString(1, property.getId());
+            statement.setString(2, property.getValue());
+            statement.execute();
+
+            LOG.info(null);
+            return property;
+
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
 }

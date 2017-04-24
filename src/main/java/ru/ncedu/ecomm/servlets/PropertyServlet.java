@@ -105,25 +105,30 @@ public class PropertyServlet extends HttpServlet {
                 .setValue(newPropertyVal)
                 .build();
 
-        DAOFactory.getDAOFactory().getPropertyDAO().updateProperty(property);
+        if (Objects.equals(request.getParameter("field"), "three wide column jsProperty")){
+            DAOFactory.getDAOFactory().getPropertyDAO().updateIdProperty(property);
+        }
+        if (Objects.equals(request.getParameter("field"), "thirteen wide column jsProperty")){
+            DAOFactory.getDAOFactory().getPropertyDAO().updateValueProperty(property);
+        }
 
         request.setAttribute("property" ,property);
         request.setAttribute("field" ,field );
-        redirectToPage(request, response, Configuration.getProperty("page.showChangeValue"));
+        request.getRequestDispatcher(Configuration.getProperty("page.showChangeValue")).forward(request, response);
 
 
-       // }
     }
 
 
 
     private void removePropertyFromDAO(HttpServletRequest request, HttpServletResponse response){
         String propertyId = request.getParameter("propertyId");
-        String newPropertyId = propertyId.replaceAll("\\p{Cntrl}", "");
-
+        propertyId.replaceAll("\\p{Cntrl}", "");
+        String newPropertyId = propertyId.trim();
 
         String propertyVal = request.getParameter("valueText");
-        String newPropertyVal = propertyVal.replaceAll("\\p{Cntrl}", " ");
+        propertyVal.replaceAll("\\p{Cntrl}", "");
+        String newPropertyVal = propertyId.trim();
 
         Property property = new PropertyBuilder()
                 .setPropertyId(newPropertyId)
@@ -135,14 +140,8 @@ public class PropertyServlet extends HttpServlet {
 
 
     private void addNewPropertyToDAO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Property property = new PropertyBuilder()
-                .setPropertyId(request.getParameter("propertyId"))
-                .setValue(request.getParameter("valueText"))
-                .build();
 
-        request.setAttribute("property" ,property );
-        redirectToPage(request, response, Configuration.getProperty("page.addProperty"));
-        //request.getRequestDispatcher(Configuration.getProperty("page.addProperty")).forward(request, response);
+        request.getRequestDispatcher(Configuration.getProperty("page.addProperty")).forward(request, response);
     }
 
     private void editProperty(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -165,10 +164,14 @@ public class PropertyServlet extends HttpServlet {
                 .build();
 
         request.setAttribute("property" ,property);
-        redirectToPage(request, response, Configuration.getProperty("page.showNewProperty"));
+        DAOFactory.getDAOFactory().getPropertyDAO().addProperty(property);
+        request.getRequestDispatcher(Configuration.getProperty("page.showNewProperty")).forward(request, response);
     }
 
 
 
 }
+
+
+
 

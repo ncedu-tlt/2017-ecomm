@@ -37,14 +37,14 @@
                     saveButton.click(function () {
                         var $this = $(this);
                         var root = $this.closest('.jsProperty');
+                        var thisField = root.attr('class');
                         var id = root.find('.jsPropertId').val();
                         var text = root.find('.jsPropertVal').val();
 
 
-                        $.post(globalUrlTest + '/properties',{propertyId: id, valueText: text, action: 'save', field: root}, function (data) {
+                        $.post(globalUrlTest + '/properties',{propertyId: id, valueText: text, action: 'save', field: thisField}, function (data) {
 
                             root.html(data);
-
                         });
                     });
 
@@ -64,12 +64,19 @@
 
             addButton.click(function () {
                 var $this = $(this);
-                var root = $this.closest('.jsTable');
+                var root = $this.closest('.jsPropertiesComponent');
+                var table = root.find('.jsTable');
                 $.post(globalUrlTest + '/properties',{ action: 'add'}, function (data) {
-                    root.append(data);
+                    table.append(data);
+
+                    var cancelRow = table.find('.jsCancelRow');
+                    cancelRow.click(function () {
+                        var inputRow = this.closest('.jsRowVal');
+                        inputRow.remove();
+                    });
 
 
-                    var saveRow = this.content.find('.jsSaveRow');
+                    var saveRow = table.find('.jsSaveRow');
                     saveRow.click(function () {
                         var $this = $(this);
                         var root = $this.closest('.jsRowVal');
@@ -78,7 +85,7 @@
 
                         $.post(globalUrlTest + '/properties',{valueText: text, propertyId: id, action: 'saveRow'}, function (data) {
 
-                            root.append(data);
+                            root.html(data);
                         });
 
                     });
@@ -94,6 +101,8 @@
     frm.components.register('PropertiesComponent', PropertiesComponent);
 
 })(jQuery, window);
+
+
 
 
 

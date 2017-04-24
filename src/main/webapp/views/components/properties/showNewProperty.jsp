@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <c:set var="property" value="${requestScope.property}"/>
-<div class="row jsNewTableValue">
+
     <div class="three wide column jsNewPropertyId">
         ${property.getId()}
     </div>
@@ -14,7 +14,7 @@
         </button>
 
     </div>
-</div>
+
 
 
 

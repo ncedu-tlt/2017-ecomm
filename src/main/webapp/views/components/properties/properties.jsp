@@ -51,15 +51,3 @@
     });
 </script>
 
-
-<!--<button class="right floated small ui button jsRemoveLineButton">
-Delete property
-</button>
--->
-<!--<button class="circular right floated ui icon button middle aligned">-->
-
-<!--<div class="ui mini basic icon buttons">
-<button class="mini ui button jsRemoveLineButton">
-<i class="remove icon"></i>
-</button>
-</div>-->
