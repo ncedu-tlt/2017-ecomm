@@ -2,12 +2,12 @@ package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.SalesOrdersDAO;
-import ru.ncedu.ecomm.data.models.SalesOrderDAOObject;
-import ru.ncedu.ecomm.data.models.builders.SalesOrderDAOObjectBuilder;
-import ru.ncedu.ecomm.data.models.OrderItem;
-import ru.ncedu.ecomm.data.models.SalesOrder;
-import ru.ncedu.ecomm.data.models.builders.OrderItemBuilder;
-import ru.ncedu.ecomm.data.models.builders.SalesOrderBuilder;
+import ru.ncedu.ecomm.data.models.dao.OrderItem;
+import ru.ncedu.ecomm.data.models.dao.SalesOrder;
+import ru.ncedu.ecomm.data.models.dao.SalesOrderDAOObject;
+import ru.ncedu.ecomm.data.models.dao.builders.OrderItemBuilder;
+import ru.ncedu.ecomm.data.models.dao.builders.SalesOrderBuilder;
+import ru.ncedu.ecomm.data.models.dao.builders.SalesOrderDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;

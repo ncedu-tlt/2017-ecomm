@@ -1,8 +1,9 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
+import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.ProductDAO;
-import ru.ncedu.ecomm.data.models.ProductDAOObject;
-import ru.ncedu.ecomm.data.models.builders.ProductDAOObjectBuilder;
+import ru.ncedu.ecomm.data.models.dao.ProductDAOObject;
+import ru.ncedu.ecomm.data.models.dao.builders.ProductDAOObjectBuilder;
 import ru.ncedu.ecomm.servlets.models.*;
 import ru.ncedu.ecomm.servlets.models.builders.CharacteristicGroupModelBuilder;
 import ru.ncedu.ecomm.servlets.models.builders.PriceRangeViewModelBuilder;
@@ -10,8 +11,10 @@ import ru.ncedu.ecomm.servlets.models.builders.ProductDetailsModelBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
-import java.util.*;
-import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PostgresProductDAO implements ProductDAO {
 

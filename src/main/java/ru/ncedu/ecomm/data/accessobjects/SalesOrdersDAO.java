@@ -1,8 +1,8 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.SalesOrderDAOObject;
-import ru.ncedu.ecomm.data.models.OrderItem;
-import ru.ncedu.ecomm.data.models.SalesOrder;
+import ru.ncedu.ecomm.data.models.dao.OrderItem;
+import ru.ncedu.ecomm.data.models.dao.SalesOrder;
+import ru.ncedu.ecomm.data.models.dao.SalesOrderDAOObject;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.ProductDAOObject;
+import ru.ncedu.ecomm.data.models.dao.ProductDAOObject;
 import ru.ncedu.ecomm.servlets.models.FilterViewModel;
 import ru.ncedu.ecomm.servlets.models.PriceRangeViewModel;
 import ru.ncedu.ecomm.servlets.models.ProductDetailsModel;

@@ -1,14 +1,14 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
+import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.CategoryDAO;
-import ru.ncedu.ecomm.data.models.CategoryDAOObject;
-import ru.ncedu.ecomm.data.models.builders.CategoryDAOObjectBuilder;
+import ru.ncedu.ecomm.data.models.dao.CategoryDAOObject;
+import ru.ncedu.ecomm.data.models.dao.builders.CategoryDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 public class PostgresCategoryDAO implements CategoryDAO {
     private static final Logger LOG = Logger.getLogger(PostgresCategoryDAO.class);

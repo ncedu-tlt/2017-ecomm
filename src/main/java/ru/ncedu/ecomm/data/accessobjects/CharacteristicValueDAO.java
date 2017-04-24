@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.CharacteristicValueDAOObject;
+import ru.ncedu.ecomm.data.models.dao.CharacteristicValueDAOObject;
 
 import java.util.List;
 

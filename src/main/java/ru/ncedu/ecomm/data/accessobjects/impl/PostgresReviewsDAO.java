@@ -1,16 +1,16 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
+import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.ReviewsDAO;
-import ru.ncedu.ecomm.data.models.Rating;
-import ru.ncedu.ecomm.data.models.ReviewDAOObject;
-import ru.ncedu.ecomm.data.models.builders.RatingBuilder;
-import ru.ncedu.ecomm.data.models.builders.ReviewDAOObjectBuilder;
+import ru.ncedu.ecomm.data.models.dao.Rating;
+import ru.ncedu.ecomm.data.models.dao.ReviewDAOObject;
+import ru.ncedu.ecomm.data.models.dao.builders.RatingBuilder;
+import ru.ncedu.ecomm.data.models.dao.builders.ReviewDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 public class PostgresReviewsDAO implements ReviewsDAO {
     private static final Logger LOG  = Logger.getLogger(PostgresReviewsDAO.class);

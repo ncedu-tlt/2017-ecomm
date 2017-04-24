@@ -1,6 +1,7 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.PropertyDAOObject;
+import ru.ncedu.ecomm.data.models.dao.PropertyDAOObject;
+
 import java.util.List;
 
 public interface PropertyDAO {

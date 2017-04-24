@@ -1,14 +1,14 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
+import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.PropertyDAO;
-import ru.ncedu.ecomm.data.models.PropertyDAOObject;
-import ru.ncedu.ecomm.data.models.builders.PropertyDAOObjectBuilder;
+import ru.ncedu.ecomm.data.models.dao.PropertyDAOObject;
+import ru.ncedu.ecomm.data.models.dao.builders.PropertyDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 
 public class PostgresPropertyDAO implements PropertyDAO {

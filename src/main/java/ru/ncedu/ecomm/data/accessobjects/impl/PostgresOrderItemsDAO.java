@@ -1,14 +1,14 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
+import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.OrderItemsDAO;
-import ru.ncedu.ecomm.data.models.OrderItemDAOObject;
-import ru.ncedu.ecomm.data.models.builders.OrderItemDAOObjectBuilder;
+import ru.ncedu.ecomm.data.models.dao.OrderItemDAOObject;
+import ru.ncedu.ecomm.data.models.dao.builders.OrderItemDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 public class PostgresOrderItemsDAO implements OrderItemsDAO {
     private static final Logger LOG  = Logger.getLogger(PostgresOrderItemsDAO.class);

@@ -1,14 +1,14 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
+import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.CharacteristicValueDAO;
-import ru.ncedu.ecomm.data.models.CharacteristicValueDAOObject;
-import ru.ncedu.ecomm.data.models.builders.CharacteristicValueDAOObjectBuilder;
+import ru.ncedu.ecomm.data.models.dao.CharacteristicValueDAOObject;
+import ru.ncedu.ecomm.data.models.dao.builders.CharacteristicValueDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 public class PostgresCharacteristicVlaueDAO implements CharacteristicValueDAO {
     private static final Logger LOG = Logger.getLogger(PostgresCharacteristicVlaueDAO.class);

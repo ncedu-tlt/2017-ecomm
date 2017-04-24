@@ -1,14 +1,14 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
+import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.RoleDAO;
-import ru.ncedu.ecomm.data.models.RoleDAOObject;
-import ru.ncedu.ecomm.data.models.builders.RoleDAOObjectBuilder;
+import ru.ncedu.ecomm.data.models.dao.RoleDAOObject;
+import ru.ncedu.ecomm.data.models.dao.builders.RoleDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 public class PostgresRoleDAO implements RoleDAO {
     private static final Logger LOG  = Logger.getLogger(PostgresRoleDAO.class);

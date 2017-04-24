@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.CharacteristicGroupDAOObject;
+import ru.ncedu.ecomm.data.models.dao.CharacteristicGroupDAOObject;
 
 import java.util.List;
 

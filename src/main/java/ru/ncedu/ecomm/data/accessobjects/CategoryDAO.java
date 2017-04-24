@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.CategoryDAOObject;
+import ru.ncedu.ecomm.data.models.dao.CategoryDAOObject;
 
 import java.util.List;
 

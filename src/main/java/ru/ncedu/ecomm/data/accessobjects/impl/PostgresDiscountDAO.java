@@ -1,8 +1,9 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
+import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.DiscountDAO;
-import ru.ncedu.ecomm.data.models.DiscountDAOObject;
-import ru.ncedu.ecomm.data.models.builders.DiscountDAOObjectBuilder;
+import ru.ncedu.ecomm.data.models.dao.DiscountDAOObject;
+import ru.ncedu.ecomm.data.models.dao.builders.DiscountDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.Connection;
@@ -11,7 +12,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 public class PostgresDiscountDAO implements DiscountDAO {
     private static final Logger LOG  = Logger.getLogger(PostgresDiscountDAO.class);

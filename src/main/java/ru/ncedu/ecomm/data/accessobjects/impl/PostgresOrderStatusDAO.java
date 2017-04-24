@@ -1,15 +1,15 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
+import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.OrderSratusDAO;
-import ru.ncedu.ecomm.data.models.OrderStatusDAOObject;
-import ru.ncedu.ecomm.data.models.builders.OrderStatusDAOObjectBuilder;
+import ru.ncedu.ecomm.data.models.dao.OrderStatusDAOObject;
+import ru.ncedu.ecomm.data.models.dao.builders.OrderStatusDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.apache.log4j.Logger;
 
 public class PostgresOrderStatusDAO implements OrderSratusDAO{
     private static final Logger LOG  = Logger.getLogger(PostgresOrderStatusDAO.class);

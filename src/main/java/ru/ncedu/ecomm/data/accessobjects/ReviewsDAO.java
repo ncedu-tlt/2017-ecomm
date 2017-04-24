@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
-import ru.ncedu.ecomm.data.models.Rating;
-import ru.ncedu.ecomm.data.models.ReviewDAOObject;
+import ru.ncedu.ecomm.data.models.dao.Rating;
+import ru.ncedu.ecomm.data.models.dao.ReviewDAOObject;
 
 import java.util.List;
 

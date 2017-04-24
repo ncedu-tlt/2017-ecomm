@@ -1,14 +1,14 @@
 package ru.ncedu.ecomm.data.accessobjects.impl;
 
+import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.RecomendedProductsDAO;
-import ru.ncedu.ecomm.data.models.RecomendedProductDAOObject;
-import ru.ncedu.ecomm.data.models.builders.RecomendedProductDAOObjectBuilder;
+import ru.ncedu.ecomm.data.models.dao.RecomendedProductDAOObject;
+import ru.ncedu.ecomm.data.models.dao.builders.RecomendedProductDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 public class PostgresRecomendedProductsDAO implements RecomendedProductsDAO{
     private static final Logger LOG  = Logger.getLogger(PostgresRecomendedProductsDAO.class);
