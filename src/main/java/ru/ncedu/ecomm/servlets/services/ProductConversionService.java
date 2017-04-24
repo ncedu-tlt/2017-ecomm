@@ -26,7 +26,7 @@ public class ProductConversionService {
     public ProductViewModel convertProductDetailsToProductViewModel(ProductDetailsModel productDetailsModel){
         return new ProductItemsViewBuilder()
                 .setProductId(productDetailsModel.getId())
-                .setDiscount(productDetailsModel.getDiscount())
+                .setCategoryId(productDetailsModel.getCategoryId())
                 .setName(productDetailsModel.getName())
                 .setDiscount(productDetailsModel.getDiscount())
                 .setPrice(productDetailsModel.getPrice())
