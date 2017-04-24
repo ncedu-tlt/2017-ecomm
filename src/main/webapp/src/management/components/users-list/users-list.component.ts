@@ -21,7 +21,7 @@ export class UsersListComponent implements OnInit {
             },
             {
                 name: 'Role',
-                key: 'roleId',
+                key: 'roleName',
             },
             {
                 name: 'Email',
@@ -51,5 +51,9 @@ export class UsersListComponent implements OnInit {
             this.model.data = this.model.data.filter(getUser => getUser !== user);
             if(this.userModel === user){this.userModel = null;}
         })
+    }
+
+    onEdit(user: UserModel): void {
+        this.router.navigate(['/user', user.id]);
     }
 }

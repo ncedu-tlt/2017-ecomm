@@ -1,7 +1,7 @@
 export default class UserModel {
     id: number;
     firstName: string;
-    roleId: number;
+    roleName: string;
     email: string;
     registrationDate: string;
 }

@@ -11,13 +11,14 @@ import {RootComponent} from "../components/root/root.component";
 import {NavigationComponent} from "../components/navigation/navigation.component";
 import {UsersListComponent} from "../components/users-list/users-list.component";
 import {DataTableComponent} from "../components/data-table/data-table.component";
-import {UserDetailsComponent} from "../components/user-details/user-details.component";
 import {TopMenuComponent} from "../components/top-menu/top-menu.component";
 import {CharGroupListComponent} from "../components/char-group-list/char-group-list.component";
-import {CharGroupEditorComponent} from "../components/char-group-editor/char-group-editor.component";
 
 import {UsersService} from "../services/users.service";
 import {CharGroupService} from "../services/char-group.service";
+import {CharGroupEditorComponent} from "../components/char-group-editor/char-group-editor.component";
+import {UserEditorComponent} from "../components/user-editor/user-editor.component";
+import {UserDetailsComponent} from "../components/user-details/user-details.component";
 
 @NgModule({
     declarations: [
@@ -25,10 +26,12 @@ import {CharGroupService} from "../services/char-group.service";
         NavigationComponent,
         UsersListComponent,
         DataTableComponent,
+        UserEditorComponent,
         UserDetailsComponent,
         TopMenuComponent,
         CharGroupListComponent,
-        CharGroupEditorComponent
+        CharGroupEditorComponent,
+
     ],
     imports: [
         BrowserModule,

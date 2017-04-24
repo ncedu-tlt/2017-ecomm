@@ -8,7 +8,7 @@ declare var contextPath: string;
 @Injectable()
 export class UsersService {
 
-    private usersUrl = `${contextPath}/rest/ecomm/users`;
+    private usersUrl = `${contextPath}/rest/ecomm/management/users`;
 
     private headers = new Headers({ 'Content-Type': 'application/json' });
 
