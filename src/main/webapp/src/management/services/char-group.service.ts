@@ -13,10 +13,9 @@ export class CharGroupService {
 
     private headers = new Headers({'Content-Type': 'application/json'});
 
-    options: RequestOptions;
+    options: RequestOptions = new RequestOptions({headers: this.headers});
 
     constructor(private http: Http) {
-        this.options = new RequestOptions({headers: this.headers});
     }
 
     getCharacteristicGroups(): Promise<CharGroupModel[]> {
@@ -26,17 +25,20 @@ export class CharGroupService {
             .catch(this.handleError);
     }
 
-    addCharacteristicGroup(charGroupName: string, charGroupIdMax: number): Observable<CharGroupModel> {
-        const groupId = ++charGroupIdMax;
-        const url = `${this.charGroupUrl}`;
-        const options = new RequestOptions({ headers: this.headers });
-        return this.http.post(url, JSON.stringify
-        ({
-            characteristicGroupName: charGroupName,
-            characteristicGroupId: groupId
-        }), options)
-            .map((res:Response) => res.json())
-            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+    getCharacteristicGroup(id: number): Promise<CharGroupModel>{
+        const url = `${this.charGroupUrl}/${id}`;
+        return this.http.get(url)
+            .toPromise()
+            .then(response => response.json() as CharGroupModel)
+            .catch(this.handleError);
+    }
+
+    addCharacteristicGroup(charGroupName: string): Promise<CharGroupModel> {
+        let bodyRequest: any = {characteristicGroupName: charGroupName};
+        return this.http.post(this.charGroupUrl, {characteristicGroupName: charGroupName}, this.options)
+            .toPromise()
+            .then(response => response.json() as CharGroupModel)
+            .catch(this.handleError)
     }
 
     deleteCharacteristicGroup(charGroupId: number): Promise<void> {

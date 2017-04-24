@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
 import TableModel from "./models/table.model";
-import UserModel from "../../models/user.model";
 
 @Component({
     selector: 'nc-data-table',
@@ -21,6 +20,7 @@ export class DataTableComponent {
         if (data === this.selectedRow) {
             row.classList.remove('active');
             this.selectedRow = null;
+            this.onSelectEmitter.emit(null);
         }
         else {
             this.onSelectEmitter.emit(data);

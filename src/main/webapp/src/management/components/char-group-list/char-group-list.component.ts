@@ -2,15 +2,15 @@ import {Component, OnInit, Input} from '@angular/core';
 import TableModel from "../data-table/models/table.model";
 import CharGroupModel from "../../models/char-group.model";
 import {CharGroupService} from "../../services/char-group.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'nc-char-group-list',
     templateUrl: 'char-group-list.component.html',
+    styleUrls: ['char-group-list.component.css']
 })
 export class CharGroupListComponent implements OnInit {
     charGroupModel: CharGroupModel;
-    groupService: CharGroupService;
-    message: string;
 
     @Input() model: TableModel = {
         data: [],
@@ -26,8 +26,8 @@ export class CharGroupListComponent implements OnInit {
         ]
     };
 
-    constructor(private charGroupService: CharGroupService) {
-        this.groupService = this.charGroupService;
+    constructor(private charGroupService: CharGroupService,
+                private router: Router) {
     }
 
     ngOnInit(): void {
@@ -39,25 +39,29 @@ export class CharGroupListComponent implements OnInit {
         this.charGroupModel = charGroup;
     }
 
-    onAddition(groupName: string): void {
-        groupName = groupName.trim();
-        if (!groupName) return;
-        this.charGroupService
-            .addCharacteristicGroup(groupName, this.model.data.length)
-            .subscribe(group  => this.model.data.push(group));
+    onAddition(): void {
+        // if (!groupName.trim()) return;
+        // this.charGroupService
+        //     .addCharacteristicGroup(groupName)
+        //     .then(group => {
+        //         this.model.data.push(group);
+        //     })
+    }
+
+    onEdit(): void {
+        if (this.charGroupModel) {
+            console.log(this.charGroupModel.characteristicGroupName + ' edited');
+        }
     }
 
     onDelete(): void {
-        this.groupService
-            .deleteCharacteristicGroup(this.charGroupModel.characteristicGroupId)
-            .then(() => {
-                this.model.data = this.model.data.filter(group => group !== this.charGroupModel);
-                this.charGroupModel = null;
-            });
-    }
-
-    messageOnDelete(groupName: string): void {
-        this.message = groupName + ' was delete.';
-        console.log(this.message);
+        if (this.charGroupModel) {
+            this.charGroupService
+                .deleteCharacteristicGroup(this.charGroupModel.characteristicGroupId)
+                .then(() => {
+                    this.model.data = this.model.data.filter(group => group !== this.charGroupModel);
+                    this.charGroupModel = null;
+                });
+        }
     }
 }

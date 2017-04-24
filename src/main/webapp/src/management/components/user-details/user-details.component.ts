@@ -6,7 +6,7 @@ import {UsersService} from "../../services/users.service";
 
 @Component({
     selector: 'nc-user-details',
-    templateUrl: './user-details.component.html'
+    templateUrl: 'user-details.component.html'
 })
 export class UserDetailsComponent implements OnInit {
 

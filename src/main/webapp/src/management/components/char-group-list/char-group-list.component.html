@@ -1,8 +1,16 @@
 <div class="ui center aligned container">
     <h1>Characteristic group</h1>
-    <nc-char-group-editor
-            (addGroup)="onAddition($event)"
-            (deleteGroup)="onDelete($event)">
-    </nc-char-group-editor>
 </div>
+<div class="ui container right aligned char-group-editor">
+    <button (click)="onAddition('bob')" class="ui primary button">
+        New group
+    </button>
+    <button (click)="onEdit()" class="ui yellow button">
+        Edit
+    </button>
+    <button (click)="onDelete()" class="ui red button">
+        Delete
+    </button>
+</div>
+
 <nc-data-table [model]="model" (select)="onSelect($event)"></nc-data-table>

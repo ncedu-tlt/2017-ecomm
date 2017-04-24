@@ -1,32 +1,12 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
-import {CharGroupService} from "../../services/char-group.service";
-import CharGroupModel from "../../models/char-group.model";
+import { Component, OnInit } from '@angular/core';
 
 @Component({
     selector: 'nc-char-group-editor',
-    templateUrl: 'char-group-editor.component.html',
-    styleUrls: ['char-group-editor.component.css']
+    templateUrl: 'char-group-editor.component.html'
 })
-export class CharGroupEditorComponent{
+export class CharGroupEditorComponent implements OnInit {
+    constructor() { }
 
-    model: string;
+    ngOnInit() { }
 
-    @Output('addGroup') addGroup = new EventEmitter<String>();
-    @Output('deleteGroup') deleteGroup = new EventEmitter<any>();
-
-    onAddition(): void{
-        this.addGroup.emit(this.model);
-    }
-
-    onDelete(): void{
-        this.deleteGroup.emit();
-    }
-
-    showPopup(event: any, myPopup: any):void{
-        myPopup.show(event, {position: 'top center'})
-    }
-
-    hidePopup(myPopup: any):void{
-        myPopup.hide()
-    }
 }

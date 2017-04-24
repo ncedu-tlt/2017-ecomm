@@ -1,12 +1,8 @@
-.main-content{
-    min-height:81% !important;
+html, body {
+    margin: 0;
+    padding: 0;
 }
 
-html, body{
-    margin:0;
-    padding:0;
-    height:100%;
-}
-.jsMainWrapper{
-    height:100%;
+body {
+    height: auto;
 }
