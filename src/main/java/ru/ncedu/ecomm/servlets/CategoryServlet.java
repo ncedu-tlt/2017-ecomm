@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets;
 
-import ru.ncedu.ecomm.data.models.CategoryDAOObject;
+import ru.ncedu.ecomm.data.models.dao.CategoryDAOObject;
 import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
 import ru.ncedu.ecomm.servlets.models.FilterViewModel;
 import ru.ncedu.ecomm.servlets.models.PriceRangeViewModel;

@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets.services;
 
-import ru.ncedu.ecomm.data.models.DiscountDAOObject;
+import ru.ncedu.ecomm.data.models.dao.DiscountDAOObject;
 
 import java.util.List;
 

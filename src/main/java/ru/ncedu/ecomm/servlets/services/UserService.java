@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets.services;
 
-import ru.ncedu.ecomm.data.models.UserDAOObject;
+import ru.ncedu.ecomm.data.models.dao.UserDAOObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

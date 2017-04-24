@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
-import ru.ncedu.ecomm.data.models.UserDAOObject;
+import ru.ncedu.ecomm.data.models.dao.UserDAOObject;
 import ru.ncedu.ecomm.utils.EncryptionUtils;
 
 import javax.servlet.ServletException;

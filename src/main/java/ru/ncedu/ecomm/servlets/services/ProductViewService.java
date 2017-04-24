@@ -1,10 +1,10 @@
 package ru.ncedu.ecomm.servlets.services;
 
 import ru.ncedu.ecomm.data.DAOFactory;
-import ru.ncedu.ecomm.data.models.CategoryDAOObject;
-import ru.ncedu.ecomm.data.models.CharacteristicValueDAOObject;
-import ru.ncedu.ecomm.data.models.ProductDAOObject;
-import ru.ncedu.ecomm.data.models.Rating;
+import ru.ncedu.ecomm.data.models.dao.CategoryDAOObject;
+import ru.ncedu.ecomm.data.models.dao.CharacteristicValueDAOObject;
+import ru.ncedu.ecomm.data.models.dao.ProductDAOObject;
+import ru.ncedu.ecomm.data.models.dao.Rating;
 import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
 import ru.ncedu.ecomm.servlets.models.CharacteristicGroupModel;
 import ru.ncedu.ecomm.servlets.models.ProductDetailsModel;
@@ -13,7 +13,6 @@ import ru.ncedu.ecomm.servlets.models.builders.CategoryViewBuilder;
 import ru.ncedu.ecomm.servlets.models.builders.ProductItemsViewBuilder;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;

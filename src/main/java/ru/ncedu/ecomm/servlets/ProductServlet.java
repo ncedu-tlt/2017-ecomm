@@ -1,8 +1,11 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.DAOFactory;
-import ru.ncedu.ecomm.data.models.*;
-import ru.ncedu.ecomm.servlets.models.*;
+import ru.ncedu.ecomm.data.models.dao.*;
+import ru.ncedu.ecomm.servlets.models.CharacteristicGroupModel;
+import ru.ncedu.ecomm.servlets.models.CharacteristicModel;
+import ru.ncedu.ecomm.servlets.models.ProductDetailsModel;
+import ru.ncedu.ecomm.servlets.models.ReviewViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.CharacteristicGroupModelBuilder;
 import ru.ncedu.ecomm.servlets.models.builders.CharacteristicModelBuilder;
 import ru.ncedu.ecomm.servlets.models.builders.ProductDetailsModelBuilder;
@@ -16,7 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import static ru.ncedu.ecomm.servlets.services.ProductViewService.CHARACTERISTIC_ID_FOR_IMAGE_URL;
 import static ru.ncedu.ecomm.servlets.services.ProductViewService.DEFAULT_IMAGE_URL;

@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets.services.passwordRecovery;
 
-import ru.ncedu.ecomm.data.models.UserDAOObject;
+import ru.ncedu.ecomm.data.models.dao.UserDAOObject;
 
 import java.util.ArrayList;
 import java.util.List;

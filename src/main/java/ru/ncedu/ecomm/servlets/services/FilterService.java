@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets.services;
 
-import ru.ncedu.ecomm.data.models.CharacteristicDAOObject;
-import ru.ncedu.ecomm.data.models.CharacteristicValueDAOObject;
+import ru.ncedu.ecomm.data.models.dao.CharacteristicDAOObject;
+import ru.ncedu.ecomm.data.models.dao.CharacteristicValueDAOObject;
 import ru.ncedu.ecomm.servlets.models.FilterValueViewModel;
 import ru.ncedu.ecomm.servlets.models.FilterViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.FilterViewModelBuilder;

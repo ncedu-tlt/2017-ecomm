@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
-import ru.ncedu.ecomm.data.models.CategoryDAOObject;
-import ru.ncedu.ecomm.data.models.ProductDAOObject;
+import ru.ncedu.ecomm.data.models.dao.CategoryDAOObject;
+import ru.ncedu.ecomm.data.models.dao.ProductDAOObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

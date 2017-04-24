@@ -2,8 +2,8 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.DAOFactory;
-import ru.ncedu.ecomm.data.models.RoleDAOObject;
-import ru.ncedu.ecomm.data.models.UserDAOObject;
+import ru.ncedu.ecomm.data.models.dao.RoleDAOObject;
+import ru.ncedu.ecomm.data.models.dao.UserDAOObject;
 import ru.ncedu.ecomm.servlets.models.EnumRoles;
 import ru.ncedu.ecomm.servlets.models.UserViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.UserViewModelBuilder;

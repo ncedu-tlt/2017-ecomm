@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets;
 
-import ru.ncedu.ecomm.data.models.CategoryDAOObject;
+import ru.ncedu.ecomm.data.models.dao.CategoryDAOObject;
 import ru.ncedu.ecomm.servlets.models.CategoryHierarchyViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.CategoryHierarchyViewBuilder;
 

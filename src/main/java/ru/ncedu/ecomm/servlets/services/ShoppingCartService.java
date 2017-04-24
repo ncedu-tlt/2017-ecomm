@@ -1,16 +1,11 @@
 package ru.ncedu.ecomm.servlets.services;
 
 import ru.ncedu.ecomm.data.DAOFactory;
-import ru.ncedu.ecomm.data.models.OrderItemDAOObject;
-import ru.ncedu.ecomm.data.models.OrderStatusDAOObject;
-import ru.ncedu.ecomm.data.models.ProductDAOObject;
-import ru.ncedu.ecomm.data.models.SalesOrderDAOObject;
+import ru.ncedu.ecomm.data.models.dao.*;
+import ru.ncedu.ecomm.data.models.dao.builders.OrderItemBuilder;
+import ru.ncedu.ecomm.data.models.dao.builders.SalesOrderBuilder;
 import ru.ncedu.ecomm.servlets.models.EnumOrderStatus;
-import ru.ncedu.ecomm.data.models.OrderItem;
 import ru.ncedu.ecomm.servlets.models.ProductViewModel;
-import ru.ncedu.ecomm.data.models.SalesOrder;
-import ru.ncedu.ecomm.data.models.builders.OrderItemBuilder;
-import ru.ncedu.ecomm.data.models.builders.SalesOrderBuilder;
 
 import java.sql.Date;
 import java.sql.SQLException;

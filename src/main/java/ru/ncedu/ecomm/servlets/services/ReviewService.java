@@ -1,12 +1,13 @@
 package ru.ncedu.ecomm.servlets.services;
 
 import ru.ncedu.ecomm.data.DAOFactory;
-import ru.ncedu.ecomm.data.models.ReviewDAOObject;
-import ru.ncedu.ecomm.data.models.UserDAOObject;
+import ru.ncedu.ecomm.data.models.dao.ReviewDAOObject;
+import ru.ncedu.ecomm.data.models.dao.UserDAOObject;
 import ru.ncedu.ecomm.servlets.models.ReviewViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.ReviewViewModelBuilder;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ReviewService {
 

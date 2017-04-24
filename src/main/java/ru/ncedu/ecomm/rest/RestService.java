@@ -1,6 +1,7 @@
 package ru.ncedu.ecomm.rest;
 
-import ru.ncedu.ecomm.data.models.*;
+import ru.ncedu.ecomm.data.models.dao.*;
+import ru.ncedu.ecomm.data.models.dto.UserDTOObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -136,6 +137,19 @@ public class RestService {
     @Produces(MediaType.APPLICATION_JSON)
     public List<UserDAOObject> getUsers() {
         return getDAOFactory().getUserDAO().getUsers();
+    }
+
+    @GET
+    @Path("/management/users")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UserDTOObject> getUsersManagement() {return getDAOFactory().getUserDAO().getUsersManagement();
+    }
+
+    @GET
+    @Path("/management/users/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public UserDTOObject getUserManagementById(@PathParam("userId") long userId) {
+        return getDAOFactory().getUserDAO().getUserManagementById(userId);
     }
 
     @GET

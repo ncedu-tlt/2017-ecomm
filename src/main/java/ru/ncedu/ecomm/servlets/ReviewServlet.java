@@ -2,8 +2,8 @@ package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
 import ru.ncedu.ecomm.data.DAOFactory;
-import ru.ncedu.ecomm.data.models.ReviewDAOObject;
-import ru.ncedu.ecomm.data.models.builders.ReviewDAOObjectBuilder;
+import ru.ncedu.ecomm.data.models.dao.ReviewDAOObject;
+import ru.ncedu.ecomm.data.models.dao.builders.ReviewDAOObjectBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

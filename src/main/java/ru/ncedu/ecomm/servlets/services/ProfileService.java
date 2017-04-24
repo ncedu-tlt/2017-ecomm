@@ -1,6 +1,6 @@
 package ru.ncedu.ecomm.servlets.services;
 
-import ru.ncedu.ecomm.data.models.UserDAOObject;
+import ru.ncedu.ecomm.data.models.dao.UserDAOObject;
 import ru.ncedu.ecomm.utils.EncryptionUtils;
 import ru.ncedu.ecomm.utils.UserValidationUtils;
 

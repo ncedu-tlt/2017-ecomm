@@ -2,7 +2,7 @@ package ru.ncedu.ecomm.servlets;
 
 
 import ru.ncedu.ecomm.Configuration;
-import ru.ncedu.ecomm.data.models.UserDAOObject;
+import ru.ncedu.ecomm.data.models.dao.UserDAOObject;
 import ru.ncedu.ecomm.servlets.services.passwordRecovery.PasswordRecoveryService;
 import ru.ncedu.ecomm.utils.UserValidationUtils;
 

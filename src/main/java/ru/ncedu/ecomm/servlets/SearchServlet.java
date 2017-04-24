@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.data.DAOFactory;
-import ru.ncedu.ecomm.data.models.ProductDAOObject;
+import ru.ncedu.ecomm.data.models.dao.ProductDAOObject;
 import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
 import ru.ncedu.ecomm.servlets.models.builders.CategoryViewBuilder;
 import ru.ncedu.ecomm.servlets.services.ProductViewService;

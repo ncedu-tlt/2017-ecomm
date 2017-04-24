@@ -1,10 +1,10 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
-import ru.ncedu.ecomm.data.models.UserDAOObject;
-import ru.ncedu.ecomm.data.models.builders.UserDAOObjectBuilder;
-import ru.ncedu.ecomm.utils.UserValidationUtils;
+import ru.ncedu.ecomm.data.models.dao.UserDAOObject;
+import ru.ncedu.ecomm.data.models.dao.builders.UserDAOObjectBuilder;
 import ru.ncedu.ecomm.utils.EncryptionUtils;
+import ru.ncedu.ecomm.utils.UserValidationUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
