@@ -76,12 +76,11 @@ public class PostgresCharacteristicGroupDAO implements CharacteristicGroupDAO {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "INSERT INTO public.characteristic_groups\n" +
-                             "(characteristic_group_id, name)\n" +
-                             "VALUES (?, ?)\n" +
+                             "(name)\n" +
+                             "VALUES (?)\n" +
                              "RETURNING characteristic_group_id"
              )) {
-            statement.setLong(1, characteristicGroup.getCharacteristicGroupId());
-            statement.setString(2, characteristicGroup.getCharacteristicGroupName());
+            statement.setString(1, characteristicGroup.getCharacteristicGroupName());
             statement.execute();
 
             ResultSet resultSet = statement.getResultSet();

@@ -12,7 +12,7 @@ const ROUTES: Routes = [
     { path: 'user/details', component: UserDetailsComponent},
     { path: 'user/:id', component: UserEditorComponent },
     { path: 'char-group-list', component: CharGroupListComponent },
-    { path: 'char-group-editor', component: CharGroupEditorComponent },
+    { path: 'char-group-editor/:id', component: CharGroupEditorComponent },
     { path: '**', redirectTo: '/users' }
 ];
 
@@ -20,5 +20,4 @@ const ROUTES: Routes = [
     imports: [ RouterModule.forRoot(ROUTES, {useHash: true}) ],
     exports: [ RouterModule ]
 })
-
 export class RoutingModule {}

@@ -40,17 +40,14 @@ export class CharGroupListComponent implements OnInit {
     }
 
     onAddition(): void {
-        // if (!groupName.trim()) return;
-        // this.charGroupService
-        //     .addCharacteristicGroup(groupName)
-        //     .then(group => {
-        //         this.model.data.push(group);
-        //     })
+        this.router.navigate(['/char-group-editor/:id', 'addition']);
+        console.log('addition');
     }
 
     onEdit(): void {
         if (this.charGroupModel) {
-            console.log(this.charGroupModel.characteristicGroupName + ' edited');
+            this.router.navigate(['/char-group-editor/:id', this.charGroupModel.characteristicGroupId]);
+            console.log('edit ' + this.charGroupModel.characteristicGroupId);
         }
     }
 

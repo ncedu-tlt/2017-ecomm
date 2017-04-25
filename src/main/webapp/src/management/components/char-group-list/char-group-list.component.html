@@ -2,7 +2,7 @@
     <h1>Characteristic group</h1>
 </div>
 <div class="ui container right aligned char-group-editor">
-    <button (click)="onAddition('bob')" class="ui primary button">
+    <button (click)="onAddition()" class="ui primary button">
         New group
     </button>
     <button (click)="onEdit()" class="ui yellow button">
@@ -14,3 +14,5 @@
 </div>
 
 <nc-data-table [model]="model" (select)="onSelect($event)"></nc-data-table>
+
+<nc-char-group-editor></nc-char-group-editor>

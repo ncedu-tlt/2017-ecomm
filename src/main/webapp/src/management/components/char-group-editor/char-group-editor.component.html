@@ -1,1 +1,33 @@
-<p>Char group editor</p>
+<div class="ui horizontal divider">
+    characteristic group name
+</div>
+<div class="ui left aligned container">
+    <form class="ui form" #groupForm="ngForm">
+        <div [ngClass]="{error: name.invalid}" class="field">
+            <label>Name:</label>
+            <div class="ui input">
+                <input
+                        type="text" placeholder="Group name..." name="name"
+                        [(ngModel)]="group.characteristicGroupName"
+                        #name="ngModel"
+                        required/>
+            </div>
+        </div>
+        <div [ngClass]="{disabled: name.invalid}"
+             class="ui primary button"
+             (click)="onSubmit();groupForm.reset()">Submit
+        </div>
+        <div (click)="back()" class="ui yellow button">Back</div>
+    </form>
+
+    <div *ngIf="isSent" class="ui success message">
+        <div class="header">Form Completed</div>
+        <p>You're all signed up for the newsletter.</p>
+    </div>
+    <div *ngIf="isError" class="ui error message">
+        <div class="header">Error of send.</div>
+        <p>Please try again later.</p>
+    </div>
+</div>
+
+

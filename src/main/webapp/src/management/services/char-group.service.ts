@@ -35,10 +35,20 @@ export class CharGroupService {
 
     addCharacteristicGroup(charGroupName: string): Promise<CharGroupModel> {
         let bodyRequest: any = {characteristicGroupName: charGroupName};
-        return this.http.post(this.charGroupUrl, {characteristicGroupName: charGroupName}, this.options)
+        return this.http.post(this.charGroupUrl, bodyRequest, this.options)
             .toPromise()
             .then(response => response.json() as CharGroupModel)
             .catch(this.handleError)
+    }
+
+    updateCharacteristicGroup(charGroupId: number, charGroupName: string): Promise<CharGroupModel> {
+        const url = `${this.charGroupUrl}/${charGroupId}`;
+        let bodyRequest: any = {characteristicGroupName: charGroupName};
+        return this.http
+            .put(url, bodyRequest, this.options)
+            .toPromise()
+            .then(() => null)
+            .catch(this.handleError);
     }
 
     deleteCharacteristicGroup(charGroupId: number): Promise<void> {
