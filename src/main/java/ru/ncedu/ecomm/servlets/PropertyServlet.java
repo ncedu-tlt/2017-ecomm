@@ -116,10 +116,7 @@ public class PropertyServlet extends HttpServlet {
         request.setAttribute("field" ,field );
         request.getRequestDispatcher(Configuration.getProperty("page.showChangeValue")).forward(request, response);
 
-
     }
-
-
 
     private void removePropertyFromDAO(HttpServletRequest request, HttpServletResponse response){
         String propertyId = request.getParameter("propertyId");
@@ -140,9 +137,9 @@ public class PropertyServlet extends HttpServlet {
 
 
     private void addNewPropertyToDAO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        request.getRequestDispatcher(Configuration.getProperty("page.addProperty")).forward(request, response);
+      request.getRequestDispatcher(Configuration.getProperty("page.addProperty")).forward(request, response);
     }
+
 
     private void editProperty(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
@@ -152,7 +149,7 @@ public class PropertyServlet extends HttpServlet {
                 .setValue(request.getParameter("valueText"))
                 .build();
 
-        request.setAttribute("property" ,property );
+         request.setAttribute("property" ,property );
         request.setAttribute("field" ,field );
         request.getRequestDispatcher(Configuration.getProperty("page.editProperty")).forward(request, response);
     }
@@ -171,7 +168,4 @@ public class PropertyServlet extends HttpServlet {
 
 
 }
-
-
-
 

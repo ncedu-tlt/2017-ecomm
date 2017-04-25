@@ -9,11 +9,10 @@
         init: function () {
             var tableValue = this.content.find('.jsTableValue');
             var edit = this.content.find('.jsEdit');
-            var globalUrlTest = this.params.propertiesUrl;
             var panelButton = this.content.find('.jsPanelButton');
             var removeButton = this.content.find('.jsRemoveLineButton');
             var addButton = this.content.find('.jsAddButton');
-
+            var globalUrlTest = this.params.propertiesUrl;
 
             edit.click(function () {
                 var $this = $(this);
@@ -43,7 +42,6 @@
 
 
                         $.post(globalUrlTest + '/properties',{propertyId: id, valueText: text, action: 'save', field: thisField}, function (data) {
-
                             root.html(data);
                         });
                     });
@@ -79,12 +77,11 @@
                     var saveRow = table.find('.jsSaveRow');
                     saveRow.click(function () {
                         var $this = $(this);
-                        var root = $this.closest('.jsRowVal');
+                        var root = $this.closest('.jsTableValue');
                         var text = root.find('.jsInputPropertyValue').val();
                         var id = root.find('.jsInputPropertyId').val();
 
                         $.post(globalUrlTest + '/properties',{valueText: text, propertyId: id, action: 'saveRow'}, function (data) {
-
                             root.html(data);
                         });
 
@@ -101,8 +98,5 @@
     frm.components.register('PropertiesComponent', PropertiesComponent);
 
 })(jQuery, window);
-
-
-
 
 

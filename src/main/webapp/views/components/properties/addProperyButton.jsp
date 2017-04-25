@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<div class="row jsRowVal">
+
+<div class="row jsTableValue">
 
     <div class="three wide column">
         <div class="ui fluid action transparent input">
@@ -23,6 +24,3 @@
 
 
 </div>
-
-
-

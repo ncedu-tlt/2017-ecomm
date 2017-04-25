@@ -16,6 +16,7 @@
 
             <div class="row jsTableValue">
 
+
                 <div class="three wide column jsPropertyId jsEdit">
                         ${property.getId()}
                 </div>

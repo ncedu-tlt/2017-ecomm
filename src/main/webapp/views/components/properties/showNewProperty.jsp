@@ -2,10 +2,10 @@
 
 <c:set var="property" value="${requestScope.property}"/>
 
-    <div class="three wide column jsNewPropertyId">
+    <div class="three wide column jsPropertyId jsEdit">
         ${property.getId()}
     </div>
-    <div class="thirteen wide column jsNewPropertyValue">
+    <div class="thirteen wide column jsVisible jsEdit">
 
         ${property.getValue()}
 
@@ -14,7 +14,3 @@
         </button>
 
     </div>
-
-
-
-
