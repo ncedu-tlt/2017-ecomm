@@ -26,8 +26,8 @@
             this.content.find('.jsNegative').on('click', this.hidePopup.bind(this));
 
         },
-        getData: function () {
-            event.preventDefault();
+        getData: function (e) {
+            e.preventDefault();
 
             var reviewBody = this.content.find('.jsThisUserReview');
             var thisUserRating = reviewBody.find('.jsUsersRating').data('rating');

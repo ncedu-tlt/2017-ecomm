@@ -24,7 +24,7 @@
                     <c:set var="image" value="${product.imageUrl}"/>
                     <div class="four wide column">
                         <img class="ui fluid image"
-                             src="${pageContext.request.contextPath}/${image != null ? image : "/images/defaultimage/image.png"}">
+                             src="${pageContext.request.contextPath}${image != null ? image : "/images/defaultimage/image.png"}">
                         <h3 class="ui center aligned header">
                             <a>
                                     ${product.name}
