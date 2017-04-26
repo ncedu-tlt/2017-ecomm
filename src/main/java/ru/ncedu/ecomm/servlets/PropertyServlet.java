@@ -125,7 +125,7 @@ public class PropertyServlet extends HttpServlet {
 
         String propertyVal = request.getParameter("valueText");
         propertyVal.replaceAll("\\p{Cntrl}", "");
-        String newPropertyVal = propertyId.trim();
+        String newPropertyVal = propertyVal.trim();
 
         Property property = new PropertyBuilder()
                 .setPropertyId(newPropertyId)
@@ -143,14 +143,26 @@ public class PropertyServlet extends HttpServlet {
 
     private void editProperty(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
+        String propertyVal = request.getParameter("valueText");
+
         String field  = request.getParameter("field");
         Property property = new PropertyBuilder()
                 .setPropertyId(request.getParameter("propertyId"))
-                .setValue(request.getParameter("valueText"))
+                .setValue(propertyVal)
                 .build();
 
-         request.setAttribute("property" ,property );
+        propertyVal.replaceAll("\\p{Cntrl}", "");
+        String newPropertyVal = propertyVal.trim();
+
+        boolean setTextArea=false;
+        if (newPropertyVal.length()>100)
+            setTextArea = true;
+        else
+            setTextArea = false;
+
+        request.setAttribute("property", property);
         request.setAttribute("field" ,field );
+        request.setAttribute("setTextArea" ,setTextArea );
         request.getRequestDispatcher(Configuration.getProperty("page.editProperty")).forward(request, response);
     }
 
