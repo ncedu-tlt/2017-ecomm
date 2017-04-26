@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import TableModel from "../data-table/models/table.model";
 import UserModel from "../../models/user.model";
@@ -12,7 +12,7 @@ export class UsersListComponent implements OnInit {
 
     userModel: UserModel;
 
-    model: TableModel = {
+    @Input() model: TableModel = {
         data: [],
         columns: [
             {
@@ -46,14 +46,30 @@ export class UsersListComponent implements OnInit {
         this.userModel = user;
     }
 
-    onDelete(user: UserModel): void {
+    /*onDelete(user: UserModel): void {
         this.usersService.deleteUser(user.id).then(() => {
             this.model.data = this.model.data.filter(getUser => getUser !== user);
-            if(this.userModel === user){this.userModel = null;}
+            if (this.userModel === user) {
+                this.userModel = null;
+            }
         })
+    }*/
+
+    onDelete(): void {
+        if (this.userModel) {
+            this.usersService.deleteUser(this.userModel.id)
+                .then(() => {
+                    this.model.data = this.model.data.filter(group => group !== this.userModel);
+                    this.userModel = null;
+                });
+        }
     }
 
     onEdit(user: UserModel): void {
-        this.router.navigate(['/user', user.id]);
+        this.router.navigate(['/user/details', user.id]);
+    }
+
+    onCreate(): void {
+        this.router.navigate(['/user/details']);
     }
 }

@@ -1,14 +1,44 @@
-<table class="ui selectable celled table" *ngIf="user">
-    <tr>
-        <td><b>ID</b></td>
-        <td>{{user.id}}</td>
-    </tr>
-    <tr>
-        <td><b>Email</b></td>
-        <td>{{user.email}}</td>
-    </tr>
-    <tr>
-        <td><b>First Name</b></td>
-        <td>{{user.firstName}}</td>
-    </tr>
-</table>
+<div class="ui left aligned container">
+    <h1>User Editor</h1>
+</div>
+<form class="ui form" *ngIf="user">
+    <div class="ui small image">
+        <img class="ui small rounded image" src="/ecomm/{{user.userAvatar}}">
+    </div>
+    <div class="field">
+        <label>User ID</label>
+        <input placeholder="User ID" readonly="" type="text" value="{{user.id}}">
+    </div>
+    <div class="field">
+        <label>Role</label>
+        <sm-select
+                [options]="{direction: 'upward'}"
+                [(model)]="user.roleId" placeholder="Select Role..."
+                class="fluid">
+            <option value="1">Administrator</option>
+            <option value="2">Manager</option>
+            <option value="3">User</option>
+        </sm-select>
+    </div>
+    <div class="field">
+        <label>E-mail</label>
+        <input type="text" name="last-name" placeholder="E-mail" value="{{user.email}}">
+    </div>
+    <div class="field">
+        <label>First Name</label>
+        <input type="text" name="first-name" placeholder="First Name" value="{{user.firstName}}">
+    </div>
+    <div class="field">
+        <label>Last Name</label>
+        <input type="text" name="first-name" placeholder="Last Name" value="{{user.lastName}}">
+    </div>
+    <div class="field">
+        <label>Phone</label>
+        <input type="text" name="first-name" placeholder="Phone" value="{{user.phone}}">
+    </div>
+    <div class="field">
+        <label>Registration Date</label>
+        <input type="text" readonly="" placeholder="Registration Date" value="{{user.registrationDate}}">
+    </div>
+    <button class="ui button" type="submit">Submit</button>
+</form>

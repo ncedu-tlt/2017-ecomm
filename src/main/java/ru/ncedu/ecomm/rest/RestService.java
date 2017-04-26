@@ -152,6 +152,14 @@ public class RestService {
         return getDAOFactory().getUserDAO().getUserManagementById(userId);
     }
 
+    @DELETE
+    @Path("/management/users/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteUserManagement(@PathParam("userId") long userId) {
+        getDAOFactory().getUserDAO().deleteUserManagement(getDAOFactory().getUserDAO().getUserManagementById(userId));
+        return Response.ok().build();
+    }
+
     @GET
     @Path("/users/{userId}")
     @Produces(MediaType.APPLICATION_JSON)

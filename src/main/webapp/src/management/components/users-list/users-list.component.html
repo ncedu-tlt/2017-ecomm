@@ -1,11 +1,13 @@
-<button class="ui right floated button" (click)="onDelete(userModel)">
-    Delete
-</button>
-<div class="ui right floated button" (click)="onEdit(userModel)" tabindex="0">
-    Update
-</div>
-<div class="ui right floated button" tabindex="0">
-    Add
+<div class="ui container right aligned">
+    <button class="ui button" (click)="onCreate()" tabindex="0">
+        Add
+    </button>
+    <button class="ui button" (click)="onEdit(userModel)" tabindex="0">
+        Update
+    </button>
+    <button (click)="onDelete()" class="ui button">
+        Delete
+    </button>
 </div>
 <nc-data-table [model]="model" (select)="onSelect($event)">
 </nc-data-table>

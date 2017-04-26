@@ -17,4 +17,5 @@ public interface UserDAO {
     UserDAOObject addUser(UserDAOObject user);
     UserDAOObject updateUser(UserDAOObject user);
     void deleteUser(UserDAOObject user);
+    void deleteUserManagement(UserDTOObject user);
 }

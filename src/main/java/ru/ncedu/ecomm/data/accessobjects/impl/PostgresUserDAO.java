@@ -60,48 +60,6 @@ public class PostgresUserDAO implements UserDAO {
         return users;
     }
 
-    public List<UserDTOObject> getUsersManagement(){
-        List<UserDTOObject> users = new ArrayList<>();
-
-        try (Connection connection = DBUtils.getConnection();
-             Statement statement = connection.createStatement()) {
-
-            ResultSet resultSet = statement.executeQuery(
-                    "SELECT\n" +
-                            "us.user_id,\n" +
-                            "us.role_id,\n" +
-                            "rs.name,\n" +
-                            "us.first_name,\n" +
-                            "us.last_name,\n" +
-                            "us.email,\n" +
-                            "us.phone,\n" +
-                            "us.registration_date,\n" +
-                            "us.user_avatar\n" +
-                            "FROM users us, roles rs\n" +
-                            "WHERE us.role_id = rs.role_id\n"+
-                            "ORDER BY us.user_id ASC;");
-            while (resultSet.next()) {
-                UserDTOObject user = new UserDTOObjectBuilder()
-                        .setId(resultSet.getLong("user_id"))
-                        .setRoleId(resultSet.getLong("role_id"))
-                        .setRoleName(resultSet.getString("name"))
-                        .setFirstName(resultSet.getString("first_name"))
-                        .setLastName(resultSet.getString("last_name"))
-                        .setEmail(resultSet.getString("email"))
-                        .setPhone(resultSet.getString("phone"))
-                        .setRegistrationDate(resultSet.getDate("registration_date"))
-                        .setUserAvatar(resultSet.getString("user_avatar"))
-                        .build();
-                users.add(user);
-            }
-            LOG.info(null);
-        } catch (SQLException e) {
-            LOG.error(e.getMessage());
-            throw new RuntimeException(e);
-        }
-        return users;
-    }
-
     @Override
     public UserDAOObject getUserById(long id) {
 
@@ -139,48 +97,6 @@ public class PostgresUserDAO implements UserDAO {
                         .build();
             }
         } catch (SQLException e) {
-            LOG.error(e.getMessage());
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
-    @Override
-    public UserDTOObject getUserManagementById(long id) {
-
-        try (Connection connection = DBUtils.getConnection();
-             PreparedStatement statement = connection.prepareStatement(
-                     "SELECT\n" +
-                             "us.user_id,\n" +
-                             "us.role_id,\n" +
-                             "rs.name,\n" +
-                             "us.first_name,\n" +
-                             "us.last_name,\n" +
-                             "us.email,\n" +
-                             "us.phone,\n" +
-                             "us.registration_date,\n" +
-                             "us.user_avatar\n" +
-                             "FROM users us, roles rs\n" +
-                             "WHERE us.user_id = ?\n" +
-                             "AND us.role_id = rs.role_id\n" +
-                             "ORDER BY us.user_id ASC;")){
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                LOG.info(null);
-                return new UserDTOObjectBuilder()
-                        .setId(resultSet.getLong("user_id"))
-                        .setRoleId(resultSet.getLong("role_id"))
-                        .setRoleName(resultSet.getString("name"))
-                        .setFirstName(resultSet.getString("first_name"))
-                        .setLastName(resultSet.getString("last_name"))
-                        .setEmail(resultSet.getString("email"))
-                        .setPhone(resultSet.getString("phone"))
-                        .setRegistrationDate(resultSet.getDate("registration_date"))
-                        .setUserAvatar(resultSet.getString("user_avatar"))
-                        .build();
-        }
-    } catch (SQLException e) {
             LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
@@ -445,6 +361,105 @@ public class PostgresUserDAO implements UserDAO {
             statement.setLong(1, user.getId());
             statement.execute();
 
+            LOG.info(null);
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public UserDTOObject getUserManagementById(long id) {
+
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT\n" +
+                             "us.user_id,\n" +
+                             "us.role_id,\n" +
+                             "rs.name,\n" +
+                             "us.first_name,\n" +
+                             "us.last_name,\n" +
+                             "us.email,\n" +
+                             "us.phone,\n" +
+                             "us.registration_date,\n" +
+                             "us.user_avatar\n" +
+                             "FROM users us, roles rs\n" +
+                             "WHERE us.user_id = ?\n" +
+                             "AND us.role_id = rs.role_id\n" +
+                             "ORDER BY us.user_id ASC;")){
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                LOG.info(null);
+                return new UserDTOObjectBuilder()
+                        .setId(resultSet.getLong("user_id"))
+                        .setRoleId(resultSet.getLong("role_id"))
+                        .setRoleName(resultSet.getString("name"))
+                        .setFirstName(resultSet.getString("first_name"))
+                        .setLastName(resultSet.getString("last_name"))
+                        .setEmail(resultSet.getString("email"))
+                        .setPhone(resultSet.getString("phone"))
+                        .setRegistrationDate(resultSet.getDate("registration_date"))
+                        .setUserAvatar(resultSet.getString("user_avatar"))
+                        .build();
+            }
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public List<UserDTOObject> getUsersManagement(){
+        List<UserDTOObject> users = new ArrayList<>();
+
+        try (Connection connection = DBUtils.getConnection();
+             Statement statement = connection.createStatement()) {
+
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT\n" +
+                            "us.user_id,\n" +
+                            "us.role_id,\n" +
+                            "rs.name,\n" +
+                            "us.first_name,\n" +
+                            "us.last_name,\n" +
+                            "us.email,\n" +
+                            "us.phone,\n" +
+                            "us.registration_date,\n" +
+                            "us.user_avatar\n" +
+                            "FROM users us, roles rs\n" +
+                            "WHERE us.role_id = rs.role_id\n"+
+                            "ORDER BY us.user_id ASC;");
+            while (resultSet.next()) {
+                UserDTOObject user = new UserDTOObjectBuilder()
+                        .setId(resultSet.getLong("user_id"))
+                        .setRoleId(resultSet.getLong("role_id"))
+                        .setRoleName(resultSet.getString("name"))
+                        .setFirstName(resultSet.getString("first_name"))
+                        .setLastName(resultSet.getString("last_name"))
+                        .setEmail(resultSet.getString("email"))
+                        .setPhone(resultSet.getString("phone"))
+                        .setRegistrationDate(resultSet.getDate("registration_date"))
+                        .setUserAvatar(resultSet.getString("user_avatar"))
+                        .build();
+                users.add(user);
+            }
+            LOG.info(null);
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return users;
+    }
+
+    @Override
+    public void deleteUserManagement(UserDTOObject user) {
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "DELETE FROM users\n" +
+                             "WHERE user_id = ?")) {
+            statement.setLong(1, user.getId());
+            statement.execute();
             LOG.info(null);
         } catch (SQLException e) {
             LOG.error(e.getMessage());
