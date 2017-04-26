@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import CharGroupModel from "../../models/char-group.model";
-import {ActivatedRoute, Params} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
+import {Location} from '@angular/common';
 import {CharGroupService} from "../../services/char-group.service";
 
 @Component({
@@ -11,61 +12,67 @@ import {CharGroupService} from "../../services/char-group.service";
 export class CharGroupEditorComponent {
     isSent: boolean = false;
     isError: boolean = false;
-    isAdd: boolean = true;
-    isEdit: boolean = false
-    id: number = 1;
+    isAdd: boolean = false;
+    isEdit: boolean = false;
 
     group: CharGroupModel = {characteristicGroupId: null, characteristicGroupName: ''};
 
     constructor(private route: ActivatedRoute,
-                private charGroupService: CharGroupService,) {
+                private charGroupService: CharGroupService,
+                private location: Location) {
     };
 
     ngOnInit(): void {
-        this.route.params
-            .switchMap((params: Params) => this.charGroupService.getCharacteristicGroup(+params['id']))
-            .subscribe(group => this.group = group);
-    }
-
-    onSubmit(): void {
-        console.log(this.group.characteristicGroupName);
-        if(this.isAdd){
-            this.addition(this.group.characteristicGroupName);
+        let id: any = this.route.snapshot.params['id'];
+        if (id == 'addition') {
+            this.isAdd = true;
+        }
+        else {
+            this.charGroupService.getCharacteristicGroup(+id)
+                .then(group => {
+                    this.group = group;
+                    this.isEdit = true;
+                })
+                .catch(() => this.back())
         }
     }
 
-    addition(groupName: string): void {
-        if (!groupName.trim()) return;
+    onSubmit(): void {
+        if (this.isAdd) {
+            this.addition();
+        }
+        if (this.isEdit) {
+            this.edit();
+        }
+    }
+
+    addition(): void {
+        if (!this.group.characteristicGroupName.trim()) return;
         this.charGroupService
-            .addCharacteristicGroup(groupName)
+            .addCharacteristicGroup(this.group.characteristicGroupName)
             .then(() => {
                 this.isError = false;
-                this.isSent = true
+                this.isSent = true;
             })
             .catch(() => {
                 this.isSent = false;
-                this.isError = true
+                this.isError = true;
             });
     }
 
-    edit(selectedCharGroupModel: CharGroupModel, groupName: string): void {
-        if (selectedCharGroupModel) {
+    edit(): void {
+        if (this.group) {
             this.charGroupService
-                .addCharacteristicGroup(groupName)
-                .then(() => {
-                    this.isError = false;
-                    this.isSent = true
-                })
+                .updateCharacteristicGroup(this.group)
+                .then(() => this.back())
                 .catch(() => {
                     this.isSent = false;
-                    this.isError = true
+                    this.isError = true;
                 });
         }
     }
 
     back(): void {
-        this.isSent = false;
-        this.isError = true;
-        console.log(this.isError);
+        this.location.back();
     }
 }

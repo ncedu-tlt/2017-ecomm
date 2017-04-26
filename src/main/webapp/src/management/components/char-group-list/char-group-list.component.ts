@@ -1,8 +1,9 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import TableModel from "../data-table/models/table.model";
 import CharGroupModel from "../../models/char-group.model";
 import {CharGroupService} from "../../services/char-group.service";
 import {Router} from "@angular/router";
+import {SemanticModalComponent} from "ng-semantic";
 
 @Component({
     selector: 'nc-char-group-list',
@@ -26,6 +27,10 @@ export class CharGroupListComponent implements OnInit {
         ]
     };
 
+    @ViewChild('modalWindow')
+    modalWindow: SemanticModalComponent;
+    modalContent: string;
+
     constructor(private charGroupService: CharGroupService,
                 private router: Router) {
     }
@@ -40,14 +45,17 @@ export class CharGroupListComponent implements OnInit {
     }
 
     onAddition(): void {
-        this.router.navigate(['/char-group-editor/:id', 'addition']);
-        console.log('addition');
+        this.router.navigate(['/char-group-editor', 'addition']);
     }
 
     onEdit(): void {
         if (this.charGroupModel) {
-            this.router.navigate(['/char-group-editor/:id', this.charGroupModel.characteristicGroupId]);
-            console.log('edit ' + this.charGroupModel.characteristicGroupId);
+            this.router.navigate(['/char-group-editor', this.charGroupModel.characteristicGroupId]);
+        }
+        else{
+            this.modalWindow.title = 'Error editing item';
+            this.modalContent = 'Please select an item before editing it.';
+            this.modalWindow.show({blurring: true});
         }
     }
 
@@ -58,7 +66,17 @@ export class CharGroupListComponent implements OnInit {
                 .then(() => {
                     this.model.data = this.model.data.filter(group => group !== this.charGroupModel);
                     this.charGroupModel = null;
-                });
+                })
+                .catch(() =>{
+                    this.modalWindow.title = 'Error removing item';
+                    this.modalContent = 'This item can not yet be removed.';
+                    this.modalWindow.show({blurring: true});
+                })
+        }
+        else{
+            this.modalWindow.title = 'Error removing item';
+            this.modalContent = 'Please select an item before you delete it.';
+            this.modalWindow.show({blurring: true});
         }
     }
 }

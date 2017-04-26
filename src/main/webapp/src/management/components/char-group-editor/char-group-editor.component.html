@@ -1,9 +1,9 @@
 <div class="ui horizontal divider">
-    characteristic group name
+    characteristic group editor
 </div>
 <div class="ui left aligned container">
     <form class="ui form" #groupForm="ngForm">
-        <div [ngClass]="{error: name.invalid}" class="field">
+        <div [ngClass]="{error: name.invalid && name.touched}" class="field">
             <label>Name:</label>
             <div class="ui input">
                 <input
@@ -13,16 +13,16 @@
                         required/>
             </div>
         </div>
-        <div [ngClass]="{disabled: name.invalid}"
+        <div [ngClass]="{disabled: name.invalid || name.pristine}"
              class="ui primary button"
-             (click)="onSubmit();groupForm.reset()">Submit
+             (click)="onSubmit()">Submit
         </div>
         <div (click)="back()" class="ui yellow button">Back</div>
     </form>
 
     <div *ngIf="isSent" class="ui success message">
         <div class="header">Form Completed</div>
-        <p>You're all signed up for the newsletter.</p>
+        <p>Successfully submitted form.</p>
     </div>
     <div *ngIf="isError" class="ui error message">
         <div class="header">Error of send.</div>

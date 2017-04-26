@@ -41,14 +41,17 @@ export class CharGroupService {
             .catch(this.handleError)
     }
 
-    updateCharacteristicGroup(charGroupId: number, charGroupName: string): Promise<CharGroupModel> {
-        const url = `${this.charGroupUrl}/${charGroupId}`;
-        let bodyRequest: any = {characteristicGroupName: charGroupName};
-        return this.http
-            .put(url, bodyRequest, this.options)
+    updateCharacteristicGroup(charGroup: CharGroupModel): Promise<CharGroupModel> {
+        const bodyRequest: any = {characteristicGroupId: charGroup.characteristicGroupId, characteristicGroupName: charGroup.characteristicGroupName};
+        return this.http.put(this.charGroupUrl, bodyRequest, this.options)
             .toPromise()
-            .then(() => null)
-            .catch(this.handleError);
+            .then(response => response.json() as CharGroupModel)
+            .catch(this.handleError)
+    }
+
+    extractData(res: Response){
+        let body = res.json();
+        return body || {};
     }
 
     deleteCharacteristicGroup(charGroupId: number): Promise<void> {

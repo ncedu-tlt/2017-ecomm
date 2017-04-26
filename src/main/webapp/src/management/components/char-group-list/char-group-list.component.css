@@ -1,3 +1,7 @@
 .char-group-editor{
     margin-bottom:10px;
 }
+
+modal-content p{
+    font-size:1.3em;
+}

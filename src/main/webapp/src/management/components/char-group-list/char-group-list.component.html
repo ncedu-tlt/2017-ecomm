@@ -12,7 +12,10 @@
         Delete
     </button>
 </div>
+<sm-modal #modalWindow icon="warning" title="{{modalWindow.title}}" class="basic">
+    <modal-content>
+        <p>{{modalContent}}</p>
+    </modal-content>
+</sm-modal>
 
 <nc-data-table [model]="model" (select)="onSelect($event)"></nc-data-table>
-
-<nc-char-group-editor></nc-char-group-editor>
