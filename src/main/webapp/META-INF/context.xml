@@ -7,7 +7,7 @@
               driverClassName="org.postgresql.Driver"
               url="jdbc:postgresql://ocassio.asuscomm.com:8080/ecomm-db"
               username="ecommDev"
-              password="bpnD2VTmr6UH7b3VyJhcDdQ6Sx23WDMNjAzvaTVgdJcHmEs8aw"
+              password=""
               maxActive="8"
               maxIdle="8"
               initialSize="1"
