@@ -2,6 +2,7 @@ package ru.ncedu.ecomm.data.accessobjects.impl;
 
 import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.UserDAO;
+import ru.ncedu.ecomm.data.models.dao.RoleDAOObject;
 import ru.ncedu.ecomm.data.models.dao.UserDAOObject;
 import ru.ncedu.ecomm.data.models.dao.builders.UserDAOObjectBuilder;
 import ru.ncedu.ecomm.data.models.dto.UserDTOObject;
@@ -352,15 +353,14 @@ public class PostgresUserDAO implements UserDAO {
     }
 
     @Override
-    public void deleteUser(UserDAOObject user) {
+    public void deleteUser(long userId) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "DELETE FROM users\n" +
                              "WHERE user_id = ?")) {
-            statement.setLong(1, user.getId());
+            statement.setLong(1, userId);
             statement.execute();
-
             LOG.info(null);
         } catch (SQLException e) {
             LOG.error(e.getMessage());
@@ -369,7 +369,7 @@ public class PostgresUserDAO implements UserDAO {
     }
 
     @Override
-    public UserDTOObject getUserManagementById(long id) {
+    public UserDTOObject getUserForManagementById(long id) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -401,6 +401,7 @@ public class PostgresUserDAO implements UserDAO {
                         .setPhone(resultSet.getString("phone"))
                         .setRegistrationDate(resultSet.getDate("registration_date"))
                         .setUserAvatar(resultSet.getString("user_avatar"))
+                        .setRole(new RoleDAOObject(resultSet.getLong("role_id"), resultSet.getString("name")))
                         .build();
             }
         } catch (SQLException e) {
@@ -410,7 +411,7 @@ public class PostgresUserDAO implements UserDAO {
         return null;
     }
 
-    public List<UserDTOObject> getUsersManagement(){
+    public List<UserDTOObject> getUsersForManagement(){
         List<UserDTOObject> users = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
@@ -427,6 +428,7 @@ public class PostgresUserDAO implements UserDAO {
                             "us.phone,\n" +
                             "us.registration_date,\n" +
                             "us.user_avatar\n" +
+
                             "FROM users us, roles rs\n" +
                             "WHERE us.role_id = rs.role_id\n"+
                             "ORDER BY us.user_id ASC;");
@@ -441,6 +443,7 @@ public class PostgresUserDAO implements UserDAO {
                         .setPhone(resultSet.getString("phone"))
                         .setRegistrationDate(resultSet.getDate("registration_date"))
                         .setUserAvatar(resultSet.getString("user_avatar"))
+                        .setRole(new RoleDAOObject(resultSet.getLong("role_id"), resultSet.getString("name")))
                         .build();
                 users.add(user);
             }
@@ -453,14 +456,65 @@ public class PostgresUserDAO implements UserDAO {
     }
 
     @Override
-    public void deleteUserManagement(UserDTOObject user) {
+    public UserDTOObject addUserForManagement(UserDTOObject user) {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "DELETE FROM users\n" +
-                             "WHERE user_id = ?")) {
-            statement.setLong(1, user.getId());
+                     "INSERT INTO users\n" +
+                             "(role_id,\n" +
+                             " first_name,\n" +
+                             " last_name,\n" +
+                             " password,\n" +
+                             " phone,\n" +
+                             " email,\n" +
+                             " registration_date)\n" +
+                             "VALUES (?, ?, ?, ?, ?, ?, current_timestamp)\n" +
+                             "RETURNING user_id")) {
+            statement.setLong(1, user.getRole().getId());
+            statement.setString(2, user.getFirstName());
+            statement.setString(3, user.getLastName());
+            statement.setString(4, user.getPassword());
+            statement.setString(5, user.getPhone());
+            statement.setString(6, user.getEmail());
             statement.execute();
+
+            ResultSet resultSet = statement.getResultSet();
+            if (resultSet.next()) {
+                user.setId(resultSet.getLong(1));
+
+                LOG.info(null);
+                return user;
+            }
+
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return user;
+    }
+
+    @Override
+    public UserDTOObject updateUserForManagement(UserDTOObject user) {
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "UPDATE public.users\n" +
+                             "SET role_id     = ?,\n" +
+                             "  first_name    = ?,\n" +
+                             "  last_name     = ?,\n" +
+                             "  password      = ?,\n" +
+                             "  phone         = ?,\n" +
+                             "  email         = ?\n" +
+                             "WHERE user_id = ?")) {
+            statement.setLong(1, user.getRole().getId());
+            statement.setString(2, user.getFirstName());
+            statement.setString(3, user.getLastName());
+            statement.setString(4, user.getPassword());
+            statement.setString(5, user.getPhone());
+            statement.setString(6, user.getEmail());
+            statement.setLong(7, user.getId());
+            statement.execute();
+
             LOG.info(null);
+            return user;
         } catch (SQLException e) {
             LOG.error(e.getMessage());
             throw new RuntimeException(e);

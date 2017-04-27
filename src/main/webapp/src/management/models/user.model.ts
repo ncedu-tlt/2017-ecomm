@@ -1,3 +1,4 @@
+import RoleModel from "./role.model";
 export default class UserModel {
     id: number;
     roleId: number;
@@ -8,4 +9,6 @@ export default class UserModel {
     phone: string;
     lastName: string;
     userAvatar: string;
+    password: string;
+    role: RoleModel;
 }

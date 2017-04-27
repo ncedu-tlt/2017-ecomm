@@ -131,7 +131,6 @@ public class RestService {
         return getDAOFactory().getPropertyDAO().updateProperty(property);
     }
 
-
     @GET
     @Path("/users")
     @Produces(MediaType.APPLICATION_JSON)
@@ -142,22 +141,38 @@ public class RestService {
     @GET
     @Path("/management/users")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UserDTOObject> getUsersManagement() {return getDAOFactory().getUserDAO().getUsersManagement();
+    public List<UserDTOObject> getUsersManagement() {return getDAOFactory().getUserDAO().getUsersForManagement();
     }
 
     @GET
     @Path("/management/users/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
     public UserDTOObject getUserManagementById(@PathParam("userId") long userId) {
-        return getDAOFactory().getUserDAO().getUserManagementById(userId);
+        return getDAOFactory().getUserDAO().getUserForManagementById(userId);
     }
 
     @DELETE
     @Path("/management/users/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteUserManagement(@PathParam("userId") long userId) {
-        getDAOFactory().getUserDAO().deleteUserManagement(getDAOFactory().getUserDAO().getUserManagementById(userId));
+        getDAOFactory().getUserDAO().deleteUser(userId);
         return Response.ok().build();
+    }
+
+    @POST
+    @Path("/management/users")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public UserDTOObject addUserManagement(UserDTOObject user) {
+        return getDAOFactory().getUserDAO().addUserForManagement(user);
+    }
+
+    @PUT
+    @Path("/management/users")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public UserDTOObject updateUserManagement(UserDTOObject user) {
+        return getDAOFactory().getUserDAO().updateUserForManagement(user);
     }
 
     @GET
@@ -201,7 +216,7 @@ public class RestService {
     @Path("/users/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteUser(@PathParam("userId") long userId) {
-        getDAOFactory().getUserDAO().deleteUser(getDAOFactory().getUserDAO().getUserById(userId));
+        getDAOFactory().getUserDAO().deleteUser(userId);
         return Response.ok().build();
     }
 

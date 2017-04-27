@@ -1,5 +1,7 @@
 package ru.ncedu.ecomm.data.models.dto;
 
+import ru.ncedu.ecomm.data.models.dao.RoleDAOObject;
+
 import java.sql.Date;
 
 public class UserDTOObject {
@@ -12,6 +14,8 @@ public class UserDTOObject {
     private String email;
     private Date registrationDate;
     private String userAvatar;
+    private String password;
+    private RoleDAOObject role;
 
     public UserDTOObject() {
     }
@@ -24,7 +28,9 @@ public class UserDTOObject {
                          String phone,
                          String email,
                          Date registrationDate,
-                         String userAvatar) {
+                         String userAvatar,
+                         String password,
+                         RoleDAOObject role) {
         this.id = id;
         this.roleId = roleId;
         this.roleName = roleName;
@@ -34,6 +40,8 @@ public class UserDTOObject {
         this.email = email;
         this.registrationDate = registrationDate;
         this.userAvatar = userAvatar;
+        this.password = password;
+        this.role = role;
     }
 
     public long getId() {
@@ -106,5 +114,21 @@ public class UserDTOObject {
 
     public void setRoleId(long roleId) {
         this.roleId = roleId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public RoleDAOObject getRole() {
+        return role;
+    }
+
+    public void setRole(RoleDAOObject role) {
+        this.role = role;
     }
 }

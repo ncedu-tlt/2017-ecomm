@@ -12,7 +12,7 @@ export class UsersListComponent implements OnInit {
 
     userModel: UserModel;
 
-    @Input() model: TableModel = {
+    model: TableModel = {
         data: [],
         columns: [
             {
@@ -21,7 +21,7 @@ export class UsersListComponent implements OnInit {
             },
             {
                 name: 'Role',
-                key: 'roleName',
+                key: 'role.name',
             },
             {
                 name: 'Email',
@@ -46,15 +46,6 @@ export class UsersListComponent implements OnInit {
         this.userModel = user;
     }
 
-    /*onDelete(user: UserModel): void {
-        this.usersService.deleteUser(user.id).then(() => {
-            this.model.data = this.model.data.filter(getUser => getUser !== user);
-            if (this.userModel === user) {
-                this.userModel = null;
-            }
-        })
-    }*/
-
     onDelete(): void {
         if (this.userModel) {
             this.usersService.deleteUser(this.userModel.id)
@@ -65,11 +56,13 @@ export class UsersListComponent implements OnInit {
         }
     }
 
-    onEdit(user: UserModel): void {
-        this.router.navigate(['/user/details', user.id]);
+    onEdit(): void {
+        if (this.userModel){
+            this.router.navigate(['/user', this.userModel.id]);
+        }
     }
 
     onCreate(): void {
-        this.router.navigate(['/user/details']);
+        this.router.navigate(['/user', 'new']);
     }
 }

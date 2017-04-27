@@ -8,8 +8,7 @@ import {CharGroupEditorComponent} from "../components/char-group-editor/char-gro
 const ROUTES: Routes = [
     { path: '', redirectTo: '/users', pathMatch: 'full' },
     { path: 'users',  component: UsersListComponent },
-    { path: 'user/details', component: UserDetailsComponent},
-    { path: 'user/details/:id', component: UserDetailsComponent},
+    { path: 'user/:id', component: UserDetailsComponent},
     { path: 'char-group-list', component: CharGroupListComponent },
     { path: 'char-group-editor/:id', component: CharGroupEditorComponent },
     { path: '**', redirectTo: '/users' }

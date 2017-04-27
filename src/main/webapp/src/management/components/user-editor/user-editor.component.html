@@ -1,7 +1,7 @@
 <div class="ui left aligned container">
     <h1>User Editor</h1>
 </div>
-<form class="ui form" *ngIf="user">
+<form class="ui form">
     <div class="ui small image">
         <img class="ui small rounded image" src="/ecomm/{{user.userAvatar}}">
     </div>
@@ -13,7 +13,7 @@
         <label>Role</label>
         <sm-select
                 [options]="{direction: 'upward'}"
-                [(model)]="user.roleId" placeholder="Select Role..."
+                [(model)]="user.role.id" placeholder="Select Role..."
                 class="fluid">
             <option value="1">Administrator</option>
             <option value="2">Manager</option>
@@ -22,23 +22,29 @@
     </div>
     <div class="field">
         <label>E-mail</label>
-        <input type="text" name="last-name" placeholder="E-mail" value="{{user.email}}">
+        <input type="text" placeholder="E-mail" name="email" [(ngModel)]="user.email">
+    </div>
+    <div class="field">
+        <label>Password</label>
+        <input type="text" placeholder="password" name="password" [(ngModel)]="user.password">
     </div>
     <div class="field">
         <label>First Name</label>
-        <input type="text" name="first-name" placeholder="First Name" value="{{user.firstName}}">
+        <input type="text" placeholder="First Name" name="firstName" [(ngModel)]="user.firstName">
     </div>
     <div class="field">
         <label>Last Name</label>
-        <input type="text" name="first-name" placeholder="Last Name" value="{{user.lastName}}">
+        <input type="text" placeholder="Last Name" name="lastName" [(ngModel)]="user.lastName">
     </div>
     <div class="field">
         <label>Phone</label>
-        <input type="text" name="first-name" placeholder="Phone" value="{{user.phone}}">
+        <input type="text" placeholder="Phone" name="phone" [(ngModel)]="user.phone">
     </div>
     <div class="field">
         <label>Registration Date</label>
         <input type="text" readonly="" placeholder="Registration Date" value="{{user.registrationDate}}">
     </div>
     <button class="ui button" type="submit">Submit</button>
+    <button class="ui button" (click)="onCreate()">Save new User</button>
+    <button class="ui button" (click)="onEdit()">Save Edit User</button>
 </form>

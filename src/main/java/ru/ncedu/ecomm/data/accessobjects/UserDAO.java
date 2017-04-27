@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface UserDAO {
     List<UserDAOObject> getUsers();
-    List<UserDTOObject> getUsersManagement();
-    UserDTOObject getUserManagementById(long id);
     UserDAOObject getUserById(long id);
     UserDAOObject getUserByEmail(String email);
     UserDAOObject getUserByPassword(String password);
@@ -16,6 +14,9 @@ public interface UserDAO {
     List<UserDAOObject> getUserByRoleId(long roleId);
     UserDAOObject addUser(UserDAOObject user);
     UserDAOObject updateUser(UserDAOObject user);
-    void deleteUser(UserDAOObject user);
-    void deleteUserManagement(UserDTOObject user);
+    void deleteUser(long userId);
+    List<UserDTOObject> getUsersForManagement();
+    UserDTOObject getUserForManagementById(long id);
+    UserDTOObject addUserForManagement(UserDTOObject user);
+    UserDTOObject updateUserForManagement(UserDTOObject user);
 }

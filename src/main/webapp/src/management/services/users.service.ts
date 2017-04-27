@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Headers, Http} from "@angular/http";
+import {Headers, Http, RequestOptions} from "@angular/http";
 import "rxjs/add/operator/toPromise";
 import UserModel from "../models/user.model";
 
@@ -11,6 +11,8 @@ export class UsersService {
     private usersUrl = `${contextPath}/rest/ecomm/management/users`;
 
     private headers = new Headers({ 'Content-Type': 'application/json' });
+
+    options: RequestOptions = new RequestOptions({headers: this.headers});
 
     constructor(private http: Http) {
         
@@ -29,6 +31,19 @@ export class UsersService {
             .toPromise()
             .then(response => response.json() as UserModel)
             .catch(this.handleError);
+    }
+
+    addUser(user: UserModel): Promise<UserModel> {
+        return this.http.post(this.usersUrl, user, this.options)
+            .toPromise()
+            .then(response => response.json() as UserModel)
+            .catch(this.handleError)
+    }
+
+    updateUser(user: UserModel):Promise<UserModel>{
+        return this.http.put(this.usersUrl, user, this.options).toPromise()
+            .then(response => response.json() as UserModel)
+            .catch(this.handleError)
     }
 
     private handleError(error: any): Promise<any> {

@@ -4,6 +4,8 @@ import {ActivatedRoute, Params} from "@angular/router";
 import UserModel from "../../models/user.model";
 import {UsersService} from "../../services/users.service";
 import {LocationStrategy} from "@angular/common";
+import {CharGroupService} from "../../services/char-group.service";
+import RoleModel from "../../models/role.model";
 
 @Component({
     selector: 'nc-user-editor',
@@ -13,28 +15,35 @@ import {LocationStrategy} from "@angular/common";
 
 export class UserEditorComponent implements OnInit {
 
-    @Input() user: UserModel;
+    user: UserModel = new UserModel();
+    role = new RoleModel;
+
+
+    /*user: UserModel = new UserModel();*/
+    @Input() userId: number;
 
     constructor(
         private usersService: UsersService,
+        private charGroupService: CharGroupService,
         private route: ActivatedRoute
     ) { }
 
     ngOnInit(): void {
-        console.log(this.user);
-        this.route.params
-            .switchMap((params: Params) => this.usersService.getUser(+params['id']))
-            .subscribe(user => this.user = user);
-        if (this.user){
-            console.log('Id is empty')
+        this.user.role = this.role;
+        if (this.userId){
+            this.usersService.getUser(this.userId).then(user => this.user = user);
+            console.log(+this.userId);
+            console.log(this.user);
+        }else {
+            console.log('New User');
         }
-        /*if (this.user.id != null){
+    }
 
-        /*}else {
-            console.log('Id is Empty')
-        }*!/*/
+    onCreate(): void {
+        this.usersService.addUser(this.user);
+    }
 
-        /*this.route.params
-            .switchMap((params: Params) => (+params['id']))*/
+    onEdit(): void {
+        this.usersService.updateUser(this.user);
     }
 }

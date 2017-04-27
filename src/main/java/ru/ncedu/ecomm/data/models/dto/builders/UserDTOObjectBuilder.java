@@ -1,5 +1,6 @@
 package ru.ncedu.ecomm.data.models.dto.builders;
 
+import ru.ncedu.ecomm.data.models.dao.RoleDAOObject;
 import ru.ncedu.ecomm.data.models.dto.UserDTOObject;
 
 import java.sql.Date;
@@ -14,6 +15,8 @@ public class UserDTOObjectBuilder {
     private String email;
     private Date registrationDate;
     private String userAvatar;
+    private String password;
+    private RoleDAOObject role;
 
     public UserDTOObjectBuilder() {
     }
@@ -63,6 +66,16 @@ public class UserDTOObjectBuilder {
         return this;
     }
 
+    public UserDTOObjectBuilder setPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
+    public UserDTOObjectBuilder setRole(RoleDAOObject role) {
+        this.role = role;
+        return this;
+    }
+
     public UserDTOObject build(){
         return new UserDTOObject(
                 id,
@@ -73,6 +86,8 @@ public class UserDTOObjectBuilder {
                 phone,
                 email,
                 registrationDate,
-                userAvatar);
+                userAvatar,
+                password,
+                role);
     }
 }
