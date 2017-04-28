@@ -500,17 +500,15 @@ public class PostgresUserDAO implements UserDAO {
                              "SET role_id     = ?,\n" +
                              "  first_name    = ?,\n" +
                              "  last_name     = ?,\n" +
-                             "  password      = ?,\n" +
                              "  phone         = ?,\n" +
                              "  email         = ?\n" +
                              "WHERE user_id = ?")) {
             statement.setLong(1, user.getRole().getId());
             statement.setString(2, user.getFirstName());
             statement.setString(3, user.getLastName());
-            statement.setString(4, user.getPassword());
-            statement.setString(5, user.getPhone());
-            statement.setString(6, user.getEmail());
-            statement.setLong(7, user.getId());
+            statement.setString(4, user.getPhone());
+            statement.setString(5, user.getEmail());
+            statement.setLong(6, user.getId());
             statement.execute();
 
             LOG.info(null);

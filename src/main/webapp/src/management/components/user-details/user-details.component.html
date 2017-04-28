@@ -1,1 +1,6 @@
 <nc-user-editor [userId]="userId"></nc-user-editor>
+<div class="ui section divider"></div>
+<sm-tabs *ngIf="userId">
+    <sm-tab title="Review">In a future this place take user review</sm-tab>
+    <sm-tab title="Orders">Orders want to take this place</sm-tab>
+</sm-tabs>

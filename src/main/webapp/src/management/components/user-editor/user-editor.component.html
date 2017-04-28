@@ -1,11 +1,16 @@
 <div class="ui left aligned container">
     <h1>User Editor</h1>
 </div>
-<form class="ui form">
-    <div class="ui small image">
-        <img class="ui small rounded image" src="/ecomm/{{user.userAvatar}}">
+<div class="ui container right aligned">
+    <button class="ui button primary" [disabled]="groupForm.invalid" (click)="onSave()">Save</button>
+    <button class="ui button yellow" (click)="onCancel()">Cancel</button>
+    <button class="ui button red" *ngIf="userId" (click)="onDelete()">Delete</button>
+</div>
+<form class="ui form" #groupForm="ngForm">
+    <div class="ui small image" *ngIf="userId">
+        <img class="ui small rounded image" src="{{pathToUserAvatar}}{{user.userAvatar}}">
     </div>
-    <div class="field">
+    <div class="field" *ngIf="userId">
         <label>User ID</label>
         <input placeholder="User ID" readonly="" type="text" value="{{user.id}}">
     </div>
@@ -14,7 +19,7 @@
         <sm-select
                 [options]="{direction: 'upward'}"
                 [(model)]="user.role.id" placeholder="Select Role..."
-                class="fluid">
+                class="fluid" required>
             <option value="1">Administrator</option>
             <option value="2">Manager</option>
             <option value="3">User</option>
@@ -22,29 +27,35 @@
     </div>
     <div class="field">
         <label>E-mail</label>
-        <input type="text" placeholder="E-mail" name="email" [(ngModel)]="user.email">
+        <input type="text" placeholder="E-mail" [(ngModel)]="user.email" name="email" #email="ngModel"
+               required pattern="[a-zA-Z_.-]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}">
     </div>
-    <div class="field">
+    <div class="field" *ngIf="!userId">
         <label>Password</label>
-        <input type="text" placeholder="password" name="password" [(ngModel)]="user.password">
+        <input type="text" placeholder="password" [(ngModel)]="user.password" name="password" #password="ngModel" required>
     </div>
     <div class="field">
         <label>First Name</label>
-        <input type="text" placeholder="First Name" name="firstName" [(ngModel)]="user.firstName">
+        <input type="text" placeholder="First Name" [(ngModel)]="user.firstName" name="firstName">
     </div>
     <div class="field">
         <label>Last Name</label>
-        <input type="text" placeholder="Last Name" name="lastName" [(ngModel)]="user.lastName">
+        <input type="text" placeholder="Last Name" [(ngModel)]="user.lastName" name="lastName">
     </div>
     <div class="field">
         <label>Phone</label>
-        <input type="text" placeholder="Phone" name="phone" [(ngModel)]="user.phone">
+        <input type="text" placeholder="Phone" [(ngModel)]="user.phone" name="phone">
     </div>
-    <div class="field">
+    <div class="field" *ngIf="userId">
         <label>Registration Date</label>
         <input type="text" readonly="" placeholder="Registration Date" value="{{user.registrationDate}}">
     </div>
-    <button class="ui button" type="submit">Submit</button>
-    <button class="ui button" (click)="onCreate()">Save new User</button>
-    <button class="ui button" (click)="onEdit()">Save Edit User</button>
 </form>
+<div *ngIf="isSent" class="ui success message">
+    <div class="header">Form Completed</div>
+    <p>Successfully submitted form.</p>
+</div>
+<div *ngIf="isError" class="ui error message">
+    <div class="header">Error of send.</div>
+    <p>Please try again later.</p>
+</div>
