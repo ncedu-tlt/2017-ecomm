@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, OnInit, Input, ViewChild} from "@angular/core";
 import TableModel from "../data-table/models/table.model";
 import CharGroupModel from "../../models/char-group.model";
 import {CharGroupService} from "../../services/char-group.service";

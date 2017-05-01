@@ -1,0 +1,42 @@
+<!--<div class="ui right floated segment characteristicSegment">-->
+<!--<sm-accordion class="ui styled fluid">-->
+<!--<sm-accordion-item>-->
+<!--<accordion-title>Group 1</accordion-title>-->
+<!--<accordion-content>A dog is a type of domesticated animal. Known for its loyalty and faithfulness,-->
+<!--it can be found as a welcome guest in many households across the world.-->
+<!--</accordion-content>-->
+<!--</sm-accordion-item>-->
+<!--<sm-accordion-item>-->
+<!--<accordion-title>What kinds of dogs are there?</accordion-title>-->
+<!--<accordion-content>A dog is a type of domesticated animal. Known for its loyalty and faithfulness,-->
+<!--it can be found as a welcome guest in many households across the world.-->
+<!--</accordion-content>-->
+<!--</sm-accordion-item>-->
+<!--<sm-accordion-item>-->
+<!--<accordion-title>How do you acquire a dog?</accordion-title>-->
+<!--<accordion-content>A dog is a type of domesticated animal. Known for its loyalty and faithfulness,-->
+<!--it can be found as a welcome guest in many households across the world.-->
+<!--</accordion-content>-->
+<!--</sm-accordion-item>-->
+<!--</sm-accordion>-->
+<!--</div>-->
+
+<nc-categories-tree></nc-categories-tree>
+
+<table class="ui selectable celled table">
+    <tbody>
+    <tr *ngFor="let data of characteristicTableModel.data"
+        #row>
+        <td>
+            {{getValue(data, "characteristicName")}}
+        </td>
+        <td>
+            <sm-checkbox [disabled]="true"
+                         label="Filterable"
+                         [control]="getValue(data, 'filterable')">
+            </sm-checkbox>
+        </td>
+    </tr>
+    </tbody>
+</table>
+

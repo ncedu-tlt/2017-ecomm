@@ -24,7 +24,8 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
                             "  characteristic_id,\n" +
                             "  category_id,\n" +
                             "  name,\n" +
-                            "  characteristic_group_id\n" +
+                            "  characteristic_group_id,\n" +
+                            "  filterable\n" +
                             "FROM public.characteristics"
             );
             while (resultSet.next()) {
@@ -33,6 +34,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
                         .setCharacteristicName(resultSet.getString("name"))
                         .setCategoryId(resultSet.getLong("category_id"))
+                        .setFilterable(resultSet.getBoolean("filterable"))
                         .build();
 
                 characteristics.add(characteristic);
@@ -96,7 +98,8 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
                             "  characteristic_id,\n" +
                             "  category_id,\n" +
                             "  name,\n" +
-                            "  characteristic_group_id\n" +
+                            "  characteristic_group_id\n," +
+                            " filterable\n" +
                             "FROM public.characteristics\n" +
                             "WHERE category_id = ?\n" +
                             "      AND characteristic_group_id = ?"
@@ -113,6 +116,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
                         .setCharacteristicName(resultSet.getString("name"))
                         .setCharacteristicGroupId(resultSet.getLong("characteristic_group_id"))
                         .setCategoryId(resultSet.getLong("category_id"))
+                        .setFilterable(resultSet.getBoolean("filterable"))
                         .build();
 
                 characteristics.add(characteristic);

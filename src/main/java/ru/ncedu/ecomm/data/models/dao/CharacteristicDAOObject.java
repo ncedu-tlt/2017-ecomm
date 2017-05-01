@@ -5,16 +5,20 @@ public class CharacteristicDAOObject {
     private long categoryId;
     private String characteristicName;
     private long characteristicGroupId;
+    private boolean filterable;
 
     public CharacteristicDAOObject(long characteristicId,
                                    long categoryId,
                                    String characteristicName,
-                                   long characteristicGroupId) {
+                                   long characteristicGroupId,
+                                   boolean filterable) {
 
         this.characteristicId = characteristicId;
         this.categoryId = categoryId;
         this.characteristicName = characteristicName;
         this.characteristicGroupId = characteristicGroupId;
+        this.filterable = filterable;
+
     }
 
     public CharacteristicDAOObject() {
@@ -52,4 +56,8 @@ public class CharacteristicDAOObject {
     public void setCharacteristicGroupId(long characteristicGroupId) {
         this.characteristicGroupId = characteristicGroupId;
     }
+
+    public boolean isFilterable() { return filterable; }
+
+    public void setFilterable(boolean filterable) { this.filterable = filterable; }
 }

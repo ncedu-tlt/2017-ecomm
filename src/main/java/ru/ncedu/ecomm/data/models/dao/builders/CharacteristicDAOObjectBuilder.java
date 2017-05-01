@@ -8,6 +8,7 @@ public class CharacteristicDAOObjectBuilder {
     private long categoryId;
     private String characteristicName;
     private long characteristicGroupId;
+    private boolean filterable;
 
     public CharacteristicDAOObjectBuilder(){
 
@@ -33,12 +34,19 @@ public class CharacteristicDAOObjectBuilder {
         return this;
     }
 
+    public CharacteristicDAOObjectBuilder setFilterable(boolean filterable) {
+        this.filterable = filterable;
+
+        return this;
+    }
+
     public CharacteristicDAOObject build(){
         return new CharacteristicDAOObject(
                 characteristicId,
                 categoryId,
                 characteristicName,
-                characteristicGroupId
+                characteristicGroupId,
+                filterable
         );
     }
 }
