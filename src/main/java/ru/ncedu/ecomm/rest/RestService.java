@@ -299,7 +299,6 @@ public class RestService {
             @PathParam("categoryId") long categoryId) {
         return getDAOFactory().getProductDAO().getProductsByCategoryId(categoryId);
     }
-
     @POST
     @Path("/product")
     @Produces(MediaType.APPLICATION_JSON)

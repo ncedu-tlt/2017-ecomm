@@ -1,5 +1,6 @@
 package ru.ncedu.ecomm.rest;
 
+import ru.ncedu.ecomm.data.models.dao.ProductDAOObject;
 import ru.ncedu.ecomm.data.models.dao.UserDAOObject;
 import ru.ncedu.ecomm.data.models.dto.UserDTOObject;
 
@@ -61,5 +62,13 @@ public class RestServiceVersionTwo {
     @Consumes(MediaType.APPLICATION_JSON)
     public UserDTOObject updateUserManagement(UserDTOObject user) {
         return getDAOFactory().getUserDAO().updateUserForManagement(user);
+    }
+
+    @GET
+    @Path("/product/childrenProducts/{categoryId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ProductDAOObject> getAllChrildrenProductsByCategoryId(
+            @PathParam("categoryId") long categoryId) {
+        return getDAOFactory().getProductDAO().getAllChrildrenProductsByCategoryId(categoryId);
     }
 }
