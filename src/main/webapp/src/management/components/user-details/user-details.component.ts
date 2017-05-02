@@ -1,7 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import UserModel from "../../models/user.model";
 import {ActivatedRoute} from "@angular/router";
-import {UsersService} from "../../services/users.service";
 
 @Component({
     selector: 'nc-user-details',
@@ -11,7 +9,6 @@ export class UserDetailsComponent implements OnInit {
     userId: number;
 
     constructor(
-        private usersService: UsersService,
         private route: ActivatedRoute
     ) { }
 

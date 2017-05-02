@@ -10,7 +10,8 @@ declare const contextPath: string;
 
 @Component({
     selector: 'nc-user-editor',
-    templateUrl: './user-editor.component.html'
+    templateUrl: 'user-editor.component.html',
+    styleUrls: ['user-editor.component.css']
 })
 
 export class UserEditorComponent implements OnInit {

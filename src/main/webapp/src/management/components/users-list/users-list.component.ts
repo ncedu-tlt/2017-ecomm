@@ -6,7 +6,8 @@ import {UsersService} from "../../services/users.service";
 
 @Component({
     selector: 'nc-users-list',
-    templateUrl: 'users-list.component.html'
+    templateUrl: 'users-list.component.html',
+    styleUrls: ['users-list.component.css']
 })
 export class UsersListComponent implements OnInit {
 
