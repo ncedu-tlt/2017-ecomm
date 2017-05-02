@@ -6,8 +6,6 @@ import java.sql.Date;
 
 public class UserDTOObject {
     private long id;
-    private long roleId;
-    private String roleName;
     private String firstName;
     private String lastName;
     private String phone;
@@ -21,8 +19,6 @@ public class UserDTOObject {
     }
 
     public UserDTOObject(long id,
-                         long roleId,
-                         String roleName,
                          String firstName,
                          String lastName,
                          String phone,
@@ -32,8 +28,6 @@ public class UserDTOObject {
                          String password,
                          RoleDAOObject role) {
         this.id = id;
-        this.roleId = roleId;
-        this.roleName = roleName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -50,14 +44,6 @@ public class UserDTOObject {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
     }
 
     public String getFirstName() {
@@ -106,14 +92,6 @@ public class UserDTOObject {
 
     public void setUserAvatar(String userAvatar) {
         this.userAvatar = userAvatar;
-    }
-
-    public long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(long roleId) {
-        this.roleId = roleId;
     }
 
     public String getPassword() {

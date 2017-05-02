@@ -7,8 +7,6 @@ import java.sql.Date;
 
 public class UserDTOObjectBuilder {
     private long id;
-    private long roleId;
-    private String roleName;
     private String firstName;
     private String lastName;
     private String phone;
@@ -23,16 +21,6 @@ public class UserDTOObjectBuilder {
 
     public UserDTOObjectBuilder setId(long id) {
         this.id = id;
-        return this;
-    }
-
-    public UserDTOObjectBuilder setRoleId(long roleId) {
-        this.roleId = roleId;
-        return this;
-    }
-
-    public UserDTOObjectBuilder setRoleName(String roleName) {
-        this.roleName = roleName;
         return this;
     }
 
@@ -79,8 +67,6 @@ public class UserDTOObjectBuilder {
     public UserDTOObject build(){
         return new UserDTOObject(
                 id,
-                roleId,
-                roleName,
                 firstName,
                 lastName,
                 phone,

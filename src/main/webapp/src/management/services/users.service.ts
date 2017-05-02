@@ -4,12 +4,12 @@ import "rxjs/add/operator/toPromise";
 import UserModel from "../models/user.model";
 import RoleModel from "../models/role.model";
 
-declare var contextPath: string;
+declare const contextPath: string;
 
 @Injectable()
 export class UsersService {
 
-    private usersUrl = `${contextPath}/rest/ecomm/management/users`;
+    private usersUrl = `${contextPath}/rest/ecomm/v2/users`;
 
     private rolesUrl = `${contextPath}/rest/ecomm/roles`;
 

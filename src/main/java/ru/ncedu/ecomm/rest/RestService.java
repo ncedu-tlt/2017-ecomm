@@ -138,7 +138,7 @@ public class RestService {
         return getDAOFactory().getUserDAO().getUsers();
     }
 
-    @GET
+    /*@GET
     @Path("/management/users")
     @Produces(MediaType.APPLICATION_JSON)
     public List<UserDTOObject> getUsersManagement() {return getDAOFactory().getUserDAO().getUsersForManagement();
@@ -173,7 +173,7 @@ public class RestService {
     @Consumes(MediaType.APPLICATION_JSON)
     public UserDTOObject updateUserManagement(UserDTOObject user) {
         return getDAOFactory().getUserDAO().updateUserForManagement(user);
-    }
+    }*/
 
     @GET
     @Path("/users/{userId}")

@@ -17,6 +17,5 @@ public interface UserDAO {
     void deleteUser(long userId);
     List<UserDTOObject> getUsersForManagement();
     UserDTOObject getUserForManagementById(long id);
-    UserDTOObject addUserForManagement(UserDTOObject user);
     UserDTOObject updateUserForManagement(UserDTOObject user);
 }

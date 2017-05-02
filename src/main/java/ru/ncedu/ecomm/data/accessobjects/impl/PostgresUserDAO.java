@@ -393,8 +393,6 @@ public class PostgresUserDAO implements UserDAO {
                 LOG.info(null);
                 return new UserDTOObjectBuilder()
                         .setId(resultSet.getLong("user_id"))
-                        .setRoleId(resultSet.getLong("role_id"))
-                        .setRoleName(resultSet.getString("name"))
                         .setFirstName(resultSet.getString("first_name"))
                         .setLastName(resultSet.getString("last_name"))
                         .setEmail(resultSet.getString("email"))
@@ -435,8 +433,6 @@ public class PostgresUserDAO implements UserDAO {
             while (resultSet.next()) {
                 UserDTOObject user = new UserDTOObjectBuilder()
                         .setId(resultSet.getLong("user_id"))
-                        .setRoleId(resultSet.getLong("role_id"))
-                        .setRoleName(resultSet.getString("name"))
                         .setFirstName(resultSet.getString("first_name"))
                         .setLastName(resultSet.getString("last_name"))
                         .setEmail(resultSet.getString("email"))
@@ -453,43 +449,6 @@ public class PostgresUserDAO implements UserDAO {
             throw new RuntimeException(e);
         }
         return users;
-    }
-
-    @Override
-    public UserDTOObject addUserForManagement(UserDTOObject user) {
-        try (Connection connection = DBUtils.getConnection();
-             PreparedStatement statement = connection.prepareStatement(
-                     "INSERT INTO users\n" +
-                             "(role_id,\n" +
-                             " first_name,\n" +
-                             " last_name,\n" +
-                             " password,\n" +
-                             " phone,\n" +
-                             " email,\n" +
-                             " registration_date)\n" +
-                             "VALUES (?, ?, ?, ?, ?, ?, current_timestamp)\n" +
-                             "RETURNING user_id")) {
-            statement.setLong(1, user.getRole().getId());
-            statement.setString(2, user.getFirstName());
-            statement.setString(3, user.getLastName());
-            statement.setString(4, user.getPassword());
-            statement.setString(5, user.getPhone());
-            statement.setString(6, user.getEmail());
-            statement.execute();
-
-            ResultSet resultSet = statement.getResultSet();
-            if (resultSet.next()) {
-                user.setId(resultSet.getLong(1));
-
-                LOG.info(null);
-                return user;
-            }
-
-        } catch (SQLException e) {
-            LOG.error(e.getMessage());
-            throw new RuntimeException(e);
-        }
-        return user;
     }
 
     @Override
