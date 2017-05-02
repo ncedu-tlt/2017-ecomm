@@ -643,6 +643,44 @@ public class PostgresProductDAO implements ProductDAO {
         return products;
     }
 
+    @Override
+    public List<ProductDAOObject> getAllChrildrenProductsByCategoryId(long categoryId) {
+        List<ProductDAOObject> prosucts = new ArrayList<>();
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT\n" +
+                             "  product_id,\n" +
+                             "  name,\n" +
+                             "  description,\n" +
+                             "  price\n" +
+                             "FROM public.products\n" +
+                             "WHERE category_id IN \n" +
+                             "(SELECT category_id \n" +
+                             "FROM public.categories \n" +
+                             "WHERE parent_id = ? OR category_id = ?) \n" +
+                             "ORDER BY product_id ASC")) {
+            statement.setLong(1, categoryId);
+            statement.setLong(2, categoryId);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                ProductDAOObject product = new ProductDAOObjectBuilder()
+                        .setProductId(resultSet.getLong("product_id"))
+                        .setName(resultSet.getString("name"))
+                        .setDescription(resultSet.getString("description"))
+                        .setPrice(resultSet.getLong("price"))
+                        .build();
+
+                prosucts.add(product);
+            }
+
+            LOG.info(null);
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return prosucts;
+    }
 }
 
 

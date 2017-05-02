@@ -34,4 +34,6 @@ public interface ProductDAO {
     List<ProductDAOObject> getFilteredProducts(List<FilterViewModel> filters, PriceRangeViewModel priceRange, long categoryId);
 
     List<ProductDAOObject> getProductByOrderId(long orderId);
+
+    List<ProductDAOObject> getAllChrildrenProductsByCategoryId(long categoryId);
 }
