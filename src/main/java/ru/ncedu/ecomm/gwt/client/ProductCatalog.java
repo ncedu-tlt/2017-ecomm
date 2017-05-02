@@ -18,7 +18,8 @@ import java.util.List;
 
 public class ProductCatalog implements EntryPoint {
     private static final String JSON_URL_CATEGORIES = GWT.getHostPageBaseURL() + "rest/ecomm/categories";
-    private static final String JSON_URL_PRODUCTS = GWT.getHostPageBaseURL() + "rest/ecomm/product";
+    private static final String JSON_URL_ALL_PRODUCTS = GWT.getHostPageBaseURL() + "rest/ecomm/product";
+    private static final String JSON_URL_CHILDREN_PRODUCTS = GWT.getHostPageBaseURL() + "rest/ecomm/v2/product/childrenProducts/";
     private static final int SUCCESS_ANSWER = 200;
     private static final int NULL_PARENT = 0;
     private static final int ALL_CATEGORIES = 0;
@@ -65,6 +66,7 @@ public class ProductCatalog implements EntryPoint {
                         list.stream().filter(c -> c.getParentId() == NULL_PARENT).forEach(c -> {
                             TreeItem item = new TreeItem();
                             item.setText(c.getName());
+                            item.getElement().setId(String.valueOf(c.getCategoryId()));
                             mainRoot.addItem(item);
                             list.stream().filter(c1 -> c1.getParentId() == c.getCategoryId()).forEach(c1 -> {
                                 TreeItem childItem = new TreeItem();
@@ -78,7 +80,13 @@ public class ProductCatalog implements EntryPoint {
                         tree.addSelectionHandler(selectionEvent -> {
                             TreeItem item = selectionEvent.getSelectedItem();
                             dataProviderProducts.getList().clear();
-                            updateProductDataProvider(Integer.parseInt(item.getElement().getId()));
+                            if (Integer.parseInt(item.getElement().getId()) == 0) {
+                                List<ProductJSO> list = dataProviderProducts.getList();
+                                RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, JSON_URL_ALL_PRODUCTS);
+
+                                fillList(list, builder);
+                            }
+                            else updateProductDataProvider(Integer.parseInt(item.getElement().getId()));
                         });
 
                     } else {
@@ -122,7 +130,10 @@ public class ProductCatalog implements EntryPoint {
         };
 
         dataProviderProducts.addDataDisplay(table);
-        updateProductDataProvider(category);
+        List<ProductJSO> list = dataProviderProducts.getList();
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, JSON_URL_ALL_PRODUCTS);
+
+        fillList(list, builder);
 
         ColumnSortEvent.ListHandler<ProductJSO> idColumnSortHandler = new ColumnSortEvent.ListHandler<>(dataProviderProducts.getList());
         idColumnSortHandler.setComparator(idColumn,
@@ -149,8 +160,12 @@ public class ProductCatalog implements EntryPoint {
 
     private void updateProductDataProvider(final int category) {
         List<ProductJSO> list = dataProviderProducts.getList();
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, JSON_URL_CHILDREN_PRODUCTS + String.valueOf(category));
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, JSON_URL_PRODUCTS);
+        fillList(list, builder);
+    }
+
+    private void fillList(List<ProductJSO> list, RequestBuilder builder) {
         try {
             Request request = builder.sendRequest(null, new RequestCallback() {
                 public void onError(Request request, Throwable exception) {
@@ -162,8 +177,7 @@ public class ProductCatalog implements EntryPoint {
                         JsArray<ProductJSO> products = JsonUtils.safeEval(response.getText());
 
                         for (int i = 0; i < products.length(); i++) {
-                            if (category == ALL_CATEGORIES) list.add(products.get(i));
-                            else if (products.get(i).getCategoryId() == category) list.add(products.get(i));
+                            list.add(products.get(i));
                         }
 
                     } else {
