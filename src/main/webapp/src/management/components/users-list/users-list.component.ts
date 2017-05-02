@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import TableModel from "../data-table/models/table.model";
 import UserModel from "../../models/user.model";
@@ -10,7 +10,7 @@ import {UsersService} from "../../services/users.service";
 })
 export class UsersListComponent implements OnInit {
 
-    userModel: UserModel;
+    selectUser: UserModel;
 
     model: TableModel = {
         data: [],
@@ -42,27 +42,31 @@ export class UsersListComponent implements OnInit {
         this.usersService.getUsers().then(users => this.model.data = users);
     }
 
-    onSelect(user: UserModel): void {
-        this.userModel = user;
+    onSelect(user: UserModel): any {
+        this.selectUser = user;
     }
 
     onDelete(): void {
-        if (this.userModel) {
-            this.usersService.deleteUser(this.userModel.id)
+        if (this.selectUser) {
+            this.usersService.deleteUser(this.selectUser.id)
                 .then(() => {
-                    this.model.data = this.model.data.filter(group => group !== this.userModel);
-                    this.userModel = null;
+                    this.model.data = this.model.data.filter(group => group !== this.selectUser);
+                    this.selectUser = null;
                 });
         }
     }
 
     onEdit(): void {
-        if (this.userModel){
-            this.router.navigate(['/user', this.userModel.id]);
+        if (this.selectUser){
+            this.router.navigate(['/user', this.selectUser.id]);
         }
     }
 
     onCreate(): void {
         this.router.navigate(['/user', 'new']);
+    }
+
+    selectState(): any {
+        return !this.selectUser;
     }
 }

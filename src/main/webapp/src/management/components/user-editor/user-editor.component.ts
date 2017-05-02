@@ -1,11 +1,12 @@
 import "rxjs/add/operator/switchMap";
 import {Component, Input, OnInit} from "@angular/core";
-import {ActivatedRoute, Params} from "@angular/router";
 import UserModel from "../../models/user.model";
 import {UsersService} from "../../services/users.service";
 import {Location} from "@angular/common";
-import {CharGroupService} from "../../services/char-group.service";
 import RoleModel from "../../models/role.model";
+import {FormGroup} from "@angular/forms";
+
+declare const contextPath: string;
 
 @Component({
     selector: 'nc-user-editor',
@@ -14,37 +15,52 @@ import RoleModel from "../../models/role.model";
 
 export class UserEditorComponent implements OnInit {
 
+    @Input()
+    userId: number;
+
     user: UserModel = new UserModel();
-    role = new RoleModel;
-    pathToUserAvatar = `/ecomm`;
-    @Input() userId: number;
+    roles: RoleModel[];
+    pathToUserAvatar = contextPath;
     isSent: boolean = false;
     isError: boolean = false;
 
-    constructor(
-        private usersService: UsersService,
-        private location: Location,
-        private charGroupService: CharGroupService,
-        private route: ActivatedRoute,
-    ) { }
+
+    constructor(private usersService: UsersService,
+                private location: Location,
+    ) {
+    }
 
     ngOnInit(): void {
-        this.user.role = this.role;
-        if (this.userId){
+        this.user.role = new RoleModel;
+        this.usersService.getRoles().then(roles => this.roles = roles);
+        if (this.userId) {
             this.usersService.getUser(this.userId).then(user => this.user = user);
-        }else {
         }
     }
 
-    onSave(): void {
-        if (this.userId){
+    onSave(form: FormGroup): void {
+        if (this.userId) {
             this.usersService.updateUser(this.user)
-                .then(() => {this.isSent = true; this.isError = false})
-                .catch(() => {this.isError = true; this.isSent = false});
+                .then(() => {
+                    this.isSent = true;
+                    this.isError = false;
+                    this.location.back();
+                })
+                .catch(() => {
+                    this.isError = true;
+                    this.isSent = false
+                });
         } else {
             this.usersService.addUser(this.user)
-                .then(() => {this.isSent = true; this.isError = false})
-                .catch(() => {this.isError = true; this.isSent = false});
+                .then(() => {
+                    this.isSent = true;
+                    this.isError = false;
+                    form.reset();
+                })
+                .catch(() => {
+                    this.isError = true;
+                    this.isSent = false
+                });
         }
     }
 
@@ -52,9 +68,9 @@ export class UserEditorComponent implements OnInit {
         this.location.back();
     }
 
-    onDelete(): void{
-        if (this.userId){
-            this.usersService.deleteUser(this.userId).then(() => this.onCancel());
+    onDelete(): void {
+        if (this.userId) {
+            this.usersService.deleteUser(this.userId).then(this.onCancel.bind(this));
         }
     }
 }

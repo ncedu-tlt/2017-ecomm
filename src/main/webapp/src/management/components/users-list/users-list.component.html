@@ -1,11 +1,11 @@
 <div class="ui container right aligned">
-    <button class="ui button primary" (click)="onCreate()">
+    <button class="ui button primary" (click)="onCreate()" tabindex="1">
         Add
     </button>
-    <button class="ui button yellow" (click)="onEdit()" tabindex="0">
+    <button class="ui button yellow" (click)="onEdit()" tabindex="2" [disabled]="selectState()">
         Update
     </button>
-    <button class="ui button red" (click)="onDelete()" tabindex="0">
+    <button class="ui button red" (click)="onDelete()" tabindex="3" [disabled]="selectState()">
         Delete
     </button>
 </div>

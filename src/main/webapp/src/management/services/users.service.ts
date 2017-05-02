@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {Headers, Http, RequestOptions} from "@angular/http";
 import "rxjs/add/operator/toPromise";
 import UserModel from "../models/user.model";
+import RoleModel from "../models/role.model";
 
 declare var contextPath: string;
 
@@ -9,6 +10,8 @@ declare var contextPath: string;
 export class UsersService {
 
     private usersUrl = `${contextPath}/rest/ecomm/management/users`;
+
+    private rolesUrl = `${contextPath}/rest/ecomm/roles`;
 
     private headers = new Headers({ 'Content-Type': 'application/json' });
 
@@ -56,6 +59,13 @@ export class UsersService {
         return this.http.delete(url, {headers: this.headers})
             .toPromise()
             .then(() => null)
+            .catch(this.handleError);
+    }
+
+    getRoles(): Promise<RoleModel[]>{
+        return this.http.get(this.rolesUrl)
+            .toPromise()
+            .then(response => response.json() as RoleModel[])
             .catch(this.handleError);
     }
 }

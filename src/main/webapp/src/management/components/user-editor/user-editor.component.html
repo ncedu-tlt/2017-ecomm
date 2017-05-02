@@ -2,27 +2,29 @@
     <h1>User Editor</h1>
 </div>
 <div class="ui container right aligned">
-    <button class="ui button primary" [disabled]="groupForm.invalid" (click)="onSave()">Save</button>
+    <button class="ui button primary" [disabled]="groupForm.invalid"
+            (click)="onSave(groupForm); submitPopup.show($event, {position: 'top left'})">Save
+    </button>
     <button class="ui button yellow" (click)="onCancel()">Cancel</button>
     <button class="ui button red" *ngIf="userId" (click)="onDelete()">Delete</button>
 </div>
 <form class="ui form" #groupForm="ngForm">
     <div class="ui small image" *ngIf="userId">
-        <img class="ui small rounded image" src="{{pathToUserAvatar}}{{user.userAvatar}}">
+        <img class="ui small rounded image" [src]="pathToUserAvatar + user.userAvatar">
     </div>
     <div class="field" *ngIf="userId">
         <label>User ID</label>
-        <input placeholder="User ID" readonly="" type="text" value="{{user.id}}">
+        <input placeholder="User ID" readonly="readonly" type="number" value="{{user.id}}">
     </div>
     <div class="field">
         <label>Role</label>
         <sm-select
-                [options]="{direction: 'upward'}"
+                [options]="{direction: 'auto'}"
                 [(model)]="user.role.id" placeholder="Select Role..."
                 class="fluid" required>
-            <option value="1">Administrator</option>
-            <option value="2">Manager</option>
-            <option value="3">User</option>
+            <div *ngFor="let role of roles">
+                <option value="{{role.id}}">{{role.name}}</option>
+            </div>
         </sm-select>
     </div>
     <div class="field">
@@ -32,7 +34,8 @@
     </div>
     <div class="field" *ngIf="!userId">
         <label>Password</label>
-        <input type="text" placeholder="password" [(ngModel)]="user.password" name="password" #password="ngModel" required>
+        <input type="password" placeholder="password" [(ngModel)]="user.password" name="password" #password="ngModel"
+               required>
     </div>
     <div class="field">
         <label>First Name</label>
@@ -44,18 +47,29 @@
     </div>
     <div class="field">
         <label>Phone</label>
-        <input type="text" placeholder="Phone" [(ngModel)]="user.phone" name="phone">
+        <input type="number" placeholder="Phone" [(ngModel)]="user.phone" name="phone" required pattern="\d{11}">
     </div>
     <div class="field" *ngIf="userId">
         <label>Registration Date</label>
-        <input type="text" readonly="" placeholder="Registration Date" value="{{user.registrationDate}}">
+        <input type="text" readonly="readonly" placeholder="Registration Date" value="{{user.registrationDate}}">
     </div>
 </form>
-<div *ngIf="isSent" class="ui success message">
-    <div class="header">Form Completed</div>
-    <p>Successfully submitted form.</p>
-</div>
-<div *ngIf="isError" class="ui error message">
-    <div class="header">Error of send.</div>
-    <p>Please try again later.</p>
-</div>
+<sm-popup #submitPopup>
+    <sm-card *ngIf="isSent" class="card">
+        <card-title> Successes!</card-title>
+        <card-content>
+            New user successfully created
+        </card-content>
+        <sm-button class="bottom attached fluid primary" (click)="submitPopup.hide()" icon="close">Close
+        </sm-button>
+    </sm-card>
+    <sm-card *ngIf="isError" class="card">
+        <card-title> Error!</card-title>
+        <card-subtitle> Check role input</card-subtitle>
+        <card-content>
+            Pleace, repeat submit or try again later
+        </card-content>
+        <sm-button class="bottom attached fluid primary" (click)="submitPopup.hide()" icon="close">Close
+        </sm-button>
+    </sm-card>
+</sm-popup>
