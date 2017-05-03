@@ -79,4 +79,12 @@ public class RestServiceVersionTwo {
             @PathParam("categoryId") long categoryId) {
         return getDAOFactory().getProductDAO().getAllChrildrenProductsByCategoryId(categoryId);
     }
+
+    @DELETE
+    @Path("/users/reviews/{userId}/{productId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteUser(@PathParam("userId") long userId, @PathParam("productId") long productId) {
+        getDAOFactory().getReviewDAO().deleteReviews(userId, productId);
+        return Response.ok().build();
+    }
 }

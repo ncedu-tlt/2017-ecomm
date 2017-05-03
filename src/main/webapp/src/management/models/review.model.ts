@@ -3,5 +3,6 @@ export default class ReviewModel{
     description: string;
     creationDate: any;
     rating : number;
-    product: string;
+    productName: string;
+    productId: number;
 }

@@ -4,3 +4,8 @@ p:first-child {
 p:last-child {
     margin-bottom:1em;
 }
+
+.reviewstest div.selected:hover {
+    background-color: #BBD8DC !important;
+    color: white;
+}

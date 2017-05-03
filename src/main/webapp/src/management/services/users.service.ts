@@ -79,4 +79,12 @@ export class UsersService {
             .then(response => response.json() as ReviewModel[])
             .catch(this.handleError);
     }
+
+    deleteReview(userId: number, productId: number): Promise<void>{
+        const url = `${this.reviewUrl}/${userId}/${productId}`;
+        return this.http.delete(url, {headers: this.headers})
+            .toPromise()
+            .then(() => null)
+            .catch(this.handleError)
+    }
 }

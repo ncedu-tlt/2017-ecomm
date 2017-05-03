@@ -1,8 +1,11 @@
-<div *ngFor="let review of reviews" class="ui vertical stripe segment">
-    <div  class="ui middle aligned stackable grid container">
+<div class="ui vertical stripe segment ">
+    <div *ngFor="let review of reviews" class="ui middle aligned stackable grid container reviewstest">
         <div class="row">
+            <df-review>
+                <input #textbox type="hidden" [(ngModel)]="review.productId">
+            </df-review>
             <div class="eight wide column">
-                {{review.product}}
+                {{review.productName}}
             </div>
             <div class="six wide column">
                 <sm-rating class="massive star" [initialRating]="review.rating" [maxRating]="5"></sm-rating>
@@ -16,9 +19,10 @@
                 </p>
             </div>
             <div class="wide column">
-                <button class="ui button red">Delete</button>
+                <button class="ui button red" (click)="onDelete(textbox.value)">Delete</button>
             </div>
         </div>
+        <div class="ui section divider"></div>
     </div>
 </div>
 <div *ngIf="reviews?.length == 0" class="ui text container">
@@ -33,4 +37,5 @@
     </div>
 </div>
 
-<!--(reviews | json) != '{}'-->
+<!--
+(click)="onSelect(review, textbox.value)"-->

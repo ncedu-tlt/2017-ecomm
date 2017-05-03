@@ -11,15 +11,26 @@ import ReviewModel from "../../models/review.model";
 export class UserReviewsComponent implements OnInit {
 
     @Input()
-        userId: number;
+    userId: number;
 
     reviews: ReviewModel[];
+    /*selectReview: ReviewModel;*/
+    private productId: number = 0;
 
-    constructor(private usersService: UsersService){
+    constructor(private usersService: UsersService) {
     }
 
     ngOnInit(): void {
         this.usersService.getReviewsByUser(this.userId).then(reviews => this.reviews = reviews);
     }
 
+    /*onSelect(review: ReviewModel): void {
+     this.selectReview = review;
+     }*/
+
+    onDelete(value: number): void {
+        this.productId = value;
+        this.usersService.deleteReview(this.userId, this.productId)
+            .then(this.ngOnInit.bind(this));
+    }
 }

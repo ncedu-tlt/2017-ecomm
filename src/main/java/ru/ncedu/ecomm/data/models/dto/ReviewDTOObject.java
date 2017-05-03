@@ -7,17 +7,19 @@ public class ReviewDTOObject {
     private String description;
     private Date creationDate;
     private int rating;
-    private String product;
+    private String productName;
+    private long productId;
 
     public ReviewDTOObject() {
     }
 
-    public ReviewDTOObject(long userId, String description, Date creationDate, int rating, String product) {
+    public ReviewDTOObject(long userId, String description, Date creationDate, int rating, String productName, long productId) {
         this.userId = userId;
         this.description = description;
         this.creationDate = creationDate;
         this.rating = rating;
-        this.product = product;
+        this.productName = productName;
+        this.productId = productId;
     }
 
     public long getUserId() {
@@ -52,11 +54,19 @@ public class ReviewDTOObject {
         this.rating = rating;
     }
 
-    public String getProduct() {
-        return product;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setProduct(String product) {
-        this.product = product;
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(long productId) {
+        this.productId = productId;
     }
 }

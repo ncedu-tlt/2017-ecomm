@@ -15,7 +15,7 @@ public interface ReviewsDAO {
 
     ReviewDAOObject userReviewByUserIdAndProductId(long productId, long userId);
 
-    void deleteReviews(ReviewDAOObject review);
+    void deleteReviews(long userId, long productId);
 
     List<ReviewDAOObject> getReviewsByProductId(long productId);
 

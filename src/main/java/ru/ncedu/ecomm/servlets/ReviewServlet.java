@@ -97,12 +97,7 @@ public class ReviewServlet extends HttpServlet {
     private void removeReview(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String productId = req.getParameter(PRODUCT_ID);
 
-        ReviewDAOObject review = new ReviewDAOObjectBuilder()
-                .setProductId(Long.parseLong(productId))
-                .setUserId(Long.parseLong(req.getParameter(USER_ID)))
-                .build();
-
-        removeReviewFromDAO(review);
+        removeReviewFromDAO(Long.parseLong(req.getParameter(USER_ID)), Long.parseLong(productId));
         redirectToPage(req, resp, Configuration.getProperty("servlet.productByProductId") + productId);
     }
 
@@ -127,10 +122,10 @@ public class ReviewServlet extends HttpServlet {
                 .updateReviews(review);
     }
 
-    private void removeReviewFromDAO(ReviewDAOObject review) {
+    private void removeReviewFromDAO(long userId, long productId) {
         DAOFactory.getDAOFactory()
                 .getReviewDAO()
-                .deleteReviews(review);
+                .deleteReviews(userId, productId);
     }
 
     private void addReviewToDAO(ReviewDAOObject review) {

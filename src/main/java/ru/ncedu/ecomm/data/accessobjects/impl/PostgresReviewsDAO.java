@@ -145,7 +145,7 @@ public class PostgresReviewsDAO implements ReviewsDAO {
     }
 
     @Override
-    public void deleteReviews(ReviewDAOObject review) {
+    public void deleteReviews(long userId, long productId) {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -153,8 +153,8 @@ public class PostgresReviewsDAO implements ReviewsDAO {
                              "WHERE product_id = ?\n" +
                              "      AND user_id = ?"
              )) {
-            statement.setLong(1, review.getProductId());
-            statement.setLong(2, review.getUserId());
+            statement.setLong(1, productId);
+            statement.setLong(2, userId);
             statement.execute();
 
             LOG.info(null);
@@ -330,7 +330,8 @@ public class PostgresReviewsDAO implements ReviewsDAO {
                         .setDescription(resultSet.getString("description"))
                         .setCreationDate(resultSet.getDate("creation_date"))
                         .setRating(resultSet.getInt("raiting"))
-                        .setProduct(resultSet.getString("name"))
+                        .setProductName(resultSet.getString("name"))
+                        .setProductId(resultSet.getLong("product_id"))
                         .setUserId(userId)
                         .build();
                 reviews.add(review);

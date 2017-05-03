@@ -10,7 +10,8 @@ public class ReviewDTOObjectBuilder {
     private String description;
     private Date creationDate;
     private int rating;
-    private String product;
+    private String productName;
+    private long productId;
 
     public ReviewDTOObjectBuilder() {
     }
@@ -35,8 +36,13 @@ public class ReviewDTOObjectBuilder {
         return this;
     }
 
-    public ReviewDTOObjectBuilder setProduct(String product) {
-        this.product = product;
+    public ReviewDTOObjectBuilder setProductName(String productName) {
+        this.productName = productName;
+        return this;
+    }
+
+    public ReviewDTOObjectBuilder setProductId(long productId) {
+        this.productId = productId;
         return this;
     }
 
@@ -45,6 +51,8 @@ public class ReviewDTOObjectBuilder {
                 description,
                 creationDate,
                 rating,
-                product);
+                productName,
+                productId
+                );
     }
 }
