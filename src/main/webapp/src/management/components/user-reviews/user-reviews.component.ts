@@ -14,7 +14,6 @@ export class UserReviewsComponent implements OnInit {
     userId: number;
 
     reviews: ReviewModel[];
-    /*selectReview: ReviewModel;*/
     private productId: number = 0;
 
     constructor(private usersService: UsersService) {
@@ -23,10 +22,6 @@ export class UserReviewsComponent implements OnInit {
     ngOnInit(): void {
         this.usersService.getReviewsByUser(this.userId).then(reviews => this.reviews = reviews);
     }
-
-    /*onSelect(review: ReviewModel): void {
-     this.selectReview = review;
-     }*/
 
     onDelete(value: number): void {
         this.productId = value;
