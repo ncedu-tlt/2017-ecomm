@@ -1,5 +1,5 @@
 import {BrowserModule} from "@angular/platform-browser";
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from "@angular/core";
 import {FormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {NgSemanticModule} from "ng-semantic";
@@ -21,6 +21,7 @@ import {CategoriesTreeComponent} from "../components/categories-tree/categories-
 import {CharacteristicService} from "../services/characteristic.service";
 import {CategoryService} from "../services/category.service";
 import {CategoriesTreePipe} from "../pipes/categories-tree.pipe";
+import {UserReviewsComponent} from "../components/user-reviews/user-reviews.component";
 
 @NgModule({
     declarations: [
@@ -35,7 +36,8 @@ import {CategoriesTreePipe} from "../pipes/categories-tree.pipe";
         CharGroupEditorComponent,
         CharacteristicListComponent,
         CategoriesTreeComponent,
-        CategoriesTreePipe
+        CategoriesTreePipe,
+        UserReviewsComponent,
     ],
     imports: [
         BrowserModule,

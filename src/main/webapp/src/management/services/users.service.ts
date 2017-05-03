@@ -3,6 +3,7 @@ import {Headers, Http, RequestOptions} from "@angular/http";
 import "rxjs/add/operator/toPromise";
 import UserModel from "../models/user.model";
 import RoleModel from "../models/role.model";
+import ReviewModel from "../models/review.model";
 
 declare const contextPath: string;
 
@@ -10,6 +11,8 @@ declare const contextPath: string;
 export class UsersService {
 
     private usersUrl = `${contextPath}/rest/ecomm/v2/users`;
+
+    private reviewUrl = `${contextPath}/rest/ecomm/v2/users/reviews`;
 
     private rolesUrl = `${contextPath}/rest/ecomm/roles`;
 
@@ -66,6 +69,14 @@ export class UsersService {
         return this.http.get(this.rolesUrl)
             .toPromise()
             .then(response => response.json() as RoleModel[])
+            .catch(this.handleError);
+    }
+
+    getReviewsByUser(id: number): Promise<ReviewModel[]>{
+        const url = `${this.reviewUrl}/${id}`;
+        return this.http.get(url)
+            .toPromise()
+            .then(response => response.json() as ReviewModel[])
             .catch(this.handleError);
     }
 }

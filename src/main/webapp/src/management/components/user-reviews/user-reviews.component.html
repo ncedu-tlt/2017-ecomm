@@ -1,0 +1,36 @@
+<div class="ui text container">
+    <div class="ui info message">
+        <div class="header">
+            <i class="info circle icon"></i>
+            I'am sorry
+        </div>
+        <ul class="list">
+            <li>This user doesn't have reviews</li>
+        </ul>
+    </div>
+</div>
+<div *ngFor="let review of reviews" class="ui vertical stripe segment">
+    <div class="ui middle aligned stackable grid container">
+        <div class="row">
+            <div class="eight wide column">
+                {{review.product}}
+            </div>
+            <div class="six wide column">
+                <sm-rating class="massive star" [initialRating]="review.rating" [maxRating]="5"></sm-rating>
+            </div>
+            <div class="twelve wide column">
+                {{review.creationDate}}
+            </div>
+            <div class="fourteen wide column">
+                <p>
+                    {{review.description}}
+                </p>
+            </div>
+            <div class="wide column">
+                <button class="ui button red">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--(reviews | json) != '{}'-->

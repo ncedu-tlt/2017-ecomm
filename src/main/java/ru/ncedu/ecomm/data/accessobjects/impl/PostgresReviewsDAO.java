@@ -6,6 +6,8 @@ import ru.ncedu.ecomm.data.models.dao.Rating;
 import ru.ncedu.ecomm.data.models.dao.ReviewDAOObject;
 import ru.ncedu.ecomm.data.models.dao.builders.RatingBuilder;
 import ru.ncedu.ecomm.data.models.dao.builders.ReviewDAOObjectBuilder;
+import ru.ncedu.ecomm.data.models.dto.ReviewDTOObject;
+import ru.ncedu.ecomm.data.models.dto.builders.ReviewDTOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -213,7 +215,7 @@ public class PostgresReviewsDAO implements ReviewsDAO {
                              "  creation_date,\n" +
                              "  raiting,\n" +
                              "  product_id\n" +
-                             "FROM public.reviews\n" +
+                             "FROM reviews\n" +
                              "WHERE user_id = ?"
              )) {
             statement.setLong(1, userId);
@@ -226,7 +228,7 @@ public class PostgresReviewsDAO implements ReviewsDAO {
                         .setCreationDate(resultSet.getDate("creation_date"))
                         .setRating(resultSet.getInt("raiting"))
                         .setProductId(resultSet.getLong("product_id"))
-                        .setProductId(userId)
+                        .setUserId(userId)
                         .build();
 
                 reviews.add(review);
@@ -302,5 +304,43 @@ public class PostgresReviewsDAO implements ReviewsDAO {
         }
 
         return null;
+    }
+
+    public List<ReviewDTOObject> getReviewsByUserIdForManagement(long userId) {
+        List<ReviewDTOObject> reviews = new ArrayList<>();
+
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT\n" +
+                             "  rw.description,\n" +
+                             "  rw.creation_date,\n" +
+                             "  rw.raiting,\n" +
+                             "  rw.product_id,\n" +
+                             "  pd.name\n" +
+                             "FROM reviews rw, products pd\n" +
+                             "WHERE rw.product_id = pd.product_id\n" +
+                             "AND rw.user_id = ?"
+             )) {
+            statement.setLong(1, userId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                ReviewDTOObject review = new ReviewDTOObjectBuilder()
+                        .setDescription(resultSet.getString("description"))
+                        .setCreationDate(resultSet.getDate("creation_date"))
+                        .setRating(resultSet.getInt("raiting"))
+                        .setProduct(resultSet.getString("name"))
+                        .setUserId(userId)
+                        .build();
+                reviews.add(review);
+            }
+            LOG.info(null);
+            return reviews;
+
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 }

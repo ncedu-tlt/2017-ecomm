@@ -2,6 +2,7 @@ package ru.ncedu.ecomm.data.accessobjects;
 
 import ru.ncedu.ecomm.data.models.dao.Rating;
 import ru.ncedu.ecomm.data.models.dao.ReviewDAOObject;
+import ru.ncedu.ecomm.data.models.dto.ReviewDTOObject;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface ReviewsDAO {
     List<Rating> getAverageRatingByProduct();
 
     Rating getAverageRatingByProductId(long productId);
+
+    List<ReviewDTOObject> getReviewsByUserIdForManagement(long userId);
 }

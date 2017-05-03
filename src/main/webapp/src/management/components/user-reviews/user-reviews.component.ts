@@ -1,0 +1,26 @@
+import {Component, Input, OnInit} from "@angular/core";
+import {UsersService} from "../../services/users.service";
+import ReviewModel from "../../models/review.model";
+
+@Component({
+    selector: 'nc-user-reviews',
+    templateUrl: 'user-reviews.component.html',
+    styleUrls: ['user-reviews.component.css']
+})
+
+export class UserReviewsComponent implements OnInit {
+
+    @Input()
+        userId: number;
+
+    reviews: ReviewModel[];
+
+    constructor(private usersService: UsersService){
+    }
+
+    ngOnInit(): void {
+        console.log(this.userId);
+        this.usersService.getReviewsByUser(this.userId).then(reviews => this.reviews = reviews);
+    }
+
+}
