@@ -19,7 +19,6 @@ export class UserReviewsComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log(this.userId);
         this.usersService.getReviewsByUser(this.userId).then(reviews => this.reviews = reviews);
     }
 
