@@ -7,8 +7,8 @@ import TableModel from "./models/table.model";
     styleUrls: ['data-table.component.css']
 })
 export class DataTableComponent {
-
-    private selectedRow: any;
+    @Input('selectedItem')
+    selectedItem: any;
 
     @Input()
     model: TableModel;
@@ -16,15 +16,12 @@ export class DataTableComponent {
     @Output('select')
     onSelectEmitter = new EventEmitter<any>();
 
-    onSelect(row: HTMLTableRowElement, data: any): void {
-        if (data === this.selectedRow) {
-            row.classList.remove('active');
-            this.selectedRow = null;
+    onSelect(data: any): void {
+        if (data === this.selectedItem) {
             this.onSelectEmitter.emit(null);
         }
         else {
             this.onSelectEmitter.emit(data);
-            this.selectedRow = data;
         }
     }
 

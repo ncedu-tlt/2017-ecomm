@@ -9,5 +9,8 @@
         Delete
     </button>
 </div>
-<nc-data-table [model]="model" (select)="onSelect($event)">
+<nc-data-table
+        [model]="model"
+        [selectedItem]="selectUser"
+        (select)="onSelect($event)">
 </nc-data-table>

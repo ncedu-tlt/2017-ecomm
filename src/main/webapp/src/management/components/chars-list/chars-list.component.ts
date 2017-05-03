@@ -13,7 +13,7 @@ import {ActivatedRoute} from "@angular/router";
 export class CharacteristicListComponent implements OnInit{
     selectedCharacteristic: CharacteristicModel;
 
-    selectedRow: HTMLTableRowElement;
+    selectedCategoryId: number;
 
     characteristicTableModel: TableModel = {
         data: [],
@@ -39,16 +39,9 @@ export class CharacteristicListComponent implements OnInit{
             .then(characteristics => this.characteristicTableModel.data = characteristics);
     }
 
-    onSelect(row: HTMLTableRowElement, data: any): void {
-        if (data === this.selectedCharacteristic) {
-            row.classList.remove('active');
-            this.selectedCharacteristic = null;
-        }
-        else {
-            this.selectedCharacteristic = data;
-        }
+    onSelect(characteristic: CharacteristicModel): void {
+        this.selectedCharacteristic = characteristic;
     }
-
 
     getValue(data: CharacteristicModel, keyString: string): any {
         const keys = keyString.split('.');
@@ -59,6 +52,10 @@ export class CharacteristicListComponent implements OnInit{
             return new FormControl(value);
         }
         return value;
+    }
+
+    onSelectedCategory(event: number){
+        this.selectedCategoryId = event;
     }
 
 }

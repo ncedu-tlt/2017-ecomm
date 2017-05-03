@@ -1,1 +1,4 @@
-<tree-root [nodes]="categories | categoriesTree:'categoryId':'parentId'"></tree-root>
+<tree-root
+        [nodes]="categories | categoriesTree:'categoryId':'parentId'"
+        (onActivate)="onActivate($event)">
+</tree-root>

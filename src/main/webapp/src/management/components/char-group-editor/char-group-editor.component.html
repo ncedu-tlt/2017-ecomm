@@ -15,9 +15,9 @@
         </div>
         <div [ngClass]="{disabled: name.invalid || name.pristine}"
              class="ui primary button"
-             (click)="onSubmit()">Submit
+             (click)="onSubmit()">Save
         </div>
-        <div (click)="back()" class="ui yellow button">Back</div>
+        <div (click)="back()" class="ui yellow button">Cancel</div>
     </form>
 
     <div *ngIf="isSent" class="ui success message">

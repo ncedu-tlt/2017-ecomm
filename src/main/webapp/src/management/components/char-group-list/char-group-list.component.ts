@@ -11,7 +11,7 @@ import {SemanticModalComponent} from "ng-semantic";
     styleUrls: ['char-group-list.component.css']
 })
 export class CharGroupListComponent implements OnInit {
-    charGroupModel: CharGroupModel;
+    selectedCharGroup: CharGroupModel;
 
     @Input() model: TableModel = {
         data: [],
@@ -41,7 +41,7 @@ export class CharGroupListComponent implements OnInit {
     }
 
     onSelect(charGroup: CharGroupModel): void {
-        this.charGroupModel = charGroup;
+        this.selectedCharGroup = charGroup;
     }
 
     onAddition(): void {
@@ -49,34 +49,21 @@ export class CharGroupListComponent implements OnInit {
     }
 
     onEdit(): void {
-        if (this.charGroupModel) {
-            this.router.navigate(['/char-group-editor', this.charGroupModel.characteristicGroupId]);
-        }
-        else{
-            this.modalWindow.title = 'Error editing item';
-            this.modalContent = 'Please select an item before editing it.';
-            this.modalWindow.show({blurring: true});
-        }
+        this.router
+            .navigate(['/char-group-editor', this.selectedCharGroup.characteristicGroupId]);
     }
 
     onDelete(): void {
-        if (this.charGroupModel) {
             this.charGroupService
-                .deleteCharacteristicGroup(this.charGroupModel.characteristicGroupId)
+                .deleteCharacteristicGroup(this.selectedCharGroup.characteristicGroupId)
                 .then(() => {
-                    this.model.data = this.model.data.filter(group => group !== this.charGroupModel);
-                    this.charGroupModel = null;
+                    this.model.data = this.model.data.filter(group => group !== this.selectedCharGroup);
+                    this.selectedCharGroup = null;
                 })
-                .catch(() =>{
+                .catch(() => {
                     this.modalWindow.title = 'Error removing item';
                     this.modalContent = 'This item can not yet be removed.';
                     this.modalWindow.show({blurring: true});
-                })
-        }
-        else{
-            this.modalWindow.title = 'Error removing item';
-            this.modalContent = 'Please select an item before you delete it.';
-            this.modalWindow.show({blurring: true});
-        }
+                });
     }
 }

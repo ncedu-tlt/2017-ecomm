@@ -21,22 +21,11 @@
 <!--</sm-accordion>-->
 <!--</div>-->
 
-<nc-categories-tree></nc-categories-tree>
+<nc-categories-tree (onSelected)="onSelectedCategory($event)"></nc-categories-tree>
 
-<table class="ui selectable celled table">
-    <tbody>
-    <tr *ngFor="let data of characteristicTableModel.data"
-        #row>
-        <td>
-            {{getValue(data, "characteristicName")}}
-        </td>
-        <td>
-            <sm-checkbox [disabled]="true"
-                         label="Filterable"
-                         [control]="getValue(data, 'filterable')">
-            </sm-checkbox>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<nc-data-table
+        [model]="characteristicTableModel"
+        [selectedItem]="selectedCharacteristic"
+        (select)="onSelect($event)">
+</nc-data-table>
 

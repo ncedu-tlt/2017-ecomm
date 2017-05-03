@@ -8,9 +8,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr [class.active]="data === selectedRow"
+        <tr [class.active]="data === selectedItem"
             *ngFor="let data of model.data"
-            (click)="onSelect(row, data)"
+            (click)="onSelect(data)"
             #row>
             <td *ngFor="let column of model.columns">
                 {{getValue(data, column.key)}}

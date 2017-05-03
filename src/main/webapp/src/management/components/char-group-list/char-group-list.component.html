@@ -3,12 +3,12 @@
 </div>
 <div class="ui container right aligned char-group-editor">
     <button (click)="onAddition()" class="ui primary button">
-        New group
+        Add
     </button>
-    <button (click)="onEdit()" class="ui yellow button">
-        Edit
+    <button (click)="onEdit()" [disabled]="!selectedCharGroup" class="ui yellow button">
+        Update
     </button>
-    <button (click)="onDelete()" class="ui red button">
+    <button (click)="onDelete()" [disabled]="!selectedCharGroup" class="ui red button">
         Delete
     </button>
 </div>
@@ -18,4 +18,4 @@
     </modal-content>
 </sm-modal>
 
-<nc-data-table [model]="model" (select)="onSelect($event)"></nc-data-table>
+<nc-data-table [model]="model" [selectedItem]="selectedCharGroup" (select)="onSelect($event)"></nc-data-table>

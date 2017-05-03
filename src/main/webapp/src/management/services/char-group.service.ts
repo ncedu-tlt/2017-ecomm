@@ -42,16 +42,10 @@ export class CharGroupService {
     }
 
     updateCharacteristicGroup(charGroup: CharGroupModel): Promise<CharGroupModel> {
-        const bodyRequest: any = {characteristicGroupId: charGroup.characteristicGroupId, characteristicGroupName: charGroup.characteristicGroupName};
-        return this.http.put(this.charGroupUrl, bodyRequest, this.options)
+        return this.http.put(this.charGroupUrl, charGroup, this.options)
             .toPromise()
             .then(response => response.json() as CharGroupModel)
             .catch(this.handleError)
-    }
-
-    extractData(res: Response){
-        let body = res.json();
-        return body || {};
     }
 
     deleteCharacteristicGroup(charGroupId: number): Promise<void> {

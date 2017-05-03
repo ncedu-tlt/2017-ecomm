@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import CharGroupModel from "../../models/char-group.model";
 import {ActivatedRoute} from "@angular/router";
 import {Location} from '@angular/common';
@@ -9,7 +9,7 @@ import {CharGroupService} from "../../services/char-group.service";
     templateUrl: 'char-group-editor.component.html'
 })
 
-export class CharGroupEditorComponent {
+export class CharGroupEditorComponent implements OnInit{
     isSent: boolean = false;
     isError: boolean = false;
     isAdd: boolean = false;
