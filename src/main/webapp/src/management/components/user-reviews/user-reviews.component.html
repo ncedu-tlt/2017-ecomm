@@ -1,4 +1,4 @@
-<div class="ui vertical stripe segment ">
+<div *ngIf="reviews?.length != 0" class="ui vertical stripe segment ">
     <div *ngFor="let review of reviews" class="ui middle aligned stackable grid container reviewstest">
         <div class="row">
             <df-review>
@@ -36,6 +36,3 @@
         </ul>
     </div>
 </div>
-
-<!--
-(click)="onSelect(review, textbox.value)"-->

@@ -21,7 +21,7 @@
         <sm-select
                 [options]="{direction: 'auto'}"
                 [(model)]="user.role.id" placeholder="Select Role..."
-                class="fluid" required>
+                class="fluid">
             <div *ngFor="let role of roles">
                 <option value="{{role.id}}">{{role.name}}</option>
             </div>
