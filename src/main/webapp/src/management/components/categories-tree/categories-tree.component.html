@@ -1,4 +1,5 @@
 <tree-root
         [nodes]="categories | categoriesTree:'categoryId':'parentId'"
-        (onActivate)="onActivate($event)">
+        (onActivate)="onSelect($event)"
+        (onDeactivate)="onSelect($event)">
 </tree-root>

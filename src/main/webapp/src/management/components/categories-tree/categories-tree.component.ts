@@ -1,7 +1,7 @@
-import {Component, OnInit, Output} from "@angular/core";
+import {Component, OnInit, Output, Input} from "@angular/core";
 import {CategoryService} from "../../services/category.service";
 import {EventEmitter} from "@angular/forms/src/facade/async";
-import {Event} from "@angular/platform-browser/src/facade/browser";
+import CategoryModel from "../../models/category.model";
 
 @Component({
     selector: 'nc-categories-tree',
@@ -9,7 +9,11 @@ import {Event} from "@angular/platform-browser/src/facade/browser";
 })
 export class CategoriesTreeComponent implements OnInit {
 
-    @Output() onSelected = new EventEmitter<number>();
+    @Input('selectedItem')
+    selectedItem: any;
+
+    @Output('select')
+    onSelectEmitter = new EventEmitter<number>();
 
     constructor(private categoryService: CategoryService) { }
 
@@ -20,7 +24,24 @@ export class CategoriesTreeComponent implements OnInit {
             .then(categories => this.categories = categories);
     }
 
-    onActivate(event: any) {
-        this.onSelected.emit(event.node.data.categoryId);
+    onSelect(data: any): void {
+        if (data === this.selectedItem) {
+            this.onSelectEmitter.emit(null);
+        }
+        else {
+            this.onSelectEmitter.emit(data);
+        }
+    }
+
+    public onDelete(categoryId: number): void{
+        this.categoryService
+            .deleteCategory(categoryId)
+            .then(() => {
+                this.categories = this.categories.filter(category => category !== this.selectedItem);
+                this.selectedItem = null;
+            })
+            .catch(() => {
+                console.error('Not done');
+            });
     }
 }

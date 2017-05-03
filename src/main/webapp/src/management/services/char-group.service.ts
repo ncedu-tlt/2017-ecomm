@@ -18,14 +18,14 @@ export class CharGroupService {
     constructor(private http: Http) {
     }
 
-    getCharacteristicGroups(): Promise<CharGroupModel[]> {
+    getAll(): Promise<CharGroupModel[]> {
         return this.http.get(this.charGroupUrl)
             .toPromise()
             .then(response => response.json() as CharGroupModel[])
             .catch(this.handleError);
     }
 
-    getCharacteristicGroup(id: number): Promise<CharGroupModel>{
+    get(id: number): Promise<CharGroupModel>{
         const url = `${this.charGroupUrl}/${id}`;
         return this.http.get(url)
             .toPromise()
@@ -33,7 +33,7 @@ export class CharGroupService {
             .catch(this.handleError);
     }
 
-    addCharacteristicGroup(charGroupName: string): Promise<CharGroupModel> {
+    add(charGroupName: string): Promise<CharGroupModel> {
         let bodyRequest: any = {characteristicGroupName: charGroupName};
         return this.http.post(this.charGroupUrl, bodyRequest, this.options)
             .toPromise()
@@ -41,14 +41,14 @@ export class CharGroupService {
             .catch(this.handleError)
     }
 
-    updateCharacteristicGroup(charGroup: CharGroupModel): Promise<CharGroupModel> {
+    update(charGroup: CharGroupModel): Promise<CharGroupModel> {
         return this.http.put(this.charGroupUrl, charGroup, this.options)
             .toPromise()
             .then(response => response.json() as CharGroupModel)
             .catch(this.handleError)
     }
 
-    deleteCharacteristicGroup(charGroupId: number): Promise<void> {
+    deleteGroup(charGroupId: number): Promise<void> {
         const url = `${this.charGroupUrl}/${charGroupId}`;
         return this.http.delete(url, {headers: this.headers})
             .toPromise()

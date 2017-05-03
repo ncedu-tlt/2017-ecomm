@@ -1,19 +1,19 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import TableModel from "../data-table/models/table.model";
 import {CharacteristicService} from "../../services/characteristic.service";
 import CharacteristicModel from "../../models/characteristic.model";
-import {FormControl} from "@angular/forms";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import CategoryModel from "../../models/category.model";
+import {CategoriesTreeComponent} from "../categories-tree/categories-tree.component";
 
 @Component({
     selector: 'nc-characteristic-list',
     templateUrl: 'chars-list.component.html',
     styleUrls: ['chars-list.component.css']
 })
-export class CharacteristicListComponent implements OnInit{
+export class CharacteristicListComponent implements OnInit {
+    selectedCategory: CategoryModel;
     selectedCharacteristic: CharacteristicModel;
-
-    selectedCategoryId: number;
 
     characteristicTableModel: TableModel = {
         data: [],
@@ -29,8 +29,13 @@ export class CharacteristicListComponent implements OnInit{
         ]
     };
 
+    @ViewChild(CategoriesTreeComponent)
+    categoryEditor: CategoriesTreeComponent;
+
     constructor(private characteristicService: CharacteristicService,
-                private route: ActivatedRoute) {}
+                private route: ActivatedRoute,
+                private router: Router) {
+    }
 
     ngOnInit(): void {
         let categoryId: any = this.route.snapshot.params['categoryId'];
@@ -39,23 +44,37 @@ export class CharacteristicListComponent implements OnInit{
             .then(characteristics => this.characteristicTableModel.data = characteristics);
     }
 
-    onSelect(characteristic: CharacteristicModel): void {
+    onSelectCategory(data: any) {
+        this.selectedCategory = data.node.data;
+    }
+
+    onSelectCharacteristic(characteristic: CharacteristicModel): void {
         this.selectedCharacteristic = characteristic;
     }
 
-    getValue(data: CharacteristicModel, keyString: string): any {
-        const keys = keyString.split('.');
-        let value = data;
-
-        keys.forEach(key => value = value[key]);
-        if(typeof value == 'boolean'){
-            return new FormControl(value);
-        }
-        return value;
+    onAddCategory(): void {
+        this.router.navigate(['/category-editor', 'addition']);
     }
 
-    onSelectedCategory(event: number){
-        this.selectedCategoryId = event;
+    onEditCategory(): void {
+        this.router
+            .navigate(['/category-editor', this.selectedCategory.categoryId]);
+    }
+
+    onDeleteCategory(): void {
+        this.categoryEditor.onDelete(this.selectedCategory.categoryId);
+    }
+
+    onAddCharacteristic(): void {
+
+    }
+
+    onEditCharacteristic(): void {
+
+    }
+
+    onDeleteCharacteristic(): void {
+
     }
 
 }

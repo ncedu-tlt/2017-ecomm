@@ -36,7 +36,7 @@ export class CharGroupListComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.charGroupService.getCharacteristicGroups()
+        this.charGroupService.getAll()
             .then(charGroups => this.model.data = charGroups);
     }
 
@@ -55,7 +55,7 @@ export class CharGroupListComponent implements OnInit {
 
     onDelete(): void {
             this.charGroupService
-                .deleteCharacteristicGroup(this.selectedCharGroup.characteristicGroupId)
+                .deleteGroup(this.selectedCharGroup.characteristicGroupId)
                 .then(() => {
                     this.model.data = this.model.data.filter(group => group !== this.selectedCharGroup);
                     this.selectedCharGroup = null;

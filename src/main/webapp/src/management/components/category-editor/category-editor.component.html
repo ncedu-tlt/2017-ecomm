@@ -1,14 +1,14 @@
 <div class="ui horizontal divider">
-    characteristic group editor
+    category editor
 </div>
 <div class="ui left aligned container">
-    <form class="ui form" #groupForm="ngForm">
+    <form class="ui form" #categoryForm="ngForm">
         <div [ngClass]="{error: name.invalid && name.touched}" class="field">
             <label>Name:</label>
             <div class="ui input">
                 <input
-                        type="text" placeholder="Group name" name="name"
-                        [(ngModel)]="group.characteristicGroupName"
+                        type="text" placeholder="Category name" name="name"
+                        [(ngModel)]="category.name"
                         #name="ngModel"
                         required/>
             </div>

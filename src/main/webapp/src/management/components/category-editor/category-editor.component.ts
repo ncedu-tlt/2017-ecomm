@@ -1,24 +1,23 @@
-import {Component, OnInit} from '@angular/core';
-import CharGroupModel from "../../models/char-group.model";
+import { Component, OnInit } from '@angular/core';
+import CategoryModel from "../../models/category.model";
 import {ActivatedRoute} from "@angular/router";
 import {Location} from '@angular/common';
-import {CharGroupService} from "../../services/char-group.service";
+import {CategoryService} from "../../services/category.service";
 
 @Component({
-    selector: 'nc-char-group-editor',
-    templateUrl: 'char-group-editor.component.html'
+    selector: 'category-editor',
+    templateUrl: 'category-editor.component.html'
 })
-
-export class CharGroupEditorComponent implements OnInit{
+export class CategoryEditorComponent implements OnInit {
     isSent: boolean = false;
     isError: boolean = false;
     isAdd: boolean = false;
     isEdit: boolean = false;
 
-    group: CharGroupModel = new CharGroupModel();
+    category: CategoryModel = new CategoryModel();
 
     constructor(private route: ActivatedRoute,
-                private charGroupService: CharGroupService,
+                private categoryService: CategoryService,
                 private location: Location) {
     };
 
@@ -28,9 +27,9 @@ export class CharGroupEditorComponent implements OnInit{
             this.isAdd = true;
         }
         else {
-            this.charGroupService.get(+id)
-                .then(group => {
-                    this.group = group;
+            this.categoryService.get(+id)
+                .then(category => {
+                    this.category = category;
                     this.isEdit = true;
                 })
                 .catch(() => this.back())
@@ -47,9 +46,9 @@ export class CharGroupEditorComponent implements OnInit{
     }
 
     addition(): void {
-        if (!this.group.characteristicGroupName.trim()) return;
-        this.charGroupService
-            .add(this.group.characteristicGroupName)
+        if (!this.category.name.trim()) return;
+        this.categoryService
+            .add(this.category.name)
             .then(() => {
                 this.isError = false;
                 this.isSent = true;
@@ -61,9 +60,9 @@ export class CharGroupEditorComponent implements OnInit{
     }
 
     edit(): void {
-        if (this.group) {
-            this.charGroupService
-                .update(this.group)
+        if (this.category) {
+            this.categoryService
+                .update(this.category)
                 .then(() => this.back())
                 .catch(() => {
                     this.isSent = false;

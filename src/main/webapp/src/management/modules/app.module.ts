@@ -21,6 +21,7 @@ import {CategoriesTreeComponent} from "../components/categories-tree/categories-
 import {CharacteristicService} from "../services/characteristic.service";
 import {CategoryService} from "../services/category.service";
 import {CategoriesTreePipe} from "../pipes/categories-tree.pipe";
+import {CategoryEditorComponent} from "../components/category-editor/category-editor.component";
 import {UserReviewsComponent} from "../components/user-reviews/user-reviews.component";
 
 @NgModule({
@@ -37,6 +38,7 @@ import {UserReviewsComponent} from "../components/user-reviews/user-reviews.comp
         CharacteristicListComponent,
         CategoriesTreeComponent,
         CategoriesTreePipe,
+        CategoryEditorComponent,
         UserReviewsComponent,
     ],
     imports: [

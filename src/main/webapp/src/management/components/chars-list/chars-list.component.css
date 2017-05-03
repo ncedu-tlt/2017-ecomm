@@ -3,3 +3,18 @@
     min-width:50%;
     max-width:50%;
 }
+
+.categorySegment{
+    min-width:40%;
+    max-width:40%;
+}
+
+.category-editor{
+    margin-bottom:10px;
+}
+
+.characteristicSegment{
+    margin-top:0;
+    min-width:50%;
+    max-width:50%;
+}

@@ -5,6 +5,7 @@ import {CharGroupListComponent} from "../components/char-group-list/char-group-l
 import {UserDetailsComponent} from "../components/user-details/user-details.component";
 import {CharGroupEditorComponent} from "../components/char-group-editor/char-group-editor.component";
 import {CharacteristicListComponent} from "../components/chars-list/chars-list.component";
+import {CategoryEditorComponent} from "../components/category-editor/category-editor.component";
 
 const ROUTES: Routes = [
     { path: '', redirectTo: '/users', pathMatch: 'full' },
@@ -13,6 +14,7 @@ const ROUTES: Routes = [
     { path: 'char-group-list', component: CharGroupListComponent },
     { path: 'char-group-editor/:id', component: CharGroupEditorComponent },
     { path: 'char-list/:categoryId/:groupId', component: CharacteristicListComponent },
+    { path: 'category-editor/:id', component: CategoryEditorComponent },
     { path: '**', redirectTo: '/users' }
 ];
 
