@@ -440,3 +440,7 @@ ALTER TABLE ONLY recommended_products
 
 ALTER TABLE ONLY recommended_products
     ADD CONSTRAINT recommended_products_target_product_id_fkey FOREIGN KEY (target_product_id) REFERENCES products(product_id);
+
+
+ALTER TABLE public.categories
+    ADD CONSTRAINT categories_category_id_fk FOREIGN KEY (category_id) REFERENCES categories (category_id);
