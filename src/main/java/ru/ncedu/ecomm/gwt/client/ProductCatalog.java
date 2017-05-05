@@ -5,6 +5,8 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.*;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
@@ -35,14 +37,51 @@ public class ProductCatalog implements EntryPoint {
     public void onModuleLoad() {
         ListHandler<ProductJSO> sortHandler = new ListHandler<>(dataProviderProducts.getList());
         CellTable<ProductJSO> productTable = createTable(selectionModel, sortHandler);
+
         Tree tree = createTree();
 
+
+        Label productList = new Label("Product List");
+
+        Button menu = new Button("Menu", (ClickHandler) clickEvent -> {
+
+        });
+        Button editCategory = new Button("Go to edit category", (ClickHandler) clickEvent -> {
+
+        });
+        Button add = new Button("ADD", (ClickHandler) clickEvent -> {
+
+        });
+        Button update = new Button("UPDATE", (ClickHandler) clickEvent -> {
+
+        });
+        Button delete = new Button("DELETE", (ClickHandler) clickEvent -> {
+
+        });
+
+        HorizontalPanel horizontalButtonPanel = new HorizontalPanel();
         HorizontalPanel horizontalPanel = new HorizontalPanel();
-        horizontalPanel.setSpacing(70);
+        VerticalPanel mainPanel = new VerticalPanel();
+
+        horizontalButtonPanel.setWidth("600px");
+        horizontalButtonPanel.setBorderWidth(2);
+        //horizontalButtonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+        horizontalButtonPanel.add(menu);
+        //horizontalButtonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
+        horizontalButtonPanel.add(editCategory);
+        horizontalButtonPanel.add(productList);
+        horizontalButtonPanel.add(add);
+        horizontalButtonPanel.add(update);
+        horizontalButtonPanel.add(delete);
+
+        horizontalPanel.setSpacing(50);
         horizontalPanel.add(tree);
         horizontalPanel.add(productTable);
 
-        RootPanel.get(TREE_PANEL).add(horizontalPanel);
+        mainPanel.add(horizontalButtonPanel);
+        mainPanel.add(horizontalPanel);
+
+        RootPanel.get(TREE_PANEL).add(mainPanel);
     }
 
     private Tree createTree() {
