@@ -1,9 +1,6 @@
 <div *ngIf="reviews?.length != 0" class="ui vertical stripe segment ">
-    <div *ngFor="let review of reviews" class="ui middle aligned stackable grid container reviewstest">
+    <div *ngFor="let review of reviews" class="ui middle aligned stackable grid container">
         <div class="row">
-            <df-review>
-                <input #textbox type="hidden" [(ngModel)]="review.productId">
-            </df-review>
             <div class="eight wide column">
                 {{review.productName}}
             </div>
@@ -19,20 +16,18 @@
                 </p>
             </div>
             <div class="wide column">
-                <button class="ui button red" (click)="onDelete(textbox.value)">Delete</button>
+                <button class="ui button red" (click)="onDelete(review.productId)">Delete</button>
             </div>
         </div>
         <div class="ui section divider"></div>
     </div>
 </div>
-<div *ngIf="reviews?.length == 0" class="ui text container">
-    <div class="ui info message">
-        <div class="header">
-            <i class="info circle icon"></i>
-            I'am sorry
-        </div>
-        <ul class="list">
-            <li>This user doesn't have reviews</li>
-        </ul>
+<div *ngIf="reviews?.length == 0" class="ui text container left aligned">
+    <div class="header">
+        <i class="info circle icon"></i>
+        I'am sorry
     </div>
+    <p>
+        This user doesn't have reviews
+    </p>
 </div>

@@ -5,6 +5,7 @@ import {UsersService} from "../../services/users.service";
 import {Location} from "@angular/common";
 import RoleModel from "../../models/role.model";
 import {FormGroup} from "@angular/forms";
+import {SemanticPopupComponent} from "ng-semantic";
 
 declare const contextPath: string;
 
@@ -39,7 +40,7 @@ export class UserEditorComponent implements OnInit {
         }
     }
 
-    onSave(form: FormGroup): void {
+    onSave(form: FormGroup, popup: SemanticPopupComponent, $event: any): void {
         if (this.userId) {
             this.usersService.updateUser(this.user)
                 .then(() => {
@@ -49,7 +50,8 @@ export class UserEditorComponent implements OnInit {
                 })
                 .catch(() => {
                     this.isError = true;
-                    this.isSent = false
+                    this.isSent = false;
+                    popup.show($event, {position: 'bottom left'});
                 });
         } else {
             this.usersService.addUser(this.user)
@@ -57,10 +59,12 @@ export class UserEditorComponent implements OnInit {
                     this.isSent = true;
                     this.isError = false;
                     form.reset();
+                    popup.show($event, {position: 'bottom left'});
                 })
                 .catch(() => {
                     this.isError = true;
-                    this.isSent = false
+                    this.isSent = false;
+                    popup.show($event, {position: 'bottom left'});
                 });
         }
     }

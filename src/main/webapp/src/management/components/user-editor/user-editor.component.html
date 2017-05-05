@@ -3,12 +3,12 @@
 </div>
 <div class="ui container right aligned">
     <button class="ui button primary" [disabled]="groupForm.invalid"
-            (click)="onSave(groupForm); submitPopup.show($event, {position: 'top left'})">Save
+            (click)="onSave(groupForm, submitPopup, $event)">Save
     </button>
     <button class="ui button yellow" (click)="onCancel()">Cancel</button>
     <button class="ui button red" *ngIf="userId" (click)="onDelete()">Delete</button>
 </div>
-<form class="ui form" #groupForm="ngForm">
+<form class="ui container left aligned form" #groupForm="ngForm">
     <div class="ui small image" *ngIf="userId">
         <img class="ui small rounded image" [src]="pathToUserAvatar + user.userAvatar">
     </div>
@@ -47,7 +47,7 @@
     </div>
     <div class="field">
         <label>Phone</label>
-        <input type="number" placeholder="Phone" [(ngModel)]="user.phone" name="phone" required pattern="\d{11}">
+        <input type="number" placeholder="Phone" [(ngModel)]="user.phone" name="phone" pattern="^[0-9\-\+]{2,11}$">
     </div>
     <div class="field" *ngIf="userId">
         <label>Registration Date</label>
@@ -73,3 +73,5 @@
         </sm-button>
     </sm-card>
 </sm-popup>
+
+<!--submitPopup.show($event, {position: 'top left'})-->

@@ -14,18 +14,20 @@ export class UserReviewsComponent implements OnInit {
     userId: number;
 
     reviews: ReviewModel[];
-    private productId: number = 0;
 
     constructor(private usersService: UsersService) {
     }
 
     ngOnInit(): void {
-        this.usersService.getReviewsByUser(this.userId).then(reviews => this.reviews = reviews);
+        this.loadReview();
     }
 
-    onDelete(value: number): void {
-        this.productId = value;
-        this.usersService.deleteReview(this.userId, this.productId)
-            .then(this.ngOnInit.bind(this));
+    onDelete(productId: number): void {
+        this.usersService.deleteReview(this.userId, productId)
+            .then(this.loadReview.bind(this));
+    }
+
+    loadReview(): void {
+        this.usersService.getReviewsByUser(this.userId).then(reviews => this.reviews = reviews);
     }
 }

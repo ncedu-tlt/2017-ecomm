@@ -1,6 +1,10 @@
 <nc-user-editor [userId]="userId"></nc-user-editor>
-<div class="ui section divider"></div>
-<sm-tabs *ngIf="userId">
-    <sm-tab title="Review"><nc-user-reviews [userId]="userId"></nc-user-reviews></sm-tab>
-    <sm-tab title="Orders">Orders want to take this place</sm-tab>
-</sm-tabs>
+<div class="ui container left aligned">
+    <div class="ui section divider"></div>
+    <sm-tabs *ngIf="userId">
+        <sm-tab title="Review">
+            <nc-user-reviews [userId]="userId"></nc-user-reviews>
+        </sm-tab>
+        <sm-tab title="Orders">Orders want to take this place</sm-tab>
+    </sm-tabs>
+</div>
