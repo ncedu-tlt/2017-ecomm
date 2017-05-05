@@ -1,12 +1,14 @@
 package ru.ncedu.ecomm.gwt.client;
 
+import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.http.client.*;
 import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.ColumnSortEvent;
+import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
@@ -15,6 +17,8 @@ import ru.ncedu.ecomm.gwt.shared.CategoryJSON;
 import ru.ncedu.ecomm.gwt.shared.ProductJSO;
 
 import java.util.List;
+
+import static com.google.gwt.view.client.DefaultSelectionEventManager.createCheckboxManager;
 
 public class ProductCatalog implements EntryPoint {
     private static final String JSON_URL_CATEGORIES = GWT.getHostPageBaseURL() + "rest/ecomm/categories";
@@ -25,10 +29,12 @@ public class ProductCatalog implements EntryPoint {
     private static final int ALL_CATEGORIES = 0;
     private static final String TREE_PANEL = "productTable";
     private final ListDataProvider<ProductJSO> dataProviderProducts = new ListDataProvider<>();
+    private final SelectionModel<ProductJSO> selectionModel = new MultiSelectionModel<>(dataProviderProducts);
 
     @Override
     public void onModuleLoad() {
-        CellTable<ProductJSO> productTable = createTable(ALL_CATEGORIES);
+        ListHandler<ProductJSO> sortHandler = new ListHandler<>(dataProviderProducts.getList());
+        CellTable<ProductJSO> productTable = createTable(selectionModel, sortHandler);
         Tree tree = createTree();
 
         HorizontalPanel horizontalPanel = new HorizontalPanel();
@@ -100,7 +106,8 @@ public class ProductCatalog implements EntryPoint {
         return tree;
     }
 
-    private CellTable<ProductJSO> createTable(int category) {
+    private CellTable<ProductJSO> createTable(final SelectionModel<ProductJSO> selectionModel,
+                                              ListHandler<ProductJSO> sortHandler) {
         CellTable<ProductJSO> table = new CellTable<>();
 
         TextColumn<ProductJSO> idColumn = new TextColumn<ProductJSO>() {
@@ -129,13 +136,21 @@ public class ProductCatalog implements EntryPoint {
             }
         };
 
+        Column<ProductJSO, Boolean> checkColumn = new Column<ProductJSO, Boolean>(
+                new CheckboxCell(true, false)) {
+            @Override
+            public Boolean getValue(ProductJSO object) {
+                return selectionModel.isSelected(object);
+            }
+        };
+
         dataProviderProducts.addDataDisplay(table);
         List<ProductJSO> list = dataProviderProducts.getList();
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, JSON_URL_ALL_PRODUCTS);
 
         fillList(list, builder);
 
-        ColumnSortEvent.ListHandler<ProductJSO> idColumnSortHandler = new ColumnSortEvent.ListHandler<>(dataProviderProducts.getList());
+        ListHandler<ProductJSO> idColumnSortHandler = new ListHandler<>(dataProviderProducts.getList());
         idColumnSortHandler.setComparator(idColumn,
                 (ProductJSO o1, ProductJSO o2) -> {
                     if (o1 == o2) {
@@ -154,6 +169,10 @@ public class ProductCatalog implements EntryPoint {
         table.addColumn(nameColumn, "Name");
         table.addColumn(priceColumn, "Price");
         table.addColumn(descriptionColumn, "Description");
+        table.addColumn(checkColumn);
+
+        table.addColumnSortHandler(sortHandler);
+        table.setSelectionModel(selectionModel, createCheckboxManager());
 
         return table;
     }
