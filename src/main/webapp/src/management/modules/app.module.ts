@@ -23,6 +23,7 @@ import {CategoryService} from "../services/category.service";
 import {CategoriesTreePipe} from "../pipes/categories-tree.pipe";
 import {CategoryEditorComponent} from "../components/category-editor/category-editor.component";
 import {UserReviewsComponent} from "../components/user-reviews/user-reviews.component";
+import {UserOrdersComponent} from "../components/user-orders/user-orders.component";
 
 @NgModule({
     declarations: [
@@ -40,6 +41,7 @@ import {UserReviewsComponent} from "../components/user-reviews/user-reviews.comp
         CategoriesTreePipe,
         CategoryEditorComponent,
         UserReviewsComponent,
+        UserOrdersComponent
     ],
     imports: [
         BrowserModule,

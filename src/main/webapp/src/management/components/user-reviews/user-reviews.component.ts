@@ -13,7 +13,7 @@ export class UserReviewsComponent implements OnInit {
     @Input()
     userId: number;
 
-    reviews: ReviewModel[];
+    private reviews: ReviewModel[];
 
     constructor(private usersService: UsersService) {
     }
@@ -28,6 +28,6 @@ export class UserReviewsComponent implements OnInit {
     }
 
     loadReview(): void {
-        this.usersService.getReviewsByUser(this.userId).then(reviews => this.reviews = reviews);
+        this.usersService.getReviewsByUserId(this.userId).then(reviews => this.reviews = reviews);
     }
 }

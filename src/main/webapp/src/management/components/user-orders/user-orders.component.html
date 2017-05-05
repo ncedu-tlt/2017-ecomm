@@ -1,0 +1,16 @@
+<div *ngIf="model.data?.length != 0">
+    <nc-data-table
+            [model]="model"
+            [selectedItem]="selectSalesOrder"
+            (select)="onSelect($event)">
+    </nc-data-table>
+</div>
+<div *ngIf="model.data?.length == 0" class="ui text container center aligned">
+    <div class="header">
+        <i class="info circle icon"></i>
+        I'am sorry
+    </div>
+    <p>
+        This user doesn't have orders
+    </p>
+</div>

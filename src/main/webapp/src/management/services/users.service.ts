@@ -4,6 +4,7 @@ import "rxjs/add/operator/toPromise";
 import UserModel from "../models/user.model";
 import RoleModel from "../models/role.model";
 import ReviewModel from "../models/review.model";
+import SalesOrderModel from "../models/sales-order.model";
 
 declare const contextPath: string;
 
@@ -15,6 +16,8 @@ export class UsersService {
     private reviewUrl = `${contextPath}/rest/ecomm/v2/users/reviews`;
 
     private rolesUrl = `${contextPath}/rest/ecomm/roles`;
+
+    private ordersUrl = `${contextPath}/rest/ecomm/v2/users/salesOrders`;
 
     private headers = new Headers({ 'Content-Type': 'application/json' });
 
@@ -72,7 +75,7 @@ export class UsersService {
             .catch(this.handleError);
     }
 
-    getReviewsByUser(id: number): Promise<ReviewModel[]>{
+    getReviewsByUserId(id: number): Promise<ReviewModel[]>{
         const url = `${this.reviewUrl}/${id}`;
         return this.http.get(url)
             .toPromise()
@@ -85,6 +88,14 @@ export class UsersService {
         return this.http.delete(url, {headers: this.headers})
             .toPromise()
             .then(() => null)
+            .catch(this.handleError)
+    }
+
+    getOrdersByUserId(id: number): Promise<SalesOrderModel[]>{
+        const url = `${this.ordersUrl}/${id}`;
+        return this.http.get(url)
+            .toPromise()
+            .then(response => response.json() as SalesOrderModel[])
             .catch(this.handleError)
     }
 }

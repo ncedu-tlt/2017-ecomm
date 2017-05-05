@@ -1,6 +1,7 @@
 package ru.ncedu.ecomm.rest;
 
 import ru.ncedu.ecomm.data.models.dao.ProductDAOObject;
+import ru.ncedu.ecomm.data.models.dao.SalesOrder;
 import ru.ncedu.ecomm.data.models.dao.UserDAOObject;
 import ru.ncedu.ecomm.data.models.dto.ReviewDTOObject;
 import ru.ncedu.ecomm.data.models.dto.UserDTOObject;
@@ -86,5 +87,12 @@ public class RestServiceVersionTwo {
     public Response deleteUser(@PathParam("userId") long userId, @PathParam("productId") long productId) {
         getDAOFactory().getReviewDAO().deleteReviews(userId, productId);
         return Response.ok().build();
+    }
+
+    @GET
+    @Path("/users/salesOrders/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<SalesOrder> getSalesOrderToOrderHistory(@PathParam("userId") long userId) {
+        return getDAOFactory().getSalesOrderDAO().getSalesOrderToOrderHistory(userId);
     }
 }
