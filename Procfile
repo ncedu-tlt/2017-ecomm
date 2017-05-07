@@ -1,1 +1,1 @@
-web:    java $JAVA_OPTS -jar target/dependency/webapp-runner.jar --port $PORT --enable-compression $ENABLE_COMPRESSION target/*.war
+web:    java $JAVA_OPTS -jar target/dependency/webapp-runner.jar --port $PORT --enable-compression target/*.war
