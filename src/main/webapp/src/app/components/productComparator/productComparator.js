@@ -13,6 +13,12 @@
         init: function () {
 
             this.content.find(ELEMENTS.PRODUCT_RATING).rating({initialRating: 2, maxRating: 5}).rating('disable');
+
+            this.content.find('.jsCompareTable .jsTableItem')
+                .popup({
+                    hoverable  : true
+                })
+            ;
         }
 
 

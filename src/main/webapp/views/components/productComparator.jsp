@@ -16,49 +16,83 @@
                 </h2>
 
             </c:if>
-            <c:if test='${sessionScope.compareList != null}'>
+            <c:set var="compareList" value="${sessionScope.compareList}"/>
+            <c:set var="charForProduct" value="${sessionScope.charForProduct}"/>
 
-                <c:set var="compareList" value="${sessionScope.compareList}"/>
 
-                <c:forEach var="product" items="${compareList}">
-                    <c:set var="image" value="${product.imageUrl}"/>
-                    <div class="four wide column">
-                        <img class="ui fluid image"
-                             src="${pageContext.request.contextPath}${image != null ? image : "/images/defaultimage/image.png"}">
-                        <h3 class="ui center aligned header">
-                            <a>
-                                    ${product.name}
-                            </a>
-                        </h3>
-                        <div class="ui grid centered container">
-                            <div class="ui column centered grid massive rating disabled centered-rating jsCompareProductRating"
-                                 data-rating="${product.rating}">
-                            </div>
-                        </div>
-                        <h3 class="ui center aligned header">
-                            <c:if test='${product.discount != product.price}'>
-                                <b style="text-decoration: line-through;">$${product.price}</b>
-                                <a style="margin-left: .2em"
-                                   href="${pageContext.request.contextPath}/product?product_id=${product.id}"
-                                   class="ui red large label">
-                                    $${product.discount}
-                                </a>
-                            </c:if>
-                            <c:if test='${product.discount == product.price}'>
-                                <b>$${product.price}</b>
-                            </c:if>
-                        </h3>
-                        <div class="centered-button">
-                            <div class="ui buttons">
-                                <button class="ui labeled icon blue button" value="${product.id}">Add to cart</button>
-                                <button class="ui icon red button" value="${product.id}"><i class="remove icon"></i>
-                                </button>
-                            </div>
+            <c:if test='${compareList != null}'>
+            <c:if test='${compareList.size() == 3}'>
+                <div class="four wide column">
+                </div>
+            </c:if>
+            <c:forEach var="product" items="${compareList}">
+                <c:set var="image" value="${product.imageUrl}"/>
+                <div class="four wide column">
+                    <img class="ui fluid image"
+                         src="${pageContext.request.contextPath}${image != null ? image : "/images/defaultimage/image.png"}">
+                    <h3 class="ui center aligned header">
+                        <a>
+                                ${product.name}
+                        </a>
+                    </h3>
+                    <div class="ui grid centered container">
+                        <div class="ui column centered grid massive rating disabled centered-rating jsCompareProductRating"
+                             data-rating="${product.rating}">
                         </div>
                     </div>
-                </c:forEach>
-            </c:if>
+                    <h3 class="ui center aligned header">
+                        <c:if test='${product.discount != product.price}'>
+                            <b style="text-decoration: line-through;">$${product.price}</b>
+                            <a style="margin-left: .2em"
+                               href="${pageContext.request.contextPath}/product?product_id=${product.id}"
+                               class="ui red large label">
+                                $${product.discount}
+                            </a>
+                        </c:if>
+                        <c:if test='${product.discount == product.price}'>
+                            <b>$${product.price}</b>
+                        </c:if>
+                    </h3>
+                    <div class="centered-button">
+                        <div class="ui buttons">
+                            <button class="ui labeled icon blue button" value="${product.id}">Add to cart</button>
+                            <button class="ui icon red button" value="${product.id}"><i class="remove icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
         </div>
+    </div>
+    <div class="html ui top attached segment">
+        <table class="ui selectable celled fixed table jsCompareTable">
+            <c:forEach var="charGroup" items="${charForProduct}">
+                <thead>
+                <tr>
+                    <th colspan="4">
+                        <p>${charGroup.name}</p>
+                    </th>
+                </thead>
+                <tbody>
+                <tr>
+                    <c:forEach var="chars" items="${charGroup.getProductChars()}">
+                <tr>
+                    <td class="collapsing">
+                        <p>${chars.name}</p>
+                    </td>
+                    <c:forEach var="charValue" items="${chars.getCharLines()}">
+                        <td class="collapsing  <c:if test='${charValue.length() > 40}'> jsTableItem </c:if>"
+                            data-content="${charValue}" >
+                            <p>${charValue}</p>
+                        </td>
+                    </c:forEach>
+                </tr>
+                </c:forEach>
+                </tr>
+                </tbody>
+            </c:forEach>
+        </table>
+        </c:if>
     </div>
 </div>
 <script>

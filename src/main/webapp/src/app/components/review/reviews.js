@@ -27,7 +27,6 @@
 
         },
         getData: function (e) {
-            e.preventDefault();
 
             var reviewBody = this.content.find('.jsThisUserReview');
             var thisUserRating = reviewBody.find('.jsUsersRating').data('rating');
