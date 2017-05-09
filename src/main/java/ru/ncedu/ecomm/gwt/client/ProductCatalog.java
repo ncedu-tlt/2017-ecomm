@@ -5,7 +5,6 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.*;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -29,9 +28,12 @@ public class ProductCatalog implements EntryPoint {
     private static final int SUCCESS_ANSWER = 200;
     private static final int NULL_PARENT = 0;
     private static final int ALL_CATEGORIES = 0;
-    private static final String TREE_PANEL = "productTable";
+    private static final String MAIN_DIV = "productTable";
     private final ListDataProvider<ProductJSO> dataProviderProducts = new ListDataProvider<>();
     private final SelectionModel<ProductJSO> selectionModel = new MultiSelectionModel<>(dataProviderProducts);
+    private Button menuButton = new Button("Menu", (ClickHandler) clickEvent -> {
+
+    });
 
     @Override
     public void onModuleLoad() {
@@ -41,47 +43,51 @@ public class ProductCatalog implements EntryPoint {
         Tree tree = createTree();
 
 
-        Label productList = new Label("Product List");
+        Label productListLabel = new Label("Product List");
 
-        Button menu = new Button("Menu", (ClickHandler) clickEvent -> {
-
-        });
-        Button editCategory = new Button("Go to edit category", (ClickHandler) clickEvent -> {
+        Button editCategoryButton = new Button("Go to edit category", (ClickHandler) clickEvent -> {
 
         });
-        Button add = new Button("ADD", (ClickHandler) clickEvent -> {
+        Button addButton = new Button("ADD", (ClickHandler) clickEvent -> {
+
+            FormPanel formPanel = createProductDetailForm();
+            RootPanel.get(MAIN_DIV).clear();
+            RootPanel.get(MAIN_DIV).add(formPanel);
+        });
+        Button updateButton = new Button("UPDATE", (ClickHandler) clickEvent -> {
 
         });
-        Button update = new Button("UPDATE", (ClickHandler) clickEvent -> {
-
-        });
-        Button delete = new Button("DELETE", (ClickHandler) clickEvent -> {
+        Button deleteButton = new Button("DELETE", (ClickHandler) clickEvent -> {
 
         });
 
-        HorizontalPanel horizontalButtonPanel = new HorizontalPanel();
-        HorizontalPanel horizontalPanel = new HorizontalPanel();
+        HorizontalPanel hpButtons = new HorizontalPanel();
+        HorizontalPanel hpManageButtons = new HorizontalPanel();
+        HorizontalPanel hpTree = new HorizontalPanel();
         VerticalPanel mainPanel = new VerticalPanel();
 
-        horizontalButtonPanel.setWidth("600px");
-        horizontalButtonPanel.setBorderWidth(2);
-        //horizontalButtonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-        horizontalButtonPanel.add(menu);
-        //horizontalButtonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
-        horizontalButtonPanel.add(editCategory);
-        horizontalButtonPanel.add(productList);
-        horizontalButtonPanel.add(add);
-        horizontalButtonPanel.add(update);
-        horizontalButtonPanel.add(delete);
+        hpButtons.setWidth("1800px");
+        hpButtons.setBorderWidth(2);
+        hpButtons.add(menuButton);
+        hpButtons.add(editCategoryButton);
+        hpButtons.add(productListLabel);
+        hpButtons.setCellWidth(menuButton, "50px");
 
-        horizontalPanel.setSpacing(50);
-        horizontalPanel.add(tree);
-        horizontalPanel.add(productTable);
+        hpManageButtons.add(addButton);
+        hpManageButtons.add(updateButton);
+        hpManageButtons.add(deleteButton);
 
-        mainPanel.add(horizontalButtonPanel);
-        mainPanel.add(horizontalPanel);
+        hpButtons.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+        hpButtons.add(hpManageButtons);
 
-        RootPanel.get(TREE_PANEL).add(mainPanel);
+        hpTree.setSpacing(50);
+        hpTree.add(tree);
+        hpTree.add(productTable);
+
+        mainPanel.add(hpButtons);
+        mainPanel.add(hpTree);
+
+        RootPanel.get(MAIN_DIV).add(mainPanel);
     }
 
     private Tree createTree() {
@@ -246,5 +252,29 @@ public class ProductCatalog implements EntryPoint {
         } catch (RequestException e) {
             Window.alert("Couldn't retrieve JSON (" + e.getMessage() + ")");
         }
+    }
+
+    private FormPanel createProductDetailForm() {
+        FormPanel formPanel = new FormPanel();
+        formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
+        formPanel.setMethod(FormPanel.METHOD_POST);
+
+        VerticalPanel vpMain = new VerticalPanel();
+        vpMain.setSpacing(20);
+        formPanel.setWidget(vpMain);
+
+        TextBox category = new TextBox();
+        category.setText("Category");
+        TextBox name = new TextBox();
+        name.setText("Name");
+        TextArea description = new TextArea();
+        description.setText("Description");
+
+        vpMain.add(menuButton);
+        vpMain.add(category);
+        vpMain.add(name);
+        vpMain.add(description);
+
+        return formPanel;
     }
 }
