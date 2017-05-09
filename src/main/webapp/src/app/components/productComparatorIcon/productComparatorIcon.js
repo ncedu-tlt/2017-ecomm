@@ -10,6 +10,9 @@
     var EVENTS = {
         ADD_TO_COMPARE: 'addToCompare',
         CLEAR_COMPARE_LIST: 'clearList',
+        REMOVE_ALL: 'removeAll',
+        REMOVE: 'remove',
+        REFRESH_COMPARE_PAGE: 'refreshComparePage',
         UPDATE_COUNT: 'updateCompareInIcon'
     };
     var LINKS = {
@@ -22,7 +25,8 @@
          * Executed on component initialization
          */
         init: function () {
-            frm.events.on(EVENTS.ADD_TO_COMPARE, this.sendRequest.bind(this));
+            frm.events.on(EVENTS.ADD_TO_COMPARE, this.sendRequest.bind(this, EVENTS.UPDATE_COUNT));
+            frm.events.on(EVENTS.REMOVE, this.sendRequest.bind(this, EVENTS.REMOVE));
 
             this.content.find(ELEMENTS.PRODUCT_COMPARATOR_ICON).on(
                 'click',
@@ -32,15 +36,16 @@
 
         },
 
-        sendRequest: function (productIdParam) {
+        sendRequest: function (event, productIdParam) {
             $.post(
                 this.params.addToCompareUrl + LINKS.COMPARE_ICON_SERVLET,
                 {
                     productId: productIdParam,
-                    action: EVENTS.UPDATE_COUNT
+                    action: event
                 },
                 function (data) {
                     this.content.find(ELEMENTS.PRODUCT_COMPARATOR_ICON).html(data);
+                    frm.events.fire(EVENTS.REFRESH_COMPARE_PAGE, null);
 
                 }.bind(this));
         },
@@ -53,6 +58,8 @@
                 },
                 function (data) {
                     this.content.find(ELEMENTS.PRODUCT_COMPARATOR_ICON).html(data);
+
+                    frm.events.fire(EVENTS.REFRESH_COMPARE_PAGE, null);
 
                 }.bind(this));
         }

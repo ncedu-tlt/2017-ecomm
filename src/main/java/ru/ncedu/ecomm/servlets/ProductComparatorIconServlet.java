@@ -1,7 +1,6 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
-import ru.ncedu.ecomm.servlets.models.CompareChar;
 import ru.ncedu.ecomm.servlets.models.CompareTabCharGroup;
 import ru.ncedu.ecomm.servlets.models.ProductDetailsModel;
 import ru.ncedu.ecomm.servlets.models.ProductViewModel;
@@ -16,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static ru.ncedu.ecomm.utils.RedirectUtil.redirectToPage;
@@ -24,6 +24,7 @@ import static ru.ncedu.ecomm.utils.RedirectUtil.redirectToPage;
 public class ProductComparatorIconServlet extends HttpServlet {
     private static final String ACTION = "action";
     private static final String PRODUCT_ID_PARAMETER = "productId";
+    private static final String REMOVE_PRODUCT = "remove";
     private static final String PARAMETER_UPDATE_SIZE = "updateCompareInIcon";
     private static final String CLEAR_COMPARE_LIST = "clearList";
     private static final String PRODUCTS_SOURCE = "productSource";
@@ -53,7 +54,56 @@ public class ProductComparatorIconServlet extends HttpServlet {
                 clearCompareList(req, resp);
                 break;
             }
+            case REMOVE_PRODUCT: {
+                removeProduct(req, resp);
+                break;
+            }
         }
+    }
+
+    private void removeProduct(HttpServletRequest req, HttpServletResponse resp) {
+        HttpSession session = req.getSession();
+        long productId = Long.parseLong(req.getParameter(PRODUCT_ID_PARAMETER));
+        List<ProductDetailsModel> sourceList = (List<ProductDetailsModel>) session.getAttribute(PRODUCTS_SOURCE);
+        List<CompareTabCharGroup> compareChars = (List<CompareTabCharGroup>) session.getAttribute(CHARS_FOR_PRODUCT);
+
+        sourceList = removeProductFromSourceList(sourceList, productId);
+
+        List<ProductViewModel> productForCompare = ProductConversionService
+                .getInstance()
+                .convertSourceListToProductViewModelList(sourceList);
+
+        if (compareChars.size() == 0) {
+            compareChars = ProductConversionService
+                    .getInstance()
+                    .convertSourceListToCharCompareList(sourceList);
+
+        } else {
+            compareChars = ProductConversionService
+                    .getInstance()
+                    .addCharacteristicValueInList(compareChars, sourceList);
+        }
+
+        session.removeAttribute(CHARS_FOR_PRODUCT);
+        session.removeAttribute(PRODUCTS_SOURCE);
+        session.removeAttribute(PRODUCTS_TO_COMPARE);
+
+        session.setAttribute(PRODUCTS_SOURCE, sourceList);
+        session.setAttribute(PRODUCTS_TO_COMPARE, productForCompare);
+        session.setAttribute(CHARS_FOR_PRODUCT, compareChars);
+        session.setAttribute(PRODUCT_TO_COMPARE_LIST_SIZE, sourceList.size());
+    }
+
+    private List<ProductDetailsModel> removeProductFromSourceList(List<ProductDetailsModel> sourceList, long productId) {
+        Iterator iterator = sourceList.iterator();
+        while (iterator.hasNext()){
+            ProductDetailsModel productDetailsModel = (ProductDetailsModel) iterator.next();
+
+            if (productDetailsModel.getId() == productId){
+                iterator.remove();
+            }
+        }
+        return sourceList;
     }
 
     private void clearCompareList(HttpServletRequest req, HttpServletResponse resp) {

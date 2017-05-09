@@ -9,7 +9,7 @@
                 Compare
             </h2>
 
-            <c:if test='${sessionScope == null || sessionScope.compareList == null}'>
+            <c:if test='${sessionScope == null || sessionScope.compareList == null || sessionScope.compareList.size() == 0}'>
                 <h2 class="ui center aligned icon header">
                     <i class="circular ban icon"></i>
                     No more products to compare...
@@ -20,11 +20,11 @@
             <c:set var="charForProduct" value="${sessionScope.charForProduct}"/>
 
 
-            <c:if test='${compareList != null}'>
             <c:if test='${compareList.size() == 3}'>
                 <div class="four wide column">
                 </div>
             </c:if>
+            <c:if test='${sessionScope.compareList.size() != 0 || compareList != null}'>
             <c:forEach var="product" items="${compareList}">
                 <c:set var="image" value="${product.imageUrl}"/>
                 <div class="four wide column">
@@ -56,7 +56,8 @@
                     <div class="centered-button">
                         <div class="ui buttons">
                             <button class="ui labeled icon blue button" value="${product.id}">Add to cart</button>
-                            <button class="ui icon red button" value="${product.id}"><i class="remove icon"></i>
+                            <button class="ui icon red button jsRemoveProduct" value="${product.id}"><i
+                                    class="remove icon"></i>
                             </button>
                         </div>
                     </div>
@@ -64,39 +65,42 @@
             </c:forEach>
         </div>
     </div>
-    <div class="html ui top attached segment">
-        <table class="ui selectable celled fixed table jsCompareTable">
-            <c:forEach var="charGroup" items="${charForProduct}">
-                <thead>
-                <tr>
-                    <th colspan="4">
-                        <p>${charGroup.name}</p>
-                    </th>
-                </thead>
-                <tbody>
-                <tr>
-                    <c:forEach var="chars" items="${charGroup.getProductChars()}">
-                <tr>
-                    <td class="collapsing">
-                        <p>${chars.name}</p>
-                    </td>
-                    <c:forEach var="charValue" items="${chars.getCharLines()}">
-                        <td class="collapsing  <c:if test='${charValue.length() > 40}'> jsTableItem </c:if>"
-                            data-content="${charValue}" >
-                            <p>${charValue}</p>
+    </c:if>
+    <c:if test='${sessionScope.compareList.size() != 0 || sessionScope.compareList == null}'>
+        <div class="html ui top attached segment">
+            <table class="ui selectable celled fixed table jsCompareTable">
+                <c:forEach var="charGroup" items="${charForProduct}">
+                    <thead>
+                    <tr>
+                        <th colspan="4">
+                            <p>${charGroup.name}</p>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <c:forEach var="chars" items="${charGroup.getProductChars()}">
+                    <tr>
+                        <td class="collapsing">
+                            <p>${chars.name}</p>
                         </td>
+                        <c:forEach var="charValue" items="${chars.getCharLines()}">
+                            <td class="collapsing  <c:if test='${charValue.length() > 40}'> jsTableItem </c:if>"
+                                data-content="${charValue}">
+                                <p>${charValue}</p>
+                            </td>
+                        </c:forEach>
+                    </tr>
                     </c:forEach>
-                </tr>
+                    </tbody>
                 </c:forEach>
-                </tr>
-                </tbody>
-            </c:forEach>
-        </table>
-        </c:if>
-    </div>
+            </table>
+        </div>
+    </c:if>
 </div>
+
 <script>
     window.frm.components.init('productComparator', '.jsProductComparator', {
-        addToCompareUrl: '${requestScope.addToCartURL}'
+        comparePageUrl: '${pageContext.request.contextPath}'
     });
 </script>
