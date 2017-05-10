@@ -20,7 +20,7 @@ import {CharacteristicListComponent} from "../components/chars-list/chars-list.c
 import {CategoriesTreeComponent} from "../components/categories-tree/categories-tree.component";
 import {CharacteristicService} from "../services/characteristic.service";
 import {CategoryService} from "../services/category.service";
-import {CategoriesTreePipe} from "../pipes/categories-tree.pipe";
+import {AsTreePipe} from "../pipes/asTree.pipe";
 import {CategoryEditorComponent} from "../components/category-editor/category-editor.component";
 import {UserReviewsComponent} from "../components/user-reviews/user-reviews.component";
 import {UserOrdersComponent} from "../components/user-orders/user-orders.component";
@@ -38,7 +38,7 @@ import {UserOrdersComponent} from "../components/user-orders/user-orders.compone
         CharGroupEditorComponent,
         CharacteristicListComponent,
         CategoriesTreeComponent,
-        CategoriesTreePipe,
+        AsTreePipe,
         CategoryEditorComponent,
         UserReviewsComponent,
         UserOrdersComponent

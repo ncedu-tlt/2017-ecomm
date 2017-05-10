@@ -44,8 +44,8 @@ export class CharacteristicListComponent implements OnInit {
             .then(characteristics => this.characteristicTableModel.data = characteristics);
     }
 
-    onSelectCategory(data: any) {
-        this.selectedCategory = data.node.data;
+    onSelectCategory(category: any): void {
+        this.selectedCategory = category;
     }
 
     onSelectCharacteristic(characteristic: CharacteristicModel): void {

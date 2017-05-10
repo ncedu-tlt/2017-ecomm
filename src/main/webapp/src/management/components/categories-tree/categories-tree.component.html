@@ -1,5 +1,5 @@
 <tree-root
-        [nodes]="categories | categoriesTree:'categoryId':'parentId'"
+        [nodes]="categories | asTree : 'categoryId' : 'parentId'"
         (onActivate)="onSelect($event)"
         (onDeactivate)="onSelect($event)">
 </tree-root>

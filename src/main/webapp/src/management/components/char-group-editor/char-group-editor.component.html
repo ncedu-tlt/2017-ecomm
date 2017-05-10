@@ -20,11 +20,11 @@
         <div (click)="back()" class="ui yellow button">Cancel</div>
     </form>
 
-    <div *ngIf="isSent" class="ui success message">
+    <div *ngIf="submit == 'success'" class="ui success message">
         <div class="header">Form Completed</div>
         <p>Successfully submitted form.</p>
     </div>
-    <div *ngIf="isError" class="ui error message">
+    <div *ngIf="submit == 'error'" class="ui error message">
         <div class="header">Error of send.</div>
         <p>Please try again later.</p>
     </div>

@@ -3,5 +3,5 @@ export default class CategoryModel{
     description: string;
     categoryId: number;
     parentId: number;
-    children: CategoryModel[];
+    children: any[];
 }

@@ -13,19 +13,36 @@
                         required/>
             </div>
         </div>
-        <div [ngClass]="{disabled: name.invalid || name.pristine}"
+        <div class="field">
+            <sm-textarea label="Description:" rows="10" [control]="formFeedback.get('textControl')"></sm-textarea>
+            Remaining: {{(formFeedback.get('textControl').value.length - 5)}}
+        </div>
+        <div class="field">
+            <sm-checkbox label="Parent category?" [control]="selectDisabled"></sm-checkbox>
+            <sm-select
+                    [(model)]="selection" placeholder="Select parent category"
+                    [disabled]="!selectDisabled.value"
+                    class="fluid selectCategory">
+                <option *ngFor="let category of categories" value="{{category.categoryId}}"> {{category.name}}</option>
+            </sm-select>
+        </div>
+        <div [ngClass]="{disabled: name.invalid || name.pristine || !formFeedback.valid}"
              class="ui primary button"
              (click)="onSubmit()">Save
         </div>
         <div (click)="back()" class="ui yellow button">Cancel</div>
     </form>
 
-    <div *ngIf="isSent" class="ui success message">
+    <div *ngIf="submit == 'success'" class="ui success message">
         <div class="header">Form Completed</div>
         <p>Successfully submitted form.</p>
     </div>
-    <div *ngIf="isError" class="ui error message">
+    <div *ngIf="submit == 'error'" class="ui error message">
         <div class="header">Error of send.</div>
+        <p>Please try again later.</p>
+    </div>
+    <div *ngIf="action == 'unknown'" class="ui error message">
+        <div class="header">Unknown action.</div>
         <p>Please try again later.</p>
     </div>
 </div>

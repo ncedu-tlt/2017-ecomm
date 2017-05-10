@@ -1,46 +1,65 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import CategoryModel from "../../models/category.model";
 import {ActivatedRoute} from "@angular/router";
 import {Location} from '@angular/common';
 import {CategoryService} from "../../services/category.service";
+import {FormControl, Validators, FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
-    selector: 'category-editor',
-    templateUrl: 'category-editor.component.html'
+    selector: 'nc-category-editor',
+    templateUrl: 'category-editor.component.html',
+    styleUrls: ['category-editor.component.css']
 })
 export class CategoryEditorComponent implements OnInit {
-    isSent: boolean = false;
-    isError: boolean = false;
-    isAdd: boolean = false;
-    isEdit: boolean = false;
+    submit: string;
+    action: string;
+    selection: number;
+
+    selectDisabled: FormControl = new FormControl(false);
+
+    categories: CategoryModel[];
 
     category: CategoryModel = new CategoryModel();
 
+    formFeedback: FormGroup;
+
     constructor(private route: ActivatedRoute,
                 private categoryService: CategoryService,
-                private location: Location) {
+                private location: Location,
+                private formBuilder: FormBuilder) {
+        let validator = [Validators.required, Validators.minLength(5)];
+        this.formFeedback = formBuilder.group({
+            textControl: ["", Validators.compose(validator)]
+        });
     };
 
     ngOnInit(): void {
         let id: any = this.route.snapshot.params['id'];
         if (id == 'addition') {
-            this.isAdd = true;
+            this.action = 'addition';
+            this.getCategories();
         }
         else {
             this.categoryService.get(+id)
                 .then(category => {
                     this.category = category;
-                    this.isEdit = true;
-                })
-                .catch(() => this.back())
+                    this.getCategories();
+                    this.action = 'edit';
+                });
         }
     }
 
+    getCategories(): void {
+        this.categoryService.getAll()
+            .then(categories => this.categories = categories)
+            .catch(this.categories = null);
+    }
+
     onSubmit(): void {
-        if (this.isAdd) {
+        if (this.action == 'addition') {
             this.addition();
         }
-        if (this.isEdit) {
+        if (this.action == 'edit') {
             this.edit();
         }
     }
@@ -49,13 +68,9 @@ export class CategoryEditorComponent implements OnInit {
         if (!this.category.name.trim()) return;
         this.categoryService
             .add(this.category.name)
-            .then(() => {
-                this.isError = false;
-                this.isSent = true;
-            })
+            .then(() => this.back())
             .catch(() => {
-                this.isSent = false;
-                this.isError = true;
+                this.submit = 'error';
             });
     }
 
@@ -65,8 +80,7 @@ export class CategoryEditorComponent implements OnInit {
                 .update(this.category)
                 .then(() => this.back())
                 .catch(() => {
-                    this.isSent = false;
-                    this.isError = true;
+                    this.submit = 'error';
                 });
         }
     }

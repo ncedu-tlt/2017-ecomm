@@ -10,10 +10,8 @@ import {CharGroupService} from "../../services/char-group.service";
 })
 
 export class CharGroupEditorComponent implements OnInit{
-    isSent: boolean = false;
-    isError: boolean = false;
-    isAdd: boolean = false;
-    isEdit: boolean = false;
+    submit: string;
+    action: string;
 
     group: CharGroupModel = new CharGroupModel();
 
@@ -25,23 +23,22 @@ export class CharGroupEditorComponent implements OnInit{
     ngOnInit(): void {
         let id: any = this.route.snapshot.params['id'];
         if (id == 'addition') {
-            this.isAdd = true;
+            this.action = 'addition';
         }
         else {
             this.charGroupService.get(+id)
                 .then(group => {
                     this.group = group;
-                    this.isEdit = true;
-                })
-                .catch(() => this.back())
+                    this.action = 'edit';
+                });
         }
     }
 
     onSubmit(): void {
-        if (this.isAdd) {
+        if (this.action == 'addition') {
             this.addition();
         }
-        if (this.isEdit) {
+        if (this.action == 'edit') {
             this.edit();
         }
     }
@@ -51,12 +48,10 @@ export class CharGroupEditorComponent implements OnInit{
         this.charGroupService
             .add(this.group.characteristicGroupName)
             .then(() => {
-                this.isError = false;
-                this.isSent = true;
+                this.back();
             })
             .catch(() => {
-                this.isSent = false;
-                this.isError = true;
+                this.submit = 'error';
             });
     }
 
@@ -66,8 +61,7 @@ export class CharGroupEditorComponent implements OnInit{
                 .update(this.group)
                 .then(() => this.back())
                 .catch(() => {
-                    this.isSent = false;
-                    this.isError = true;
+                    this.submit = 'error';
                 });
         }
     }

@@ -10,26 +10,30 @@ import CategoryModel from "../../models/category.model";
 export class CategoriesTreeComponent implements OnInit {
 
     @Input('selectedItem')
-    selectedItem: any;
+    selectedCategory: CategoryModel;
 
     @Output('select')
-    onSelectEmitter = new EventEmitter<number>();
+    onSelectEmitter = new EventEmitter<CategoryModel>();
 
     constructor(private categoryService: CategoryService) { }
 
-    categories:any[] = [];
+    categories:CategoryModel[] = [];
 
     ngOnInit() {
         this.categoryService.getAll()
-            .then(categories => this.categories = categories);
+            .then(categories => {
+                categories.forEach((item, i, categories) =>
+                    categories[i].children = [] );
+                this.categories = categories
+            });
     }
 
-    onSelect(data: any): void {
-        if (data === this.selectedItem) {
+    onSelect(category: any): void {
+        if (category.node.data === this.selectedCategory) {
             this.onSelectEmitter.emit(null);
         }
         else {
-            this.onSelectEmitter.emit(data);
+            this.onSelectEmitter.emit(category.node.data);
         }
     }
 
@@ -37,11 +41,7 @@ export class CategoriesTreeComponent implements OnInit {
         this.categoryService
             .deleteCategory(categoryId)
             .then(() => {
-                this.categories = this.categories.filter(category => category !== this.selectedItem);
-                this.selectedItem = null;
-            })
-            .catch(() => {
-                console.error('Not done');
+                this.categories = this.categories.filter(category => category !== this.selectedCategory);
             });
     }
 }

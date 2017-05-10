@@ -45,7 +45,7 @@ export class CategoryService {
             .catch(this.handleError)
     }
 
-    deleteCategory(categoryId: number): Promise<void> {
+    deleteCategory(categoryId: number): Promise<any> {
         const url = `${this.categoryUrl}/${categoryId}`;
         return this.http.delete(url, this.options)
             .toPromise()
