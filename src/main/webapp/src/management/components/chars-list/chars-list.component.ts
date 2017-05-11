@@ -30,7 +30,7 @@ export class CharacteristicListComponent implements OnInit {
     };
 
     @ViewChild(CategoriesTreeComponent)
-    categoryEditor: CategoriesTreeComponent;
+    categoryTree: CategoriesTreeComponent;
 
     constructor(private characteristicService: CharacteristicService,
                 private route: ActivatedRoute,
@@ -53,16 +53,17 @@ export class CharacteristicListComponent implements OnInit {
     }
 
     onAddCategory(): void {
-        this.router.navigate(['/category-editor', 'addition']);
+        let params = {id: (this.selectedCategory && this.selectedCategory.categoryId) || 0, action: 'addition'};
+        this.router.navigate(['/category-editor'], {queryParams : params});
     }
 
     onEditCategory(): void {
-        this.router
-            .navigate(['/category-editor', this.selectedCategory.categoryId]);
+        let params = {id: (this.selectedCategory && this.selectedCategory.categoryId) || 0, action: 'edit'};
+        this.router.navigate(['/category-editor'], {queryParams : params});
     }
 
     onDeleteCategory(): void {
-        this.categoryEditor.onDelete(this.selectedCategory.categoryId);
+        this.categoryTree.onDelete(this.selectedCategory.categoryId);
     }
 
     onAddCharacteristic(): void {

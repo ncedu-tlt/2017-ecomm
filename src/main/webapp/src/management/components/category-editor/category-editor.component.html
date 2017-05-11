@@ -14,19 +14,10 @@
             </div>
         </div>
         <div class="field">
-            <sm-textarea label="Description:" rows="10" [control]="formFeedback.get('textControl')"></sm-textarea>
-            Remaining: {{(formFeedback.get('textControl').value.length - 5)}}
+            <label>Description:</label>
+            <textarea rows="2" name="description" [(ngModel)]="category.description"></textarea>
         </div>
-        <div class="field">
-            <sm-checkbox label="Parent category?" [control]="selectDisabled"></sm-checkbox>
-            <sm-select
-                    [(model)]="selection" placeholder="Select parent category"
-                    [disabled]="!selectDisabled.value"
-                    class="fluid selectCategory">
-                <option *ngFor="let category of categories" value="{{category.categoryId}}"> {{category.name}}</option>
-            </sm-select>
-        </div>
-        <div [ngClass]="{disabled: name.invalid || name.pristine || !formFeedback.valid}"
+        <div [ngClass]="{disabled: name.invalid || name.pristine}"
              class="ui primary button"
              (click)="onSubmit()">Save
         </div>

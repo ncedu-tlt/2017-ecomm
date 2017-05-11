@@ -30,9 +30,8 @@ export class CategoryService {
             .catch(this.handleError);
     }
 
-    add(categoryName: string): Promise<CategoryModel> {
-        let bodyRequest: any = {name: categoryName};
-        return this.http.post(this.categoryUrl, bodyRequest, this.options)
+    add(category: CategoryModel): Promise<CategoryModel> {
+        return this.http.post(this.categoryUrl, category, this.options)
             .toPromise()
             .then(response => response.json() as CategoryModel)
             .catch(this.handleError)

@@ -11,48 +11,25 @@ import {FormControl, Validators, FormBuilder, FormGroup} from "@angular/forms";
     styleUrls: ['category-editor.component.css']
 })
 export class CategoryEditorComponent implements OnInit {
-    submit: string;
+    categoryId: number;
     action: string;
-    selection: number;
-
-    selectDisabled: FormControl = new FormControl(false);
-
-    categories: CategoryModel[];
-
+    submit: string;
     category: CategoryModel = new CategoryModel();
-
-    formFeedback: FormGroup;
 
     constructor(private route: ActivatedRoute,
                 private categoryService: CategoryService,
-                private location: Location,
-                private formBuilder: FormBuilder) {
-        let validator = [Validators.required, Validators.minLength(5)];
-        this.formFeedback = formBuilder.group({
-            textControl: ["", Validators.compose(validator)]
-        });
+                private location: Location,) {
     };
 
     ngOnInit(): void {
-        let id: any = this.route.snapshot.params['id'];
-        if (id == 'addition') {
-            this.action = 'addition';
-            this.getCategories();
+        this.route.queryParams.subscribe(params => {
+             this.categoryId = params['id'];
+             this.action = params['action'];
+        });
+        if(this.action == 'edit'){
+            this.categoryService.get(this.categoryId)
+                .then(category => this.category = category);
         }
-        else {
-            this.categoryService.get(+id)
-                .then(category => {
-                    this.category = category;
-                    this.getCategories();
-                    this.action = 'edit';
-                });
-        }
-    }
-
-    getCategories(): void {
-        this.categoryService.getAll()
-            .then(categories => this.categories = categories)
-            .catch(this.categories = null);
     }
 
     onSubmit(): void {
@@ -66,8 +43,9 @@ export class CategoryEditorComponent implements OnInit {
 
     addition(): void {
         if (!this.category.name.trim()) return;
+        this.category.parentId = this.categoryId;
         this.categoryService
-            .add(this.category.name)
+            .add(this.category)
             .then(() => this.back())
             .catch(() => {
                 this.submit = 'error';
