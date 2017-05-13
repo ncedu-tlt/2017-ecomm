@@ -447,7 +447,8 @@ public class PostgresProductDAO implements ProductDAO {
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT\n" +
                              "  cg.characteristic_group_id,\n" +
-                             "  cg.name\n" +
+                             "  cg.name,\n" +
+                             "  c.category_id\n" +
                              "FROM characteristic_groups cg\n" +
                              "  LEFT JOIN characteristics c ON c.characteristic_group_id = cg.characteristic_group_id\n" +
                              "WHERE c.category_id =\n" +
@@ -471,14 +472,18 @@ public class PostgresProductDAO implements ProductDAO {
                              "      WHERE category_id = (SELECT category_id\n" +
                              "                           FROM products\n" +
                              "                           WHERE product_id = ?))\n" +
-                             "GROUP BY cg.characteristic_group_id;")) {
+                             "GROUP BY cg.characteristic_group_id,\n" +
+                             " c.category_id;")) {
 
             statement.setLong(1, productId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 CharacteristicGroupModel characteristicGroup = new CharacteristicGroupModelBuilder()
                         .setCharacteristicGroupName(resultSet.getString("name"))
-                        .setCharacteristics(getCharacteristicsByGroupId(productId, resultSet.getLong("characteristic_group_id")))
+                        .setCharacteristics(getCharacteristicsByGroupId(
+                                productId, resultSet.getLong("category_id"),
+                                resultSet.getLong("characteristic_group_id")
+                        ))
                         .build();
 
                 characteristicsForProduct.add(characteristicGroup);
@@ -491,22 +496,24 @@ public class PostgresProductDAO implements ProductDAO {
         return characteristicsForProduct;
     }
 
-    private List<CharacteristicModel> getCharacteristicsByGroupId(long productId, long characteristic_group_id) {
+    private List<CharacteristicModel> getCharacteristicsByGroupId(long productId, long categoryId, long characteristic_group_id) {
         List <CharacteristicModel> characteristicsValueForProduct = new ArrayList<>();
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT\n" +
-                             "  c.name,\n" +
-                             "  cv.value\n" +
-                             "FROM characteristic_groups cg\n" +
-                             "  LEFT JOIN characteristics c ON c.characteristic_group_id = cg.characteristic_group_id\n" +
-                             "  LEFT JOIN characteristic_values cv ON c.characteristic_id = cv.characteristic_id\n" +
-                             "WHERE cv.product_id = ?\n" +
-                             "      AND c.characteristic_group_id = ?;")) {
+                             "  ch.name,\n" +
+                             "  (SELECT cv.value\n" +
+                             "   FROM characteristic_values cv\n" +
+                             "   WHERE cv.characteristic_id = ch.characteristic_id AND cv.product_id = ?) AS value\n" +
+                             "FROM categories c\n" +
+                             "  LEFT JOIN characteristics ch ON ch.category_id = c.category_id\n" +
+                             "WHERE c.category_id = ?\n" +
+                             "AND ch.characteristic_group_id = ?\n")) {
 
             statement.setLong(1, productId);
-            statement.setLong(2, characteristic_group_id);
+            statement.setLong(2, categoryId);
+            statement.setLong(3, characteristic_group_id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
 

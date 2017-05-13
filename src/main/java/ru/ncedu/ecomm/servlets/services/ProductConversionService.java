@@ -9,6 +9,7 @@ import java.util.List;
 
 public class ProductConversionService {
     private static final String CHARACTERISTIC_NAME_FOR_IMAGE_URL = "Images";
+    private static final String NO_INFORMATION = "No information";
 
     private static ProductConversionService instance;
 
@@ -90,7 +91,6 @@ public class ProductConversionService {
     }
 
 
-
     public List<CompareTabCharGroup> addCharacteristicValueInList(List<CompareTabCharGroup> compareChars, List<ProductDetailsModel> sourceList) {
         cleanCompareTabValue(compareChars);
         for (ProductDetailsModel productDetailsModel : sourceList) {
@@ -101,7 +101,7 @@ public class ProductConversionService {
                             for (CompareChar compareChar : compareTabCharGroup.getProductChars()) {
                                 if (compareTabCharGroup.getName().equalsIgnoreCase(characteristicGroupModel.getName()) &&
                                         characteristicModel.getName().equalsIgnoreCase(compareChar.getName())) {
-                                    compareChar.getCharLines().add(characteristicModel.getValue());
+                                    compareChar.getCharLines().add(characteristicModel.getValue() == null ? "No Information" : characteristicModel.getValue());
                                 }
                             }
                         }
@@ -111,6 +111,7 @@ public class ProductConversionService {
         }
         return compareChars;
     }
+
 
     private void cleanCompareTabValue(List<CompareTabCharGroup> compareChars) {
         for (CompareTabCharGroup compareTabCharGroup : compareChars) {
