@@ -77,7 +77,7 @@ public class ProductConversionService {
                                 compareChar.setName(characteristicModel.getName());
                                 charsValue.add(
                                         characteristicModel.getValue() == null ?
-                                                "No Information" :
+                                                NO_INFORMATION :
                                                 characteristicModel.getValue()
                                 );
                                 compareChar.setCharLines(charsValue);
@@ -106,7 +106,7 @@ public class ProductConversionService {
                                 if (compareTabCharGroup.getName().equalsIgnoreCase(characteristicGroupModel.getName()) &&
                                         characteristicModel.getName().equalsIgnoreCase(compareChar.getName())) {
                                     compareChar.getCharLines().add(characteristicModel.getValue() == null ?
-                                            "No Information" :
+                                            NO_INFORMATION :
                                             characteristicModel.getValue());
                                 }
                             }

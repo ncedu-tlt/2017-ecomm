@@ -73,7 +73,7 @@ public class ProductComparatorIconServlet extends HttpServlet {
                 .getInstance()
                 .convertSourceListToProductViewModelList(sourceList);
 
-        if (compareChars.size() == 0) {
+        if (productForCompare.size() == 0) {
             compareChars = ProductConversionService
                     .getInstance()
                     .convertSourceListToCharCompareList(sourceList);
@@ -83,6 +83,13 @@ public class ProductComparatorIconServlet extends HttpServlet {
                     .getInstance()
                     .addCharacteristicValueInList(compareChars, sourceList);
         }
+        updateDataInSession(session, sourceList, compareChars, productForCompare);
+    }
+
+    private void updateDataInSession(HttpSession session,
+                                     List<ProductDetailsModel> sourceList,
+                                     List<CompareTabCharGroup> compareChars,
+                                     List<ProductViewModel> productForCompare) {
 
         session.removeAttribute(CHARS_FOR_PRODUCT);
         session.removeAttribute(PRODUCTS_SOURCE);
@@ -92,14 +99,16 @@ public class ProductComparatorIconServlet extends HttpServlet {
         session.setAttribute(PRODUCTS_TO_COMPARE, productForCompare);
         session.setAttribute(CHARS_FOR_PRODUCT, compareChars);
         session.setAttribute(PRODUCT_TO_COMPARE_LIST_SIZE, sourceList.size());
+
     }
+
 
     private List<ProductDetailsModel> removeProductFromSourceList(List<ProductDetailsModel> sourceList, long productId) {
         Iterator iterator = sourceList.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             ProductDetailsModel productDetailsModel = (ProductDetailsModel) iterator.next();
 
-            if (productDetailsModel.getId() == productId){
+            if (productDetailsModel.getId() == productId) {
                 iterator.remove();
             }
         }
@@ -107,14 +116,12 @@ public class ProductComparatorIconServlet extends HttpServlet {
     }
 
     private void clearCompareList(HttpServletRequest req, HttpServletResponse resp) {
+        List<ProductDetailsModel> sourceList = new ArrayList<>();
+        List<CompareTabCharGroup> compareChars = new ArrayList<>();
+        List<ProductViewModel> productForCompare = new ArrayList<>();
 
         HttpSession session = req.getSession();
-
-
-        session.removeAttribute(PRODUCTS_SOURCE);
-        session.removeAttribute(PRODUCTS_TO_COMPARE);
-        session.removeAttribute(CHARS_FOR_PRODUCT);
-        session.removeAttribute(PRODUCT_TO_COMPARE_LIST_SIZE);
+        updateDataInSession(session, sourceList, compareChars, productForCompare);
 
         redirectToPage(req, resp, Configuration.getProperty("components.blockForProductComparator"));
     }
@@ -163,14 +170,7 @@ public class ProductComparatorIconServlet extends HttpServlet {
             }
         }
 
-        session.removeAttribute(PRODUCTS_SOURCE);
-        session.removeAttribute(PRODUCTS_TO_COMPARE);
-        session.removeAttribute(CHARS_FOR_PRODUCT);
-        session.setAttribute(PRODUCTS_SOURCE, sourceList);
-        session.setAttribute(PRODUCTS_TO_COMPARE, productForCompare);
-        session.setAttribute(CHARS_FOR_PRODUCT, compareChars);
-        session.setAttribute(PRODUCT_TO_COMPARE_LIST_SIZE, sourceList.size());
-
+        updateDataInSession(session, sourceList, compareChars, productForCompare);
         redirectToPage(req, resp, Configuration.getProperty("components.blockForProductComparator"));
 
     }
