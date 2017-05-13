@@ -17,23 +17,24 @@
             <label>Description:</label>
             <textarea rows="2" name="description" [(ngModel)]="category.description"></textarea>
         </div>
+        <div class="field">
+            <sm-select
+                    [options]="{direction: 'auto'}"
+                    [(model)]="parentId" placeholder="Select your parent"
+                    class="fluid">
+                <div *ngFor="let category of categories">
+                    <option value="{{category.categoryId}}">{{category.name}}</option>
+                </div>
+            </sm-select>
+        </div>
         <div [ngClass]="{disabled: name.invalid || name.pristine}"
              class="ui primary button"
              (click)="onSubmit()">Save
         </div>
         <div (click)="back()" class="ui yellow button">Cancel</div>
     </form>
-
-    <div *ngIf="submit == 'success'" class="ui success message">
-        <div class="header">Form Completed</div>
-        <p>Successfully submitted form.</p>
-    </div>
     <div *ngIf="submit == 'error'" class="ui error message">
         <div class="header">Error of send.</div>
-        <p>Please try again later.</p>
-    </div>
-    <div *ngIf="action == 'unknown'" class="ui error message">
-        <div class="header">Unknown action.</div>
         <p>Please try again later.</p>
     </div>
 </div>
