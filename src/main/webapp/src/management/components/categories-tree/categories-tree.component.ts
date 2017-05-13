@@ -15,15 +15,20 @@ export class CategoriesTreeComponent implements OnInit {
     @Output('select')
     onSelectEmitter = new EventEmitter<CategoryModel>();
 
-    constructor(private categoryService: CategoryService) { }
+    constructor(private categoryService: CategoryService) {
+    }
 
-    categories:CategoryModel[] = [];
+    categories: CategoryModel[] = [];
 
     ngOnInit() {
+        this.getCategories();
+    }
+
+    getCategories(): void{
         this.categoryService.getAll()
             .then(categories => {
                 categories.forEach((item, i, categories) =>
-                    categories[i].children = [] );
+                    categories[i].children = []);
                 this.categories = categories
             });
     }
@@ -37,11 +42,12 @@ export class CategoriesTreeComponent implements OnInit {
         }
     }
 
-    public onDelete(categoryId: number): void{
+    public onDelete(categoryId: number): void {
         this.categoryService
             .deleteCategory(categoryId)
             .then(() => {
-                this.categories = this.categories.filter(category => category !== this.selectedCategory);
+                this.getCategories();
+                this.onSelectEmitter.emit(null);
             });
     }
 }

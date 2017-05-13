@@ -3,7 +3,6 @@ import CategoryModel from "../../models/category.model";
 import {ActivatedRoute} from "@angular/router";
 import {Location} from '@angular/common';
 import {CategoryService} from "../../services/category.service";
-import {FormControl, Validators, FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
     selector: 'nc-category-editor',
@@ -11,25 +10,38 @@ import {FormControl, Validators, FormBuilder, FormGroup} from "@angular/forms";
     styleUrls: ['category-editor.component.css']
 })
 export class CategoryEditorComponent implements OnInit {
-    categoryId: number;
+    parentId: number;
     action: string;
     submit: string;
     category: CategoryModel = new CategoryModel();
+    categories: CategoryModel[];
 
     constructor(private route: ActivatedRoute,
                 private categoryService: CategoryService,
                 private location: Location,) {
+
     };
 
     ngOnInit(): void {
         this.route.queryParams.subscribe(params => {
-             this.categoryId = params['id'];
-             this.action = params['action'];
+            let parentId = +params['id'];
+            this.action = params['action'];
+            if (parentId != 0) {
+                this.categoryService.get(parentId)
+                    .then(category => {
+                        this.parentId = category.categoryId;
+                        if (this.action == 'edit')
+                            this.category = category;
+                    });
+            }
+            this.getCategories();
         });
-        if(this.action == 'edit'){
-            this.categoryService.get(this.categoryId)
-                .then(category => this.category = category);
-        }
+    }
+
+    getCategories(): void {
+        this.categoryService.getAll()
+            .then(categories => this.categories = categories)
+            .catch(this.categories = null);
     }
 
     onSubmit(): void {
@@ -43,7 +55,7 @@ export class CategoryEditorComponent implements OnInit {
 
     addition(): void {
         if (!this.category.name.trim()) return;
-        this.category.parentId = this.categoryId;
+        this.category.parentId = this.parentId;
         this.categoryService
             .add(this.category)
             .then(() => this.back())
@@ -54,6 +66,7 @@ export class CategoryEditorComponent implements OnInit {
 
     edit(): void {
         if (this.category) {
+            this.category.parentId = this.parentId;
             this.categoryService
                 .update(this.category)
                 .then(() => this.back())
