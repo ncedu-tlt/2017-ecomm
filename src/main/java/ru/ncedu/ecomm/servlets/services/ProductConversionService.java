@@ -75,7 +75,11 @@ public class ProductConversionService {
                                 List<String> charsValue = new ArrayList<>();
                                 CompareChar compareChar = new CompareChar();
                                 compareChar.setName(characteristicModel.getName());
-                                charsValue.add(characteristicModel.getValue());
+                                charsValue.add(
+                                        characteristicModel.getValue() == null ?
+                                                "No Information" :
+                                                characteristicModel.getValue()
+                                );
                                 compareChar.setCharLines(charsValue);
                                 chars.add(compareChar);
                             }
@@ -101,7 +105,9 @@ public class ProductConversionService {
                             for (CompareChar compareChar : compareTabCharGroup.getProductChars()) {
                                 if (compareTabCharGroup.getName().equalsIgnoreCase(characteristicGroupModel.getName()) &&
                                         characteristicModel.getName().equalsIgnoreCase(compareChar.getName())) {
-                                    compareChar.getCharLines().add(characteristicModel.getValue() == null ? "No Information" : characteristicModel.getValue());
+                                    compareChar.getCharLines().add(characteristicModel.getValue() == null ?
+                                            "No Information" :
+                                            characteristicModel.getValue());
                                 }
                             }
                         }
