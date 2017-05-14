@@ -111,7 +111,7 @@ public class ProductServlet extends HttpServlet {
         Rating avergeRating = getAvergeRating(productId);
 
         ProductDetailsModel productDetailsModel = new ProductDetailsModelBuilder()
-                .setRating(avergeRating.getRaiting())
+                .setRating(avergeRating == null ? 0 : avergeRating.getRaiting())
                 .setId(productForBuilding.getId())
                 .setPrice(productForBuilding.getPrice())
                 .setName(productForBuilding.getName())
