@@ -25,15 +25,17 @@ public class ProductCatalog implements EntryPoint {
     private static final String JSON_URL_CATEGORIES = GWT.getHostPageBaseURL() + "rest/ecomm/categories";
     private static final String JSON_URL_ALL_PRODUCTS = GWT.getHostPageBaseURL() + "rest/ecomm/product";
     private static final String JSON_URL_CHILDREN_PRODUCTS = GWT.getHostPageBaseURL() + "rest/ecomm/v2/product/childrenProducts/";
+    private static final String DELETE_PRODUCT  = GWT.getHostPageBaseURL() + "rest/ecomm/product/";
     private static final int SUCCESS_ANSWER = 200;
     private static final int NULL_PARENT = 0;
     private static final int ALL_CATEGORIES = 0;
     private static final String MAIN_DIV = "productTable";
     private final ListDataProvider<ProductJSO> dataProviderProducts = new ListDataProvider<>();
-    private final SelectionModel<ProductJSO> selectionModel = new MultiSelectionModel<>(dataProviderProducts);
+    private final SingleSelectionModel<ProductJSO> selectionModel = new SingleSelectionModel<>(dataProviderProducts);
     private Button menuButton = new Button("Menu", (ClickHandler) clickEvent -> {
 
     });
+    private int idSelectedCategory;
 
     @Override
     public void onModuleLoad() {
@@ -41,7 +43,6 @@ public class ProductCatalog implements EntryPoint {
         CellTable<ProductJSO> productTable = createTable(selectionModel, sortHandler);
 
         Tree tree = createTree();
-
 
         Label productListLabel = new Label("Product List");
 
@@ -55,10 +56,22 @@ public class ProductCatalog implements EntryPoint {
             RootPanel.get(MAIN_DIV).add(formPanel);
         });
         Button updateButton = new Button("UPDATE", (ClickHandler) clickEvent -> {
-
         });
         Button deleteButton = new Button("DELETE", (ClickHandler) clickEvent -> {
+            if (selectionModel.getSelectedObject() != null) {
+                deleteProduct(selectionModel.getSelectedObject());
+                // Вопрос
+                dataProviderProducts.getList().clear();
+                if (idSelectedCategory == 0) {
+                    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, JSON_URL_ALL_PRODUCTS);
 
+                    fillList(dataProviderProducts.getList(), builder);
+                }
+                else {
+                    updateProductDataProvider(idSelectedCategory);
+                }
+            }
+            else Window.alert("Please choose the product");
         });
 
         HorizontalPanel hpButtons = new HorizontalPanel();
@@ -130,6 +143,7 @@ public class ProductCatalog implements EntryPoint {
 
                         tree.addSelectionHandler(selectionEvent -> {
                             TreeItem item = selectionEvent.getSelectedItem();
+                            idSelectedCategory = Integer.parseInt(item.getElement().getId());
                             dataProviderProducts.getList().clear();
                             if (Integer.parseInt(item.getElement().getId()) == 0) {
                                 List<ProductJSO> list = dataProviderProducts.getList();
@@ -154,6 +168,8 @@ public class ProductCatalog implements EntryPoint {
     private CellTable<ProductJSO> createTable(final SelectionModel<ProductJSO> selectionModel,
                                               ListHandler<ProductJSO> sortHandler) {
         CellTable<ProductJSO> table = new CellTable<>();
+        table.setAutoHeaderRefreshDisabled(true);
+        table.setAutoFooterRefreshDisabled(true);
 
         TextColumn<ProductJSO> idColumn = new TextColumn<ProductJSO>() {
             @Override
@@ -223,10 +239,9 @@ public class ProductCatalog implements EntryPoint {
     }
 
     private void updateProductDataProvider(final int category) {
-        List<ProductJSO> list = dataProviderProducts.getList();
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, JSON_URL_CHILDREN_PRODUCTS + String.valueOf(category));
 
-        fillList(list, builder);
+        fillList(dataProviderProducts.getList(), builder);
     }
 
     private void fillList(List<ProductJSO> list, RequestBuilder builder) {
@@ -254,6 +269,27 @@ public class ProductCatalog implements EntryPoint {
         }
     }
 
+    private void deleteProduct(ProductJSO object) {
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.DELETE, DELETE_PRODUCT + object.getId());
+        try {
+            Request request = builder.sendRequest(null, new RequestCallback() {
+                public void onError(Request request, Throwable exception) {
+                    Window.alert("Couldn't delete product");
+                }
+
+                public void onResponseReceived(Request request, Response response) {
+                    if (SUCCESS_ANSWER == response.getStatusCode()) {
+                        Window.alert("Product have been deleted");
+                    } else {
+                        Window.alert("Couldn't delete product (" + response.getStatusText() + ")");
+                    }
+                }
+            });
+        } catch (RequestException e) {
+            Window.alert("Couldn't delete product (" + e.getMessage() + ")");
+        }
+    }
+
     private FormPanel createProductDetailForm() {
         FormPanel formPanel = new FormPanel();
         formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
@@ -264,16 +300,27 @@ public class ProductCatalog implements EntryPoint {
         formPanel.setWidget(vpMain);
 
         TextBox category = new TextBox();
-        category.setText("Category");
+        category.setText("");
         TextBox name = new TextBox();
-        name.setText("Name");
+        name.setText("");
+        HorizontalPanel hp = new HorizontalPanel();
+        hp.setBorderWidth(3);
         TextArea description = new TextArea();
         description.setText("Description");
+        Button editDiscount = new Button("Edit Discount", (ClickHandler) clickEvent -> {
+
+        });
+        hp.add(description);
+        hp.add(editDiscount);
+
+        FileUpload fileUpload = new FileUpload();
+        fileUpload.setName("Upload a picture");
 
         vpMain.add(menuButton);
         vpMain.add(category);
         vpMain.add(name);
-        vpMain.add(description);
+        vpMain.add(hp);
+        vpMain.add(fileUpload);
 
         return formPanel;
     }
