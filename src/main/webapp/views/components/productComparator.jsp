@@ -10,10 +10,16 @@
             </h2>
 
             <c:if test='${sessionScope == null || sessionScope.compareList == null || sessionScope.compareList.size() == 0}'>
-                <h2 class="ui center aligned icon header">
-                    <i class="circular ban icon"></i>
-                    No more products to compare...
-                </h2>
+            <h2 class="ui center aligned icon header">
+                <i class="circular ban icon"></i>
+                No more products to compare...
+            </h2>
+        </div>
+        <div class="ui grid centered container gap">
+            <button class="ui blue right labeled icon button jsGoToHomePage">
+                <i class="right arrow icon"></i>
+                See all products
+            </button>
 
             </c:if>
             <c:set var="compareList" value="${sessionScope.compareList}"/>
@@ -55,7 +61,8 @@
                     </h3>
                     <div class="centered-button">
                         <div class="ui buttons">
-                            <button class="ui labeled icon blue button" value="${product.id}">Add to cart</button>
+                            <button class="ui labeled icon blue button jsAddToCart" value="${product.id}">Add to cart
+                            </button>
                             <button class="ui icon red button jsRemoveProduct" value="${product.id}"><i
                                     class="remove icon"></i>
                             </button>
@@ -65,8 +72,18 @@
             </c:forEach>
         </div>
     </div>
+    <c:if test='${sessionScope.compareList.size() > 1}'>
+        <div class="ui right aligned grid">
+            <div class="right floated left aligned four wide column">
+                <button class="ui fluid red right labeled icon button jsRemoveAllProducts">
+                    <i class="remove icon"></i>Remove All
+                </button>
+            </div>
+        </div>
     </c:if>
-    <c:if test='${sessionScope.compareList.size() != 0 || sessionScope.compareList == null}'>
+    </c:if>
+    <c:if test='${sessionScope != null && sessionScope.compareList.size() > 0 ||
+     sessionScope.compareList != null && sessionScope.compareList.size() > 0}'>
         <div class="html ui top attached segment">
             <table class="ui selectable celled fixed table jsCompareTable">
                 <c:forEach var="charGroup" items="${charForProduct}">
@@ -85,7 +102,7 @@
                             <p>${chars.name}</p>
                         </td>
                         <c:forEach var="charValue" items="${chars.getCharLines()}">
-                            <td class="collapsing  <c:if test='${charValue.length() > 40}'> jsTableItem </c:if>"
+                            <td class="collapsing <c:if test='${charValue.length() > 40}'>jsTableItem </c:if>"
                                 data-content="${charValue}">
                                 <p>${charValue}</p>
                             </td>

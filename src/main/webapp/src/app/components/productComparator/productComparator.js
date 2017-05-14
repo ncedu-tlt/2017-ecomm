@@ -4,8 +4,10 @@
     var ELEMENTS = {
         ADD_TO_CART: '.jsAddToCart',
         REMOVE_PRODUCT: '.jsRemoveProduct',
-        TABLE_ITEM: '.jsCompareTable .jsTableItem',
-        PRODUCT_RATING: '.jsCompareProductRating'
+        TABLE_ITEM: '.jsTableItem',
+        PRODUCT_RATING: '.jsCompareProductRating',
+        GO_TO_HOME_PAGE_BUTTON: '.jsGoToHomePage',
+        REMOVE_ALL_PRODUCTS_BUTTON: '.jsRemoveAllProducts'
     };
 
     var EVENTS = {
@@ -17,8 +19,13 @@
     };
 
     var LINKS = {
-        COMPARE_SERVLET: '/compare'
+        COMPARE_SERVLET: '/compare',
+        HOME_SERVLET: '/home'
 
+    };
+
+    var CLASS = {
+        LOADING: 'loading'
     };
 
     var ProductComparator = frm.inheritance.inherits(frm.components.Component, {
@@ -31,6 +38,12 @@
 
             this.content.find(ELEMENTS.PRODUCT_RATING).rating({initialRating: 2, maxRating: 5}).rating('disable');
 
+            this.content.find(ELEMENTS.REMOVE_ALL_PRODUCTS_BUTTON).on(EVENTS.CLICK, function () {
+                var $this = $(this);
+                $this.addClass(CLASS.LOADING);
+                frm.events.fire(EVENTS.REMOVE_ALL);
+
+            });
             this.content.find(ELEMENTS.TABLE_ITEM)
                 .popup({
                     hoverable: true
@@ -40,6 +53,11 @@
                 var productId = $(this).val();
                 frm.events.fire(EVENTS.ADD_TO_CART, productId);
             });
+
+            this.content.find(ELEMENTS.GO_TO_HOME_PAGE_BUTTON).on(EVENTS.CLICK, function (event) {
+                $(event.target).addClass(CLASS.LOADING);
+                window.location.href = this.params.comparePageUrl + LINKS.HOME_SERVLET;
+            }.bind(this));
 
             this.content.find(ELEMENTS.REMOVE_PRODUCT).on(EVENTS.CLICK, function (event) {
                 var productId = event.currentTarget.value;
