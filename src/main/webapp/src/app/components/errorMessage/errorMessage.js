@@ -26,8 +26,8 @@
         MAX_SIZE_ERROR: 'compareListOverflow',
         INCORRECT_CATEGORY_ERROR: 'incorrectCategory',
         PRODUCT_ALREADY_EXISTS: 'productAlreadyExists',
-        COMPARE_LIST_OVERFLOW_TITLE: 'Compare List Overflow!',
-        COMPARE_LIST_OVERFLOW_MESSAGE: 'Please, go to compare or clear list for remaining',
+        COMPARE_LIST_OVERFLOW_TITLE: 'Comparison sheet overcrowded',
+        COMPARE_LIST_OVERFLOW_MESSAGE: 'Please, follow to Comparison sheet or clear list to continue.',
         PRODUCT_ALREADY_EXISTS_TITLE: 'This product already added to compare!',
         PRODUCT_ALREADY_EXISTS_MESSAGE: 'Please add another product for compare',
         INCORRECT_CATEGORY_TITLE: 'Incorrect Category!'
@@ -63,11 +63,11 @@
                     break;
                 case ERRORS.INCORRECT_CATEGORY_ERROR:
                     errorBody.title = ERRORS.INCORRECT_CATEGORY_TITLE;
-                    errorBody.message = 'Please add product from category  ' +
+                    errorBody.message = 'Please add product from ' +
                         '<a href=' + this.params.errorMessageContext + '/category?category_id='
                         + error.category[2] + '\>'
                         + error.category[1].toUpperCase().bold() + '</a>'
-                        + ' or clear compare list!';
+                        + ' category or clear compare list!';
                     break;
 
             }
