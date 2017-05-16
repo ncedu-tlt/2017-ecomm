@@ -2,10 +2,6 @@
 
     var frm = window.frm;
 
-    var CLASSES = {
-        LOADING: 'loading'
-    };
-
     var ELEMENTS = {
         PRODUCT_RATING: '.rating',
         ADD_TO_CART: '.jsAddToCart',
@@ -28,18 +24,12 @@
 
             this.content.find(ELEMENTS.ADD_TO_CART).on(EVENTS.CLICK, function () {
                 var productId = $(this).val();
-
                 frm.events.fire(EVENTS.ADD_TO_CART, productId);
             });
 
             this.content.find(ELEMENTS.ADD_TO_COMPARE).on(EVENTS.CLICK, function () {
-                var $this = $(this);
-                var productId = $this.val();
-
-                $this.removeClass(ELEMENTS.ADD_TO_COMPARE).addClass(CLASSES.LOADING);
-
+                var productId = $(this).val();
                 frm.events.fire(EVENTS.ADD_TO_COMPARE, productId);
-                $this.removeClass(CLASSES.LOADING).addClass(ELEMENTS.ADD_TO_COMPARE);
             });
         }
     });
