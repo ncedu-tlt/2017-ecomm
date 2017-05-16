@@ -31,6 +31,7 @@
         <c:if test="${param.category_id != null && param.category_id != 0}">
             <c:import url="../components/filtering.jsp"/>
         </c:if>
+        <c:import url="../components/message.jsp"/>
         <c:import url="../components/productList.jsp"/>
 
         <c:import url="../components/pagination.jsp"/>

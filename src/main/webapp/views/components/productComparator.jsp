@@ -37,7 +37,7 @@
                     <img class="ui fluid image"
                          src="${pageContext.request.contextPath}${image != null ? image : "/images/defaultimage/image.png"}">
                     <h3 class="ui center aligned header">
-                        <a>
+                        <a href="${pageContext.request.contextPath}/product?product_id=${product.id}">
                                 ${product.name}
                         </a>
                     </h3>
@@ -50,7 +50,6 @@
                         <c:if test='${product.discount != product.price}'>
                             <b style="text-decoration: line-through;">$${product.price}</b>
                             <a style="margin-left: .2em"
-                               href="${pageContext.request.contextPath}/product?product_id=${product.id}"
                                class="ui red large label">
                                 $${product.discount}
                             </a>

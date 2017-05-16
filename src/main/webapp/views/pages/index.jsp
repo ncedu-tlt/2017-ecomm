@@ -21,6 +21,7 @@
 <body>
 <div class="jsMainWrapper">
     <c:import url="../fragments/topPanel.jsp"/>
+    <c:import url="../components/message.jsp"/>
     <c:import url="../components/productList.jsp"/>
     <c:import url="../components/companyInfo.jsp"/>
 </div>

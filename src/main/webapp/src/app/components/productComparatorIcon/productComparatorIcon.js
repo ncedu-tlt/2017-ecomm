@@ -5,7 +5,8 @@
     var ELEMENTS = {
         PRODUCT_COMPARATOR_ICON: '.jsContent',
         CLEAR_LIST_BUTTON: '.jsClearList',
-        COMPARE_BUTTON: '.jsCompareButton'
+        COMPARE_BUTTON: '.jsCompareButton',
+        QUANTITY_ICON: '.jsShoppingCartIcon'
     };
 
     var EVENTS = {
@@ -14,12 +15,20 @@
         REMOVE_ALL: 'removeAll',
         CLICK: 'click',
         REMOVE: 'remove',
+        SEND_ERROR: 'sendError',
         REFRESH_COMPARE_PAGE: 'refreshComparePage',
         UPDATE_COUNT: 'updateCompareInIcon'
     };
 
     var LINKS = {
         COMPARE_ICON_SERVLET: '/compareIcon'
+    };
+
+    var ERRORS = {
+        ERROR: 'error',
+        MAX_SIZE_ERROR: 'compareListOverflow',
+        INCORRECT_CATEGORY_ERROR: 'incorrectCategory',
+        PRODUCT_ALREADY_EXISTS: 'productAlreadyExists'
     };
 
     var CLASS = {
@@ -45,7 +54,7 @@
         },
 
         sendRequest: function (event, productIdParam) {
-            this.content.find(ELEMENTS.COMPARE_BUTTON).addClass(CLASS.LOADING);
+
             $.post(
                 this.params.addToCompareUrl + LINKS.COMPARE_ICON_SERVLET,
                 {
@@ -53,10 +62,32 @@
                     action: event
                 },
                 function (data) {
-                    if (event === EVENTS.UPDATE_COUNT) {
-                        this.content.find(ELEMENTS.PRODUCT_COMPARATOR_ICON).html(data);
+                    this.content.find(ELEMENTS.COMPARE_BUTTON).addClass(CLASS.LOADING);
+                    var errorArray = data.split(',');
+                    var error = errorArray[0];
+
+                    switch (error.trim()) {
+                        case ERRORS.MAX_SIZE_ERROR:
+                            frm.events.fire(EVENTS.SEND_ERROR, {error: ERRORS.MAX_SIZE_ERROR});
+                            break;
+                        case ERRORS.PRODUCT_ALREADY_EXISTS:
+                            frm.events.fire(EVENTS.SEND_ERROR, {error: ERRORS.PRODUCT_ALREADY_EXISTS});
+                            break;
+                        case ERRORS.INCORRECT_CATEGORY_ERROR:
+                            frm.events.fire(EVENTS.SEND_ERROR, {
+                                error: ERRORS.INCORRECT_CATEGORY_ERROR,
+                                category: errorArray
+                            });
+                            break;
+                        default:
+                            if (event === EVENTS.UPDATE_COUNT) {
+                                this.content.find(ELEMENTS.PRODUCT_COMPARATOR_ICON).html(data);
+                            }
                     }
-                    frm.events.fire(EVENTS.REFRESH_COMPARE_PAGE, null);
+
+                    this.content.find(ELEMENTS.COMPARE_BUTTON).removeClass(CLASS.LOADING);
+                    frm.events.fire(EVENTS.REFRESH_COMPARE_PAGE);
+
 
                 }.bind(this));
         },

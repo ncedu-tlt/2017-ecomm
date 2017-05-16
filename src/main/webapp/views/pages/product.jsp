@@ -26,6 +26,8 @@
 
     <c:import url="../components/breadcrumbs.jsp"/>
 
+    <c:import url="../components/message.jsp"/>
+
     <c:import url="../components/productDetails.jsp"/>
 
     <c:import url="../components/reviews.jsp"/>

@@ -1,6 +1,8 @@
 package ru.ncedu.ecomm.servlets;
 
 import ru.ncedu.ecomm.Configuration;
+import ru.ncedu.ecomm.data.DAOFactory;
+import ru.ncedu.ecomm.data.models.dao.CategoryDAOObject;
 import ru.ncedu.ecomm.servlets.models.CompareTabCharGroup;
 import ru.ncedu.ecomm.servlets.models.ProductDetailsModel;
 import ru.ncedu.ecomm.servlets.models.ProductViewModel;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -31,7 +34,12 @@ public class ProductComparatorIconServlet extends HttpServlet {
     private static final String PRODUCTS_TO_COMPARE = "compareList";
     private static final String CHARS_FOR_PRODUCT = "charForProduct";
     private static final String PRODUCT_TO_COMPARE_LIST_SIZE = "compareListSize";
+    private static final String MAX_SIZE_ERROR = "compareListOverflow";
+    private static final String INCORRECT_CATEGORY_ERROR = "incorrectCategory";
+    private static final String PRODUCT_ALREADY_EXISTS = "productAlreadyExists";
+    private static final String PRODUCT_IS_CORRECT = "correct";
     private static final int MAX_SIZE = 3;
+    private static final int FIRST_ELEMENT_IN_ARRAY = 0;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -43,7 +51,7 @@ public class ProductComparatorIconServlet extends HttpServlet {
         addToCompare(req, resp);
     }
 
-    private void addToCompare(HttpServletRequest req, HttpServletResponse resp) {
+    private void addToCompare(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         switch (req.getParameter(ACTION)) {
             case PARAMETER_UPDATE_SIZE: {
@@ -65,25 +73,10 @@ public class ProductComparatorIconServlet extends HttpServlet {
         HttpSession session = req.getSession();
         long productId = Long.parseLong(req.getParameter(PRODUCT_ID_PARAMETER));
         List<ProductDetailsModel> sourceList = (List<ProductDetailsModel>) session.getAttribute(PRODUCTS_SOURCE);
-        List<CompareTabCharGroup> compareChars = (List<CompareTabCharGroup>) session.getAttribute(CHARS_FOR_PRODUCT);
 
         sourceList = removeProductFromSourceList(sourceList, productId);
 
-        List<ProductViewModel> productForCompare = ProductConversionService
-                .getInstance()
-                .convertSourceListToProductViewModelList(sourceList);
-
-        if (productForCompare.size() == 0) {
-            compareChars = ProductConversionService
-                    .getInstance()
-                    .convertSourceListToCharCompareList(sourceList);
-
-        } else {
-            compareChars = ProductConversionService
-                    .getInstance()
-                    .addCharacteristicValueInList(compareChars, sourceList);
-        }
-        updateDataInSession(session, sourceList, compareChars, productForCompare);
+        addProductToListAndSetInSession(session, sourceList, req, resp);
     }
 
     private void updateDataInSession(HttpSession session,
@@ -126,48 +119,76 @@ public class ProductComparatorIconServlet extends HttpServlet {
         redirectToPage(req, resp, Configuration.getProperty("components.blockForProductComparator"));
     }
 
-    private void updateQuantity(HttpServletRequest req, HttpServletResponse resp) {
+    private void updateQuantity(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession();
         List<ProductDetailsModel> sourceList;
-        List<ProductViewModel> productForCompare;
-        List<CompareTabCharGroup> compareChars;
 
-        boolean isnNotRepeat;
         long productId = Long.parseLong(req.getParameter(PRODUCT_ID_PARAMETER));
 
         if (session.getAttribute(PRODUCTS_SOURCE) == null) {
             sourceList = new ArrayList<>();
-            productForCompare = new ArrayList<>();
-            compareChars = new ArrayList<>();
         } else {
-            compareChars = (List<CompareTabCharGroup>) session.getAttribute(CHARS_FOR_PRODUCT);
-            productForCompare = (List<ProductViewModel>) session.getAttribute(PRODUCTS_TO_COMPARE);
             sourceList = (List<ProductDetailsModel>) session.getAttribute(PRODUCTS_SOURCE);
         }
 
         if (sourceList.size() < MAX_SIZE) {
             ProductDetailsModel baseProduct = findAndAddProduct(productId);
 
-            isnNotRepeat = checkProductCategoryRepeat(baseProduct, sourceList);
 
-            if (isnNotRepeat) {
-                sourceList.add(baseProduct);
-
+            switch (checkProductCategoryRepeat(baseProduct, sourceList)) {
+                case INCORRECT_CATEGORY_ERROR: {
+                    sendMessageToClient(INCORRECT_CATEGORY_ERROR + ","
+                            + getCategoryName(sourceList.get(FIRST_ELEMENT_IN_ARRAY)), resp);
+                    break;
+                }
+                case PRODUCT_ALREADY_EXISTS: {
+                    sendMessageToClient(PRODUCT_ALREADY_EXISTS, resp);
+                    break;
+                }
+                case PRODUCT_IS_CORRECT: {
+                    sourceList.add(baseProduct);
+                    addProductToListAndSetInSession(session, sourceList, req, resp);
+                    break;
+                }
             }
-            productForCompare = ProductConversionService
+
+        } else {
+            sendMessageToClient(MAX_SIZE_ERROR, resp);
+        }
+    }
+
+    private String getCategoryName(ProductDetailsModel baseProduct) {
+        CategoryDAOObject category = DAOFactory
+                .getDAOFactory()
+                .getCategoryDAO()
+                .getCategoryById(baseProduct.getCategoryId());
+        return category.getName() + "," + category.getCategoryId();
+    }
+
+    private void addProductToListAndSetInSession(HttpSession session,
+                                                 List<ProductDetailsModel> sourceList,
+                                                 HttpServletRequest req,
+                                                 HttpServletResponse resp) {
+
+        List<CompareTabCharGroup> compareChars = (List<CompareTabCharGroup>) session.getAttribute(CHARS_FOR_PRODUCT);
+
+        if (compareChars == null) {
+            compareChars = new ArrayList<>();
+        }
+
+        List<ProductViewModel> productForCompare = ProductConversionService
+                .getInstance()
+                .convertSourceListToProductViewModelList(sourceList);
+
+        if (compareChars.size() == 0) {
+            compareChars = ProductConversionService
                     .getInstance()
-                    .convertSourceListToProductViewModelList(sourceList);
+                    .convertSourceListToCharCompareList(sourceList);
 
-            if (compareChars.size() == 0) {
-                compareChars = ProductConversionService
-                        .getInstance()
-                        .convertSourceListToCharCompareList(sourceList);
-
-            } else {
-                compareChars = ProductConversionService
-                        .getInstance()
-                        .addCharacteristicValueInList(compareChars, sourceList);
-            }
+        } else {
+            compareChars = ProductConversionService
+                    .getInstance()
+                    .addCharacteristicValueInList(compareChars, sourceList);
         }
 
         updateDataInSession(session, sourceList, compareChars, productForCompare);
@@ -175,13 +196,20 @@ public class ProductComparatorIconServlet extends HttpServlet {
 
     }
 
-    private boolean checkProductCategoryRepeat(ProductDetailsModel productToCompare, List<ProductDetailsModel> productToCompareList) {
+    private void sendMessageToClient(String message, HttpServletResponse resp) throws IOException {
+        PrintWriter out = resp.getWriter();
+        out.println(message);
+    }
+
+    private String checkProductCategoryRepeat(ProductDetailsModel productToCompare, List<ProductDetailsModel> productToCompareList) {
         for (ProductDetailsModel productViewModel : productToCompareList) {
-            if (productViewModel.getId() == productToCompare.getId() || productViewModel.getCategoryId() != productToCompare.getCategoryId()) {
-                return false;
+            if (productViewModel.getId() == productToCompare.getId()) {
+                return PRODUCT_ALREADY_EXISTS;
+            } else if (productViewModel.getCategoryId() != productToCompare.getCategoryId()) {
+                return INCORRECT_CATEGORY_ERROR;
             }
         }
-        return true;
+        return PRODUCT_IS_CORRECT;
     }
 
     private ProductDetailsModel findAndAddProduct(long productId) {
