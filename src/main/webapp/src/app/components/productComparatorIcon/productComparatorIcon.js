@@ -31,6 +31,10 @@
         PRODUCT_ALREADY_EXISTS: 'productAlreadyExists'
     };
 
+    var ANIMATION = {
+        JIGGLE: 'jiggle'
+    };
+
     var CLASS = {
         LOADING: 'loading'
     };
@@ -51,6 +55,7 @@
                 this.clearList.bind(this)
             );
 
+
         },
 
         sendRequest: function (event, productIdParam) {
@@ -70,19 +75,21 @@
                         case ERRORS.MAX_SIZE_ERROR:
                             frm.events.fire(EVENTS.SEND_ERROR, {error: ERRORS.MAX_SIZE_ERROR});
                             break;
+
                         case ERRORS.PRODUCT_ALREADY_EXISTS:
                             frm.events.fire(EVENTS.SEND_ERROR, {error: ERRORS.PRODUCT_ALREADY_EXISTS});
                             break;
+
                         case ERRORS.INCORRECT_CATEGORY_ERROR:
                             frm.events.fire(EVENTS.SEND_ERROR, {
                                 error: ERRORS.INCORRECT_CATEGORY_ERROR,
                                 category: errorArray
                             });
                             break;
+
                         default:
-                            if (event === EVENTS.UPDATE_COUNT) {
-                                this.content.find(ELEMENTS.PRODUCT_COMPARATOR_ICON).html(data);
-                            }
+                            this.content.find(ELEMENTS.PRODUCT_COMPARATOR_ICON).html(data);
+                            this.content.find(ELEMENTS.QUANTITY_ICON).transition(ANIMATION.JIGGLE);
                     }
 
                     this.content.find(ELEMENTS.COMPARE_BUTTON).removeClass(CLASS.LOADING);
@@ -102,7 +109,7 @@
                 function (data) {
                     this.content.find(ELEMENTS.PRODUCT_COMPARATOR_ICON).html(data);
 
-                    frm.events.fire(EVENTS.REFRESH_COMPARE_PAGE, null);
+                    frm.events.fire(EVENTS.REFRESH_COMPARE_PAGE);
 
                 }.bind(this));
         }
