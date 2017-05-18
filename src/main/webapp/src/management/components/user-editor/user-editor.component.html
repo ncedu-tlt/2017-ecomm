@@ -10,7 +10,12 @@
 </div>
 <form class="ui container left aligned form" #groupForm="ngForm">
     <div class="ui small image" *ngIf="userId">
-        <img class="ui small rounded image" [src]="pathToUserAvatar + user.userAvatar">
+        <label for="image">
+            <input type="file" name="image" id="image" style="display:none" accept="image/jpeg; image/png" (change)="selectFile($event)"/>
+            <img *ngIf="!fileSours" class="ui small rounded image" [src]="pathToUserAvatar + user.userAvatar"/>
+            <img *ngIf="file" class="ui small rounded image" [src]="fileSours" alt=""/>
+            <input type="hidden" [(ngModel)]="user.userAvatar" name="imgSource" #imgSource="ngModel"/>
+        </label>
     </div>
     <div class="field" *ngIf="userId">
         <label>User ID</label>

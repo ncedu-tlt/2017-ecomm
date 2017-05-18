@@ -21,15 +21,18 @@ export class UserEditorComponent implements OnInit {
     userId: number;
 
     user: UserModel = new UserModel();
-    roles: RoleModel[];
+    roles: RoleModel[] = [];
     pathToUserAvatar = contextPath;
     isSent: boolean = false;
     isError: boolean = false;
+    file: File;
+    pathToImageUrl: string = "/images/useravatars/";
+    fileSours: string = "";
+    formData: FormData = new FormData;
 
 
     constructor(private usersService: UsersService,
-                private location: Location,
-    ) {
+                private location: Location) {
     }
 
     ngOnInit(): void {
@@ -42,17 +45,17 @@ export class UserEditorComponent implements OnInit {
 
     onSave(form: FormGroup, popup: SemanticPopupComponent, $event: any): void {
         if (this.userId) {
+            this.saveImage();
             this.usersService.updateUser(this.user)
                 .then(() => {
                     this.isSent = true;
                     this.isError = false;
                     this.location.back();
-                })
-                .catch(() => {
-                    this.isError = true;
-                    this.isSent = false;
-                    popup.show($event, {position: 'bottom left'});
-                });
+                }).catch(() => {
+                this.isError = true;
+                this.isSent = false;
+                popup.show($event, {position: 'bottom left'});
+            });
         } else {
             this.usersService.addUser(this.user)
                 .then(() => {
@@ -69,6 +72,13 @@ export class UserEditorComponent implements OnInit {
         }
     }
 
+    saveImage(): void {
+        if (this.file) {
+            this.user.userAvatar = this.pathToImageUrl + this.file.name;
+            this.usersService.uploadImageToServlet(this.formData);
+        }
+    }
+
     onCancel(): void {
         this.location.back();
     }
@@ -78,4 +88,43 @@ export class UserEditorComponent implements OnInit {
             this.usersService.deleteUser(this.userId).then(this.onCancel.bind(this));
         }
     }
+
+    selectFile(event: any): void {
+        let fileList: FileList = event.target.files;
+        if (fileList.length > 0) {
+            this.file = fileList[0];
+            this.formData.delete('uploadFile');
+            this.formData.append('uploadFile', this.file);
+            this.previewImage(this.file);
+        }
+    }
+
+    previewImage(file: any): void {
+        this.readFile(file, (result: any) => {
+            const img = document.createElement("img");
+            img.src = result;
+            this.drawImage(img, (resized_jpeg: any) => {
+                this.fileSours = resized_jpeg;
+            });
+        });
+    }
+
+    readFile(file: any, callback: any): void {
+        const reader = new FileReader();
+        reader.onload = () => {
+            callback(reader.result);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    drawImage(img: any, callback: any) {
+        return img.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            canvas.getContext("2d").drawImage(img, 0, 0, img.width, img.height);
+            callback(canvas.toDataURL('image/jpeg'));
+        };
+    }
+
 }

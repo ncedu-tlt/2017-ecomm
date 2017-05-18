@@ -19,13 +19,13 @@ export class UsersService {
 
     private ordersUrl = `${contextPath}/rest/ecomm/v2/users/salesOrders`;
 
+    private imageUrl = `${contextPath}/uploadImage`;
+
     private headers = new Headers({ 'Content-Type': 'application/json' });
 
     options: RequestOptions = new RequestOptions({headers: this.headers});
 
-    constructor(private http: Http) {
-        
-    }
+    constructor(private http: Http) {}
 
     getUsers(): Promise<UserModel[]> {
         return this.http.get(this.usersUrl)
@@ -97,5 +97,13 @@ export class UsersService {
             .toPromise()
             .then(response => response.json() as SalesOrderModel[])
             .catch(this.handleError)
+    }
+
+    uploadImageToServlet(fileToUpload: any) {
+        this.http.post(this.imageUrl, fileToUpload)
+            .catch(this.handleError)
+            .subscribe(
+                data => console.log('success'),
+            )
     }
 }
