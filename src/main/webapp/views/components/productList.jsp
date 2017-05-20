@@ -33,7 +33,7 @@
         </h2>
         <div class="ui grid centered container">
             <c:forEach var="product" items="${category.getProducts()}">
-                <div class="five wide column">
+                <div class="five wide column jsProductItem">
                     <img class="ui fluid image" src="${pageContext.request.contextPath}${product.getImageUrl()}">
                     <h3 class="ui center aligned header horizontal divider">
                         <a href="${pageContext.request.contextPath}/product?product_id=${product.getId()}">
@@ -68,11 +68,20 @@
                             </button>
                         </div>
                         <div class="column">
-                            <button class="ui labeled icon fluid orange button jsAddToCompare" name="productId"
-                                    value="${product.getId()}">
-                                <i class="add to car icon"></i>
-                                Compare
-                            </button>
+                            <c:if test="${product.isCompare()}">
+                                <button class="ui labeled icon fluid green button jsRemoveFromCompareList" name="productId"
+                                value="${product.getId()}">
+                                    <i class="checkmark box icon"></i>
+                                    Compare
+                                </button>
+                            </c:if>
+                            <c:if test="${!product.isCompare()}">
+                                <button class="ui labeled icon fluid orange button jsAddToCompare " name="productId"
+                                        value="${product.getId()}">
+                                    <i class="add to car icon"></i>
+                                    Compare
+                                </button>
+                            </c:if>
                         </div>
                     </div>
                 </div>
@@ -82,5 +91,7 @@
 </div>
 
 <script>
-    window.frm.components.init('ProductListComponent', '.jsProductListComponent');
+    window.frm.components.init('ProductListComponent', '.jsProductListComponent', {
+        productListContext: '${pageContext.request.contextPath}'
+    });
 </script>

@@ -15,7 +15,7 @@
         REMOVE: 'remove',
         REMOVE_ALL: 'removeAll',
         ADD_TO_CART: 'addToCart',
-        REFRESH_COMPARE_PAGE: 'refreshComparePage'
+        REFRESH_PAGE: 'refreshPage'
     };
 
     var LINKS = {
@@ -34,7 +34,7 @@
          * Executed on component initialization
          */
         init: function () {
-            frm.events.on(EVENTS.REFRESH_COMPARE_PAGE, this.refreshPage.bind(this));
+            frm.events.on(EVENTS.REFRESH_PAGE, this.refreshPage.bind(this));
 
             this.content.find(ELEMENTS.PRODUCT_RATING).rating({initialRating: 2, maxRating: 5}).rating('disable');
 
@@ -71,7 +71,7 @@
             $.post(
                 this.params.comparePageUrl + LINKS.COMPARE_SERVLET,
                 {
-                    action: EVENTS.REFRESH_COMPARE_PAGE
+                    action: EVENTS.REFRESH_PAGE
                 },
                 function (data) {
                     this.content.parent().html(data);

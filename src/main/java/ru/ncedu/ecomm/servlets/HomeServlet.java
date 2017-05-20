@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -32,13 +33,14 @@ public class HomeServlet extends HttpServlet {
 
         response.addHeader("Transfer-Encoding", "chunked");
 
+        HttpSession session = request.getSession();
         List<CategoryViewModel> categoryViewModels = ProductViewService
                 .getInstance()
-                .getBestOffersCategory();
+                .getBestOffersCategory(session);
 
         List<CategoryViewModel> allTopCategory = ProductViewService
                 .getInstance()
-                .getCategoriesById(getCategoryListByRequest(request));
+                .getCategoriesById(getCategoryListByRequest(request), session);
 
         categoryViewModels.addAll(allTopCategory);
 

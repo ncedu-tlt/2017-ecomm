@@ -10,6 +10,7 @@ public class ProductItemsViewBuilder {
     private long price;
     private String name;
     private String imageUrl;
+    private boolean isCompare;
 
     public ProductItemsViewBuilder() {
     }
@@ -56,6 +57,12 @@ public class ProductItemsViewBuilder {
         return this;
     }
 
+    public ProductItemsViewBuilder setCompare(boolean compare) {
+        isCompare = compare;
+
+        return this;
+    }
+
     public ProductViewModel build(){
         return new ProductViewModel(
                 productId,
@@ -64,7 +71,8 @@ public class ProductItemsViewBuilder {
                 discount,
                 price,
                 name,
-                imageUrl
+                imageUrl,
+                isCompare
         );
     }
 }

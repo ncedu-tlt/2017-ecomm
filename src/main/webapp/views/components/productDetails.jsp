@@ -42,9 +42,17 @@
             <div class="column aligned left">
                 <button name="productId" value="${browseProduct.getId()}" class="ui button jsAddToCart">ADD TO CART</button>
             </div>
-            <div class="column right aligned container">
-                <button class="ui button jsAddToCompare" name="productId" value="${browseProduct.getId()}" tabindex="0">COMPARE</button>
-            </div>
+            <c:if test="${!browseProduct.isCompare()}">
+                <div class="column right aligned container">
+                    <button class="ui button orange jsAddToCompare" name="productId" value="${browseProduct.getId()}" tabindex="0">COMPARE</button>
+                </div>
+            </c:if>
+            <c:if test="${browseProduct.isCompare()}">
+                <div class="column right aligned container">
+                    <button class="ui button green jsRemoveFromCompareList" name="productId" value="${browseProduct.getId()}" tabindex="0">
+                        <i class="checkmark box icon"></i> COMPARE</button>
+                </div>
+            </c:if>
         </div>
         <div class="ui one column grid">
             <p>${browseProduct.getDescription()}</p>
@@ -73,5 +81,7 @@
 
 <%-- JS controller initilization --%>
 <script type="text/javascript">
-    window.frm.components.init('productDetails', '.jsProductDetailsComponent');
+    window.frm.components.init('productDetails', '.jsProductDetailsComponent', {
+        productDetailsContext: '${pageContext.request.contextPath}'
+    });
 </script>

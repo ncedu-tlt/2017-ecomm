@@ -5,22 +5,24 @@ import ru.ncedu.ecomm.data.models.dao.CategoryDAOObject;
 import ru.ncedu.ecomm.data.models.dao.CharacteristicValueDAOObject;
 import ru.ncedu.ecomm.data.models.dao.ProductDAOObject;
 import ru.ncedu.ecomm.data.models.dao.Rating;
-import ru.ncedu.ecomm.servlets.models.CategoryViewModel;
-import ru.ncedu.ecomm.servlets.models.CharacteristicGroupModel;
-import ru.ncedu.ecomm.servlets.models.ProductDetailsModel;
-import ru.ncedu.ecomm.servlets.models.ProductViewModel;
+import ru.ncedu.ecomm.data.models.dao.builders.CharacteristicValueDAOObjectBuilder;
+import ru.ncedu.ecomm.servlets.models.*;
 import ru.ncedu.ecomm.servlets.models.builders.CategoryViewBuilder;
 import ru.ncedu.ecomm.servlets.models.builders.ProductItemsViewBuilder;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
 
 public class ProductViewService {
 
+    private static final String PRODUCTS_SOURCE = "productSource";
     public static final String DEFAULT_IMAGE_URL = "/images/defaultimage/image.png";
     public static final long CHARACTERISTIC_ID_FOR_IMAGE_URL = 28;
+    public static final String IMAGE_URL_CHARACTERISTIC_NAME = "Images";
 
     private static final Long CATEGORY_ID_FOR_BEST_OFFERS = 0L; //TODO: не нужно
 
@@ -36,7 +38,7 @@ public class ProductViewService {
         return instance;
     }
 
-    public List<CategoryViewModel> getBestOffersCategory() {
+    public List<CategoryViewModel> getBestOffersCategory(HttpSession session) {
         List<CategoryViewModel> bestOffersCategory = new ArrayList<>();
 
         CategoryViewModel bestOffers = new CategoryViewBuilder()
@@ -44,11 +46,15 @@ public class ProductViewService {
                 .setProducts(getProductForCategory(CATEGORY_ID_FOR_BEST_OFFERS))
                 .build();
 
+        if (session.getAttribute(PRODUCTS_SOURCE) != null) {
+            bestOffers.setProducts(changeProductInCompare(bestOffers.getProducts(), session));
+        }
+
         bestOffersCategory.add(bestOffers);
         return bestOffersCategory;
     }
 
-    public List<CategoryViewModel> getCategoriesById(List<CategoryDAOObject> categories) {
+    public List<CategoryViewModel> getCategoriesById(List<CategoryDAOObject> categories, HttpSession session) {
 
         List<CategoryViewModel> categoriesById = new ArrayList<>();
 
@@ -60,9 +66,27 @@ public class ProductViewService {
                     .setProducts(getProductForCategory(category.getCategoryId()))
                     .build();
 
+            if (session.getAttribute(PRODUCTS_SOURCE) != null) {
+                categoryByRequest.setProducts(changeProductInCompare(categoryByRequest.getProducts(), session));
+            }
+
             categoriesById.add(categoryByRequest);
         }
         return categoriesById;
+    }
+
+    private List<ProductViewModel> changeProductInCompare(List<ProductViewModel> productViewModels,
+                                                          HttpSession session) {
+        List<ProductDetailsModel> sourceList = (List<ProductDetailsModel>) session.getAttribute(PRODUCTS_SOURCE);
+
+        for (ProductViewModel productViewModel : productViewModels) {
+            for (ProductDetailsModel productDetailsModel : sourceList) {
+                if (productViewModel.getId() == productDetailsModel.getId()) {
+                    productViewModel.setCompare(true);
+                }
+            }
+        }
+        return productViewModels;
     }
 
     private List<ProductViewModel> getProductForCategory(long categoryId) {
@@ -160,9 +184,13 @@ public class ProductViewService {
 
     private String getImageUrlByCharacteristicList(CharacteristicValueDAOObject characteristicValue) {
         String imageURL = characteristicValue.getCharacteristicValue();
-        String[] links = imageURL.trim().split(",");
+        if (imageURL != null) {
+            String[] links = imageURL.trim().split(",");
 
-        return links[0];
+            return links[0];
+        } else {
+            return DEFAULT_IMAGE_URL;
+        }
     }
 
     private List<ProductDAOObject> getProductAllChildrenCategory(long categoryId) {
@@ -191,6 +219,35 @@ public class ProductViewService {
                 productChars.removeAll(productsCharsToRemove);
             }
         }
+
+        removeImageFromCharsAndAddImage(product);
         return product;
     }
+
+    private void removeImageFromCharsAndAddImage(ProductDetailsModel product) {
+        for (CharacteristicGroupModel characteristicGroupModel : product.getCharacteristicGroupModels()) {
+            List<String> image = new ArrayList<>();
+            Iterator iterator = characteristicGroupModel
+                    .getCharacteristics()
+                    .iterator();
+
+            while (iterator.hasNext()) {
+                CharacteristicModel characteristicModel = (CharacteristicModel) iterator.next();
+
+                if (characteristicModel.getName().equalsIgnoreCase(IMAGE_URL_CHARACTERISTIC_NAME)) {
+                    image.add(getImageUrlByCharacteristicList(convertCharacteristic(characteristicModel)));
+                    product.setImagesList(image);
+
+                    iterator.remove();
+                }
+            }
+        }
+    }
+
+    private CharacteristicValueDAOObject convertCharacteristic(CharacteristicModel characteristicModel) {
+        return new CharacteristicValueDAOObjectBuilder()
+                .setCharacteristicValue(characteristicModel.getValue())
+                .build();
+    }
+
 }

@@ -10,6 +10,7 @@ public class ProductDetailsModel {
     private long discount;
     private String name;
     private String description;
+    private boolean isCompare;
 
 
     private List<CharacteristicGroupModel> characteristicGroupModels;
@@ -26,6 +27,7 @@ public class ProductDetailsModel {
                                long discount,
                                String name,
                                String description,
+                               boolean isCompare,
                                List<CharacteristicGroupModel> characteristicGroupModels,
                                List<String> imagesList) {
         this.rating = rating;
@@ -35,8 +37,17 @@ public class ProductDetailsModel {
         this.discount = discount;
         this.name = name;
         this.description = description;
+        this.isCompare = isCompare;
         this.characteristicGroupModels = characteristicGroupModels;
         this.imagesList = imagesList;
+    }
+
+    public boolean isCompare() {
+        return isCompare;
+    }
+
+    public void setCompare(boolean compare) {
+        isCompare = compare;
     }
 
     public long getCategoryId() {

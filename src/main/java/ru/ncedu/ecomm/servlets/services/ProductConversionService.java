@@ -25,20 +25,6 @@ public class ProductConversionService {
     }
 
 
-    private String getImageUrlForProduct(ProductDetailsModel productDetailsModel) {
-        String notClearImageLinks = null;
-        for (CharacteristicGroupModel charsGroup : productDetailsModel.getCharacteristicGroupModels()) {
-            for (CharacteristicModel characteristic : charsGroup.getCharacteristics()) {
-                if (characteristic.getName().equalsIgnoreCase(CHARACTERISTIC_NAME_FOR_IMAGE_URL)) {
-                    notClearImageLinks = characteristic.getValue();
-                }
-            }
-        }
-        String[] links = notClearImageLinks != null ? notClearImageLinks.split(",") : new String[0];
-
-        return links.length > 0 ? links[0] : null;
-    }
-
     public List<ProductViewModel> convertSourceListToProductViewModelList(List<ProductDetailsModel> sourceList) {
         List<ProductViewModel> resultList = new ArrayList<>();
 
@@ -48,7 +34,9 @@ public class ProductConversionService {
                         .setCategoryId(product.getCategoryId())
                         .setName(product.getName())
                         .setProductId(product.getId())
-                        .setImageUrl(getImageUrlForProduct(product))
+                        .setImageUrl(product.getImagesList() != null ?
+                                product.getImagesList().get(0) :
+                                null)
                         .setPrice(product.getPrice())
                         .setDiscount(product.getDiscount())
                         .setRating(product.getRating())

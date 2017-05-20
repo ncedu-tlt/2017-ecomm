@@ -16,7 +16,7 @@
         CLICK: 'click',
         REMOVE: 'remove',
         SEND_ERROR: 'sendError',
-        REFRESH_COMPARE_PAGE: 'refreshComparePage',
+        REFRESH_PAGE: 'refreshPage',
         UPDATE_COUNT: 'updateCompareInIcon'
     };
 
@@ -93,7 +93,7 @@
                     }
 
                     this.content.find(ELEMENTS.COMPARE_BUTTON).removeClass(CLASS.LOADING);
-                    frm.events.fire(EVENTS.REFRESH_COMPARE_PAGE);
+                    frm.events.fire(EVENTS.REFRESH_PAGE);
 
 
                 }.bind(this));
@@ -109,7 +109,7 @@
                 function (data) {
                     this.content.find(ELEMENTS.PRODUCT_COMPARATOR_ICON).html(data);
 
-                    frm.events.fire(EVENTS.REFRESH_COMPARE_PAGE);
+                    frm.events.fire(EVENTS.REFRESH_PAGE);
 
                 }.bind(this));
         }

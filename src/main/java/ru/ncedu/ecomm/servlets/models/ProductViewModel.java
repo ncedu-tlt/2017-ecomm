@@ -8,6 +8,7 @@ public class ProductViewModel {
     private long price;
     private String name;
     private String imageUrl;
+    private boolean isCompare;
 
     public ProductViewModel() {
     }
@@ -18,7 +19,8 @@ public class ProductViewModel {
                             long discount,
                             long price,
                             String name,
-                            String imageUrl) {
+                            String imageUrl,
+                            boolean isCompare) {
 
         this.id = productId;
         this.categoryId = categoryId;
@@ -27,6 +29,15 @@ public class ProductViewModel {
         this.price = price;
         this.name = name;
         this.imageUrl = imageUrl;
+        this.isCompare = isCompare;
+    }
+
+    public boolean isCompare() {
+        return isCompare;
+    }
+
+    public void setCompare(boolean compare) {
+        isCompare = compare;
     }
 
     public long getCategoryId() {

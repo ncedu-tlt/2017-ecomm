@@ -14,6 +14,7 @@ public class ProductDetailsModelBuilder {
     private long discount;
     private String name;
     private String description;
+    private boolean isCompare;
 
     private List<CharacteristicGroupModel> characteristicGroupModels;
     private List<String> productImages;
@@ -75,6 +76,12 @@ public class ProductDetailsModelBuilder {
         return this;
     }
 
+    public ProductDetailsModelBuilder setCompare(boolean compare) {
+        isCompare = compare;
+
+        return this;
+    }
+
     public ProductDetailsModel build(){
         return new ProductDetailsModel(
                 rating,
@@ -84,6 +91,7 @@ public class ProductDetailsModelBuilder {
                 discount,
                 name,
                 description,
+                isCompare,
                 characteristicGroupModels,
                 productImages
         );
