@@ -32,6 +32,8 @@ public class ProductServlet extends HttpServlet {
 
     private static final long DEFAULT_CATEGORY_ID = 0;
     private static final long NOT_AUTHORIZED_USER_ID = 0;
+    private static final String PRODUCTS_SOURCE = "productSource";
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -70,8 +72,8 @@ public class ProductServlet extends HttpServlet {
 
             List<ReviewViewModel> listToRemove = new ArrayList<>();
 
-            for (ReviewViewModel reviewViewModel : reviews){
-                if (reviewViewModel.getUserId() == userIdBySession){
+            for (ReviewViewModel reviewViewModel : reviews) {
+                if (reviewViewModel.getUserId() == userIdBySession) {
                     listToRemove.add(reviewViewModel);
                 }
             }
@@ -80,12 +82,23 @@ public class ProductServlet extends HttpServlet {
             reviews.addFirst(thisUserReviewViewModel);
         }
 
-
+        if (httpSession.getAttribute(PRODUCTS_SOURCE) != null) {
+            checkProductOnContainInCompare(browseProduct,
+                    (List<ProductDetailsModel>)httpSession.getAttribute(PRODUCTS_SOURCE));
+        }
         request.setAttribute("hasReview", hasReview);
         request.setAttribute("userIdBySession", userIdBySession);
         request.setAttribute("browseProduct", browseProduct);
         request.setAttribute("reviews", reviews);
         request.getRequestDispatcher("/views/pages/product.jsp").forward(request, response);
+    }
+
+    private void checkProductOnContainInCompare(ProductDetailsModel browseProduct, List<ProductDetailsModel> attribute) {
+        for (ProductDetailsModel productDetailsModel : attribute){
+            if (browseProduct.getId() == productDetailsModel.getId()){
+                browseProduct.setCompare(true);
+            }
+        }
     }
 
     private long getUserIdBySession(Object userId) {

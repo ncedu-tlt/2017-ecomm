@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="browseProduct" scope="page"
        value="${requestScope.browseProduct}"/>
-<div class="ui text two column grid container jsProductDetailsComponent">
+<div class="ui text two column grid container jsProductDetailsComponent main-content">
     <div class="column slideShow">
         <div class="ui one column grid ">
             <div class="column showDisplay">
@@ -50,7 +50,7 @@
             <c:if test="${browseProduct.isCompare()}">
                 <div class="column right aligned container">
                     <button class="ui button green jsRemoveFromCompareList" name="productId" value="${browseProduct.getId()}" tabindex="0">
-                        <i class="checkmark box icon"></i> COMPARE</button>
+                        <i class="checkmark box icon jsCompareIcon"></i> COMPARE</button>
                 </div>
             </c:if>
         </div>
