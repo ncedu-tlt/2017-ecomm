@@ -113,6 +113,7 @@
             </table>
         </div>
     </c:if>
+    <div class="ui hidden divider"></div>
 </div>
 
 <script>
