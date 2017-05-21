@@ -6,7 +6,8 @@
         <div class="ui one column grid ">
             <div class="column showDisplay">
                 <a href="#">
-                    <img class="ui large image" src="${pageContext.request.contextPath}${browseProduct.getImagesList().get(0)}" alt="">
+                    <img class="ui large image"
+                         src="${pageContext.request.contextPath}${browseProduct.getImagesList().get(0)}" alt="">
                 </a>
             </div>
         </div>
@@ -24,12 +25,14 @@
         <h2 class="ui header">${browseProduct.getName()}</h2>
         <div class="ui two column grid">
             <div class="column">
-                <div class="ui eleven wide column large rating disabled" data-rating="${browseProduct.getRating()}" data-max-rating="5"></div>
+                <div class="ui eleven wide column large rating disabled" data-rating="${browseProduct.getRating()}"
+                     data-max-rating="5"></div>
             </div>
             <div class="column right aligned container">
                 <c:if test="${browseProduct.getDiscount() != 0}">
-                    <span class="productPrice" style="text-decoration: line-through;">$${browseProduct.getPrice()}</span>
-                    <span style="   margin-left: .2em"  class="ui red large label">
+                    <span class="productPrice"
+                          style="text-decoration: line-through;">$${browseProduct.getPrice()}</span>
+                    <span style="   margin-left: .2em" class="ui red large label">
                         $${browseProduct.getDiscount()}
                     </span>
                 </c:if>
@@ -40,43 +43,47 @@
         </div>
         <div class="ui two column grid">
             <div class="column aligned left">
-                <button name="productId" value="${browseProduct.getId()}" class="ui button jsAddToCart">ADD TO CART</button>
+                <button name="productId" value="${browseProduct.getId()}" class="ui button jsAddToCart">ADD TO CART
+                </button>
             </div>
-            <c:if test="${!browseProduct.isCompare()}">
-                <div class="column right aligned container">
-                    <button class="ui button orange jsAddToCompare" name="productId" value="${browseProduct.getId()}" tabindex="0">COMPARE</button>
-                </div>
-            </c:if>
-            <c:if test="${browseProduct.isCompare()}">
-                <div class="column right aligned container">
-                    <button class="ui button green jsRemoveFromCompareList" name="productId" value="${browseProduct.getId()}" tabindex="0">
-                        <i class="checkmark box icon jsCompareIcon"></i> COMPARE</button>
-                </div>
-            </c:if>
+            <div class="column right aligned container jsCompareIconContainer">
+                <c:if test="${!browseProduct.isCompare()}">
+                    <button class="ui button orange jsProductCompareButton jsAddToCompare" name="productId" value="${browseProduct.getId()}"
+                            tabindex="0">COMPARE
+                    </button>
+
+                </c:if>
+                <c:if test="${browseProduct.isCompare()}">
+                    <button class="ui button green jsProductCompareButton jsRemoveFromCompareList" name="productId"
+                            value="${browseProduct.getId()}" tabindex="0">
+                        <i class="checkmark box icon jsCompareIcon"></i> COMPARE
+                    </button>
+                </c:if>
+            </div>
         </div>
         <div class="ui one column grid">
             <p>${browseProduct.getDescription()}</p>
         </div>
     </div>
-<c:forEach var="characteristicGroup" items="${browseProduct.getCharacteristicGroupModels()}">
-    <div class="ui top attached menu">
-        <a class="item">${characteristicGroup.getName()}</a>
-    </div>
-    <div class="ui attached segment">
-    <c:forEach var="characteristics" items="${characteristicGroup.getCharacteristics()}">
-        <div class="ui computer reversed equal width grid">
-            <div class="row">
-                <div class="column" id="brandValue">
-                    <p>${characteristics.getValue()}</p>
+    <c:forEach var="characteristicGroup" items="${browseProduct.getCharacteristicGroupModels()}">
+        <div class="ui top attached menu">
+            <a class="item">${characteristicGroup.getName()}</a>
+        </div>
+        <div class="ui attached segment">
+            <c:forEach var="characteristics" items="${characteristicGroup.getCharacteristics()}">
+                <div class="ui computer reversed equal width grid">
+                    <div class="row">
+                        <div class="column" id="brandValue">
+                            <p>${characteristics.getValue()}</p>
+                        </div>
+                        <div class="column" id="brand">
+                            <p>${characteristics.getName()}</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="column" id="brand">
-                    <p>${characteristics.getName()}</p>
-                </div>
-            </div>
+            </c:forEach>
         </div>
     </c:forEach>
-    </div>
-</c:forEach>
 </div>
 
 <%-- JS controller initilization --%>

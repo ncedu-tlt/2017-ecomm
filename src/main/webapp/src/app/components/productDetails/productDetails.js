@@ -8,26 +8,23 @@
         SLIDE: '.slideShowItem',
         SLIDE_SHOW: '.slideShow',
         DISPLAY: '.showDisplay',
+        COMPARE_BUTTON: '.jsProductCompareButton',
         IMAGE: 'img',
+        COMPARE_BUTTON_CONTAINER: '.jsCompareIconContainer',
         REMOVE_FROM_COMPARE: '.jsRemoveFromCompareList',
         ATTRIBUTE_SRC: 'src',
         ADD_TO_CART: '.jsAddToCart',
         ADD_TO_COMPARE: '.jsAddToCompare'
     };
 
-    var OBJECTS = {
-        COMPARE_ICON: '<i class="checkmark box icon jsCompareIcon"></i>'
-    };
 
     var CLASSES = {
-        ADD_TO_COMPARE: 'orange jsAddToCompare',
-        LOADING: 'loading',
-        COMPARE_ICON: '.jsCompareIcon',
-        REMOVE_FROM_COMPARE: 'green jsRemoveFromCompareList'
+        LOADING: 'loading'
     };
 
     var EVENTS = {
         CLICK: 'click',
+        REFRESH_PAGE: 'refreshPage',
         ADD_TO_CART: 'addToCart',
         REMOVE: 'remove',
         ADD_TO_COMPARE: 'addToCompare'
@@ -44,12 +41,15 @@
         MAX_RATING: 5
     };
 
+
     var ProductComponent = frm.inheritance.inherits(frm.components.Component, {
 
         /**
          * Executed on component initialization
          */
         init: function () {
+            frm.events.on(EVENTS.REFRESH_PAGE, this.refreshPage.bind(this));
+
             this.content.find(ELEMENTS.PRODUCT_RATING)
                 .rating({initialRating: PARAMETERS.INIT_RATING, maxRating: PARAMETERS.MAX_RATING})
                 .rating(STATES.DISABLE);
@@ -89,34 +89,35 @@
         doActionWithCompareButton: function (action, event) {
 
             var $this = $(event.currentTarget);
-            $this.addClass(CLASSES.LOADING);
             var productId = $this.val();
-
-            $this.unbind(EVENTS.CLICK);
+            $this.addClass(CLASSES.LOADING);
 
             frm.events.fire(action, productId);
-
-            this.setClass($this);
         },
+        refreshPage: function () {
+            $.post(
+                window.location.pathname + window.location.search,
+                {
+                    action: EVENTS.REFRESH_PAGE
+                },
+                function (data) {
 
-        setClass: function (element) {
-            var action;
-            element.removeClass(CLASSES.LOADING);
+                    var dataContent = $(data);
+                    var compareButton = dataContent.find(ELEMENTS.COMPARE_BUTTON);
+                    this.content.find(ELEMENTS.COMPARE_BUTTON_CONTAINER).html(compareButton);
 
-            if (element.hasClass(CLASSES.ADD_TO_COMPARE)) {
-                action = EVENTS.REMOVE;
-                element.removeClass(CLASSES.ADD_TO_COMPARE).addClass(CLASSES.REMOVE_FROM_COMPARE);
-                element.prepend(OBJECTS.COMPARE_ICON);
-            } else {
-                action = EVENTS.ADD_TO_COMPARE;
-                element.removeClass(CLASSES.REMOVE_FROM_COMPARE).addClass(CLASSES.ADD_TO_COMPARE);
-                element.find(CLASSES.COMPARE_ICON).remove();
-            }
+                    this.content.find(ELEMENTS.REMOVE_FROM_COMPARE).on(EVENTS.CLICK, function (event) {
+                        this.doActionWithCompareButton(EVENTS.REMOVE, event);
+                    }.bind(this));
 
-            element.on(EVENTS.CLICK, function (event) {
-                this.doActionWithCompareButton(action, event);
-            }.bind(this));
+                    this.content.find(ELEMENTS.ADD_TO_COMPARE).on(EVENTS.CLICK, function (event) {
+                        this.doActionWithCompareButton(EVENTS.ADD_TO_COMPARE, event);
+
+                    }.bind(this));
+
+                }.bind(this));
         }
+
     });
 
     frm.components.register('productDetails', ProductComponent);

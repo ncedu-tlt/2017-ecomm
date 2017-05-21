@@ -73,7 +73,7 @@
     </div>
     <c:if test='${sessionScope.compareList.size() > 1}'>
         <div class="ui right aligned grid">
-            <div class="right floated left aligned four wide column">
+            <div class="right floated left aligned three wide column">
                 <button class="ui fluid red right labeled icon button jsRemoveAllProducts">
                     <i class="remove icon"></i>Remove All
                 </button>

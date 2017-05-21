@@ -16,7 +16,6 @@
         REMOVE_FROM_COMPARE: 'jsRemoveFromCompareList',
         ADD_TO_COMPARE: 'jsAddToCompare'
     };
-    var timer;
 
     var EVENTS = {
         REMOVE: 'remove',
@@ -35,7 +34,6 @@
 
         init: function () {
             frm.events.on(EVENTS.REFRESH_PAGE, this.refreshPage.bind(this));
-
 
             this.content.find(ELEMENTS.PRODUCT_RATING).rating({initialRating: 2, maxRating: 5}).rating(EVENTS.DISABLE);
 
