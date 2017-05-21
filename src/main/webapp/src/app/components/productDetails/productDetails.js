@@ -26,6 +26,7 @@
         CLICK: 'click',
         REFRESH_PAGE: 'refreshPage',
         ADD_TO_CART: 'addToCart',
+        CLEAR_COMPARE_LIST: 'clearList',
         REMOVE: 'remove',
         ADD_TO_COMPARE: 'addToCompare'
     };
@@ -48,6 +49,7 @@
          * Executed on component initialization
          */
         init: function () {
+            frm.events.on(EVENTS.CLEAR_COMPARE_LIST, this.addLoadingLabel.bind(this));
             frm.events.on(EVENTS.REFRESH_PAGE, this.refreshPage.bind(this));
 
             this.content.find(ELEMENTS.PRODUCT_RATING)
@@ -84,6 +86,10 @@
             this.content.find(ELEMENTS.ADD_TO_COMPARE).on(EVENTS.CLICK, function (event) {
                 this.doActionWithCompareButton(EVENTS.ADD_TO_COMPARE, event);
             }.bind(this));
+        },
+
+        addLoadingLabel: function () {
+            this.content.find(ELEMENTS.COMPARE_BUTTON).addClass(CLASSES.LOADING);
         },
 
         doActionWithCompareButton: function (action, event) {

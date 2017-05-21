@@ -69,14 +69,14 @@
                         </div>
                         <div class="column">
                             <c:if test="${product.isCompare()}">
-                                <button class="ui labeled icon fluid green button jsRemoveFromCompareList" name="productId"
+                                <button class="ui labeled icon fluid green button jsProductCompareButton jsRemoveFromCompareList" name="productId"
                                 value="${product.getId()}">
                                     <i class="checkmark box icon"></i>
                                     Compare
                                 </button>
                             </c:if>
                             <c:if test="${!product.isCompare()}">
-                                <button class="ui labeled icon fluid orange button jsAddToCompare " name="productId"
+                                <button class="ui labeled icon fluid orange button jsProductCompareButton jsAddToCompare " name="productId"
                                         value="${product.getId()}">
                                     <i class="add to car icon"></i>
                                     Compare

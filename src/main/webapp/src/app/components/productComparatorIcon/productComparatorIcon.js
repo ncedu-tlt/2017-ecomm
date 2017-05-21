@@ -14,6 +14,7 @@
         CLEAR_COMPARE_LIST: 'clearList',
         REMOVE_ALL: 'removeAll',
         CLICK: 'click',
+        DONE: 'done',
         REMOVE: 'remove',
         SEND_ERROR: 'sendError',
         REFRESH_PAGE: 'refreshPage',
@@ -73,16 +74,23 @@
 
                     switch (error.trim()) {
                         case ERRORS.MAX_SIZE_ERROR:
-                            frm.events.fire(EVENTS.SEND_ERROR, {error: ERRORS.MAX_SIZE_ERROR});
+                            frm.events.fire(EVENTS.SEND_ERROR, {
+                                error: ERRORS.MAX_SIZE_ERROR,
+                                productId: productIdParam
+                            });
                             break;
 
                         case ERRORS.PRODUCT_ALREADY_EXISTS:
-                            frm.events.fire(EVENTS.SEND_ERROR, {error: ERRORS.PRODUCT_ALREADY_EXISTS});
+                            frm.events.fire(EVENTS.SEND_ERROR, {
+                                error: ERRORS.PRODUCT_ALREADY_EXISTS,
+                                productId: productIdParam
+                            });
                             break;
 
                         case ERRORS.INCORRECT_CATEGORY_ERROR:
                             frm.events.fire(EVENTS.SEND_ERROR, {
                                 error: ERRORS.INCORRECT_CATEGORY_ERROR,
+                                productId: productIdParam,
                                 category: errorArray
                             });
                             break;
@@ -93,13 +101,15 @@
                     }
 
                     this.content.find(ELEMENTS.COMPARE_BUTTON).removeClass(CLASS.LOADING);
-                    frm.events.fire(EVENTS.REFRESH_PAGE);
+                    frm.events.fire(EVENTS.REFRESH_PAGE, productIdParam);
 
 
                 }.bind(this));
         },
 
         clearList: function () {
+            frm.events.fire(EVENTS.CLEAR_COMPARE_LIST);
+
             this.content.find(ELEMENTS.COMPARE_BUTTON).addClass(CLASS.LOADING);
             $.post(
                 this.params.addToCompareUrl + LINKS.COMPARE_ICON_SERVLET,
