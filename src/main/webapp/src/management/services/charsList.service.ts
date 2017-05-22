@@ -7,7 +7,8 @@ declare var contextPath: string;
 @Injectable()
 export class CharsListService {
 
-    private characteristicUrl = `${contextPath}/rest/ecomm/v2/characteristics`;
+    private characteristicUrlRest1 = `${contextPath}/rest/ecomm/characteristic`;
+    private characteristicUrlRest2 = `${contextPath}/rest/ecomm/v2/characteristics`;
 
     private headers = new Headers({'Content-Type': 'application/json'});
 
@@ -16,13 +17,22 @@ export class CharsListService {
     constructor(private http: Http) {
     }
 
-    getCharsListByCategoryId(categoryId: number): Promise<CharacteristicListModel[]>{
-        const url = `${this.characteristicUrl}/${categoryId}`;
+    getByCategoryId(categoryId: number): Promise<CharacteristicListModel[]>{
+        const url = `${this.characteristicUrlRest2}/${categoryId}`;
         return this.http.get(url)
             .toPromise()
             .then(response => response.json() as CharacteristicListModel[])
             .catch(this.handleError);
     }
+
+    delete(characteristicId: number): Promise<void>{
+        const url = `${this.characteristicUrlRest1}/${characteristicId}`;
+        return this.http.delete(url, {headers: this.headers})
+            .toPromise()
+            .then(() => null)
+            .catch(this.handleError);
+    }
+
 
     handleError(error: any): Promise<any> {
         console.error('An error occurred', error);

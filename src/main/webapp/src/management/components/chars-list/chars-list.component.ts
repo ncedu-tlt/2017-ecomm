@@ -1,9 +1,8 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import TableModel from "../data-table/models/table.model";
 import {CharsListService} from "../../services/charsList.service";
 import CharacteristicModel from "../../models/characteristic.model";
 import {ActivatedRoute, Router} from "@angular/router";
-
 import CharacteristicListModel from "../../models/charsListModel";
 
 @Component({
@@ -37,11 +36,15 @@ export class CharsListComponent implements OnInit {
 
     public getCharGroups(categoryId: number): void {
         this.selectedCategoryId = categoryId;
-        this.charsListService.getCharsListByCategoryId(categoryId)
-            .then(charGroups => this.charsList = charGroups);
+        this.getCharsList(categoryId);
     }
 
     ngOnInit(): void {
+    }
+
+    getCharsList(categoryId: number): void{
+        this.charsListService.getByCategoryId(categoryId)
+            .then(charGroups => this.charsList = charGroups);
     }
 
     setTableData(characteristics: CharacteristicModel[]): void {
@@ -61,7 +64,11 @@ export class CharsListComponent implements OnInit {
     }
 
     onDeleteCharacteristic(): void {
-        console.log('delete');
+        this.charsListService.delete(this.selectedCharacteristic.characteristicId)
+            .then(() => {
+                this.getCharsList(this.selectedCategoryId);
+                this.selectedCharacteristic = null;
+            });
     }
 
 }
