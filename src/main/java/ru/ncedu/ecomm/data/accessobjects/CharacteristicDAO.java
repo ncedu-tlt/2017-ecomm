@@ -1,6 +1,7 @@
 package ru.ncedu.ecomm.data.accessobjects;
 
 import ru.ncedu.ecomm.data.models.dao.CharacteristicDAOObject;
+import ru.ncedu.ecomm.data.models.dto.CharacteristicGroupDTOObject;
 
 import java.util.List;
 
@@ -20,5 +21,7 @@ public interface CharacteristicDAO {
     void deleteCharacteristic(CharacteristicDAOObject characteristic);
 
     List<CharacteristicDAOObject> getFilterableCharacteristicsByCategoryId(long categoryId);
+
+    List<CharacteristicGroupDTOObject> getCharacteristicsByCategoryIdForManagement(long categoryId);
 
 }

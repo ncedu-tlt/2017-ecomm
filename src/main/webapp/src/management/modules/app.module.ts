@@ -16,14 +16,16 @@ import {CharGroupService} from "../services/char-group.service";
 import {CharGroupEditorComponent} from "../components/char-group-editor/char-group-editor.component";
 import {UserEditorComponent} from "../components/user-editor/user-editor.component";
 import {UserDetailsComponent} from "../components/user-details/user-details.component";
-import {CharacteristicListComponent} from "../components/chars-list/chars-list.component";
+import {CharsListComponent} from "../components/chars-list/chars-list.component";
 import {CategoriesTreeComponent} from "../components/categories-tree/categories-tree.component";
-import {CharacteristicService} from "../services/characteristic.service";
+import {CharsListService} from "../services/charsList.service";
 import {CategoryService} from "../services/category.service";
 import {AsTreePipe} from "../pipes/asTree.pipe";
 import {CategoryEditorComponent} from "../components/category-editor/category-editor.component";
 import {UserReviewsComponent} from "../components/user-reviews/user-reviews.component";
 import {UserOrdersComponent} from "../components/user-orders/user-orders.component";
+import {ProductModelEditorComponent} from "../components/product-model-editor/product-model-editor.component";
+import {CharEditorComponent} from "../components/char-editor/char-editor.component";
 
 @NgModule({
     declarations: [
@@ -36,12 +38,14 @@ import {UserOrdersComponent} from "../components/user-orders/user-orders.compone
         TopMenuComponent,
         CharGroupListComponent,
         CharGroupEditorComponent,
-        CharacteristicListComponent,
+        CharsListComponent,
         CategoriesTreeComponent,
         AsTreePipe,
         CategoryEditorComponent,
         UserReviewsComponent,
-        UserOrdersComponent
+        UserOrdersComponent,
+        ProductModelEditorComponent,
+        CharEditorComponent
     ],
     imports: [
         BrowserModule,
@@ -54,7 +58,7 @@ import {UserOrdersComponent} from "../components/user-orders/user-orders.compone
     providers: [
         UsersService,
         CharGroupService,
-        CharacteristicService,
+        CharsListService,
         CategoryService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

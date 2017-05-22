@@ -1,7 +1,7 @@
 export default class CharacteristicModel{
     characteristicId: number;
-    characteristicName: string;
-    characteristicGroupId: number;
     categoryId: number;
+    characteristicGroupId: number;
+    characteristicName: string;
     filterable: boolean
 }

@@ -1,13 +1,13 @@
 import {Injectable} from "@angular/core";
 import {RequestOptions, Headers, Http} from "@angular/http";
-import CharacteristicModel from "../models/characteristic.model";
+import CharacteristicListModel from "../models/charsListModel";
 
 declare var contextPath: string;
 
 @Injectable()
-export class CharacteristicService {
+export class CharsListService {
 
-    private characteristicUrl = `${contextPath}/rest/ecomm/characteristic`;
+    private characteristicUrl = `${contextPath}/rest/ecomm/v2/characteristics`;
 
     private headers = new Headers({'Content-Type': 'application/json'});
 
@@ -16,11 +16,11 @@ export class CharacteristicService {
     constructor(private http: Http) {
     }
 
-    getCharByCategoryAndGroup(categoryId: number, groupId: number): Promise<CharacteristicModel[]> {
-        const url = `${this.characteristicUrl}/${categoryId}/${groupId}`;
+    getCharsListByCategoryId(categoryId: number): Promise<CharacteristicListModel[]>{
+        const url = `${this.characteristicUrl}/${categoryId}`;
         return this.http.get(url)
             .toPromise()
-            .then(response => response.json() as CharacteristicModel[])
+            .then(response => response.json() as CharacteristicListModel[])
             .catch(this.handleError);
     }
 
