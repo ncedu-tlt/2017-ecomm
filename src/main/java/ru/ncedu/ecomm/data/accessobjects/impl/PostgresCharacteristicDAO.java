@@ -139,18 +139,18 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "INSERT INTO public.characteristics\n" +
-                             "(characteristic_id,\n" +
-                             " category_id,\n" +
-                             " name,\n" +
-                             " characteristic_group_id)\n" +
-                             "VALUES (?, ?, ?, ?)\n" +
-                             "RETURNING characteristic_id"
+                     "INSERT INTO\n" +
+                             " characteristics (" +
+                             "category_id, " +
+                             "name, " +
+                             "characteristic_group_id, " +
+                             "filterable)\n" +
+                             "VALUES (?, ?, ?, ? ) RETURNING characteristic_id"
              )) {
-            statement.setLong(1, characteristic.getCharacteristicId());
-            statement.setLong(2, characteristic.getCategoryId());
-            statement.setString(3, characteristic.getCharacteristicName());
-            statement.setLong(4, characteristic.getCharacteristicGroupId());
+            statement.setLong(1, characteristic.getCategoryId());
+            statement.setString(2, characteristic.getCharacteristicName());
+            statement.setLong(3, characteristic.getCharacteristicGroupId());
+            statement.setBoolean(4, characteristic.isFilterable());
             statement.execute();
 
             ResultSet resultSet = statement.getResultSet();
@@ -207,16 +207,18 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "UPDATE public.characteristics\n" +
-                             "SET category_id           = ?,\n" +
-                             "  name                    = ?,\n" +
-                             "  characteristic_group_id = ?\n" +
+                     "UPDATE characteristics\n" +
+                             "SET category_id = ?,\n" +
+                             "  name = ?,\n" +
+                             "  characteristic_group_id = ?,\n" +
+                             "  filterable = ?\n" +
                              "WHERE characteristic_id = ?"
              )) {
             statement.setLong(1, characteristic.getCategoryId());
             statement.setString(2, characteristic.getCharacteristicName());
             statement.setLong(3, characteristic.getCharacteristicGroupId());
-            statement.setLong(4, characteristic.getCharacteristicId());
+            statement.setBoolean(4, characteristic.isFilterable());
+            statement.setLong(5, characteristic.getCharacteristicId());
             statement.execute();
 
             LOG.info(null);
