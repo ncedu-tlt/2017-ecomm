@@ -14,7 +14,7 @@ const ROUTES: Routes = [
     { path: 'user/:id', component: UserDetailsComponent},
     { path: 'char-group-list', component: CharGroupListComponent },
     { path: 'char-group-editor/:id', component: CharGroupEditorComponent },
-    { path: 'char-editor/:id', component: CharEditorComponent },
+    { path: 'char-editor', component: CharEditorComponent },
     { path: 'category-editor', component: CategoryEditorComponent },
     { path: 'product-model-editor', component: ProductModelEditorComponent },
     { path: '**', redirectTo: '/users' }

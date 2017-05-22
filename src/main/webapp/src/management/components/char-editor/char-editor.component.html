@@ -1,1 +1,40 @@
-<h1>Hello char editor</h1>
+<div class="ui horizontal divider">
+    characteristic editor
+</div>
+<div class="ui left aligned container">
+    <form class="ui form" #characteristicForm="ngForm">
+        <div class="field">
+            <sm-select #charGroupSelect
+                    [options]="{direction: 'auto'}"
+                    [(model)]="selectedCharGroupId" placeholder="Select your group"
+                    class="fluid">
+                <div *ngFor="let group of charGroups">
+                    <option value="{{group.characteristicGroupId}}">{{group.characteristicGroupName}}</option>
+                </div>
+            </sm-select>
+        </div>
+        <div [ngClass]="{error: name.invalid && name.touched}" class="field">
+            <label>Name:</label>
+            <div class="ui input">
+                <input
+                        type="text" placeholder="Characteristic name" name="name"
+                        [(ngModel)]="characteristic.characteristicName"
+                        #name="ngModel"
+                        required/>
+            </div>
+        </div>
+        <div class="field">
+            <sm-checkbox label="Is Filterable?" [control]="filterable"></sm-checkbox>
+        </div>
+        <div [ngClass]="{disabled: name.invalid || name.pristine || charGroupSelect.untouched}"
+             class="ui primary button"
+             (click)="onSubmit()">Save
+        </div>
+        <div (click)="back()" class="ui yellow button">Cancel</div>
+        <div class="ui brown button" (click)="charGroupRedirect()">Characteristic group</div>
+    </form>
+    <div *ngIf="submit == 'error'" class="ui error message">
+        <div class="header">Error of send.</div>
+        <p>Please try again later.</p>
+    </div>
+</div>

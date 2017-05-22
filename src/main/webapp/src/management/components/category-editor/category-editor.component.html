@@ -22,9 +22,9 @@
                     [options]="{direction: 'auto'}"
                     [(model)]="parentId" placeholder="Select your parent"
                     class="fluid">
-                <div *ngFor="let category of categories">
-                    <option value="{{category.categoryId}}">{{category.name}}</option>
-                </div>
+                <option *ngFor="let category of categories"
+                        [ngValue]="category"
+                        [value]="category.categoryId">{{category.name}}</option>
             </sm-select>
         </div>
         <div [ngClass]="{disabled: name.invalid || name.pristine}"

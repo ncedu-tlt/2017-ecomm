@@ -43,7 +43,7 @@ export class CharsListComponent implements OnInit {
     }
 
     getCharsList(categoryId: number): void{
-        this.charsListService.getByCategoryId(categoryId)
+        this.charsListService.getAllByCategoryId(categoryId)
             .then(charGroups => this.charsList = charGroups);
     }
 
@@ -56,11 +56,17 @@ export class CharsListComponent implements OnInit {
     }
 
     onAddCharacteristic(): void {
-        this.router.navigate(['/char-editor', 'addition']);
+        let params = {categoryId: this.selectedCategoryId,
+            characteristicId: (this.selectedCharacteristic && this.selectedCharacteristic.characteristicId) || 0 ,
+            action: 'addition'};
+        this.router.navigate(['/char-editor'], {queryParams: params});
     }
 
     onEditCharacteristic(): void {
-        this.router.navigate(['/char-editor', this.selectedCharacteristic.characteristicId]);
+        let params = {categoryId: this.selectedCategoryId,
+            characteristicId: (this.selectedCharacteristic && this.selectedCharacteristic.characteristicId) || 0 ,
+            action: 'edit'};
+        this.router.navigate(['/char-editor'], {queryParams: params});
     }
 
     onDeleteCharacteristic(): void {
