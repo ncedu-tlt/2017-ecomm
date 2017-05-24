@@ -3,6 +3,7 @@ package ru.ncedu.ecomm.rest;
 import ru.ncedu.ecomm.data.models.dao.ProductDAOObject;
 import ru.ncedu.ecomm.data.models.dao.SalesOrder;
 import ru.ncedu.ecomm.data.models.dao.UserDAOObject;
+import ru.ncedu.ecomm.data.models.dto.CharacteristicGroupDTOObject;
 import ru.ncedu.ecomm.data.models.dto.ReviewDTOObject;
 import ru.ncedu.ecomm.data.models.dto.UserDTOObject;
 
@@ -22,7 +23,8 @@ public class RestServiceVersionTwo {
     @GET
     @Path("/users")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UserDTOObject> getUsersManagement() {return getDAOFactory().getUserDAO().getUsersForManagement();
+    public List<UserDTOObject> getUsersManagement() {
+        return getDAOFactory().getUserDAO().getUsersForManagement();
     }
 
     @GET
@@ -94,5 +96,12 @@ public class RestServiceVersionTwo {
     @Produces(MediaType.APPLICATION_JSON)
     public List<SalesOrder> getSalesOrderToOrderHistory(@PathParam("userId") long userId) {
         return getDAOFactory().getSalesOrderDAO().getSalesOrderToOrderHistory(userId);
+    }
+
+    @GET
+    @Path("/characteristics/{categoryId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<CharacteristicGroupDTOObject> getCharacteristicsByCategoryId(@PathParam("categoryId") long categoryId) {
+        return getDAOFactory().getChracteristicDAO().getCharacteristicsByCategoryIdForManagement(categoryId);
     }
 }

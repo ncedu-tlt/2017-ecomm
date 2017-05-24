@@ -1,21 +1,21 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import TableModel from "../data-table/models/table.model";
-import {CharacteristicService} from "../../services/characteristic.service";
+import {CharsListService} from "../../services/charsList.service";
 import CharacteristicModel from "../../models/characteristic.model";
 import {ActivatedRoute, Router} from "@angular/router";
-import CategoryModel from "../../models/category.model";
-import {CategoriesTreeComponent} from "../categories-tree/categories-tree.component";
+import CharacteristicListModel from "../../models/charsListModel";
 
 @Component({
-    selector: 'nc-characteristic-list',
-    templateUrl: 'chars-list.component.html',
-    styleUrls: ['chars-list.component.css']
+    selector: 'nc-charGroup-list',
+    templateUrl: 'chars-list.component.html'
 })
-export class CharacteristicListComponent implements OnInit {
-    selectedCategory: CategoryModel;
+export class CharsListComponent implements OnInit {
+    selectedCategoryId: number;
     selectedCharacteristic: CharacteristicModel;
 
-    characteristicTableModel: TableModel = {
+    charsList: CharacteristicListModel[];
+
+    charGroupTableModel: TableModel = {
         data: [],
         columns: [
             {
@@ -29,53 +29,52 @@ export class CharacteristicListComponent implements OnInit {
         ]
     };
 
-    @ViewChild(CategoriesTreeComponent)
-    categoryTree: CategoriesTreeComponent;
-
-    constructor(private characteristicService: CharacteristicService,
+    constructor(private charsListService: CharsListService,
                 private route: ActivatedRoute,
                 private router: Router) {
     }
 
-    ngOnInit(): void {
-        let categoryId: any = this.route.snapshot.params['categoryId'];
-        let groupId: any = this.route.snapshot.params['groupId'];
-        this.characteristicService.getCharByCategoryAndGroup(categoryId, groupId)
-            .then(characteristics => this.characteristicTableModel.data = characteristics);
+    public getCharGroups(categoryId: number): void {
+        this.selectedCategoryId = categoryId;
+        this.getCharsList(categoryId);
     }
 
-    onSelectCategory(category: any): void {
-        this.selectedCategory = category;
+    ngOnInit(): void {
+    }
+
+    getCharsList(categoryId: number): void{
+        this.charsListService.getAllByCategoryId(categoryId)
+            .then(charGroups => this.charsList = charGroups);
+    }
+
+    setTableData(characteristics: CharacteristicModel[]): void {
+        this.charGroupTableModel.data = characteristics;
     }
 
     onSelectCharacteristic(characteristic: CharacteristicModel): void {
         this.selectedCharacteristic = characteristic;
     }
 
-    onAddCategory(): void {
-        let params = {id: (this.selectedCategory && this.selectedCategory.categoryId) || 0, action: 'addition'};
-        this.router.navigate(['/category-editor'], {queryParams : params});
-    }
-
-    onEditCategory(): void {
-        let params = {id: (this.selectedCategory && this.selectedCategory.categoryId) || 0, action: 'edit'};
-        this.router.navigate(['/category-editor'], {queryParams : params});
-    }
-
-    onDeleteCategory(): void {
-        this.categoryTree.onDelete(this.selectedCategory.categoryId);
-    }
-
     onAddCharacteristic(): void {
-
+        let params = {categoryId: this.selectedCategoryId,
+            characteristicId: (this.selectedCharacteristic && this.selectedCharacteristic.characteristicId) || 0 ,
+            action: 'addition'};
+        this.router.navigate(['/char-editor'], {queryParams: params});
     }
 
     onEditCharacteristic(): void {
-
+        let params = {categoryId: this.selectedCategoryId,
+            characteristicId: (this.selectedCharacteristic && this.selectedCharacteristic.characteristicId) || 0 ,
+            action: 'edit'};
+        this.router.navigate(['/char-editor'], {queryParams: params});
     }
 
     onDeleteCharacteristic(): void {
-
+        this.charsListService.delete(this.selectedCharacteristic.characteristicId)
+            .then(() => {
+                this.getCharsList(this.selectedCategoryId);
+                this.selectedCharacteristic = null;
+            });
     }
 
 }

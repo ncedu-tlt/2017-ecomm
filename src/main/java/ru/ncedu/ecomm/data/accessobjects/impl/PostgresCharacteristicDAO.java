@@ -3,7 +3,10 @@ package ru.ncedu.ecomm.data.accessobjects.impl;
 import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.CharacteristicDAO;
 import ru.ncedu.ecomm.data.models.dao.CharacteristicDAOObject;
+import ru.ncedu.ecomm.data.models.dao.CharacteristicGroupDAOObject;
 import ru.ncedu.ecomm.data.models.dao.builders.CharacteristicDAOObjectBuilder;
+import ru.ncedu.ecomm.data.models.dao.builders.CharacteristicGroupDAOObjectBuilder;
+import ru.ncedu.ecomm.data.models.dto.CharacteristicGroupDTOObject;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -52,23 +55,23 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
     public List<CharacteristicDAOObject> getCharacteristicByGroupId(long characteristicGroupId) {
         List<CharacteristicDAOObject> characteristics = new ArrayList<>();
 
-        try(Connection connection = DBUtils.getConnection();
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT\n" +
-                            "  characteristic_id,\n" +
-                            "  category_id,\n" +
-                            "  name,\n" +
-                            "  characteristic_group_id\n" +
-                            "FROM public.characteristics\n" +
-                            "WHERE characteristic_group_id = ?"
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT\n" +
+                             "  characteristic_id,\n" +
+                             "  category_id,\n" +
+                             "  name,\n" +
+                             "  characteristic_group_id\n" +
+                             "FROM public.characteristics\n" +
+                             "WHERE characteristic_group_id = ?"
 
-            )){
+             )) {
 
             statement.setLong(1, characteristicGroupId);
 
             ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 CharacteristicDAOObject characteristic = new CharacteristicDAOObjectBuilder()
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
                         .setCharacteristicName(resultSet.getString("name"))
@@ -92,25 +95,25 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
     public List<CharacteristicDAOObject> getCharacteristicByCategoryIdAndGroupId(long categoryId, long groupId) {
         List<CharacteristicDAOObject> characteristics = new ArrayList<>();
 
-        try(Connection connection = DBUtils.getConnection();
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT\n" +
-                            "  characteristic_id,\n" +
-                            "  category_id,\n" +
-                            "  name,\n" +
-                            "  characteristic_group_id\n," +
-                            " filterable\n" +
-                            "FROM public.characteristics\n" +
-                            "WHERE category_id = ?\n" +
-                            "      AND characteristic_group_id = ?"
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT\n" +
+                             "  characteristic_id,\n" +
+                             "  category_id,\n" +
+                             "  name,\n" +
+                             "  characteristic_group_id\n," +
+                             " filterable\n" +
+                             "FROM public.characteristics\n" +
+                             "WHERE category_id = ?\n" +
+                             "      AND characteristic_group_id = ?"
 
-            )){
+             )) {
             statement.setLong(1, categoryId);
             statement.setLong(2, groupId);
 
             ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 CharacteristicDAOObject characteristic = new CharacteristicDAOObjectBuilder()
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
                         .setCharacteristicName(resultSet.getString("name"))
@@ -136,18 +139,18 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "INSERT INTO public.characteristics\n" +
-                             "(characteristic_id,\n" +
-                             " category_id,\n" +
-                             " name,\n" +
-                             " characteristic_group_id)\n" +
-                             "VALUES (?, ?, ?, ?)\n" +
-                             "RETURNING characteristic_id"
+                     "INSERT INTO\n" +
+                             " characteristics (" +
+                             "category_id, " +
+                             "name, " +
+                             "characteristic_group_id, " +
+                             "filterable)\n" +
+                             "VALUES (?, ?, ?, ? ) RETURNING characteristic_id"
              )) {
-            statement.setLong(1, characteristic.getCharacteristicId());
-            statement.setLong(2, characteristic.getCategoryId());
-            statement.setString(3, characteristic.getCharacteristicName());
-            statement.setLong(4, characteristic.getCharacteristicGroupId());
+            statement.setLong(1, characteristic.getCategoryId());
+            statement.setString(2, characteristic.getCharacteristicName());
+            statement.setLong(3, characteristic.getCharacteristicGroupId());
+            statement.setBoolean(4, characteristic.isFilterable());
             statement.execute();
 
             ResultSet resultSet = statement.getResultSet();
@@ -204,16 +207,18 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
 
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "UPDATE public.characteristics\n" +
-                             "SET category_id           = ?,\n" +
-                             "  name                    = ?,\n" +
-                             "  characteristic_group_id = ?\n" +
+                     "UPDATE characteristics\n" +
+                             "SET category_id = ?,\n" +
+                             "  name = ?,\n" +
+                             "  characteristic_group_id = ?,\n" +
+                             "  filterable = ?\n" +
                              "WHERE characteristic_id = ?"
              )) {
             statement.setLong(1, characteristic.getCategoryId());
             statement.setString(2, characteristic.getCharacteristicName());
             statement.setLong(3, characteristic.getCharacteristicGroupId());
-            statement.setLong(4, characteristic.getCharacteristicId());
+            statement.setBoolean(4, characteristic.isFilterable());
+            statement.setLong(5, characteristic.getCharacteristicId());
             statement.execute();
 
             LOG.info(null);
@@ -283,5 +288,87 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
             throw new RuntimeException(e);
         }
         return characteristics;
+    }
+
+    @Override
+    public List<CharacteristicGroupDTOObject> getCharacteristicsByCategoryIdForManagement(long categoryId) {
+        Connection connection = DBUtils.getConnection();
+        List<CharacteristicGroupDAOObject> charGroupList = getCharGroupsManagement(connection);
+        List<CharacteristicDAOObject> charList = getCharacteristicsManagement(connection, categoryId);
+        return getCharGroupsDTOManagement(charGroupList, charList);
+    }
+
+    private List<CharacteristicGroupDAOObject> getCharGroupsManagement(Connection connection) {
+        List<CharacteristicGroupDAOObject> charGroupList = new ArrayList<>();
+        try (PreparedStatement statementCharGroups = connection.prepareStatement(
+                "SELECT \n" +
+                        "  characteristic_group_id AS char_group_id,\n" +
+                        "  name AS char_group_name\n" +
+                        "FROM characteristic_groups;"
+        )) {
+            ResultSet resultSetCharGroups = statementCharGroups.executeQuery();
+            while (resultSetCharGroups.next()) {
+                CharacteristicGroupDAOObject charGroupBuild = new CharacteristicGroupDAOObjectBuilder()
+                        .setCharacteristicGroupId(resultSetCharGroups.getLong("char_group_id"))
+                        .setCharacteristicGroupName(resultSetCharGroups.getString("char_group_name"))
+                        .build();
+                charGroupList.add(charGroupBuild);
+            }
+            LOG.info(null);
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return charGroupList;
+    }
+
+    private List<CharacteristicDAOObject> getCharacteristicsManagement(Connection connection, long categoryId) {
+        List<CharacteristicDAOObject> charList = new ArrayList<>();
+        try (PreparedStatement statementChars = connection.prepareStatement(
+                "SELECT\n" +
+                        "  characteristic_id AS chars_id,\n" +
+                        "  characteristic_group_id AS char_group_id,\n" +
+                        "  name AS chars_name,\n" +
+                        "  filterable AS chars_filterable\n" +
+                        "FROM characteristics\n" +
+                        "WHERE category_id = ?"
+        )) {
+            statementChars.setLong(1, categoryId);
+            ResultSet resultSetChars = statementChars.executeQuery();
+            while (resultSetChars.next()) {
+                CharacteristicDAOObject charsBuild = new CharacteristicDAOObjectBuilder()
+                        .setCharacteristicId(resultSetChars.getLong("chars_id"))
+                        .setCharacteristicGroupId(resultSetChars.getLong("char_group_id"))
+                        .setCharacteristicName(resultSetChars.getString("chars_name"))
+                        .setFilterable(resultSetChars.getBoolean("chars_filterable"))
+                        .build();
+                charList.add(charsBuild);
+            }
+            LOG.info(null);
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        return charList;
+    }
+
+    private List<CharacteristicGroupDTOObject> getCharGroupsDTOManagement
+            (List<CharacteristicGroupDAOObject> charGroupList, List<CharacteristicDAOObject> charList){
+        List<CharacteristicGroupDTOObject> charGroupsDTO = new ArrayList<>();
+        for (CharacteristicGroupDAOObject group : charGroupList) {
+            CharacteristicGroupDTOObject charGroupDTO = new CharacteristicGroupDTOObject();
+            List<CharacteristicDAOObject> characteristics = new ArrayList<>();
+            charGroupDTO.setCharacteristicGroupId(group.getCharacteristicGroupId());
+            charGroupDTO.setCharacteristicGroupName(group.getCharacteristicGroupName());
+            for (CharacteristicDAOObject characteristic : charList) {
+                if (characteristic.getCharacteristicGroupId() == group.getCharacteristicGroupId()) {
+                    characteristics.add(characteristic);
+                }
+            }
+            charGroupDTO.setCharacteristics(characteristics);
+            charGroupsDTO.add(charGroupDTO);
+        }
+        return charGroupsDTO;
     }
 }

@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit} from "@angular/core";
 import CategoryModel from "../../models/category.model";
 import {ActivatedRoute} from "@angular/router";
-import {Location} from '@angular/common';
+import {Location} from "@angular/common";
 import {CategoryService} from "../../services/category.service";
 
 @Component({
@@ -24,12 +24,11 @@ export class CategoryEditorComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.queryParams.subscribe(params => {
-            let parentId = +params['id'];
+            this.parentId = +params['id'];
             this.action = params['action'];
-            if (parentId != 0) {
-                this.categoryService.get(parentId)
+            if (this.parentId != 0) {
+                this.categoryService.get(this.parentId)
                     .then(category => {
-                        this.parentId = category.categoryId;
                         if (this.action == 'edit')
                             this.category = category;
                     });

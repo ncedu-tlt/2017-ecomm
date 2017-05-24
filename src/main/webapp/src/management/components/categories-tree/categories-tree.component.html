@@ -1,3 +1,17 @@
+<div class="ui container right aligned">
+    <h4 class="ui horizontal divider header">
+        CATEGORIES
+    </h4>
+    <button (click)="onAdd()" class="ui primary button">
+        Add
+    </button>
+    <button (click)="onEdit()" [disabled]="!selectedCategory" class="ui yellow button">
+        Update
+    </button>
+    <button (click)="onDelete()" [disabled]="!selectedCategory" class="ui red button">
+        Delete
+    </button>
+</div>
 <tree-root
         [nodes]="categories | asTree : 'categoryId' : 'parentId'"
         (onActivate)="onSelect($event)"

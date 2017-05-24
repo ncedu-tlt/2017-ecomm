@@ -1,36 +1,31 @@
-<div class="ui fluid container jsCategoryAdmin">
-    <div class="ui left floated segment categorySegment">
-        <div class="ui container right aligned category-editor">
-            <button (click)="onAddCategory()" class="ui primary button">
-                Add
-            </button>
-            <button (click)="onEditCategory()" [disabled]="!selectedCategory" class="ui yellow button">
-                Update
-            </button>
-            <button (click)="onDeleteCategory()" [disabled]="!selectedCategory" class="ui red button">
-                Delete
-            </button>
-        </div>
-        <nc-categories-tree (select)="onSelectCategory($event)"
-                            [categories]="categories"
-                            [selectedItem]="selectedCategory"></nc-categories-tree>
+<div *ngIf="selectedCategoryId != 0">
+    <div class="ui container right aligned charGroup-editor">
+        <h4 class="ui horizontal divider header">
+            CHARACTERISTIC GROUPS
+        </h4>
+        <button (click)="onAddCharacteristic()" class="ui primary button">
+            Add
+        </button>
+        <button (click)="onEditCharacteristic()" [disabled]="!selectedCharacteristic" class="ui yellow button">
+            Update
+        </button>
+        <button (click)="onDeleteCharacteristic()" [disabled]="!selectedCharacteristic" class="ui red button">
+            Delete
+        </button>
     </div>
-    <div class="ui right floated segment characteristicSegment">
-        <div class="ui container right aligned category-editor">
-            <button (click)="onAddCharacteristic()" class="ui primary button">
-                Add
-            </button>
-            <button (click)="onEditCharacteristic()" [disabled]="!selectedCharacteristic" class="ui yellow button">
-                Update
-            </button>
-            <button (click)="onDeleteCharacteristic()" [disabled]="!selectedCharacteristic" class="ui red button">
-                Delete
-            </button>
-        </div>
-        <nc-data-table
-                [model]="characteristicTableModel"
-                [selectedItem]="selectedCharacteristic"
-                (select)="onSelectCharacteristic($event)">
-        </nc-data-table>
+    <div class="ui right floated charListAccordion">
+        <sm-accordion *ngFor="let charGroup of charsList" class="ui styled fluid">
+            <sm-accordion-item>
+                <accordion-title>{{charGroup.characteristicGroupName}}</accordion-title>
+                <accordion-content>
+                    {{setTableData(charGroup.characteristics)}}
+                    <nc-data-table
+                            [model]="charGroupTableModel"
+                            [selectedItem]="selectedCharacteristic"
+                            (select)="onSelectCharacteristic($event)">
+                    </nc-data-table>
+                </accordion-content>
+            </sm-accordion-item>
+        </sm-accordion>
     </div>
 </div>

@@ -1,0 +1,24 @@
+.characteristicSegment {
+    margin-top: 0;
+    min-width: 50%;
+    max-width: 50%;
+}
+
+.categorySegment {
+    min-width: 40%;
+    max-width: 40%;
+    margin-left: 10px;
+}
+
+.characteristicSegment {
+    margin-top: 0;
+    min-width: 50%;
+    max-width: 50%;
+}
+
+
+
+.charListAccordion{
+    margin-top:10px;
+    width:100%;
+}
