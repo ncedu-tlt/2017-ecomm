@@ -93,9 +93,9 @@ public class ProductConversionService {
                             for (CompareChar compareChar : compareTabCharGroup.getProductChars()) {
                                 if (compareTabCharGroup.getName().equalsIgnoreCase(characteristicGroupModel.getName()) &&
                                         characteristicModel.getName().equalsIgnoreCase(compareChar.getName())) {
-                                    compareChar.getCharLines().add(characteristicModel.getValue() == null ?
-                                            NO_INFORMATION :
-                                            characteristicModel.getValue());
+                                    compareChar.getCharLines().add(characteristicModel.getValue() == null ||
+                                            characteristicModel.getValue().length() == 0 ?
+                                            NO_INFORMATION : characteristicModel.getValue());
                                 }
                             }
                         }
