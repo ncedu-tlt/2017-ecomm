@@ -89,7 +89,7 @@
                     <thead>
                     <tr>
                         <th colspan="4">
-                            <p>${charGroup.name}</p>
+                            ${charGroup.name}
                         </th>
                     </tr>
                     </thead>
@@ -97,13 +97,12 @@
                     <tr>
                         <c:forEach var="chars" items="${charGroup.getProductChars()}">
                     <tr>
-                        <td class="collapsing">
-                            <p>${chars.name}</p>
+                        <td>
+                            ${chars.name}
                         </td>
                         <c:forEach var="charValue" items="${chars.getCharLines()}">
-                            <td class="collapsing <c:if test='${charValue.length() > 40}'>jsTableItem </c:if>"
-                                data-content="${charValue}">
-                                <p>${charValue}</p>
+                            <td>
+                                ${charValue}
                             </td>
                         </c:forEach>
                     </tr>

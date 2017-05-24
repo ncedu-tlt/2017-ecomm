@@ -44,10 +44,6 @@
                 frm.events.fire(EVENTS.REMOVE_ALL);
 
             });
-            this.content.find(ELEMENTS.TABLE_ITEM)
-                .popup({
-                    hoverable: true
-                });
 
             this.content.find(ELEMENTS.ADD_TO_CART).on(EVENTS.CLICK, function () {
                 var productId = $(this).val();
