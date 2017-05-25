@@ -34,12 +34,13 @@ export class CharEditorComponent implements OnInit {
             this.selectedCategoryId = +params['categoryId'];
             this.characteristicId = +params['characteristicId'];
             this.action = params['action'];
-            if (this.characteristicId != 0) {
+            if (this.characteristicId) {
                 this.charsListService.get(this.characteristicId)
                     .then((characteristic) => {
                         if (this.action == 'edit')
                             this.characteristic = characteristic
-                    });
+                    })
+                    .catch(() => this.submit = 'error');
             }
         });
         this.charGroupService.getAll()
@@ -59,6 +60,7 @@ export class CharEditorComponent implements OnInit {
         if (!this.characteristic.characteristicName.trim()) return;
         this.characteristic.characteristicGroupId = this.selectedCharGroupId;
         this.characteristic.categoryId = this.selectedCategoryId;
+        this.characteristic.filterable = this.filterable.value;
         this.charsListService.add(this.characteristic)
             .then(() => this.back())
             .catch(() => this.submit = 'error')
@@ -68,6 +70,7 @@ export class CharEditorComponent implements OnInit {
         if(this.characteristic){
             this.characteristic.characteristicGroupId = this.selectedCharGroupId;
             this.characteristic.categoryId = this.selectedCategoryId;
+            this.characteristic.filterable = this.filterable.value;
             this.charsListService.update(this.characteristic)
                 .then(() => this.back())
                 .catch(() => this.submit = 'error')
