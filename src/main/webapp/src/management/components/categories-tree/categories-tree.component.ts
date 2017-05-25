@@ -22,7 +22,7 @@ export class CategoriesTreeComponent implements OnInit {
 
     ngOnInit() {
         this.getCategories();
-        this.choseCategory.emit(0);
+        this.choseCategory.emit(null);
     }
 
     getCategories(): void {
@@ -41,7 +41,7 @@ export class CategoriesTreeComponent implements OnInit {
         }
         else{
             this.selectedCategory = null;
-            this.choseCategory.emit(0);
+            this.choseCategory.emit(null);
         }
     }
 
@@ -61,7 +61,7 @@ export class CategoriesTreeComponent implements OnInit {
             .then(() => {
                 this.getCategories();
                 this.selectedCategory = null;
-                this.choseCategory.emit(0);
+                this.choseCategory.emit(null);
             });
     }
 }

@@ -1,4 +1,4 @@
-<div *ngIf="selectedCategoryId != 0">
+<div *ngIf="selectedCategoryId">
     <div class="ui container right aligned charGroup-editor">
         <h4 class="ui horizontal divider header">
             CHARACTERISTIC GROUPS
@@ -15,15 +15,14 @@
     </div>
     <div class="ui right floated charListAccordion">
         <sm-accordion *ngFor="let charGroup of charsList" class="ui styled fluid">
-            <sm-accordion-item>
+            <sm-accordion-item *ngIf="setTableData(charGroup.characteristics) > 0">
                 <accordion-title>{{charGroup.characteristicGroupName}}</accordion-title>
                 <accordion-content>
-                    {{setTableData(charGroup.characteristics)}}
-                    <nc-data-table
-                            [model]="charGroupTableModel"
-                            [selectedItem]="selectedCharacteristic"
-                            (select)="onSelectCharacteristic($event)">
-                    </nc-data-table>
+                        <nc-data-table
+                                [model]="charGroupTableModel"
+                                [selectedItem]="selectedCharacteristic"
+                                (select)="onSelectCharacteristic($event)">
+                        </nc-data-table>
                 </accordion-content>
             </sm-accordion-item>
         </sm-accordion>

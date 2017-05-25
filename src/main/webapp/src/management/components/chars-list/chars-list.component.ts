@@ -30,13 +30,14 @@ export class CharsListComponent implements OnInit {
     };
 
     constructor(private charsListService: CharsListService,
-                private route: ActivatedRoute,
                 private router: Router) {
     }
 
     public getCharGroups(categoryId: number): void {
         this.selectedCategoryId = categoryId;
-        this.getCharsList(categoryId);
+        if(categoryId != null){
+            this.getCharsList(categoryId);
+        }
     }
 
     ngOnInit(): void {
@@ -47,8 +48,9 @@ export class CharsListComponent implements OnInit {
             .then(charGroups => this.charsList = charGroups);
     }
 
-    setTableData(characteristics: CharacteristicModel[]): void {
+    setTableData(characteristics: CharacteristicModel[]): number {
         this.charGroupTableModel.data = characteristics;
+        return this.charGroupTableModel.data.length;
     }
 
     onSelectCharacteristic(characteristic: CharacteristicModel): void {

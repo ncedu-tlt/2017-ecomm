@@ -4,7 +4,7 @@
     </div>
     <div class="ui right floated segment characteristicSegment">
         <nc-charGroup-list></nc-charGroup-list>
-        <div *ngIf="selectedCategoryId == 0" class="ui info message">
+        <div *ngIf="!selectedCategoryId" class="ui info message">
             <div class="header">Hello!</div>
             <p>Please select any category.</p>
         </div>
