@@ -22,13 +22,16 @@ export class UserEditorComponent implements OnInit {
 
     user: UserModel = new UserModel();
     roles: RoleModel[] = [];
-    pathToUserAvatar = contextPath;
     isSent: boolean = false;
     isError: boolean = false;
+    contextPath = contextPath;
     file: File;
-    pathToImageUrl: string = "/images/useravatars/";
     fileSours: string = "";
     formData: FormData = new FormData;
+    private altImageSource: string = contextPath + "/images/useravatars/unknownuser/unknownuser.png";
+    private pathToImageUrl = "/image/";
+    private imageUrl = `${contextPath}/uploadImage`;
+    private passwordUrl = `${contextPath}/uploadPassword`;
 
 
     constructor(private usersService: UsersService,
@@ -61,6 +64,7 @@ export class UserEditorComponent implements OnInit {
                 .then(() => {
                     this.isSent = true;
                     this.isError = false;
+                    this.encryptPassword();
                     form.reset();
                     popup.show($event, {position: 'bottom left'});
                 })
@@ -72,10 +76,16 @@ export class UserEditorComponent implements OnInit {
         }
     }
 
+    encryptPassword(): void {
+        this.formData.delete('userPassword');
+        this.formData.append('userPassword', this.user.password);
+        this.usersService.uploadToServlet(this.passwordUrl, this.formData);
+    }
+
     saveImage(): void {
         if (this.file) {
             this.user.userAvatar = this.pathToImageUrl + this.file.name;
-            this.usersService.uploadImageToServlet(this.formData);
+            this.usersService.uploadToServlet(this.imageUrl, this.formData);
         }
     }
 
@@ -103,8 +113,8 @@ export class UserEditorComponent implements OnInit {
         this.readFile(file, (result: any) => {
             const img = document.createElement("img");
             img.src = result;
-            this.drawImage(img, (resized_jpeg: any) => {
-                this.fileSours = resized_jpeg;
+            this.drawImage(img, (imageJpeg: any) => {
+                this.fileSours = imageJpeg;
             });
         });
     }
@@ -125,6 +135,10 @@ export class UserEditorComponent implements OnInit {
             canvas.getContext("2d").drawImage(img, 0, 0, img.width, img.height);
             callback(canvas.toDataURL('image/jpeg'));
         };
+    }
+
+    imageSourceError($event: any): void {
+        $event.target.src = this.altImageSource;
     }
 
 }

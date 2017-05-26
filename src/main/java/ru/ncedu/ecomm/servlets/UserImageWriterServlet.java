@@ -1,5 +1,7 @@
 package ru.ncedu.ecomm.servlets;
 
+import org.apache.log4j.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -12,12 +14,14 @@ import java.nio.file.Paths;
 
 @WebServlet("/uploadImage")
 @MultipartConfig
-public class UserImageServlet extends HttpServlet {
 
-    //private final static String IMAGE_SAVE_URL_TEST = System.getProperty( "catalina.base" ) + "/webapps/userImage";
-    private final static String IMAGE_SAVE_URL = "/images/useravatars/";
+public class UserImageWriterServlet extends HttpServlet {
+
+    protected final static String IMAGE_SAVE_URL = System.getProperty( "catalina.base" ) + "/userImage/";
+    private static final Logger LOG = Logger.getLogger(UserImageWriterServlet.class);
     private final static byte[] BYTES = new byte[1024];
     private final static int START_OFFSET_IN_THE_DATA = 0;
+    private final static String UPLOAD_FILE = "uploadFile";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -31,32 +35,29 @@ public class UserImageServlet extends HttpServlet {
 
     private void imageUser(HttpServletRequest request, HttpServletResponse response) {
         try {
-            Part file = request.getPart("uploadFile");
+            Part file = request.getPart(UPLOAD_FILE);
             String fileName = Paths.get(file.getSubmittedFileName()).getFileName().toString();
-            String saveDirectory = this.getServletContext().getRealPath(File.separator) + IMAGE_SAVE_URL;
             OutputStream outputStream = null;
             InputStream inputStream = null;
             final PrintWriter writer = response.getWriter();
             try {
-                File folder = new File(saveDirectory);
+                File folder = new File(IMAGE_SAVE_URL);
                 if (!folder.exists()){
                     folder.mkdirs();
                 }
-                File imageFile = new File(saveDirectory + File.separator + fileName);
+                File imageFile = new File(IMAGE_SAVE_URL + File.separator + fileName);
                 if (!imageFile.exists()){
                     outputStream = new FileOutputStream(imageFile);
                     inputStream = file.getInputStream();
 
-                    int bytesToWrite = 0;
+                    int bytesToWrite;
 
                     while ((bytesToWrite = inputStream.read(BYTES)) != -1) {
                         outputStream.write(BYTES, START_OFFSET_IN_THE_DATA, bytesToWrite);
                     }
-                    writer.println("New file " + fileName + " created at " + saveDirectory);
                 }
             } catch (FileNotFoundException fne) {
-                writer.println("New file not created");
-                writer.println("<br/> ERROR: " + fne.getMessage());
+                LOG.error(fne);
             } finally {
                 if (outputStream != null) {
                     outputStream.close();

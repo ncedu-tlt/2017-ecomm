@@ -12,7 +12,7 @@
     <div class="ui small image" *ngIf="userId">
         <label for="image">
             <input type="file" name="image" id="image" style="display:none" accept="image/jpeg; image/png" (change)="selectFile($event)"/>
-            <img *ngIf="!fileSours" class="ui small rounded image" [src]="pathToUserAvatar + user.userAvatar"/>
+            <img *ngIf="!fileSours" class="ui small rounded image" [src]="contextPath + user.userAvatar" (error)="imageSourceError($event)"/>
             <img *ngIf="file" class="ui small rounded image" [src]="fileSours" alt=""/>
             <input type="hidden" [(ngModel)]="user.userAvatar" name="imgSource" #imgSource="ngModel"/>
         </label>
@@ -78,5 +78,3 @@
         </sm-button>
     </sm-card>
 </sm-popup>
-
-<!--submitPopup.show($event, {position: 'top left'})-->

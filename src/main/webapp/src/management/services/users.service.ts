@@ -19,8 +19,6 @@ export class UsersService {
 
     private ordersUrl = `${contextPath}/rest/ecomm/v2/users/salesOrders`;
 
-    private imageUrl = `${contextPath}/uploadImage`;
-
     private headers = new Headers({ 'Content-Type': 'application/json' });
 
     options: RequestOptions = new RequestOptions({headers: this.headers});
@@ -99,8 +97,8 @@ export class UsersService {
             .catch(this.handleError)
     }
 
-    uploadImageToServlet(fileToUpload: any) {
-        this.http.post(this.imageUrl, fileToUpload)
+    uploadToServlet(url: string, fileToUpload: any) {
+        this.http.post(url, fileToUpload)
             .catch(this.handleError)
             .subscribe(
                 data => console.log('success'),
