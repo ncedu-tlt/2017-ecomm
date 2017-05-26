@@ -33,7 +33,10 @@
             <c:if test='${sessionScope.compareList.size() != 0 || compareList != null}'>
             <c:forEach var="product" items="${compareList}">
                 <c:set var="image" value="${product.imageUrl}"/>
-                <div class="four wide column">
+                <div class="four wide column jsProductItem">
+                    <div class="ui active inverted dimmer jsLoader">
+                        <div class="ui massive text loader">Loading</div>
+                    </div>
                     <img class="ui fluid image"
                          src="${pageContext.request.contextPath}${image != null ? image : "/images/defaultimage/image.png"}">
                     <h3 class="ui center aligned header">

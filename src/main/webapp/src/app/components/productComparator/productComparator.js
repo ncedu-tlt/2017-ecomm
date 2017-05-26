@@ -4,6 +4,8 @@
     var ELEMENTS = {
         ADD_TO_CART: '.jsAddToCart',
         REMOVE_PRODUCT: '.jsRemoveProduct',
+        LOADER: '.jsLoader',
+        PARENT_ITEM: '.jsProductItem',
         TABLE_ITEM: '.jsTableItem',
         PRODUCT_RATING: '.jsCompareProductRating',
         GO_TO_HOME_PAGE_BUTTON: '.jsGoToHomePage',
@@ -45,6 +47,8 @@
 
             });
 
+            this.content.find(ELEMENTS.LOADER).hide();
+
             this.content.find(ELEMENTS.ADD_TO_CART).on(EVENTS.CLICK, function () {
                 var productId = $(this).val();
                 frm.events.fire(EVENTS.ADD_TO_CART, productId);
@@ -56,7 +60,13 @@
             }.bind(this));
 
             this.content.find(ELEMENTS.REMOVE_PRODUCT).on(EVENTS.CLICK, function (event) {
-                var productId = event.currentTarget.value;
+                var $this = $(event.currentTarget);
+                var parent = $this.closest(ELEMENTS.PARENT_ITEM);
+                var loader = parent.find(ELEMENTS.LOADER);
+                var productId = $this.val();
+                loader.show();
+                $this.addClass(CLASS.LOADING);
+
                 frm.events.fire(EVENTS.REMOVE, productId);
 
                 this.refreshPage.bind(this);
