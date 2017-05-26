@@ -39,15 +39,16 @@
             frm.events.on(EVENTS.REFRESH_PAGE, this.refreshPage.bind(this));
 
             this.content.find(ELEMENTS.PRODUCT_RATING).rating({initialRating: 2, maxRating: 5}).rating('disable');
+            this.content.find(ELEMENTS.LOADER).hide();
 
             this.content.find(ELEMENTS.REMOVE_ALL_PRODUCTS_BUTTON).on(EVENTS.CLICK, function () {
-                var $this = $(this);
+                var $this = $(event.currentTarget);
+                this.content.find(ELEMENTS.LOADER).show();
                 $this.addClass(CLASS.LOADING);
                 frm.events.fire(EVENTS.REMOVE_ALL);
 
-            });
+            }.bind(this));
 
-            this.content.find(ELEMENTS.LOADER).hide();
 
             this.content.find(ELEMENTS.ADD_TO_CART).on(EVENTS.CLICK, function () {
                 var productId = $(this).val();
