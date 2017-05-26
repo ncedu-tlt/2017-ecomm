@@ -35,7 +35,7 @@
                 <c:set var="image" value="${product.imageUrl}"/>
                 <div class="four wide column jsProductItem">
                     <div class="ui active inverted dimmer jsLoader">
-                        <div class="ui massive text loader">Loading</div>
+                        <div class="ui massive text loader"></div>
                     </div>
                     <img class="ui fluid image"
                          src="${pageContext.request.contextPath}${image != null ? image : "/images/defaultimage/image.png"}">
