@@ -13,7 +13,6 @@ import {CharGroupService} from "../../services/char-group.service";
 })
 export class CharEditorComponent implements OnInit {
     characteristicId: number;
-    selectedCharGroupId: number;
     selectedCategoryId: number;
     submit: string;
     action: string;
@@ -30,21 +29,22 @@ export class CharEditorComponent implements OnInit {
     };
 
     ngOnInit() {
+        this.charGroupService.getAll()
+            .then((groups) => this.charGroups = groups);
         this.route.queryParams.subscribe(params => {
             this.selectedCategoryId = +params['categoryId'];
-            this.characteristicId = +params['characteristicId'];
             this.action = params['action'];
-            if (this.characteristicId) {
-                this.charsListService.get(this.characteristicId)
+            if (this.action == 'edit') {
+                this.charsListService.get(+params['characteristicId'])
                     .then((characteristic) => {
-                        if (this.action == 'edit')
-                            this.characteristic = characteristic
+                        this.characteristic = characteristic;
+                        this.filterable = new FormControl(characteristic.filterable);
+                        console.log(characteristic.filterable);
                     })
                     .catch(() => this.submit = 'error');
             }
         });
-        this.charGroupService.getAll()
-            .then((groups) => this.charGroups = groups);
+
     }
 
     onSubmit() {
@@ -58,7 +58,6 @@ export class CharEditorComponent implements OnInit {
 
     addition(): void {
         if (!this.characteristic.characteristicName.trim()) return;
-        this.characteristic.characteristicGroupId = this.selectedCharGroupId;
         this.characteristic.categoryId = this.selectedCategoryId;
         this.characteristic.filterable = this.filterable.value;
         this.charsListService.add(this.characteristic)
@@ -67,8 +66,7 @@ export class CharEditorComponent implements OnInit {
     }
 
     edit(): void {
-        if(this.characteristic){
-            this.characteristic.characteristicGroupId = this.selectedCharGroupId;
+        if (this.characteristic) {
             this.characteristic.categoryId = this.selectedCategoryId;
             this.characteristic.filterable = this.filterable.value;
             this.charsListService.update(this.characteristic)

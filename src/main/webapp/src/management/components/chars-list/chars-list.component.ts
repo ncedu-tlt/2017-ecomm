@@ -7,7 +7,8 @@ import CharacteristicListModel from "../../models/charsListModel";
 
 @Component({
     selector: 'nc-charGroup-list',
-    templateUrl: 'chars-list.component.html'
+    templateUrl: 'chars-list.component.html',
+    styleUrls: ['chars-list.component.css']
 })
 export class CharsListComponent implements OnInit {
     selectedCategoryId: number;
