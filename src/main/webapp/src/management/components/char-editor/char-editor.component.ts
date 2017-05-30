@@ -18,6 +18,7 @@ export class CharEditorComponent implements OnInit {
     action: string;
 
     filterable: FormControl = new FormControl(false);
+    selectedCharGroup: FormControl = new FormControl("");
     characteristic: CharacteristicModel = new CharacteristicModel();
     charGroups: CharGroupModel[];
 
