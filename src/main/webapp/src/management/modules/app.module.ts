@@ -26,6 +26,9 @@ import {UserReviewsComponent} from "../components/user-reviews/user-reviews.comp
 import {UserOrdersComponent} from "../components/user-orders/user-orders.component";
 import {ProductModelEditorComponent} from "../components/product-model-editor/product-model-editor.component";
 import {CharEditorComponent} from "../components/char-editor/char-editor.component";
+import {OrderListComponent} from "../components/orders-list/orders-list.component";
+import {OrdersService} from "../services/orders.service";
+import {OrderEditorComponent} from "../components/order-editor/order-editor.component";
 
 @NgModule({
     declarations: [
@@ -45,7 +48,10 @@ import {CharEditorComponent} from "../components/char-editor/char-editor.compone
         UserReviewsComponent,
         UserOrdersComponent,
         ProductModelEditorComponent,
-        CharEditorComponent
+        CharEditorComponent,
+        UserOrdersComponent,
+        OrderListComponent,
+        OrderEditorComponent
     ],
     imports: [
         BrowserModule,
@@ -59,7 +65,8 @@ import {CharEditorComponent} from "../components/char-editor/char-editor.compone
         UsersService,
         CharGroupService,
         CharsListService,
-        CategoryService
+        CategoryService,
+        OrdersService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [RootComponent]

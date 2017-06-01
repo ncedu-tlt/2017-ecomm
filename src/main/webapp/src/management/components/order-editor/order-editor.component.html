@@ -1,0 +1,56 @@
+<div class="ui center aligned container">
+    <h1>Order Editor</h1>
+</div>
+
+<div class="ui container right aligned orderEditor-button-group">
+    <button class="ui button yellow" (click)="onCancel()">Cancel</button>
+    <button class="ui button primary" (click)="onSave()">Save</button>
+    <button class="ui button red" *ngIf="salesOrderId" (click)="onDelete()">Delete</button>
+</div>
+
+<div class="ui center aligned container">
+    <h2>Order #{{salesOrder.salesOrderId}}</h2>
+</div>
+
+<form class="ui container left aligned form" #groupForm="ngForm">
+    <div class="field">
+        <div class="fields">
+            <div class="ten wide field">
+                <label>User</label>
+                <input placeholder="User" readonly="readonly" type="text" value="{{salesOrder.userName}}">
+            </div>
+
+            <div class="six wide field">
+                <label>Data</label>
+                <input placeholder="creationDate" readonly="readonly" type="text" value="{{salesOrder.creationDate}}">
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <label>Status</label>
+        <sm-select
+                [options]="{direction: 'auto'}"
+                [(model)]="salesOrder.orderStatus.orderStatusId" placeholder="Select Status..."
+                class="fluid">
+
+            <div *ngFor="let orderStatus of orderStatuses">
+                <option value="{{orderStatus.orderStatusId}}">{{orderStatus.name}}</option>
+            </div>
+
+        </sm-select>
+    </div>
+
+</form>
+
+<div class="ui centre aligned container orderItemsTable">
+    <nc-data-table
+            [model]="model">
+    </nc-data-table>
+    <h3>Total Amount: ${{salesOrder.totalAmount}}</h3>
+</div>
+
+
+
+
+

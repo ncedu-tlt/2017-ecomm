@@ -3,11 +3,14 @@ package ru.ncedu.ecomm.data.accessobjects.impl;
 import org.apache.log4j.Logger;
 import ru.ncedu.ecomm.data.accessobjects.SalesOrdersDAO;
 import ru.ncedu.ecomm.data.models.dao.OrderItem;
+import ru.ncedu.ecomm.data.models.dao.OrderStatusDAOObject;
 import ru.ncedu.ecomm.data.models.dao.SalesOrder;
 import ru.ncedu.ecomm.data.models.dao.SalesOrderDAOObject;
 import ru.ncedu.ecomm.data.models.dao.builders.OrderItemBuilder;
 import ru.ncedu.ecomm.data.models.dao.builders.SalesOrderBuilder;
 import ru.ncedu.ecomm.data.models.dao.builders.SalesOrderDAOObjectBuilder;
+import ru.ncedu.ecomm.data.models.dto.OrderDTOObject;
+import ru.ncedu.ecomm.data.models.dto.builders.OrderDTOObjectBuilder;
 import ru.ncedu.ecomm.utils.DBUtils;
 
 import java.sql.*;
@@ -334,6 +337,7 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
             statement.setLong(4, salesOrder.getOrderStatusId());
             statement.setLong(5, salesOrder.getSalesOrderId());
             statement.execute();
+            statement.execute();
 
             LOG.info(null);
             return salesOrder;
@@ -360,4 +364,141 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public List<OrderDTOObject> getSalesOrdersForManagement() {
+        List<OrderDTOObject> salesOrders = new ArrayList<>();
+
+        try (Connection connection = DBUtils.getConnection();
+             Statement statement = connection.createStatement()) {
+
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT\n" +
+                            " sales_orders.sales_order_id,\n" +
+                            " (first_name || ' ' || users.last_name) AS userName,\n" +
+                            " creation_date,\n" +
+                            " name,\n" +
+                            " order_statuses.order_status_id,\n" +
+                            " summ.total\n" +
+                            "FROM PUBLIC.sales_orders,\n"+
+                                        "users,\n"+
+                                       "order_statuses,\n"+
+                                " (SELECT SUM(order_items.standard_price * order_items.quantity) as total,\n" +
+                                            " sales_orders.sales_order_id\n" +
+                                " FROM order_items, sales_orders\n" +
+                                " WHERE order_items.sales_order_id = sales_orders.sales_order_id\n " +
+                                " GROUP BY  sales_orders.user_id, sales_orders.sales_order_id) summ\n" +
+                            "WHERE sales_orders.order_status_id = order_statuses.order_status_id\n" +
+                            "AND sales_orders.user_id = users.user_id\n"+
+                            "AND summ.sales_order_id = sales_orders.sales_order_id\n"+
+                            "ORDER BY sales_orders.sales_order_id");
+            while (resultSet.next()) {
+                OrderDTOObject salesOrder = new OrderDTOObjectBuilder()
+                        .setSalesOrderId(resultSet.getLong("sales_order_id"))
+                        .setUserName(resultSet.getString("userName"))
+                        .setCreationDate(resultSet.getDate("creation_date"))
+                        .setOrderStatus(new OrderStatusDAOObject(resultSet.getLong("order_status_id"),resultSet.getString("name")))
+                        .setTotalAmount(resultSet.getLong("total"))
+                        .build();
+                salesOrder.setOrderItems(getOrderItemsToSalesOrder(salesOrder.getSalesOrderId()));
+
+                salesOrders.add(salesOrder);
+            }
+
+            LOG.info(null);
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return salesOrders;
+    }
+
+    @Override
+    public OrderDTOObject getSalesOrderIdForManagement(long salesOrderId) {
+        OrderDTOObject salesOrder = null;
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                    "SELECT\n" +
+                            " sales_orders.sales_order_id,\n" +
+                            " (first_name || ' ' || users.last_name) AS userName,\n" +
+                            " creation_date,\n" +
+                            " name,\n" +
+                            " order_statuses.order_status_id,\n" +
+                            " summ.total\n" +
+                            "FROM PUBLIC.sales_orders,\n"+
+                            "users,\n"+
+                            "order_statuses,\n"+
+                            " (SELECT SUM(order_items.standard_price * order_items.quantity) as total,\n" +
+                            " sales_orders.sales_order_id\n" +
+                            " FROM order_items, sales_orders\n" +
+                            " WHERE order_items.sales_order_id = sales_orders.sales_order_id\n " +
+                            " GROUP BY  sales_orders.user_id, sales_orders.sales_order_id) summ\n" +
+                            "WHERE sales_orders.sales_order_id = ?\n " +
+                            " AND sales_orders.order_status_id = order_statuses.order_status_id\n" +
+                            "AND sales_orders.user_id = users.user_id\n"+
+                            "AND summ.sales_order_id = sales_orders.sales_order_id")){
+            statement.setLong(1, salesOrderId) ;
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                LOG.info(null);
+                 salesOrder = new OrderDTOObjectBuilder()
+                        .setSalesOrderId(resultSet.getLong("sales_order_id"))
+                        .setUserName(resultSet.getString("userName"))
+                        .setCreationDate(resultSet.getDate("creation_date"))
+                         .setOrderStatus(new OrderStatusDAOObject(resultSet.getLong("order_status_id"),resultSet.getString("name")))
+                        .setTotalAmount(resultSet.getLong("total"))
+                        .build();
+                salesOrder.setOrderItems(getOrderItemsToSalesOrder(salesOrder.getSalesOrderId()));
+
+            }
+
+            LOG.info(null);
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return salesOrder;
+    }
+
+    @Override
+    public OrderDTOObject updateSalesOrderForManagement(OrderDTOObject salesOrder) {
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "UPDATE public.sales_orders\n" +
+                             "SET order_status_id = ?\n" +
+                             "WHERE sales_order_id = ?"
+             )) {
+
+            statement.setLong(1, salesOrder.getOrderStatus().getOrderStatusId());
+            statement.setLong(2, salesOrder.getSalesOrderId());
+            statement.execute();
+
+            LOG.info(null);
+            return salesOrder;
+
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void deleteSalesOrderForManagement(long salesOrderId) {
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "DELETE FROM public.sales_orders\n" +
+                             "WHERE sales_order_id = ?")) {
+
+            statement.setLong(1, salesOrderId);
+            statement.execute();
+
+            LOG.info(null);
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
 }
