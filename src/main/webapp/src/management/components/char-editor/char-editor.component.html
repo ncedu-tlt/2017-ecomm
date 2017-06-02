@@ -27,7 +27,8 @@
         <div class="field">
             <sm-checkbox label="Is Filterable?" [control]="filterable"></sm-checkbox>
         </div>
-        <div [ngClass]="{disabled: name.invalid || name.pristine || selectedCharGroup.pristine}"
+        <div [ngClass]="{disabled: (action == 'addition' &&
+        (name.pristine || name.invalid || selectedCharGroup.untouched))}"
              class="ui primary button"
              (click)="onSubmit()">Save
         </div>

@@ -40,7 +40,6 @@ export class CharEditorComponent implements OnInit {
                     .then((characteristic) => {
                         this.characteristic = characteristic;
                         this.filterable = new FormControl(characteristic.filterable);
-                        console.log(characteristic.filterable);
                     })
                     .catch(() => this.submit = 'error');
             }
