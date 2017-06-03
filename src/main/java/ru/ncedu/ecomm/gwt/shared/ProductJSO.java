@@ -9,9 +9,6 @@ public class ProductJSO extends JavaScriptObject {
     protected ProductJSO() {
     }
 
-    // JSNI methods to get stock data.
-    // http://www.gwtproject.org/doc/latest/tutorial/JSON.html
-
     public final native double getProductId() /*-{ return this.productId; }-*/;
 
     public final native String getName() /*-{ return this.name; }-*/;

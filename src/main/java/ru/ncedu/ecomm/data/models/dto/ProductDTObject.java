@@ -1,7 +1,5 @@
 package ru.ncedu.ecomm.data.models.dto;
 
-import ru.ncedu.ecomm.servlets.models.CharacteristicGroupModel;
-
 import java.util.List;
 
 public class ProductDTObject {
@@ -11,7 +9,7 @@ public class ProductDTObject {
     private String description;
     private long price;
     private long discountId;
-    private List<CharacteristicGroupModel> characteristicGroups;
+    private List<CharacteristicGroupDTObj> characteristicGroups;
 
     public ProductDTObject() {
     }
@@ -22,7 +20,7 @@ public class ProductDTObject {
                            String description,
                            long price,
                            long discountId,
-                           List<CharacteristicGroupModel> characteristicGroups) {
+                           List<CharacteristicGroupDTObj> characteristicGroups) {
 
         this.productId = productId;
         this.categoryId = categoryId;
@@ -81,11 +79,11 @@ public class ProductDTObject {
         this.categoryId = categoryId;
     }
 
-    public List<CharacteristicGroupModel> getCharacteristicGroups() {
+    public List<CharacteristicGroupDTObj> getCharacteristicGroups() {
         return characteristicGroups;
     }
 
-    public void setCharacteristicGroups(List<CharacteristicGroupModel> characteristicGroups) {
+    public void setCharacteristicGroups(List<CharacteristicGroupDTObj> characteristicGroups) {
         this.characteristicGroups = characteristicGroups;
     }
 }

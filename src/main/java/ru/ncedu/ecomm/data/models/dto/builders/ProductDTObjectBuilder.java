@@ -1,7 +1,7 @@
 package ru.ncedu.ecomm.data.models.dto.builders;
 
+import ru.ncedu.ecomm.data.models.dto.CharacteristicGroupDTObj;
 import ru.ncedu.ecomm.data.models.dto.ProductDTObject;
-import ru.ncedu.ecomm.servlets.models.CharacteristicGroupModel;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public class ProductDTObjectBuilder {
     private String description;
     private long price;
     private long discountId;
-    private List<CharacteristicGroupModel> characteristicGroups;
+    private List<CharacteristicGroupDTObj> characteristicGroups;
 
     public ProductDTObjectBuilder() {
 
@@ -54,7 +54,7 @@ public class ProductDTObjectBuilder {
         return this;
     }
 
-    public ProductDTObjectBuilder setCharacteristicGroups(List<CharacteristicGroupModel> characteristicGroups) {
+    public ProductDTObjectBuilder setCharacteristicGroups(List<CharacteristicGroupDTObj> characteristicGroups) {
         this.characteristicGroups = characteristicGroups;
 
         return this;
