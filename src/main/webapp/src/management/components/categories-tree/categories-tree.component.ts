@@ -1,8 +1,9 @@
-import {Component, OnInit, Output, Input} from "@angular/core";
+import {Component, OnInit, Output, Input, ViewChild} from "@angular/core";
 import {CategoryService} from "../../services/category.service";
 import {EventEmitter} from "@angular/forms/src/facade/async";
 import CategoryModel from "../../models/category.model";
 import {Router} from "@angular/router";
+import {SemanticModalComponent} from "ng-semantic";
 
 @Component({
     selector: 'nc-categories-tree',
@@ -19,6 +20,8 @@ export class CategoriesTreeComponent implements OnInit {
     }
 
     categories: CategoryModel[] = [];
+    @ViewChild('modalWindow')
+    modalWindow: SemanticModalComponent;
 
     ngOnInit() {
         this.getCategories();
@@ -35,11 +38,11 @@ export class CategoriesTreeComponent implements OnInit {
     }
 
     onSelect(category: any): void {
-        if(this.selectedCategory != category.node.data){
+        if (this.selectedCategory != category.node.data) {
             this.selectedCategory = category.node.data;
             this.choseCategory.emit(this.selectedCategory.categoryId);
         }
-        else{
+        else {
             this.selectedCategory = null;
             this.choseCategory.emit(null);
         }
@@ -62,6 +65,8 @@ export class CategoriesTreeComponent implements OnInit {
                 this.getCategories();
                 this.selectedCategory = null;
                 this.choseCategory.emit(null);
-            });
+            }).catch(() => {
+            this.modalWindow.show({blurring: true});
+        });
     }
 }

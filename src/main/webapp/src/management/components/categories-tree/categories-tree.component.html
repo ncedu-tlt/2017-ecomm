@@ -17,3 +17,8 @@
         (onActivate)="onSelect($event)"
         (onDeactivate)="onSelect($event)">
 </tree-root>
+<sm-modal #modalWindow icon="warning" title="Error removing item" class="basic">
+    <modal-content>
+        <p>This item can not yet be removed.</p>
+    </modal-content>
+</sm-modal>
