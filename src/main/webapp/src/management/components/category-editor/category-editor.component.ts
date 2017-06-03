@@ -26,21 +26,19 @@ export class CategoryEditorComponent implements OnInit {
         this.route.queryParams.subscribe(params => {
             this.parentId = +params['id'];
             this.action = params['action'];
-            if (this.parentId != 0) {
-                this.categoryService.get(this.parentId)
-                    .then(category => {
-                        if (this.action == 'edit')
-                            this.category = category;
-                    });
-            }
-            this.getCategories();
+            this.categoryService.getAll()
+                .then(categories => {
+                    this.categories = categories;
+                    if (this.parentId != 0) {
+                        this.categoryService.get(this.parentId)
+                            .then(category => {
+                                if (this.action == 'edit')
+                                    this.category = category;
+                            });
+                    }
+                });
         });
-    }
 
-    getCategories(): void {
-        this.categoryService.getAll()
-            .then(categories => this.categories = categories)
-            .catch(this.categories = null);
     }
 
     onSubmit(): void {

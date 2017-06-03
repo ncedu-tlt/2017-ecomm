@@ -29,7 +29,6 @@ export class CharGroupListComponent implements OnInit {
 
     @ViewChild('modalWindow')
     modalWindow: SemanticModalComponent;
-    modalContent: string;
 
     constructor(private charGroupService: CharGroupService,
                 private router: Router) {
@@ -61,8 +60,6 @@ export class CharGroupListComponent implements OnInit {
                     this.selectedCharGroup = null;
                 })
                 .catch(() => {
-                    this.modalWindow.title = 'Error removing item';
-                    this.modalContent = 'This item can not yet be removed.';
                     this.modalWindow.show({blurring: true});
                 });
     }
