@@ -1,5 +1,8 @@
 package ru.ncedu.ecomm.rest;
 
+import ru.ncedu.ecomm.data.models.dao.*;
+import ru.ncedu.ecomm.data.models.dto.CharacteristicGroupDTOObject;
+import ru.ncedu.ecomm.data.models.dto.OrderDTOObject;
 import ru.ncedu.ecomm.data.models.dao.SalesOrder;
 import ru.ncedu.ecomm.data.models.dao.UserDAOObject;
 import ru.ncedu.ecomm.data.models.dto.ProductDTObject;
@@ -10,6 +13,7 @@ import ru.ncedu.ecomm.services.RestProductDTO;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.SQLException;
 import java.util.List;
 
 import static ru.ncedu.ecomm.data.DAOFactory.getDAOFactory;
@@ -95,5 +99,57 @@ public class RestServiceVersionTwo {
     @Produces(MediaType.APPLICATION_JSON)
     public List<SalesOrder> getSalesOrderToOrderHistory(@PathParam("userId") long userId) {
         return getDAOFactory().getSalesOrderDAO().getSalesOrderToOrderHistory(userId);
+    }
+
+
+    @GET
+    @Path("/characteristics/{categoryId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<CharacteristicGroupDTOObject> getCharacteristicsByCategoryId(@PathParam("categoryId") long categoryId) {
+        return getDAOFactory().getChracteristicDAO().getCharacteristicsByCategoryIdForManagement(categoryId);
+    }
+
+    @GET
+    @Path("/salesOrders")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<OrderDTOObject> getSalesOrdersForManagement() {
+        return getDAOFactory().getSalesOrderDAO().getSalesOrdersForManagement();
+    }
+
+    @GET
+    @Path("/salesOrders/{salesOrderId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public OrderDTOObject getSalesOrderIdForManagement(@PathParam("salesOrderId") long salesOrderId) {
+        return getDAOFactory().getSalesOrderDAO().getSalesOrderIdForManagement(salesOrderId);
+    }
+
+    @GET
+    @Path("/salesOrders/orderItems/{salesOrderId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<OrderItem> getOrderItemsToSalesOrder(@PathParam("salesOrderId") long salesOrderId) throws SQLException {
+        return getDAOFactory().getSalesOrderDAO().getOrderItemsToSalesOrder(salesOrderId);
+    }
+
+    @PUT
+    @Path("/salesOrders")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public OrderDTOObject updateSalesOrderForManagement(OrderDTOObject salesOrder) {
+        return getDAOFactory().getSalesOrderDAO().updateSalesOrderForManagement(salesOrder);
+    }
+
+    @DELETE
+    @Path("/salesOrders/{salesOrderId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteSalesOrderForManagement(@PathParam("salesOrderId") long salesOrderId) {
+        getDAOFactory().getSalesOrderDAO().deleteSalesOrderForManagement(salesOrderId);
+        return Response.ok().build();
+    }
+
+    @GET
+    @Path("/statuses")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<OrderStatusDAOObject> getOrdersStatus() {
+        return getDAOFactory().getOrderStatusDAO().getOrdersStatus();
     }
 }
