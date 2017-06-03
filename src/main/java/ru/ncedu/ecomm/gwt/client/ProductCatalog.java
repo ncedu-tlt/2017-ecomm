@@ -14,10 +14,11 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.*;
-import ru.ncedu.ecomm.gwt.shared.CategoryJSON;
-import ru.ncedu.ecomm.gwt.shared.ProductJSO;
+import ru.ncedu.ecomm.gwt.shared.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.google.gwt.view.client.DefaultSelectionEventManager.createCheckboxManager;
 
@@ -26,6 +27,7 @@ public class ProductCatalog implements EntryPoint {
     private static final String JSON_URL_ALL_PRODUCTS = GWT.getHostPageBaseURL() + "rest/ecomm/product";
     private static final String JSON_URL_CHILDREN_PRODUCTS = GWT.getHostPageBaseURL() + "rest/ecomm/v2/product/childrenProducts/";
     private static final String DELETE_PRODUCT  = GWT.getHostPageBaseURL() + "rest/ecomm/product/";
+    private static final String JSON_URL_ALL_DISCOUNTS  = GWT.getHostPageBaseURL() + "rest/ecomm/discounts";
     private static final int SUCCESS_ANSWER = 200;
     private static final int NULL_PARENT = 0;
     private static final int ALL_CATEGORIES = 0;
@@ -39,6 +41,10 @@ public class ProductCatalog implements EntryPoint {
 
     @Override
     public void onModuleLoad() {
+        createMainMenu();
+    }
+
+    private void createMainMenu() {
         ListHandler<ProductJSO> sortHandler = new ListHandler<>(dataProviderProducts.getList());
         CellTable<ProductJSO> productTable = createTable(selectionModel, sortHandler);
 
@@ -50,12 +56,11 @@ public class ProductCatalog implements EntryPoint {
 
         });
         Button addButton = new Button("ADD", (ClickHandler) clickEvent -> {
-
-            FormPanel formPanel = createProductDetailForm();
-            RootPanel.get(MAIN_DIV).clear();
-            RootPanel.get(MAIN_DIV).add(formPanel);
         });
         Button updateButton = new Button("UPDATE", (ClickHandler) clickEvent -> {
+            FormPanel formPanel = updateProductDetailForm();
+            RootPanel.get(MAIN_DIV).clear();
+            RootPanel.get(MAIN_DIV).add(formPanel);
         });
         Button deleteButton = new Button("DELETE", (ClickHandler) clickEvent -> {
             if (selectionModel.getSelectedObject() != null) {
@@ -104,8 +109,8 @@ public class ProductCatalog implements EntryPoint {
     }
 
     private Tree createTree() {
-        ListDataProvider<CategoryJSON> dataProvider = new ListDataProvider<>();
-        List<CategoryJSON> list = dataProvider.getList();
+        ListDataProvider<CategoryJSO> dataProvider = new ListDataProvider<>();
+        List<CategoryJSO> list = dataProvider.getList();
         Tree tree = new Tree();
 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, JSON_URL_CATEGORIES);
@@ -117,7 +122,7 @@ public class ProductCatalog implements EntryPoint {
 
                 public void onResponseReceived(Request request, Response response) {
                     if (SUCCESS_ANSWER == response.getStatusCode()) {
-                        JsArray<CategoryJSON> categories = JsonUtils.safeEval(response.getText());
+                        JsArray<CategoryJSO> categories = JsonUtils.safeEval(response.getText());
 
                         for (int i = 0; i < categories.length(); i++) {
                             list.add(categories.get(i));
@@ -146,10 +151,9 @@ public class ProductCatalog implements EntryPoint {
                             idSelectedCategory = Integer.parseInt(item.getElement().getId());
                             dataProviderProducts.getList().clear();
                             if (Integer.parseInt(item.getElement().getId()) == 0) {
-                                List<ProductJSO> list = dataProviderProducts.getList();
                                 RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, JSON_URL_ALL_PRODUCTS);
 
-                                fillList(list, builder);
+                                fillList(dataProviderProducts.getList(), builder);
                             }
                             else updateProductDataProvider(Integer.parseInt(item.getElement().getId()));
                         });
@@ -174,7 +178,7 @@ public class ProductCatalog implements EntryPoint {
         TextColumn<ProductJSO> idColumn = new TextColumn<ProductJSO>() {
             @Override
             public String getValue(ProductJSO product) {
-                return String.valueOf(product.getId());
+                return String.valueOf(product.getProductId());
             }
         };
         idColumn.setSortable(true);
@@ -206,10 +210,9 @@ public class ProductCatalog implements EntryPoint {
         };
 
         dataProviderProducts.addDataDisplay(table);
-        List<ProductJSO> list = dataProviderProducts.getList();
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, JSON_URL_ALL_PRODUCTS);
 
-        fillList(list, builder);
+        fillList(dataProviderProducts.getList(), builder);
 
         ListHandler<ProductJSO> idColumnSortHandler = new ListHandler<>(dataProviderProducts.getList());
         idColumnSortHandler.setComparator(idColumn,
@@ -219,7 +222,7 @@ public class ProductCatalog implements EntryPoint {
                     }
 
                     if (o1 != null) {
-                        return (o2 != null) ? Double.compare(o1.getId(), o2.getId()) : 1;
+                        return (o2 != null) ? Double.compare(o1.getProductId(), o2.getProductId()) : 1;
                     }
                     return -1;
                 });
@@ -270,7 +273,7 @@ public class ProductCatalog implements EntryPoint {
     }
 
     private void deleteProduct(ProductJSO object) {
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.DELETE, DELETE_PRODUCT + object.getId());
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.DELETE, DELETE_PRODUCT + object.getProductId());
         try {
             Request request = builder.sendRequest(null, new RequestCallback() {
                 public void onError(Request request, Throwable exception) {
@@ -290,7 +293,7 @@ public class ProductCatalog implements EntryPoint {
         }
     }
 
-    private FormPanel createProductDetailForm() {
+    private FormPanel updateProductDetailForm() {
         FormPanel formPanel = new FormPanel();
         formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
         formPanel.setMethod(FormPanel.METHOD_POST);
@@ -300,27 +303,102 @@ public class ProductCatalog implements EntryPoint {
         formPanel.setWidget(vpMain);
 
         TextBox category = new TextBox();
-        category.setText("");
+        category.setText(String.valueOf(selectionModel.getSelectedObject().getCategoryId()));
         TextBox name = new TextBox();
-        name.setText("");
-        HorizontalPanel hp = new HorizontalPanel();
-        hp.setBorderWidth(3);
-        TextArea description = new TextArea();
-        description.setText("Description");
-        Button editDiscount = new Button("Edit Discount", (ClickHandler) clickEvent -> {
+        name.setText(selectionModel.getSelectedObject().getName());
 
-        });
-        hp.add(description);
-        hp.add(editDiscount);
+        HorizontalPanel hpPrice = new HorizontalPanel();
+        hpPrice.setSpacing(3);
+        TextBox price = new TextBox();
+        price.setText(String.valueOf(selectionModel.getSelectedObject().getPrice()));
+
+        ListBox listBox = new ListBox();
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, JSON_URL_ALL_DISCOUNTS);
+        try {
+            Request request = builder.sendRequest(null, new RequestCallback() {
+                public void onError(Request request, Throwable exception) {
+                    Window.alert("Couldn't retrieve JSON");
+                }
+
+                public void onResponseReceived(Request request, Response response) {
+                    if (SUCCESS_ANSWER == response.getStatusCode()) {
+                        JsArray<DiscountJSO> discounts = JsonUtils.safeEval(response.getText());
+
+                        for (int i = 0; i < discounts.length(); i++) {
+                            listBox.addItem(discounts.get(i).getName());
+                        }
+
+                    } else {
+                        Window.alert("Couldn't retrieve JSON (" + response.getStatusText() + ")");
+                    }
+                }
+            });
+        } catch (RequestException e) {
+            Window.alert("Couldn't retrieve JSON (" + e.getMessage() + ")");
+        }
+
+        listBox.setSelectedIndex((int) (selectionModel.getSelectedObject().getDiscountId() - 1));
+        hpPrice.add(price);
+        hpPrice.add(listBox);
+
+        TextArea description = new TextArea();
+        description.setText(selectionModel.getSelectedObject().getDescription());
+
 
         FileUpload fileUpload = new FileUpload();
-        fileUpload.setName("Upload a picture");
+        DecoratorPanel dp = new DecoratorPanel();
+        VerticalPanel vp = new VerticalPanel();
+        dp.add(vp);
+
+        int sizeGroups = selectionModel.getSelectedObject().getCharacteristicGroups().length();
+        for (int i = 0; i < sizeGroups; i++) {
+            int sizeCharacteristics = selectionModel.getSelectedObject().getCharacteristicGroups().get(i).getCharacteristics().length();
+
+            Label labelGroup = new Label();
+            labelGroup.setText(selectionModel.getSelectedObject().getCharacteristicGroups().get(i).getName());
+            labelGroup.setWidth("300px");
+
+            vp.add(labelGroup);
+            VerticalPanel vpChars = new VerticalPanel();
+            vpChars.setSpacing(3);
+            Map<String, TextBox> map = new HashMap<>();
+            for (int j = 0; j < sizeCharacteristics; j++) {
+                HorizontalPanel hpValues = new HorizontalPanel();
+                hpValues.setSpacing(5);
+
+                Label labelChar = new Label();
+                labelChar.setText(selectionModel.getSelectedObject().getCharacteristicGroups().get(i).getCharacteristics().get(j).getName());
+                TextBox tbValue = new TextBox();
+                tbValue.setText(selectionModel.getSelectedObject().getCharacteristicGroups().get(i).getCharacteristics().get(j).getValue());
+
+                //map.put(selectionModel.getSelectedObject().getCharacteristicGroups().get(i).getCharacteristics().get(j)., tbValue);
+                hpValues.add(labelChar);
+                hpValues.add(tbValue);
+                vpChars.add(hpValues);
+            }
+            vp.add(vpChars);
+        }
+
+        HorizontalPanel hpButtons = new HorizontalPanel();
+        hpButtons.setSpacing(10);
+        Button okButton = new Button("Ok", (ClickHandler) clickEvent -> {
+            Window.alert(JsonUtils.stringify(selectionModel.getSelectedObject()));
+        });
+        Button cancelButton = new Button("Cancel", (ClickHandler) clickEvent -> {
+            RootPanel.get(MAIN_DIV).clear();
+            createMainMenu();
+        });
+        hpButtons.add(okButton);
+        hpButtons.add(cancelButton);
 
         vpMain.add(menuButton);
         vpMain.add(category);
         vpMain.add(name);
-        vpMain.add(hp);
+        vpMain.add(hpPrice);
+        vpMain.add(description);
         vpMain.add(fileUpload);
+        vpMain.add(dp);
+        vpMain.add(hpButtons);
 
         return formPanel;
     }

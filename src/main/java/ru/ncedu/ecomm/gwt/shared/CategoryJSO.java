@@ -2,9 +2,9 @@ package ru.ncedu.ecomm.gwt.shared;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-public class CategoryJSON extends JavaScriptObject {
+public class CategoryJSO extends JavaScriptObject {
 
-    protected CategoryJSON() {
+    protected CategoryJSO() {
     }
 
     public final native double getCategoryId() /*-{ return this.categoryId; }-*/;
