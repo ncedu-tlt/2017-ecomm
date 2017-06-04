@@ -66,7 +66,8 @@
                 field: thisField
             }, function (data) {
                 root.html(data);
-                root.find('.jsEdit').on('click', this.edit.bind(this));
+                root.find('.jsCancelButton').on('click', this.cancelEdit.bind(this));
+                root.find('.jsSaveButton').on('click', this.saveEdit.bind(this));
                 root.find('.jsRemoveLineButton').on('click', this.removeButton.bind(this));
 
             }.bind(this));
