@@ -2,10 +2,12 @@ import {Component, Input, OnInit} from "@angular/core";
 import {UsersService} from "../../services/users.service";
 import SalesOrderModel from "../../models/sales-order.model";
 import TableModel from "../data-table/models/table.model";
+import {Router} from "@angular/router";
 
 @Component ({
     selector: 'nc-user-orders',
-    templateUrl: 'user-orders.component.html'
+    templateUrl: 'user-orders.component.html',
+    styleUrls: ['user-orders.component.css']
 })
 
 export class UserOrdersComponent implements OnInit {
@@ -23,8 +25,8 @@ export class UserOrdersComponent implements OnInit {
                 key: 'creationDate'
             },
             {
-                name: 'Amount',
-                key: 'totalAmount',
+                name: 'Amount ($)',
+                key: 'totalAmount'
             },
             {
                 name: 'Status',
@@ -34,7 +36,8 @@ export class UserOrdersComponent implements OnInit {
     };
 
 
-    constructor(private usersService: UsersService){}
+    constructor(private usersService: UsersService,
+                private router: Router){}
 
     ngOnInit(): void {
         this.usersService.getOrdersByUserId(this.userId).then(salesOrders => this.model.data = salesOrders);
@@ -42,5 +45,13 @@ export class UserOrdersComponent implements OnInit {
 
     onSelect(salesOrder: SalesOrderModel): any {
         this.selectSalesOrder = salesOrder;
+    }
+
+    onEdit(): void {
+        this.router.navigate(['/order', this.selectSalesOrder.salesOrderId]);
+    }
+
+    selectState(): any {
+        return !this.selectSalesOrder;
     }
 }
