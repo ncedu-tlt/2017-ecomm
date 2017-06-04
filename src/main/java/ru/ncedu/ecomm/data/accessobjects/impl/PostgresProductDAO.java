@@ -652,7 +652,7 @@ public class PostgresProductDAO implements ProductDAO {
 
     @Override
     public List<ProductDAOObject> getAllChrildrenProductsByCategoryId(long categoryId) {
-        List<ProductDAOObject> prosucts = new ArrayList<>();
+        List<ProductDAOObject> products = new ArrayList<>();
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT\n" +
@@ -660,7 +660,7 @@ public class PostgresProductDAO implements ProductDAO {
                              "  category_id,\n" +
                              "  name,\n" +
                              "  description,\n" +
-                             "  price\n" +
+                             "  price,\n" +
                              "  discount_id\n" +
                              "FROM public.products\n" +
                              "WHERE category_id IN \n" +
@@ -682,7 +682,7 @@ public class PostgresProductDAO implements ProductDAO {
                         .setDiscountId(resultSet.getLong("discount_id"))
                         .build();
 
-                prosucts.add(product);
+                products.add(product);
             }
 
             LOG.info(null);
@@ -690,7 +690,7 @@ public class PostgresProductDAO implements ProductDAO {
             LOG.error(e.getMessage());
             throw new RuntimeException(e);
         }
-        return prosucts;
+        return products;
     }
 }
 
