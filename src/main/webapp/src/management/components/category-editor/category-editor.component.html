@@ -15,7 +15,10 @@
         </div>
         <div class="field">
             <label>Description:</label>
-            <textarea rows="2" name="description" [(ngModel)]="category.description"></textarea>
+            <textarea #description="ngModel"
+                      rows="2"
+                      name="description"
+                      [(ngModel)]="category.description"></textarea>
         </div>
         <div class="field">
             <sm-select
@@ -23,11 +26,11 @@
                     [(model)]="parentId" placeholder="Select your parent"
                     class="fluid">
                 <option *ngFor="let category of categories"
-                        [ngValue]="category"
                         [value]="category.categoryId">{{category.name}}</option>
             </sm-select>
         </div>
-        <div [ngClass]="{disabled: name.invalid || name.pristine}"
+        <div [ngClass]="{disabled: (action == 'addition'
+        && (name.invalid || name.pristine))}"
              class="ui primary button"
              (click)="onSubmit()">Save
         </div>

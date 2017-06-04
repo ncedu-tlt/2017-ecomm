@@ -5,13 +5,13 @@
 <c:set var="propertyValue" value="${property.getValue()}"/>
 <c:set var="field" value="${requestScope.field}"/>
 
-<c:if test="${field == 'three wide column jsProperty'}">
+<c:if test="${field == 'three wide column jsPropertId jsProperty'}">
     <div class="three wide column jsPropertyId jsEdit">
             ${propertyID}
     </div>
 </c:if>
 
-<c:if test="${field == 'thirteen wide column jsProperty'}">
+<c:if test="${field == 'thirteen wide column jsPropertVal jsProperty'}">
     <div class="thirteen wide column jsVisible jsEdit">
 
             ${propertyValue}

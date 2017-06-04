@@ -1,12 +1,17 @@
 <div class="ui fluid container">
-    <div class="ui left floated segment categorySegment">
+    <div class="ui left floated colored teal segment categorySegment">
         <nc-categories-tree (choseCategory)="selectCategory($event)"></nc-categories-tree>
     </div>
-    <div class="ui right floated segment characteristicSegment">
+    <div class="ui right floated stacked colored teal segment characteristicSegment">
         <nc-charGroup-list></nc-charGroup-list>
-        <div *ngIf="!selectedCategoryId" class="ui info message">
-            <div class="header">Hello!</div>
-            <p>Please select any category.</p>
+        <div *ngIf="!selectedCategoryId">
+            <h2 class="ui header">
+                <i class="huge plug icon"></i>
+                <div class="content">
+                    No category selected
+                    <div class="sub header">Please choose one of the category categories</div>
+                </div>
+            </h2>
         </div>
     </div>
 </div>

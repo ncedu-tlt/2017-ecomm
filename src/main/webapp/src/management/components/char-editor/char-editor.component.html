@@ -5,9 +5,10 @@
     <form class="ui form" #characteristicForm="ngForm">
         <div class="field">
             <sm-select #charGroupSelect
-                    [options]="{direction: 'auto'}"
-                    [(model)]="selectedCharGroupId" placeholder="Select your group"
-                    class="fluid">
+                       [control]="selectedCharGroup"
+                       [options]="{direction: 'auto'}"
+                       [(model)]="characteristic.characteristicGroupId" placeholder="Select your group"
+                       class="fluid">
                 <div *ngFor="let group of charGroups">
                     <option value="{{group.characteristicGroupId}}">{{group.characteristicGroupName}}</option>
                 </div>
@@ -26,7 +27,8 @@
         <div class="field">
             <sm-checkbox label="Is Filterable?" [control]="filterable"></sm-checkbox>
         </div>
-        <div [ngClass]="{disabled: name.invalid || name.pristine || charGroupSelect.untouched}"
+        <div [ngClass]="{disabled: (action == 'addition' &&
+        (name.pristine || name.invalid || selectedCharGroup.untouched))}"
              class="ui primary button"
              (click)="onSubmit()">Save
         </div>

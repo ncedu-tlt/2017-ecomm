@@ -176,7 +176,8 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
                              "  characteristic_id,\n" +
                              "  category_id,\n" +
                              "  name,\n" +
-                             "  characteristic_group_id\n" +
+                             "  characteristic_group_id,\n" +
+                             "  filterable\n" +
                              "FROM public.characteristics\n" +
                              "WHERE characteristic_id = ?"
              )) {
@@ -192,6 +193,7 @@ public class PostgresCharacteristicDAO implements CharacteristicDAO {
                         .setCharacteristicId(resultSet.getLong("characteristic_id"))
                         .setCharacteristicName(resultSet.getString("name"))
                         .setCategoryId(resultSet.getLong("category_id"))
+                        .setFilterable(resultSet.getBoolean("filterable"))
                         .build();
             }
 

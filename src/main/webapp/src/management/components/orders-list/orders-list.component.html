@@ -1,0 +1,14 @@
+<div class="ui container right aligned ordersList-button-group">
+    <button class="ui button yellow" (click)="onEdit()" [disabled]="selectState()">
+        Edit
+    </button>
+    <button class="ui button red" (click)="onDelete()" [disabled]="selectState()">
+        Delete
+    </button>
+</div>
+<nc-data-table
+        [model]="model"
+        [selectedItem]="selectOrder"
+        (select)="onSelect($event)">
+</nc-data-table>
+<div class="ui hidden divider"></div>

@@ -8,6 +8,7 @@ import ru.ncedu.ecomm.data.models.dao.PropertyDAOObject;
 import ru.ncedu.ecomm.data.models.dao.builders.PropertyDAOObjectBuilder;
 import ru.ncedu.ecomm.servlets.models.EnumRoles;
 import ru.ncedu.ecomm.servlets.services.UserService;
+import ru.ncedu.ecomm.utils.RedirectUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +23,8 @@ import static ru.ncedu.ecomm.utils.RedirectUtil.redirectToPage;
 
 @WebServlet(name = "PropertyServlet", urlPatterns = {"/properties"})
 public class PropertyServlet extends HttpServlet {
+    private static final String THREE_WIDE_COLUMN = "three wide column jsPropertId jsProperty";
+    private static final String THIRTEEN_WIDE_COLUMN = "thirteen wide column jsPropertVal jsProperty";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -50,11 +53,13 @@ public class PropertyServlet extends HttpServlet {
 
         Boolean userAreAdministrator = UserService.getInstance().redirectIfNotAllowed(request, EnumRoles.ADMINISTRATOR.getRole());
         if (!userAreAdministrator)
-            request.getRequestDispatcher("/home").include(request, response);
+            RedirectUtil.redirectToPage(request,response,"/home");
+
 
         List<PropertyDAOObject> properties = DAOFactory.getDAOFactory().getPropertyDAO().getProperties();
+        String propertiesURL = request.getContextPath() + Configuration.getProperty("servlet.properties");
 
-
+        request.setAttribute("propertiesURL", propertiesURL);
         request.setAttribute("properties", properties);
         request.getRequestDispatcher(Configuration.getProperty("page.property")).forward(request, response);
     }
@@ -90,24 +95,16 @@ public class PropertyServlet extends HttpServlet {
     private void updateValueInDAO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String field = request.getParameter("field");
-        String propertyId = request.getParameter("propertyId");
-        propertyId.replaceAll("\\p{Cntrl}", "");
-        String newPropertyId = propertyId.trim();
-
-        String propertyVal = request.getParameter("valueText");
-        propertyVal.replaceAll("\\p{Cntrl}", "");
-        String newPropertyVal = propertyVal.trim();
-
 
         PropertyDAOObject property = new PropertyDAOObjectBuilder()
-                .setPropertyId(newPropertyId)
-                .setValue(newPropertyVal)
+                .setPropertyId(request.getParameter("propertyId"))
+                .setValue(request.getParameter("valueText"))
                 .build();
 
-        if (Objects.equals(request.getParameter("field"), "three wide column jsProperty")) {
+        if (Objects.equals(field,THREE_WIDE_COLUMN)) {
             DAOFactory.getDAOFactory().getPropertyDAO().updateIdProperty(property);
         }
-        if (Objects.equals(request.getParameter("field"), "thirteen wide column jsProperty")) {
+        if (Objects.equals(field,THIRTEEN_WIDE_COLUMN )) {
             DAOFactory.getDAOFactory().getPropertyDAO().updateValueProperty(property);
         }
 
@@ -118,17 +115,10 @@ public class PropertyServlet extends HttpServlet {
     }
 
     private void removePropertyFromDAO(HttpServletRequest request, HttpServletResponse response) {
-        String propertyId = request.getParameter("propertyId");
-        propertyId.replaceAll("\\p{Cntrl}", "");
-        String newPropertyId = propertyId.trim();
-
-        String propertyVal = request.getParameter("valueText");
-        propertyVal.replaceAll("\\p{Cntrl}", "");
-        String newPropertyVal = propertyVal.trim();
 
         PropertyDAOObject property = new PropertyDAOObjectBuilder()
-                .setPropertyId(newPropertyId)
-                .setValue(newPropertyVal)
+                .setPropertyId(request.getParameter("propertyId"))
+                .setValue(request.getParameter("valueText"))
                 .build();
 
         DAOFactory.getDAOFactory().getPropertyDAO().deleteProperty(property);
@@ -150,14 +140,7 @@ public class PropertyServlet extends HttpServlet {
                 .setValue(propertyVal)
                 .build();
 
-        propertyVal.replaceAll("\\p{Cntrl}", "");
-        String newPropertyVal = propertyVal.trim();
-
-        boolean setTextArea = false;
-        if (newPropertyVal.length() > 100)
-            setTextArea = true;
-        else
-            setTextArea = false;
+        boolean setTextArea = propertyVal.length() > 100;
 
         request.setAttribute("property", property);
         request.setAttribute("field", field);

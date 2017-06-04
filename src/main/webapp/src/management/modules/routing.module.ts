@@ -7,6 +7,8 @@ import {CharGroupEditorComponent} from "../components/char-group-editor/char-gro
 import {CharEditorComponent} from "../components/char-editor/char-editor.component";
 import {CategoryEditorComponent} from "../components/category-editor/category-editor.component";
 import {ProductModelEditorComponent} from "../components/product-model-editor/product-model-editor.component";
+import {OrderListComponent} from "../components/orders-list/orders-list.component";
+import {OrderEditorComponent} from "../components/order-editor/order-editor.component";
 
 const ROUTES: Routes = [
     { path: '', redirectTo: '/users', pathMatch: 'full' },
@@ -17,6 +19,8 @@ const ROUTES: Routes = [
     { path: 'char-editor', component: CharEditorComponent },
     { path: 'category-editor', component: CategoryEditorComponent },
     { path: 'product-model-editor', component: ProductModelEditorComponent },
+    { path: 'orders', component: OrderListComponent},
+    { path: 'order/:id', component: OrderEditorComponent},
     { path: '**', redirectTo: '/users' }
 ];
 

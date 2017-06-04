@@ -5,103 +5,121 @@
     var PropertiesComponent = frm.inheritance.inherits(frm.components.Component, {
 
         init: function () {
-            var tableValue = this.content.find('.jsTableValue');
-            var edit = this.content.find('.jsEdit');
-            var panelButton = this.content.find('.jsPanelButton');
-            var removeButton = this.content.find('.jsRemoveLineButton');
-            var addButton = this.content.find('.jsAddButton');
-            var globalUrlTest = this.params.propertiesUrl;
+            this.content.find('.jsEdit').on('click', this.edit.bind(this));
+            this.content.find('.jsRemoveLineButton').on('click', this.removeButton.bind(this));
+            this.content.find('.jsAddButton').on('click', this.addButton.bind(this));
+        },
+        edit: function () {
 
-            edit.click(function () {
-                var $this = $(this);
-                var thisField = this.className;
-                var root = $this.closest('.jsTableValue');
-                var text = root.find('.jsVisible').text();
-                var id = root.find('.jsPropertyId').text();
+            var eventFind = $(event.currentTarget);
+            var thisField = eventFind.attr('class');
+            var root = eventFind.closest('.jsTableValue');
+            var text = root.find('.jsVisible').text();
+            var id = root.find('.jsPropertyId').text();
+            root.find('.loader').removeClass('disable');
 
-                $.post(globalUrlTest + '/properties', {
-                    propertyId: id,
-                    valueText: text,
-                    action: 'edit',
-                    field: thisField
-                }, function (data) {
-                    $this.after(data);
-                    $this.hide();
+            $.post(this.params.propertiesUrl, {
+                propertyId: id,
+                valueText: text,
+                action: 'edit',
+                field: thisField
+            }, function (data) {
+                eventFind.after(data);
+                eventFind.hide();
 
-                    var cancelButton = root.find('.jsCancelButton');
-                    cancelButton.click(function () {
-                        var inputText = this.closest('.jsProperty');
-                        inputText.remove();
-                        $this.show();
-                    });
+                this.content.find('.jsCancelButton').on('click', this.cancelEdit.bind(this));
+                this.content.find('.jsSaveButton').on('click', this.saveEdit.bind(this));
 
-                    var saveButton = root.find('.jsSaveButton');
-                    saveButton.click(function () {
-                        var $this = $(this);
-                        var root = $this.closest('.jsProperty');
-                        var thisField = root.attr('class');
-                        var id = root.find('.jsPropertId').val();
-                        var text = root.find('.jsPropertVal').val();
+            }.bind(this));
+        },
+        cancelEdit: function () {
+            var eventFind = $(event.currentTarget);
+            var inputText = eventFind.closest('.jsProperty');
+            var pol = eventFind.closest('.jsEdit');
+            var tableVal = inputText.closest('.jsTableValue');
+            var idPr = tableVal.find('.jsPropertyId');
+            var valPr = tableVal.find('.jsVisible');
+            pol.find('.loader').addClass('disable');
 
+            if (inputText.hasClass('jsPropertId')) {
+                inputText.remove();
+                idPr.show();
+            }
+            else {
+                inputText.remove();
+                valPr.show();
+            }
 
-                        $.post(globalUrlTest + '/properties', {
-                            propertyId: id,
-                            valueText: text,
-                            action: 'save',
-                            field: thisField
-                        }, function (data) {
-                            root.html(data);
-                        });
-                    });
+        },
 
-                });
+        saveEdit: function () {
+            var eventFind = $(event.currentTarget);
+            var root = eventFind.closest('.jsProperty');
+            var thisField = root.attr('class');
+            var id = root.find('.jsPropertId').val();
+            var text = root.find('.jsPropertVal').val();
+
+            $.post(this.params.propertiesUrl, {
+                propertyId: id,
+                valueText: text,
+                action: 'save',
+                field: thisField
+            }, function (data) {
+                root.html(data);
+                root.find('.jsCancelButton').on('click', this.cancelEdit.bind(this));
+                root.find('.jsSaveButton').on('click', this.saveEdit.bind(this));
+                root.find('.jsRemoveLineButton').on('click', this.removeButton.bind(this));
+
+            }.bind(this));
+
+        },
+
+        removeButton: function () {
+            var eventFind = $(event.currentTarget);
+            var root = eventFind.closest('.jsTableValue');
+            var id = root.find('.jsPropertyId').text();
+            var text = root.find('.jsVisible').text();
+
+            $.post(this.params.propertiesUrl, {propertyId: id, valueText: text, action: 'remove'}, function () {
+                root.html('');
             });
+        },
 
-            removeButton.click(function () {
-                var $this = $(this);
-                var root = $this.closest('.jsTableValue');
-                var id = root.find('.jsPropertyId').text();
-                var text = root.find('.jsVisible').text();
+        addButton: function () {
+            var eventFind = $(event.currentTarget);
+            var root = eventFind.closest('.jsPropertiesComponent');
+            var table = root.find('.jsTable');
+            $.post(this.params.propertiesUrl, {action: 'add'}, function (data) {
+                table.append(data);
 
-                $.post(globalUrlTest + '/properties', {propertyId: id, valueText: text, action: 'remove'}, function () {
-                    root.html("")
-                });
-            });
+                this.content.find('.jsCancelRow').on('click', this.cancelNewRow.bind(this));
+                this.content.find('.jsSaveRow').on('click', this.saveNewRow.bind(this));
 
-            addButton.click(function () {
-                var $this = $(this);
-                var root = $this.closest('.jsPropertiesComponent');
-                var table = root.find('.jsTable');
-                $.post(globalUrlTest + '/properties', {action: 'add'}, function (data) {
-                    table.append(data);
+            }.bind(this));
+        },
 
-                    var cancelRow = table.find('.jsCancelRow');
-                    cancelRow.click(function () {
-                        var inputRow = this.closest('.jsTableValue');
-                        inputRow.remove();
-                    });
+        cancelNewRow: function () {
+            var eventFind = $(event.currentTarget);
+            var inputRow = eventFind.closest('.jsTableValue');
+            inputRow.remove();
+        },
 
+        saveNewRow: function () {
+            var eventFind = $(event.currentTarget);
+            var root = eventFind.closest('.jsTableValue');
+            var text = root.find('.jsInputPropertyValue').val();
+            var id = root.find('.jsInputPropertyId').val();
 
-                    var saveRow = table.find('.jsSaveRow');
-                    saveRow.click(function () {
-                        var $this = $(this);
-                        var root = $this.closest('.jsTableValue');
-                        var text = root.find('.jsInputPropertyValue').val();
-                        var id = root.find('.jsInputPropertyId').val();
+            $.post(this.params.propertiesUrl, {
+                valueText: text,
+                propertyId: id,
+                action: 'saveRow'
+            }, function (data) {
+                root.html(data);
+                root.find('.jsEdit').on('click', this.edit.bind(this));
+                root.find('.jsRemoveLineButton').on('click', this.removeButton.bind(this));
 
-                        $.post(globalUrlTest + '/properties', {
-                            valueText: text,
-                            propertyId: id,
-                            action: 'saveRow'
-                        }, function (data) {
-                            root.html(data);
-                        });
-
-                    });
-
-                });
-            });
-
+            }.bind(this));
 
         }
     });
@@ -109,3 +127,7 @@
     frm.components.register('PropertiesComponent', PropertiesComponent);
 
 })(jQuery, window);
+
+
+
+

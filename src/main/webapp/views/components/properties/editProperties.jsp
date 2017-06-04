@@ -7,9 +7,9 @@
 <c:set var="setTextArea" value="${requestScope.setTextArea}"/>
 
 <c:if test="${field == 'three wide column jsPropertyId jsEdit'}">
-    <div class="three wide column jsProperty">
+    <div class="three wide column jsPropertId jsProperty">
 
-        <div class="ui fluid action transparent input jsInput">
+        <div class="ui fluid action input jsInput">
             <input class="jsPropertId" type="text" value="${propertyID}">
             <input class="jsPropertVal" type="hidden" value="${propertyValue}">
         </div>
@@ -23,10 +23,10 @@
 </c:if>
 
 <c:if test="${field == 'thirteen wide column jsVisible jsEdit'}">
-    <div class="thirteen wide column jsProperty">
+    <div class="thirteen wide column jsPropertVal jsProperty">
 
         <c:if test="${setTextArea == false}">
-            <div class="ui fluid action transparent input jsInput">
+            <div class="ui fluid action input jsInput">
                 <input class="jsPropertId" type="hidden" value="${propertyID}">
                 <input class="jsPropertVal" type="text" value="${propertyValue}">
             </div>
