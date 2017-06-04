@@ -4,8 +4,10 @@ declare const contextPath: string;
 
 @Component({
     selector: 'nc-top-menu',
-    templateUrl: 'top-menu.component.html'
+    templateUrl: 'top-menu.component.html',
+    styleUrls: ['top-menu.component.css']
 })
 export class TopMenuComponent {
-    url: string = contextPath + '/properties';
+    urlProperties: string = contextPath + '/properties';
+    urlCatalog: string = contextPath + '/catalog';
 }

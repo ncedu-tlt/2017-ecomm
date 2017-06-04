@@ -6,7 +6,6 @@ import {NgSemanticModule} from "ng-semantic";
 import {TreeModule} from "angular-tree-component";
 import {RoutingModule} from "./routing.module";
 import {RootComponent} from "../components/root/root.component";
-import {NavigationComponent} from "../components/navigation/navigation.component";
 import {UsersListComponent} from "../components/users-list/users-list.component";
 import {DataTableComponent} from "../components/data-table/data-table.component";
 import {TopMenuComponent} from "../components/top-menu/top-menu.component";
@@ -33,7 +32,6 @@ import {OrderEditorComponent} from "../components/order-editor/order-editor.comp
 @NgModule({
     declarations: [
         RootComponent,
-        NavigationComponent,
         UsersListComponent,
         DataTableComponent,
         UserEditorComponent,

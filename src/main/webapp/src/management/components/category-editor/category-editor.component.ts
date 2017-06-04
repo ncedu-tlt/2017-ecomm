@@ -23,21 +23,19 @@ export class CategoryEditorComponent implements OnInit {
     };
 
     ngOnInit(): void {
+        this.categoryService.getAll()
+            .then(categories => this.categories = categories);
         this.route.queryParams.subscribe(params => {
             this.parentId = +params['id'];
             this.action = params['action'];
-            this.categoryService.getAll()
-                .then(categories => {
-                    this.categories = categories;
-                    if (this.parentId != 0) {
-                        this.categoryService.get(this.parentId)
-                            .then(category => {
-                                if (this.action == 'edit')
-                                    this.category = category;
-                            });
-                    }
-                });
         });
+        if (this.parentId != 0) {
+            this.categoryService.get(this.parentId)
+                .then(category => {
+                    if (this.action == 'edit')
+                        this.category = category;
+                });
+        }
 
     }
 

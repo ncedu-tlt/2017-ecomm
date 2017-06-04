@@ -79,5 +79,4 @@ export class CharsListComponent implements OnInit {
                 this.selectedCharacteristic = null;
             });
     }
-
 }
