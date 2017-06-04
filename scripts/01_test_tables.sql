@@ -339,21 +339,21 @@ ALTER SEQUENCE users_user_id_seq OWNED BY users.user_id;
 --
 
 ALTER TABLE ONLY characteristic_values
-    ADD CONSTRAINT "	FK_characteristic_values_characteristic" FOREIGN KEY (characteristic_id) REFERENCES characteristics(characteristic_id);
+    ADD CONSTRAINT "	FK_characteristic_values_characteristic" FOREIGN KEY (characteristic_id) REFERENCES characteristics(characteristic_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Name: characteristic_values 	FK_characteristic_values_products; Type: FK CONSTRAINT; Schema: public 
 --
 
 ALTER TABLE ONLY characteristic_values
-    ADD CONSTRAINT "	FK_characteristic_values_products" FOREIGN KEY (product_id) REFERENCES products(product_id);
+    ADD CONSTRAINT "	FK_characteristic_values_products" FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Name: order_items 	FK_order_items_products; Type: FK CONSTRAINT; Schema: public 
 --
 
 ALTER TABLE ONLY order_items
-    ADD CONSTRAINT "	FK_order_items_products" FOREIGN KEY (product_id) REFERENCES products(product_id);
+    ADD CONSTRAINT "	FK_order_items_products" FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Name: products 	FK_products_discount; Type: FK CONSTRAINT; Schema: public 
@@ -368,7 +368,7 @@ ALTER TABLE ONLY products
 --
 
 ALTER TABLE ONLY reviews
-    ADD CONSTRAINT "	FK_reviews_products" FOREIGN KEY (product_id) REFERENCES products(product_id);
+    ADD CONSTRAINT "	FK_reviews_products" FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --
@@ -376,7 +376,7 @@ ALTER TABLE ONLY reviews
 --
 
 ALTER TABLE ONLY reviews
-    ADD CONSTRAINT "	FK_reviews_user" FOREIGN KEY (user_id) REFERENCES users(user_id);
+    ADD CONSTRAINT "	FK_reviews_user" FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Name: sales_orders 	FK_sales_orders_order_statuses; Type: FK CONSTRAINT; Schema: public 
@@ -390,21 +390,21 @@ ALTER TABLE ONLY sales_orders
 --
 
 ALTER TABLE ONLY sales_orders
-    ADD CONSTRAINT "	FK_sales_orders_users" FOREIGN KEY (user_id) REFERENCES users(user_id);
+    ADD CONSTRAINT "	FK_sales_orders_users" FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Name: users 	FK_users_rouls; Type: FK CONSTRAINT; Schema: public 
 --
 
 ALTER TABLE ONLY users
-    ADD CONSTRAINT "	FK_users_rouls" FOREIGN KEY (role_id) REFERENCES roles(role_id);
+    ADD CONSTRAINT "	FK_users_rouls" FOREIGN KEY (role_id) REFERENCES roles(role_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Name: characteristics FK_characteristic_categories; Type: FK CONSTRAINT; Schema: public 
 --
 
 ALTER TABLE ONLY characteristics
-    ADD CONSTRAINT "FK_characteristic_categories" FOREIGN KEY (category_id) REFERENCES categories(category_id);
+    ADD CONSTRAINT "FK_characteristic_categories" FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Name: characteristics FK_characteristic_characteristic_group; Type: FK CONSTRAINT; Schema: public 
@@ -418,29 +418,29 @@ ALTER TABLE ONLY characteristics
 --
 
 ALTER TABLE ONLY order_items
-    ADD CONSTRAINT "FK_order_items_sales_orders" FOREIGN KEY (sales_order_id) REFERENCES sales_orders(sales_order_id);
+    ADD CONSTRAINT "FK_order_items_sales_orders" FOREIGN KEY (sales_order_id) REFERENCES sales_orders(sales_order_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Name: products FK_products_categories; Type: FK CONSTRAINT; Schema: public 
 --
 
 ALTER TABLE ONLY products
-    ADD CONSTRAINT "FK_products_categories" FOREIGN KEY (category_id) REFERENCES categories(category_id);
+    ADD CONSTRAINT "FK_products_categories" FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Name: recommended_products recommended_products_source_product_id_fkey; Type: FK CONSTRAINT; Schema: public 
 --
 
 ALTER TABLE ONLY recommended_products
-    ADD CONSTRAINT recommended_products_source_product_id_fkey FOREIGN KEY (source_product_id) REFERENCES products(product_id);
+    ADD CONSTRAINT recommended_products_source_product_id_fkey FOREIGN KEY (source_product_id) REFERENCES products(product_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Name: recommended_products recommended_products_target_product_id_fkey; Type: FK CONSTRAINT; Schema: public 
 --
 
 ALTER TABLE ONLY recommended_products
-    ADD CONSTRAINT recommended_products_target_product_id_fkey FOREIGN KEY (target_product_id) REFERENCES products(product_id);
+    ADD CONSTRAINT recommended_products_target_product_id_fkey FOREIGN KEY (target_product_id) REFERENCES products(product_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 ALTER TABLE public.categories
-    ADD CONSTRAINT categories_category_id_fk FOREIGN KEY (category_id) REFERENCES categories (category_id);
+    ADD CONSTRAINT categories_category_id_fk FOREIGN KEY (parent_id) REFERENCES categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE;
