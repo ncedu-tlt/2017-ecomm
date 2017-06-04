@@ -435,3 +435,13 @@ INSERT INTO properties(
   ('google+Url',	'https://plus.google.com'),
   ('twitterUrl',	'https://twitter.com'),
   ('vkUrl',	'https://vk.com');
+
+ALTER SEQUENCE categories_category_id_seq RESTART WITH 100;
+ALTER SEQUENCE characteristic_groups_characteristic_group_id_seq RESTART WITH 100;
+ALTER SEQUENCE characteristics_characteristic_id_seq RESTART WITH 100;
+ALTER SEQUENCE order_statuses_order_status_id_seq RESTART WITH 100;
+ALTER SEQUENCE products_product_id_seq RESTART WITH 100;
+ALTER SEQUENCE sales_orders_sales_order_id_seq RESTART WITH 100;
+ALTER SEQUENCE users_user_id_seq RESTART WITH 100;
+ALTER SEQUENCE discount_discount_id_seq RESTART WITH 100;
+ALTER SEQUENCE roles_role_id_seq RESTART WITH 100;
