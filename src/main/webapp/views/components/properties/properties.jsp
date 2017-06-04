@@ -15,15 +15,8 @@
 
             <div class="row jsTableValue">
 
-                <div class="three wide column jsPropertyId jsEdit">
-                        ${property.getId()}
-                </div>
-                <div class="thirteen wide column jsVisible jsEdit">
-                        ${property.getValue()}
-                    <button class="circular right floated ui small  compact icon  button  jsRemoveLineButton">
-                        <i class="remove icon"></i>
-                    </button>
-                </div>
+                <div class="three wide column jsPropertyId jsEdit"><div class="ui disabled loader"></div><span>${property.getId()}</span></div>
+                <div class="thirteen wide column jsVisible jsEdit"><div class="ui disabled loader"></div><span>${property.getValue()}</span><button class="circular right floated ui small  compact icon  button  jsRemoveLineButton"><i class="remove icon"></i></button></div>
 
             </div>
 
@@ -45,6 +38,6 @@
 </div>
 <script>
     window.frm.components.init('PropertiesComponent', '.jsPropertiesComponent', {
-        propertiesUrl: '${pageContext.request.contextPath}'
+          propertiesUrl: '${requestScope.propertiesURL}'
     });
 </script>

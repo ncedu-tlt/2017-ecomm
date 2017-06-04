@@ -4,13 +4,13 @@
 <div class="row jsTableValue">
 
     <div class="three wide column">
-        <div class="ui fluid action transparent input">
+        <div class="ui fluid action input">
             <input class="jsInputPropertyId">
         </div>
     </div>
 
     <div class="thirteen wide column">
-        <div class="ui fluid action transparent input">
+        <div class="ui fluid action input">
             <input class="jsInputPropertyValue">
         </div>
 

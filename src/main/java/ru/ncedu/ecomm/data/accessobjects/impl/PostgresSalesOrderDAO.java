@@ -337,7 +337,6 @@ public class PostgresSalesOrderDAO implements SalesOrdersDAO {
             statement.setLong(4, salesOrder.getOrderStatusId());
             statement.setLong(5, salesOrder.getSalesOrderId());
             statement.execute();
-            statement.execute();
 
             LOG.info(null);
             return salesOrder;
