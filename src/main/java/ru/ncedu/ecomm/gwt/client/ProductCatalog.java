@@ -337,7 +337,6 @@ public class ProductCatalog implements EntryPoint {
             Window.alert("Couldn't retrieve JSON (" + e.getMessage() + ")");
         }
 
-        listBox.setSelectedIndex((int) (selectionModel.getSelectedObject().getDiscountId() - 1));
         hpPrice.add(price);
         hpPrice.add(listBox);
 

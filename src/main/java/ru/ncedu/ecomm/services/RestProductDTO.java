@@ -91,10 +91,10 @@ public class RestProductDTO {
         for (CharacteristicValueDAOObject characteristicValue : characteristicValues) {
             if (characteristic.getCharacteristicId() == characteristicValue.getCharacteristicId()) {
                 characteristicModel = new CharacteristicDTObjectBuilder()
+                        .setCharacteristicId(characteristic.getCharacteristicId())
                         .setName(characteristic.getCharacteristicName())
                         .setValue(characteristicValue.getCharacteristicValue())
                         .build();
-
             }
         }
 
