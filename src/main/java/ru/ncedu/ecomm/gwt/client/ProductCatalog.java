@@ -21,6 +21,7 @@ import java.util.Map;
 import static com.google.gwt.view.client.DefaultSelectionEventManager.createCheckboxManager;
 
 public class ProductCatalog implements EntryPoint {
+    private static int idSelectedCategory;
     private static final String JSON_URL_CATEGORIES = GWT.getHostPageBaseURL() + "rest/ecomm/categories";
     private static final String JSON_URL_ALL_PRODUCTS = GWT.getHostPageBaseURL() + "rest/ecomm/product";
     private static final String JSON_URL_CHILDREN_PRODUCTS = GWT.getHostPageBaseURL() + "rest/ecomm/v2/product/childrenProducts/";
@@ -31,7 +32,7 @@ public class ProductCatalog implements EntryPoint {
     private static final String UPDATE_PRODUCT = GWT.getHostPageBaseURL() + "rest/ecomm/product";
     private static final String ADD_PRODUCT = GWT.getHostPageBaseURL() + "rest/ecomm/product";
     private static final String JSON_URL_CHARACTERISTICS_BY_CATEGORY = GWT.getHostPageBaseURL() + "rest/ecomm/v2/characteristics/";
-    private static final String EDIT_CATEGORIES = GWT.getHostPageBaseURL() + "management#/product-model-editor";
+    private static final String EDIT_CATEGORIES = GWT.getHostPageBaseURL() + "management#/category-editor?id="+idSelectedCategory+"&action=addition";
     private static final String MENU = GWT.getHostPageBaseURL() + "management#/users";
     private static final int SUCCESS_ANSWER = 200;
     private static final int NULL_PARENT = 0;
@@ -42,7 +43,7 @@ public class ProductCatalog implements EntryPoint {
     private Button menuButton = new Button("Menu", (ClickHandler) clickEvent -> {
         Window.Location.replace(MENU);
     });
-    private int idSelectedCategory;
+
 
     @Override
     public void onModuleLoad() {
