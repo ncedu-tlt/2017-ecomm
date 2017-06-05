@@ -1,7 +1,4 @@
 <div class="ui container right aligned">
-    <h4 class="ui horizontal divider header">
-        CATEGORIES
-    </h4>
     <button (click)="onAdd()" class="ui primary button">
         Add
     </button>
@@ -11,6 +8,9 @@
     <button (click)="onDelete()" [disabled]="!selectedCategory" class="ui red button">
         Delete
     </button>
+    <h4 class="ui horizontal divider header">
+        CATEGORIES
+    </h4>
 </div>
 <tree-root
         [nodes]="categories | asTree : 'categoryId' : 'parentId'"

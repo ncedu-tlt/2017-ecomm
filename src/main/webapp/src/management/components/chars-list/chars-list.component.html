@@ -1,8 +1,5 @@
 <div *ngIf="selectedCategoryId">
     <div class="ui container right aligned charGroup-editor">
-        <h4 class="ui horizontal divider header">
-            CHARACTERISTIC GROUPS
-        </h4>
         <button (click)="onAddCharacteristic()" class="ui primary button">
             Add
         </button>
@@ -12,6 +9,9 @@
         <button (click)="onDeleteCharacteristic()" [disabled]="!selectedCharacteristic" class="ui red button">
             Delete
         </button>
+        <h4 class="ui horizontal divider header">
+            CHARACTERISTIC GROUPS
+        </h4>
     </div>
     <div class="ui right floated charListAccordion">
         <sm-accordion *ngFor="let charGroup of charsList" class="ui styled fluid">
