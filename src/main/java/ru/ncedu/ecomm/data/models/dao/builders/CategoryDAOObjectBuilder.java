@@ -3,7 +3,7 @@ import ru.ncedu.ecomm.data.models.dao.CategoryDAOObject;
 public class CategoryDAOObjectBuilder {
 
     private long categoryId;
-    private long parentId;
+    private Long parentId;
     private String name;
     private String description;
 
@@ -20,7 +20,7 @@ public class CategoryDAOObjectBuilder {
         return this;
     }
 
-    public CategoryDAOObjectBuilder setParentId(long parentId){
+    public CategoryDAOObjectBuilder setParentId(Long parentId){
       this.parentId = parentId;
 
         return this;

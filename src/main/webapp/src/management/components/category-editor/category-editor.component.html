@@ -23,7 +23,7 @@
         <div class="field">
             <sm-select
                     [options]="{direction: 'auto'}"
-                    [(model)]="parentId" placeholder="Select your parent"
+                    [(model)]="category.parentId" placeholder="Select your parent"
                     class="fluid">
                 <option *ngFor="let category of categories"
                         [value]="category.categoryId">{{category.name}}</option>

@@ -3,14 +3,14 @@ package ru.ncedu.ecomm.data.models.dao;
 public class CategoryDAOObject {
 
     private long categoryId;
-    private long parentId;
+    private Long parentId;
     private String name;
     private String description;
 
     public CategoryDAOObject() {
     }
 
-    public CategoryDAOObject(long categoryId, long parentId, String name, String description) {
+    public CategoryDAOObject(long categoryId, Long parentId, String name, String description) {
         this.categoryId = categoryId;
         this.parentId = parentId;
         this.name = name;
@@ -25,11 +25,11 @@ public class CategoryDAOObject {
         this.categoryId = categoryId;
     }
 
-    public long getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(long parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 

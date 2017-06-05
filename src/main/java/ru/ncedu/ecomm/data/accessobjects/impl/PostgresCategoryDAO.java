@@ -104,7 +104,6 @@ public class PostgresCategoryDAO implements CategoryDAO {
 
     @Override
     public CategoryDAOObject addCategory(CategoryDAOObject category) {
-
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "INSERT INTO public.categories\n" +
@@ -114,16 +113,17 @@ public class PostgresCategoryDAO implements CategoryDAO {
                              "VALUES (?, ?, ?)\n" +
                              "RETURNING category_id"
              )) {
-            statement.setLong(1, category.getParentId());
+            if (category.getParentId() != null)
+                statement.setLong(1, category.getParentId());
+            else
+                statement.setNull(1, Types.BIGINT);
             statement.setString(2, category.getName());
             statement.setString(3, category.getDescription());
             statement.execute();
-
             ResultSet resultSet = statement.getResultSet();
             if (resultSet.next()) {
                 category.setCategoryId(statement.getResultSet().getLong("category_id"));
             }
-
             LOG.info(null);
             return category;
         } catch (SQLException e) {
