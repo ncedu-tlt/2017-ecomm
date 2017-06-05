@@ -3,15 +3,14 @@ package ru.ncedu.ecomm.gwt.shared;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 
+public class CharacteristicGroupCategoryJSO extends JavaScriptObject {
 
-public class CharacteristicGroupJSO extends JavaScriptObject {
-
-    protected CharacteristicGroupJSO() {
+    protected CharacteristicGroupCategoryJSO() {
     }
 
     public final native double getId() /*-{ return this.characteristicGroupId }-*/;
 
     public final native String getName() /*-{ return this.characteristicGroupName; }-*/;
 
-    public final native JsArray<CharacteristicJSO> getCharacteristics() /*-{ return this.characteristics; }-*/;
+    public final native JsArray<CharacteristicCategoryJSO> getCharacteristics() /*-{ return this.characteristics; }-*/;
 }

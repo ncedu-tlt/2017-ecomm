@@ -76,7 +76,7 @@ public class PostgresProductDAO implements ProductDAO {
                              "VALUES (?, ?, ?, ?, ?)\n" +
                              "RETURNING product_id")) {
 
-            statement.setLong(1, product.getProductId());
+            statement.setLong(1, product.getCategoryId());
             statement.setString(2, product.getName());
             statement.setString(3, product.getDescription());
             statement.setLong(4, product.getDiscountId());
